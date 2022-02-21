@@ -1,11 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
+import Login from '../views/Login.vue';
+import Layout from '../views/dashboard/Layout.vue';
+import Dashboard from '../views/dashboard/Index.vue';
+import StudentIndex from '../views/dashboard/students/Index.vue';
+import CourseIndex from '../views/dashboard/courses/Index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Login',
-    component: () => import('../views/Login.vue'),
+    component: Login,
   },
   {
     path: '/home',
@@ -15,22 +20,22 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard/',
     name: 'Layout',
-    component: () => import('../views/dashboard/Layout.vue'),
+    component: Layout,
     children: [
       {
         path: '',
         name: 'Dashboard',
-        component: () => import('../views/dashboard/Index.vue'),
+        component: Dashboard,
       },
       {
         path: '/student-management',
         name: 'StudentManagement',
-        component: () => import('../views/dashboard/students/Index.vue'),
+        component: StudentIndex,
       },
       {
         path: '/course-management',
         name: 'CourseManagement',
-        component: () => import('../views/dashboard/courses/Index.vue'),
+        component: CourseIndex,
       },
     ]
   },
