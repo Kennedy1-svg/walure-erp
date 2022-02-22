@@ -5,6 +5,7 @@ import StudentList from '../../../components/dashboard/students/StudentList.vue'
 
 <template>
     <div class="main mx-9">
+        Hi
         <StudentHeader />
         <StudentList />
     </div>
