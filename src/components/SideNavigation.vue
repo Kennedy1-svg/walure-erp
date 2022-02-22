@@ -18,7 +18,7 @@ import SvgIcons from './SvgIcons.vue'
 				</p>
 			</div>
 		</a>
-		<a class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" href="/dashboard/courses-management">
+		<a class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" href="/dashboard/course-management">
 			<div class="flex items-center gap-4 py-4">
 				<div>
 					<SvgIcons name="course-management" /> <!-- course icon -->

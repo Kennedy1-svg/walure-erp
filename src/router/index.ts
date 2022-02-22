@@ -21,21 +21,28 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'Layout',
     component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: Dashboard,
+      },
+      {
+        path: 'student-management',
+        name: 'StudentManagement',
+        component: StudentIndex,
+      },
+      {
+        path: '/course-management',
+        name: 'CourseManagement',
+        component: CourseIndex,
+      },
+    ]
   },
-  // {
-  //   path: '/',
-  //   name: 'Dashboard',
-  //   component: Dashboard,
-  // },
   {
-    path: '/dashboard/student-management',
-    name: 'StudentManagement',
-    component: StudentIndex,
-  },
-  {
-    path: '/course-management',
-    name: 'CourseManagement',
-    component: CourseIndex,
+    path: '/:pathMatch(.*)*',
+    name: 'Error',
+    component: () => import('../components/NotFound.vue'),
   },
 ];
 
