@@ -1,41 +1,65 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue';
-import Login from '../views/Login.vue';
-import Layout from '../views/dashboard/Layout.vue';
-import Dashboard from '../views/dashboard/Index.vue';
-import StudentIndex from '../views/dashboard/students/Index.vue';
-import CourseIndex from '../views/dashboard/courses/Index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Login',
-    component: Login,
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/home',
     name: 'Home',
-    component: Home,
+    component: () => import('../views/Home.vue'),
   },
   {
     path: '/dashboard',
     name: 'Layout',
-    component: Layout,
+    component: () => import('../views/dashboard/Layout.vue'),
     children: [
       {
         path: '',
         name: 'Dashboard',
-        component: Dashboard,
+        component: () => import('../views/dashboard/Index.vue'),
       },
       {
         path: 'student-management',
         name: 'StudentManagement',
-        component: StudentIndex,
+        component: () => import('../views/dashboard/students/Index.vue'),
       },
       {
-        path: '/course-management',
+        path: 'course-management',
         name: 'CourseManagement',
-        component: CourseIndex,
+        component: () => import('../views/dashboard/courses/Index.vue'),
+      },
+      {
+        path: 'talent-management',
+        name: 'TalentManagement',
+        component: () => import('../views/dashboard/talents/Index.vue'),
+      },
+      {
+        path: 'user-management',
+        name: 'UserManagement',
+        component: () => import('../views/dashboard/users/Index.vue'),
+      },
+      {
+        path: 'service-management',
+        name: 'ServiceManagement',
+        component: () => import('../views/dashboard/services/Index.vue'),
+      },
+      {
+        path: 'enumeration',
+        name: 'Enumeration',
+        component: () => import('../views/dashboard/enumeration/Index.vue'),
+      },
+      {
+        path: 'ipos',
+        name: 'Ipos',
+        component: () => import('../views/dashboard/ipos/Index.vue'),
+      },
+      {
+        path: 'contact-us',
+        name: 'ContactUs',
+        component: () => import('../views/dashboard/Contact.vue'),
       },
     ]
   },
