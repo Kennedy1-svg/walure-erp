@@ -6,7 +6,9 @@ import TopNavigation from '../../components/TopNavigation.vue';
 
 <template>    
     <div class="flex">
-        <Navigation class="w-1/5 h-full overflow-hidden"/>
+        <div class="w-1/5 border-r">
+            <Navigation />            
+        </div>
         <div class="main w-4/5">
             <TopNavigation />
             <router-view />

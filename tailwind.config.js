@@ -17,6 +17,7 @@ module.exports = {
         grey: withOpacity('--color-grey'),
         "primary-accent": withOpacity('--color-primary-accent'),
         "table-head": withOpacity('--color-table-head'),
+        "table-text": withOpacity('--color-table-text'),
       },
     },
   },

@@ -3,7 +3,7 @@ import SvgIcons from './SvgIcons.vue'
 </script>
 
 <template>
-	<div class="grid border-r">
+	<div class="grid min-h-screen">
 		<div class="bg-primary flex px-2 lg:px-6 py-3 logo h-[76px]">
 			<img src="../assets/Walure-logo-white.png" class="h1/5" alt="walure-logo">
 		</div>
