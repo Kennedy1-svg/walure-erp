@@ -22,4 +22,4 @@ OR
 Create a pipeline linked to your repo on netlify
 Set up command to build on netlify
 command: `npm run build` || `yarn build`
-point netlify to the bild file
+point netlify to the build file
