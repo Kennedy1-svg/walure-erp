@@ -16,14 +16,25 @@ import Search from '../../Search.vue';
         </div>
         <div class="filter flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
             <div class="status">
-                <select class="pl-5 pr-52 py-3 bg-transparent rounded border text-sm" name="status" id="status">
-                    <span>
-                        <Search />
-                    </span>
-                    <option value="">Status</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                </select>
+                <div class="relative">
+                    <button class="border p-3 flex items-center justify-between rounded-md shadow-inner w-full">
+                        <span class="pl-5 pr-56">Status</span>
+
+                        <SvgIcons name="chevron-down" />
+                    </button>
+                    <div class="absolute bg-white rounded-md shadow-lg py-4 w-full">
+                        <ul class="list-reset text-grey">
+                            <li class="px-5 py-3">
+                                <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status"><br>
+                            </li>
+                            <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
+                                Active
+                            </p></li>
+                            <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Disabled</p></li>
+                            <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="search">
                 <Search />

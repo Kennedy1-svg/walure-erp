@@ -19,6 +19,9 @@ module.exports = {
         "table-head": withOpacity('--color-table-head'),
         "table-text": withOpacity('--color-table-text'),
       },
+      inset: {
+        "3/5": "60%",
+      }
     },
   },
   plugins: [],
