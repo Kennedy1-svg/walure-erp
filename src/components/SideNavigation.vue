@@ -93,7 +93,7 @@ import SvgIcons from './SvgIcons.vue'
 				</p>
 			</div>
 		</a>
-		<a class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" href="/dashboard/contact">
+		<a class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" href="/dashboard/contact-us">
 			<div class="flex items-center gap-4 py-4">
 				<div>
 					<SvgIcons name="contact" /> <!-- contact icon -->
