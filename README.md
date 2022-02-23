@@ -14,12 +14,12 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 
 ## Deployment
 
-Run npm run build to generate yor build file which will be found in dist folder
-you can deploy the dist folder/build file
+Run `npm run build` to generate yor build file which will be found in dist folder
+you can deploy the dist folder => build file
 
 OR
 
 Create a pipeline linked to your repo on netlify
 Set up command to build on netlify
-[command] npm run build || yarn build
+command: `npm run build` || `yarn build`
 point netlify to the bild file
