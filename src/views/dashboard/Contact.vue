@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MenuItem from '../../components/dashboard/students/AddStudents.vue'
+import MenuItem from '../../components/test.vue'
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
+import Filter from '../../Filter.vue'
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import Search from '../../Search.vue';
         </div>
         <div class="filter flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
             <div class="status">
-                <div class="relative">
+                <!-- <div class="relative">
                     <button class="border p-3 flex items-center justify-between rounded-md shadow-inner w-full">
                         <span class="pl-5 pr-56">Status</span>
 
@@ -34,7 +35,15 @@ import Search from '../../Search.vue';
                             <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
+                <Filter>
+                    <template #info>
+                        Status
+                    </template>
+                    <template #input>
+                        <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status">
+                    </template>
+                </Filter>
             </div>
             <div class="search">
                 <Search />

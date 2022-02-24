@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         primary: withOpacity('--color-primary'),
         grey: withOpacity('--color-grey'),
+        red: withOpacity('--color-red'),
         "primary-accent": withOpacity('--color-primary-accent'),
         "table-head": withOpacity('--color-table-head'),
         "table-text": withOpacity('--color-table-text'),
