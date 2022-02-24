@@ -1,18 +1,28 @@
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
-import Filter from '../../Filter.vue'
+import Filter from '../../Filter.vue';
+import Modal from '../../Modal.vue';
+import AddStudent from './AddStudents.vue';
+
 </script>
 
 <template>
     <div class="main pt-[50px] grid gap-5 pb-[90px]">
         <div class="top flex justify-between items-center">
             <h1 class="font-semibold text-2xl">Students</h1>
-            <button class="flex items-center gap-3 text-sm">
+            <button class="focus:outline-none flex items-center gap-3 text-sm">
                 <p class="text-grey font-semibold">Add Student</p>
-                <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
-                    <SvgIcons name="plus" /> <!-- plus icon -->
-                </span>
+                <Modal>
+                    <template #button>
+                        <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
+                            <SvgIcons name="plus" /> <!-- plus icon -->
+                        </span>
+                    </template>
+                    <template #content>
+                        <AddStudent />
+                    </template>
+                </Modal>
             </button>
         </div>
         <div class="filter flex bg-white rounded-t-lg justify-between items-center px-11 py-5">

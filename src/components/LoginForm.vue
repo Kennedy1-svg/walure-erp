@@ -12,8 +12,7 @@ const check:any = ():any => {
 }
 
 const login:any = () => {
-    console.log('hi');
-    route.push('/dashboard/student-management')
+    route.push('/dashboard')
 }
 </script>
 

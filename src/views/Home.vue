@@ -7,11 +7,22 @@ import Navigation from '../components/SideNavigation.vue';
 import TopNav from '../components/TopNavigation.vue';
 import LoginForm from '../components/LoginForm.vue';
 import Search from '../components/Search.vue';
+import Filter from '../components/Filter.vue';
+import AddStudent from '../components/dashboard/students/AddToBatch.vue';
+import AddStudents from '../components/dashboard/students/AddStudents.vue';
+import StudentDetails from '../components/dashboard/students/StudentDetails.vue';
+import StudentList from '../components/dashboard/students/StudentList.vue';
+import StudentHeader from '../components/dashboard/students/StudentHeader.vue';
 
-const icons:any = ["camera", "o-cancel", "cancel", "chevron-down", "chevron-left", "chevron-right", "logo-white", "logo", "chevron-up", "contact", "course-management", "curriculum", "delete", "details", "edit", "download", "education", "eye", "ellipsis", "search", "ipos", "logout", "menu", "next", "previous", "pic-avatar", "user-avatar", "user-management", "plus", "service-management", "talent-management", "update", "upload", "tick", "enumeration"];
+const icons:any = ["camera", "doc-add", "o-cancel", "cancel", "chevron-down", "chevron-left", "chevron-right", "logo-white", "logo", "contact", "course-management", "curriculum", "delete", "details", "edit", "download", "education", "eye", "ellipsis", "search", "ipos", "logout", "menu", "next", "previous", "pic-avatar", "user-avatar", "user-management", "plus", "service-management", "talent-management", "update", "upload", "tick", "enumeration"];
 </script>
 
 <template>
+    <router-link to="/dashboard">
+        <div class="flex px-2 lg:px-10 py-3 h-[76px]">
+            <img src="../assets/Walure-logo-black.png" alt="walure-logo">
+        </div>
+    </router-link>
     <div class="grid gap-10">
         <div class="card">
             <h1 class="text-4xl mb-4">Cards</h1>
@@ -21,13 +32,13 @@ const icons:any = ["camera", "o-cancel", "cancel", "chevron-down", "chevron-left
             <h1 class="text-4xl mb-4">Activity Cards</h1>
             <ActivityCard />
         </div>
-        <div class="navigation">
+        <!-- <div class="navigation">
             <h1 class="text-4xl mb-4">Navigation</h1>
             <Navigation />
-        </div>
+        </div> -->
         <div class="top-navigation">
             <h1 class="text-4xl mb-4">Top Navigation</h1>
-            <TopNavigation />
+            <TopNav />
         </div>
         <div class="icons">
             <h1 class="text-4xl mb-4">Icons</h1>
@@ -43,6 +54,30 @@ const icons:any = ["camera", "o-cancel", "cancel", "chevron-down", "chevron-left
         <div class="search">
             <h1 class="text-4xl mb-4">Search</h1>
             <Search />
+        </div>
+        <div class="filter">
+            <h1 class="text-4xl mb-4">Filter</h1>
+            <Filter />
+        </div>
+        <div class="addBatch">
+            <h1 class="text-4xl mb-4">Add Batch</h1>
+            <AddStudent />
+        </div>
+        <div class="filter">
+            <h1 class="text-4xl mb-4">Add Students</h1>
+            <AddStudents />
+        </div>
+        <div class="studentdetails">
+            <h1 class="text-4xl mb-4">Student Details</h1>
+            <StudentDetails />
+        </div>
+        <div class="studentheader">
+            <h1 class="text-4xl mb-4">Student Header</h1>
+            <StudentHeader />
+        </div>
+        <div class="studentlist">
+            <h1 class="text-4xl mb-4">Student List</h1>
+            <StudentList />
         </div>
     </div>
 </template>

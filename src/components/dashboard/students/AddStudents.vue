@@ -28,7 +28,7 @@ const disabledView:any = 'bg-gray-300';
     <div class="main w-full mt-[0.5px] px-[45px] bg-white">
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl"><slot name="title">Add</slot> Student</p>
-            <SvgIcons name="cancel" class="cursor-pointer" />
+            <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" />
         </div>
         <form class="text-sm grid">
             <div class="grid justify-items-center gap-1 mb-[88px]">

@@ -62,7 +62,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/dashboard/Contact.vue'),
       },
       {
-        path: ':pathMatch(.*)*',
+        path: '/:pathMatch(.*)*',
         name: 'Error',
         component: () => import('../components/NotFound.vue'),
       },
