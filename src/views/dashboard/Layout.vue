@@ -7,7 +7,7 @@ import TopNavigation from '../../components/TopNavigation.vue';
 <template>    
     <div class="flex">
         <div class="w-1/5 border-r">
-            <Navigation class="fixed w-1/5" />            
+            <Navigation class="" />            
         </div>
         <div class="main w-4/5">
             <TopNavigation class="fixed z-50" />
