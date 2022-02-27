@@ -16,7 +16,7 @@
     <dialog id="myModal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
         <div class="flex flex-col w-full h-auto">
             <!-- Modal Content-->
-            <slot name="content">This is where the content lives</slot>
+            <slot name="modalContent">This is where the content lives</slot>
             <!-- End of Modal Content-->
         </div>
     </dialog>
@@ -27,7 +27,7 @@
   dialog[open] {
     position: absolute !important;
     right: -48%;
-    animation: appear .75s cubic-bezier(0.0, 0.0, 0.58, 1.0);
+    animation: appear .25s cubic-bezier(0.0, 0.0, 0.58, 1.0);
 }
 
   dialog::backdrop {
@@ -38,7 +38,7 @@
  
 @keyframes appear {
   from {
-    opacity: 1;
+    opacity: 0;
     transform: translateX(-40rem);
   }
 

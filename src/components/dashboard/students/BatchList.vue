@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-import StudentDetails from './StudentDetails.vue';
-import AddToBatch from './AddToBatch.vue';
+import AddBatch from './AddBatch.vue';
 import Modal from '../../Modal.vue';
 
 </script>
@@ -9,26 +8,28 @@ import Modal from '../../Modal.vue';
 <template>
     <div class="main grid">
         <div class="title flex justify-between items-center mb-10">
-            <h1 class="text-2xl font-semibold text-black">Student List</h1>
+            <h1 class="text-2xl font-semibold text-black">Batch List</h1>
             <p class="text-xl font-medium text-primary">Total : 20</p>
         </div>
         <div class="table">
             <div class="block w-full overflow-x-auto rounded-lg">
-                <table class=" border items-center w-full">
+                <table class="overflow-hidden border items-center w-full">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
                         <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
                         S/N
                         </th>
-                        <th class="align-middle py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                        Name
+                        <th class="align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        Batch name
                         </th>
                         <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                        Contact Email
+                        Contact Title
                         </th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Contact Phone</th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Reg No.</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">IsActive </th>
+                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Batch no</th>
+                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Start <br /> /End date(s)</th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Status</th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Instructors</th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Levels</th>
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                     </tr>
                     </thead>
@@ -39,31 +40,26 @@ import Modal from '../../Modal.vue';
                             1
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00007
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -74,31 +70,26 @@ import Modal from '../../Modal.vue';
                             2
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00007
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -109,42 +100,109 @@ import Modal from '../../Modal.vue';
                             3
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Gold Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Product Management
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00008
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
                                 <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">    <SvgIcons name="ellipsis" />
                                 </button>
-                                <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-44">
                                     <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                        <div class="py-1 gap-3">
-                                            <Modal class="flex py-2 hover:bg-gray-100">
+                                        <div class="py-3 gap-3">
+                                            <div class="relative overflow-hdden">
+                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
+                                                    <div onclick="document.getElementById('myModl').showModal()" id="btn">
+                                                       <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
+                                                            <SvgIcons name="edit" />
+                                                            Edit
+                                                        </span>
+                                                    </div>
+                                                </section>
+
+                                                <dialog id="myModl" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                                                    <div class="w-full h-auto">
+                                                        <!-- Modal Content-->
+                                                            <AddStudents />
+                                                        <!-- End of Modal Content-->
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                            <div class="relative overflow-hdden">
+                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
+                                                    <div onclick="document.getElementById('myMdal').showModal()" id="btn">
+                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
+                                                        <SvgIcons name="eye" />
+                                                        View Student
+                                                    </span>
+                                                    </div>
+                                                </section>
+
+                                                <dialog id="myMdal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                                                    <div class="w-full h-auto">
+                                                        <!-- Modal Content-->
+                                                            <StudentDetails />
+                                                        <!-- End of Modal Content-->
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                            <div class="relative overflow-hdden">
+                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
+                                                    <div onclick="document.getElementById('myodal').showModal()" id="btn">
+                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
+                                                            <SvgIcons name="delete" />
+                                                            Delete
+                                                        </span>
+                                                    </div>
+                                                </section>
+
+                                                <dialog id="myodal" class="w-11/12 md:w-2/5 p-5 bg-white rounded-md ">            
+                                                    <div class="w-full">
+                                                        <!-- Modal Content-->
+                                                        <div class="bg-white text-left p-7 rounded grid">
+                                                            <div class="flex justify-between mb-6">
+                                                                <h1 class="text-xl mb-4 font-medium">
+                                                                    Delete Student
+                                                                </h1>
+                                                                <span>
+                                                                    <SvgIcons name="o-cancel" />
+                                                                </span>
+                                                            </div>
+                                                            <p class="text-lg mb-10">Are you sure you want to delete student?</p>
+                                                            <div class="flex justify-between items-center mb-3">
+                                                                <button class="px-10 py-4 rounded text-primary font-bold">
+                                                                    Cancel
+                                                                </button>
+                                                                <button class="bg-red px-10 py-4 rounded text-white font-bold">
+                                                                    Yes, Delete Student
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End of Modal Content-->
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                            <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
+                                                    <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left">
                                                         <SvgIcons name="doc-add" />
                                                         Add to batch
                                                     </span>
@@ -155,7 +213,7 @@ import Modal from '../../Modal.vue';
                                             </Modal>
                                             <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
                                                         <SvgIcons name="details" />
                                                         Details
                                                     </span>
@@ -166,7 +224,7 @@ import Modal from '../../Modal.vue';
                                             </Modal>
                                             <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
                                                         <SvgIcons name="edit" />
                                                         Edit
                                                     </span>
@@ -177,7 +235,7 @@ import Modal from '../../Modal.vue';
                                             </Modal>
                                             <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
                                                         <SvgIcons name="delete" />
                                                         Delete
                                                     </span>
@@ -203,7 +261,7 @@ import Modal from '../../Modal.vue';
                                                         </div>
                                                     </div>
                                                 </template>
-                                            </Modal>
+                                            </Modal> -->
                                         </div>
                                     </div>
                                 </div>
@@ -215,31 +273,26 @@ import Modal from '../../Modal.vue';
                             4
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00008
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -250,31 +303,26 @@ import Modal from '../../Modal.vue';
                             5
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Gold Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00008
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -285,31 +333,26 @@ import Modal from '../../Modal.vue';
                             6
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00007
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -320,31 +363,26 @@ import Modal from '../../Modal.vue';
                             7
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00007
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -355,31 +393,26 @@ import Modal from '../../Modal.vue';
                             8
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00007
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -390,31 +423,26 @@ import Modal from '../../Modal.vue';
                             9
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00007
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -425,31 +453,26 @@ import Modal from '../../Modal.vue';
                             10
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
+                            Project Class
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
+                            Farming
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
+                            FM101/00007
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
+                            01/02/2022 - <br />
+                            01/03/2022
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            Completed
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Leah Maduka
+                        </td>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            Beginner
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />

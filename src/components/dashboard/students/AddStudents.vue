@@ -47,7 +47,7 @@ const disabledView:any = 'bg-gray-300';
                     </button>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 mb-10">
+            <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="firstname" class="font-semibold">
                         First name
@@ -61,7 +61,7 @@ const disabledView:any = 'bg-gray-300';
                     <input type="text" name="lastname" id="lastname" placeholder="Enter last name" class="p-4 border rounded-md text-xs focus:outline-none">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 mb-10">
+            <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="othername" class="font-semibold">
                         Other name
@@ -75,7 +75,7 @@ const disabledView:any = 'bg-gray-300';
                     <input type="text" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 mb-10">
+            <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="email" class="font-semibold">
                         Email*
@@ -96,7 +96,7 @@ const disabledView:any = 'bg-gray-300';
                     </select>
                 </div>
             </div>
-            <div class="grid gap-8 mb-10">
+            <div class="grid text-left gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="firstname" class="font-semibold">
                         Course*
@@ -108,7 +108,7 @@ const disabledView:any = 'bg-gray-300';
                     </select>
                 </div>
             </div>
-            <div class="grid gap-8 mb-10">
+            <div class="grid text-left gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="address" class="font-semibold">
                         Address

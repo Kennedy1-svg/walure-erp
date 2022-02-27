@@ -5,7 +5,7 @@ import SvgIcons from './SvgIcons.vue';
 <template>    
     <div class="relative dropdown">
         <button class="border p-3 flex items-center justify-between rounded-md shadow-inner w-full">
-            <span class="pl-5 pr-56"><slot name="info"></slot></span>
+            <slot name="info"></slot>
 
             <SvgIcons name="chevron-down" />
         </button>
@@ -15,11 +15,13 @@ import SvgIcons from './SvgIcons.vue';
                     <li class="px-5 py-3">
                         <slot name="input"></slot><br>
                     </li>
-                    <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
-                        Active
-                    </p></li>
-                    <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Disabled</p></li>
-                    <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
+                    <slot name="list">
+                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
+                            Active
+                        </p></li>
+                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Disabled</p></li>
+                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
+                    </slot>
                 </ul>
             </div>
         </div>

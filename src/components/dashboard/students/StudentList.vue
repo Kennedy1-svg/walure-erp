@@ -3,6 +3,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import StudentDetails from './StudentDetails.vue';
 import AddToBatch from './AddToBatch.vue';
 import Modal from '../../Modal.vue';
+import AddStudents from './AddStudents.vue';
 
 </script>
 
@@ -14,7 +15,7 @@ import Modal from '../../Modal.vue';
         </div>
         <div class="table">
             <div class="block w-full overflow-x-auto rounded-lg">
-                <table class=" border items-center w-full">
+                <table class="overflow-hidden border items-center w-full">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
                         <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
@@ -141,8 +142,98 @@ import Modal from '../../Modal.vue';
                                 </button>
                                 <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
                                     <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                        <div class="py-1 gap-3">
-                                            <Modal class="flex py-2 hover:bg-gray-100">
+                                        <div class="py-3 gap-3">
+                                            <div class="relative overflow-hdden">
+                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
+                                                    <div onclick="document.getElementById('myModal').showModal()" id="btn">
+                                                        <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
+                                                            <SvgIcons name="doc-add" />
+                                                            Add to batch
+                                                        </span>
+                                                    </div>
+                                                </section>
+
+                                                <dialog id="myModal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                                                    <div class="w-full h-auto">
+                                                        <!-- Modal Content-->
+                                                            <AddToBatch />
+                                                        <!-- End of Modal Content-->
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                            <div class="relative overflow-hdden">
+                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
+                                                    <div onclick="document.getElementById('myMdal').showModal()" id="btn">
+                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                        <SvgIcons name="details" />
+                                                        Details
+                                                    </span>
+                                                    </div>
+                                                </section>
+
+                                                <dialog id="myMdal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                                                    <div class="w-full h-auto">
+                                                        <!-- Modal Content-->
+                                                            <StudentDetails />
+                                                        <!-- End of Modal Content-->
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                            <div class="relative overflow-hdden">
+                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
+                                                    <div onclick="document.getElementById('myModl').showModal()" id="btn">
+                                                       <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                            <SvgIcons name="edit" />
+                                                            Edit
+                                                        </span>
+                                                    </div>
+                                                </section>
+
+                                                <dialog id="myModl" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                                                    <div class="w-full h-auto">
+                                                        <!-- Modal Content-->
+                                                            <AddStudents />
+                                                        <!-- End of Modal Content-->
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                            <div class="relative overflow-hdden">
+                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
+                                                    <div onclick="document.getElementById('myodal').showModal()" id="btn">
+                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                            <SvgIcons name="delete" />
+                                                            Delete
+                                                        </span>
+                                                    </div>
+                                                </section>
+
+                                                <dialog id="myodal" class="w-11/12 md:w-2/5 p-5 bg-white rounded-md ">            
+                                                    <div class="w-full">
+                                                        <!-- Modal Content-->
+                                                        <div class="bg-white text-left p-7 rounded grid">
+                                                            <div class="flex justify-between mb-6">
+                                                                <h1 class="text-xl mb-4 font-medium">
+                                                                    Delete Student
+                                                                </h1>
+                                                                <span>
+                                                                    <SvgIcons name="o-cancel" />
+                                                                </span>
+                                                            </div>
+                                                            <p class="text-lg mb-10">Are you sure you want to delete student?</p>
+                                                            <div class="flex justify-between items-center mb-3">
+                                                                <button class="px-10 py-4 rounded text-primary font-bold">
+                                                                    Cancel
+                                                                </button>
+                                                                <button class="bg-red px-10 py-4 rounded text-white font-bold">
+                                                                    Yes, Delete Student
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End of Modal Content-->
+                                                    </div>
+                                                </dialog>
+                                            </div>
+                                            <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
                                                     <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
                                                         <SvgIcons name="doc-add" />
@@ -203,7 +294,7 @@ import Modal from '../../Modal.vue';
                                                         </div>
                                                     </div>
                                                 </template>
-                                            </Modal>
+                                            </Modal> -->
                                         </div>
                                     </div>
                                 </div>
@@ -531,4 +622,27 @@ import Modal from '../../Modal.vue';
     visibility: visible;
     }
 
+  dialog[open] {
+    position: absolute !important;
+    right: -48%;
+    animation: appear .25s cubic-bezier(0.0, 0.0, 0.58, 1.0);
+}
+
+  dialog::backdrop {
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
+    backdrop-filter: blur(3px);
+  }
+  
+ 
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateX(-40rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} 
 </style>

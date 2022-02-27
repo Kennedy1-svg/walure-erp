@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
+import CourseDetails from './CourseDetails.vue';
+import AddToBatch from './AddToBatch.vue';
+import Modal from '../../Modal.vue';
+
 </script>
 
 <template>
     <div class="main grid">
         <div class="title flex justify-between items-center mb-10">
-            <h1 class="text-2xl font-semibold text-black">Student List</h1>
+            <h1 class="text-2xl font-semibold text-black">Course List</h1>
             <p class="text-xl font-medium text-primary">Total : 20</p>
         </div>
         <div class="table">
@@ -131,8 +135,79 @@ import SvgIcons from '../../SvgIcons.vue';
                                 </p> 
                             </div>
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
+                            <div class="relative inline-block dropdown">
+                                <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">    <SvgIcons name="ellipsis" />
+                                </button>
+                                <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                    <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                                        <div class="py-1 gap-3">
+                                            <Modal class="flex py-2 hover:bg-gray-100">
+                                                <template #button>
+                                                    <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
+                                                        <SvgIcons name="doc-add" />
+                                                        Add to batch
+                                                    </span>
+                                                </template>
+                                                <template #content>
+                                                    <AddToBatch />
+                                                </template>
+                                            </Modal>
+                                            <Modal class="flex py-2 hover:bg-gray-100">
+                                                <template #button>
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                        <SvgIcons name="details" />
+                                                        Details
+                                                    </span>
+                                                </template>
+                                                <template #content>
+                                                    <CourseDetails />
+                                                </template>
+                                            </Modal>
+                                            <Modal class="flex py-2 hover:bg-gray-100">
+                                                <template #button>
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                        <SvgIcons name="edit" />
+                                                        Edit
+                                                    </span>
+                                                </template>
+                                                <template #content>
+                                                    <AddCourse />
+                                                </template>
+                                            </Modal>
+                                            <Modal class="flex py-2 hover:bg-gray-100">
+                                                <template #button>
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                        <SvgIcons name="delete" />
+                                                        Delete
+                                                    </span>
+                                                </template>
+                                                <template #content>
+                                                    <div class="bg-white p-7 rounded grid">
+                                                        <div class="flex justify-between mb-6">
+                                                            <h1 class="text-xl mb-4 font-medium">
+                                                                Delete Course
+                                                            </h1>
+                                                            <span>
+                                                                <SvgIcons name="o-cancel" />
+                                                            </span>
+                                                        </div>
+                                                        <p class="text-lg mb-10">Are you sure you want to delete Course?</p>
+                                                        <div class="flex justify-between items-center mb-3">
+                                                            <button class="px-10 py-4 rounded text-primary font-bold">
+                                                                Cancel
+                                                            </button>
+                                                            <button class="bg-red px-10 py-4 rounded text-white font-bold">
+                                                                Yes, Delete Course
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </Modal>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -448,6 +523,12 @@ import SvgIcons from '../../SvgIcons.vue';
 
     .toggler.round:before {
         border-radius: 50%;
+    }
+
+    .dropdown:focus-within .dropdown-menu {
+    opacity:1;
+    transform: translate(0) scale(1);
+    visibility: visible;
     }
 
 </style>

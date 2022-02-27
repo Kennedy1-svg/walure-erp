@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/dashboard/students/Index.vue'),
       },
       {
+        path: 'batch',
+        name: 'Batch',
+        component: () => import('../views/dashboard/students/Batch.vue'),
+      },
+      {
         path: 'course-management',
         name: 'CourseManagement',
         component: () => import('../views/dashboard/courses/Index.vue'),

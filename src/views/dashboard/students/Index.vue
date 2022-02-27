@@ -4,7 +4,7 @@ import StudentList from '../../../components/dashboard/students/StudentList.vue'
 </script>
 
 <template>
-    <div class="main mx-9">
+    <div class="main mx-9 overflow-hidden">
         <StudentHeader />
         <StudentList />
     </div>

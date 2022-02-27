@@ -13,45 +13,40 @@ import AddStudent from './AddStudents.vue';
             <h1 class="font-semibold text-2xl">Students</h1>
             <button class="focus:outline-none flex items-center gap-3 text-sm">
                 <p class="text-grey font-semibold">Add Student</p>
-                <Modal>
-                    <template #button>
-                        <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
-                            <SvgIcons name="plus" /> <!-- plus icon -->
-                        </span>
-                    </template>
-                    <template #content>
-                        <AddStudent />
-                    </template>
-                </Modal>
+                <div class="relative overflow-hdden">
+                    <section class="flex h-full justify-ceter items-start">
+                        <div onclick="document.getElementById('myoal').showModal()" id="btn">
+                            <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
+                                <SvgIcons name="plus" /> <!-- plus icon -->
+                            </span>
+                        </div>
+                    </section>
+
+                    <dialog id="myoal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                        <div class="w-full h-auto">
+                            <!-- Modal Content-->
+                                <AddStudent />
+                            <!-- End of Modal Content-->
+                        </div>
+                    </dialog>
+                </div>
             </button>
         </div>
         <div class="filter flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
             <div class="status">
-                <!-- <div class="relative">
-                    <button class="border p-3 flex items-center justify-between rounded-md shadow-inner w-full">
-                        <span class="pl-5 pr-56">Status</span>
-
-                        <SvgIcons name="chevron-down" />
-                    </button>
-                    <div class="absolute bg-white rounded-md shadow-lg py-4 w-full">
-                        <ul class="list-reset text-grey">
-                            <li class="px-5 py-3">
-                                <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status"><br>
-                            </li>
-                            <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
-                                Active
-                            </p></li>
-                            <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Disabled</p></li>
-                            <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
-                        </ul>
-                    </div>
-                </div> -->
                 <Filter>
                     <template #info>
-                        Status
+                        <span class="pl-5 pr-56">Status</span>
                     </template>
                     <template #input>
                         <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status">
+                    </template>
+                    <template #list>
+                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
+                            Active
+                        </p></li>
+                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Disabled</p></li>
+                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
                     </template>
                 </Filter>
             </div>
@@ -61,3 +56,30 @@ import AddStudent from './AddStudents.vue';
         </div>
     </div>
 </template>
+
+<style scoped>
+
+  dialog[open] {
+    position: absolute !important;
+    right: -48%;
+    animation: appear .25s cubic-bezier(0.0, 0.0, 0.58, 1.0);
+}
+
+  dialog::backdrop {
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
+    backdrop-filter: blur(3px);
+  }
+  
+ 
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateX(-40rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} 
+</style>
