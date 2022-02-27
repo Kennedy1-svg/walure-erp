@@ -141,7 +141,11 @@ import Modal from '../../Modal.vue';
                                                 <dialog id="myModl" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                                                     <div class="w-full h-auto">
                                                         <!-- Modal Content-->
-                                                            <AddStudents />
+                                                            <AddBatch>
+                                                                <template #title>
+                                                                    Edit
+                                                                </template>
+                                                            </AddBatch>
                                                         <!-- End of Modal Content-->
                                                     </div>
                                                 </dialog>
@@ -159,7 +163,7 @@ import Modal from '../../Modal.vue';
                                                 <dialog id="myMdal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                                                     <div class="w-full h-auto">
                                                         <!-- Modal Content-->
-                                                            <StudentDetails />
+                                                            <!-- <StudentDetails /> -->
                                                         <!-- End of Modal Content-->
                                                     </div>
                                                 </dialog>

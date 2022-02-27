@@ -31,7 +31,7 @@ const disabledView:any = 'bg-gray-300';
             <p class="text-2xl"><slot name="title">Add</slot> batch</p>
             <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" />
         </div>
-        <form class="text-sm grid">
+        <form class="text-sm text-left grid">
             <div class="grid grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="name" class="font-semibold">

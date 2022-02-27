@@ -3,7 +3,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
-import AddBatch from './AddToBatch.vue';
+import AddBatch from './AddBatch.vue';
 
 </script>
 
@@ -13,16 +13,23 @@ import AddBatch from './AddToBatch.vue';
             <h1 class="font-semibold text-2xl">Batch</h1>
             <button class="focus:outline-none flex items-center gap-3 text-sm">
                 <p class="text-grey font-semibold">Add Batch</p>
-                <Modal>
-                    <template #button>
-                        <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
-                            <SvgIcons name="plus" /> <!-- plus icon -->
-                        </span>
-                    </template>
-                    <template #content>
-                        <AddBatch />
-                    </template>
-                </Modal>
+                <div class="relative overflow-hdden">
+                    <section class="flex h-full justify-ceter items-start">
+                        <div onclick="document.getElementById('myl').showModal()" id="btn">
+                            <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
+                                <SvgIcons name="plus" /> <!-- plus icon -->
+                            </span>
+                        </div>
+                    </section>
+
+                    <dialog id="myl" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                        <div class="w-full h-auto">
+                            <!-- Modal Content-->
+                                <AddBatch />
+                            <!-- End of Modal Content-->
+                        </div>
+                    </dialog>
+                </div>
             </button>
         </div>
         <div class="filter bg-white rounded-t-lg justify-between items-center py-5">
@@ -99,3 +106,30 @@ import AddBatch from './AddToBatch.vue';
         </div>
     </div>
 </template>
+
+<style scoped>
+
+  dialog[open] {
+    position: absolute !important;
+    right: -48%;
+    animation: appear .25s cubic-bezier(0.0, 0.0, 0.58, 1.0);
+}
+
+  dialog::backdrop {
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
+    backdrop-filter: blur(3px);
+  }
+  
+ 
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateX(-40rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} 
+</style>

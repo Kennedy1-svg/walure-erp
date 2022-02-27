@@ -192,7 +192,11 @@ import AddStudents from './AddStudents.vue';
                                                 <dialog id="myModl" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                                                     <div class="w-full h-auto">
                                                         <!-- Modal Content-->
-                                                            <AddStudents />
+                                                            <AddStudents>
+                                                                <template #title>
+                                                                    Edit
+                                                                </template>
+                                                            </AddStudents>
                                                         <!-- End of Modal Content-->
                                                     </div>
                                                 </dialog>
