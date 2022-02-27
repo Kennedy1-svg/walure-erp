@@ -8,7 +8,7 @@ import SvgIcons from '../../SvgIcons.vue';
         <div class="grid mb-[88px]">
             <div class="flex justify-between py-[53px] items-center ">
                 <p class="text-2xl">Student Details</p>
-                <SvgIcons name="cancel" class="cursor-pointer" />
+                <SvgIcons name="cancel" onclick="document.getElementById('myMdal').close();" class="cursor-pointer" />
             </div>
             <div class="image grid justify-items-center">
                 <span class=" border p-1 rounded-full mb-9">

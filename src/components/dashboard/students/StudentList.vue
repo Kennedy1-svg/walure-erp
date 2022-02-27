@@ -145,7 +145,7 @@ import AddStudents from './AddStudents.vue';
                                         <div class="py-3 gap-3">
                                             <div class="relative overflow-hdden">
                                                 <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div onclick="document.getElementById('myModal').showModal()" id="btn">
+                                                    <div class="focus:outline-none" onclick="document.getElementById('myModal').showModal()" id="btn">
                                                         <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
                                                             <SvgIcons name="doc-add" />
                                                             Add to batch
@@ -163,7 +163,7 @@ import AddStudents from './AddStudents.vue';
                                             </div>
                                             <div class="relative overflow-hdden">
                                                 <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div onclick="document.getElementById('myMdal').showModal()" id="btn">
+                                                    <div class="focus:outline-none" onclick="document.getElementById('myMdal').showModal()" id="btn">
                                                         <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
                                                         <SvgIcons name="details" />
                                                         Details
@@ -182,7 +182,7 @@ import AddStudents from './AddStudents.vue';
                                             <div class="relative overflow-hdden">
                                                 <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
                                                     <div onclick="document.getElementById('myModl').showModal()" id="btn">
-                                                       <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                       <span tabindex="0" class="focus:outline-none text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
                                                             <SvgIcons name="edit" />
                                                             Edit
                                                         </span>
@@ -203,7 +203,7 @@ import AddStudents from './AddStudents.vue';
                                             </div>
                                             <div class="relative overflow-hdden">
                                                 <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div onclick="document.getElementById('myodal').showModal()" id="btn">
+                                                    <div class="focus:outline-none" onclick="document.getElementById('myodal').showModal()" id="btn">
                                                         <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
                                                             <SvgIcons name="delete" />
                                                             Delete
