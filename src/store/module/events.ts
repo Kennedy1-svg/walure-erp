@@ -62,7 +62,7 @@ export default {
     [mutationTypes.SetEditingStatus] (state: any, data: any) {
       state.isEditing = data
     },
-    [mutationTypes.SeteditingStatus] (state: any, data: any) {
+    [mutationTypes.SetEditingStatus] (state: any, data: any) {
       state.editing = data
     },
     [mutationTypes.EditErrorStatus] (state: any, data: any) {
@@ -88,8 +88,8 @@ export default {
     [actionTypes.UpdateEditingStatus] ({ commit }: any, data: any) {
       commit(mutationTypes.SetEditingStatus, data)
     },
-    [actionTypes.UpdateeditingStatus] ({ commit }: any, data: any) {
-      commit(mutationTypes.SeteditingStatus, data)
+    [actionTypes.UpdateEditingStatus] ({ commit }: any, data: any) {
+      commit(mutationTypes.SetEditingStatus, data)
     },
     [actionTypes.UpdateErrorStatus] ({ commit }: any, data: any) {
       commit(mutationTypes.EditErrorStatus, JSON.parse(JSON.stringify(data)))
