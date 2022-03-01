@@ -1,0 +1,5 @@
+export const FetchCourses = 'FetchCourses'
+export const AddCourse = 'AddCourse'
+export const UpdateCourse = 'UpdateCourse'
+export const RemoveCourse = 'RemoveCourse'
+export const EditCourse = 'EditCourse'
