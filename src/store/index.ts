@@ -1,9 +1,9 @@
 import { createStore } from 'vuex'
-// import event from './module/events.ts'
+import event from './module/events'
 
 const store = createStore({
     modules: {
-        // event
+        event
     }
 })
 
