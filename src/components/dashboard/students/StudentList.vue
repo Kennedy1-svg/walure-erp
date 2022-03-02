@@ -4,6 +4,7 @@ import StudentDetails from './StudentDetails.vue';
 import AddToBatch from './AddToBatch.vue';
 import Modal from '../../Modal.vue';
 import AddStudents from './AddStudents.vue';
+import Switch from '../../switch.vue';
 
 </script>
 
@@ -52,19 +53,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -87,19 +76,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -122,19 +99,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
@@ -322,19 +287,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -357,19 +310,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -392,19 +333,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -427,19 +356,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -462,19 +379,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -497,19 +402,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -532,19 +425,7 @@ import AddStudents from './AddStudents.vue';
                             WAL/STUD/00009
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
+                            <Switch />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                         <SvgIcons name="ellipsis" />
@@ -579,47 +460,6 @@ import AddStudents from './AddStudents.vue';
 
 
 <style scoped>
-    input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .toggler {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgb(227, 227, 227);
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
-    }
-
-    .toggler::before {
-        @apply absolute w-5 h-5 -left-[4px] -bottom-[4px] bg-primary;
-        content: '';
-    }
-
-    input:checked + .toggler {
-        @apply bg-primary bg-opacity-[38%];
-    }
-
-    input:checked + .toggler:before {
-        -webkit-transform: translateX(20px);
-        -ms-transform: translateX(20px);
-        transform: translateX(20px);
-    }
-
-    .toggler.round {
-        border-radius: 34px;
-    }
-
-    .toggler.round:before {
-        border-radius: 50%;
-    }
-
     .dropdown:focus-within .dropdown-menu {
     opacity:1;
     transform: translate(0) scale(1);

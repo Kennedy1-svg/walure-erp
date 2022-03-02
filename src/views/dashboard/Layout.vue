@@ -10,7 +10,7 @@ import TopNavigation from '../../components/TopNavigation.vue';
             <Navigation class="" />            
         </div>
         <div class="main w-4/5">
-            <TopNavigation class="fixed z-50" />
+            <TopNavigation class="fixed z-10" />
             <router-view class="mt-12" />
         </div>
     </div>

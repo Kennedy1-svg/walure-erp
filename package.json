@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
+    "d3": "^7.3.0",
     "vue": "^3.2.25",
+    "vue-d3-charts": "^0.2.8",
     "vue-router": "^4.0.12",
     "vue3-date-time-picker": "^2.7.0",
     "vuex": "^4.0.2"
