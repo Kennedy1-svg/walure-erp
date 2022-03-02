@@ -22,15 +22,15 @@ const close = () => {
       Open Modal
     </button>
     <MenuItem v-show="visible" @keyup.esc="close" @close="close">
-      <template #header> 
+      <template #top-header> 
         Modal Header
       </template>
 
-      <template #body>
+      <template #main-body>
           <Test />
       </template>
 
-      <template #footer>
+      <template #main-footer>
         You can put your footer here
       </template>
     </MenuItem>
