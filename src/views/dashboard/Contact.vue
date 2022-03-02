@@ -18,22 +18,6 @@ const close = () => {
 
 <template>
 <div class="p-20">
-    <button type="button" class="text-primary" @click="openModal()">
-      Open Modal
-    </button>
-    <MenuItem v-show="visible" @keyup.esc="close" @close="close">
-      <template #top-header> 
-        Modal Header
-      </template>
-
-      <template #main-body>
-          <Test />
-      </template>
-
-      <template #main-footer>
-        You can put your footer here
-      </template>
-    </MenuItem>
     <Chart />
 </div>
 </template>
