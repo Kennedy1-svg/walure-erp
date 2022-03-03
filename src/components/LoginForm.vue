@@ -64,11 +64,15 @@ const login:any = async () => {
         data: params,
     }
 
-    const result:any =  await store.dispatch(actionTypes.FetchData, request)
+    await store.dispatch(actionTypes.FetchData, request)
 
-    console.log('result is', result);
+    // console.log('result is', result);
     
-    // route.push('/dashboard')
+    route.push('/dashboard')
+    setTimeout(() => {
+      console.log('token is', store.getters.getToken);
+    }, 1000)
+    
 }
 
 const checkError:any = () => {

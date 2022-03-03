@@ -29,8 +29,6 @@ export const addData = async (url: any, data: any) => {
          }
       }
     )
-    console.log('response', response.data);
-    
     return response.data
   } catch (err) {
     return err
