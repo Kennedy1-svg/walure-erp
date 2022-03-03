@@ -10,7 +10,6 @@ import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/students/constants/action'
 import * as mutationTypes from '../../../store/module/students/constants/mutation'
 import { api_url } from '../../../config'
-import { GetStudents } from '../../../store/module/students/constants/mutation';
 
 const store = useStore();
 
@@ -21,7 +20,7 @@ const students:any = computed(async() => {
 onMounted(async() => {
     const request:any =  `${api_url}/api/student/get-students/{pageIndex}/{pageSize}`;
     await store.dispatch(actionTypes.FetchStudents, request)
-    console.log('students', JSON.parse(JSON.stringify(store.getters.getStudents)));
+    console.log('students', JSON.parse(JSON.stringify(store.getters.getStudents.value)));
     
 })
 
