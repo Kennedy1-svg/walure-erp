@@ -59,7 +59,7 @@ const login:any = async () => {
     params.append('client_secret', `${client_secret}`);
     params.append('scope', `${scope}`);
     // data = {data, ...logindata}
-    // console.log('data is', logindata);
+    // console.log('data is', api_url);
     // console.log('url is', import.meta.env.VITE_APP_ROOT_API);
 
     //   await store.dispatch(actionTypes.FetchData, false)
@@ -71,7 +71,7 @@ const login:any = async () => {
     })
     console.log('result is', result);
     
-    route.push('/dashboard')
+    // route.push('/dashboard')
 }
 
 const checkError:any = () => {
