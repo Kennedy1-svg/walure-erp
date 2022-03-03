@@ -70,7 +70,7 @@ const login:any = async () => {
     
     route.push('/dashboard')
     setTimeout(() => {
-      console.log('token is', store.getters.getToken);
+      console.log('token is', JSON.parse(JSON.stringify(store.getters.getToken)));
     }, 1000)
     
 }
