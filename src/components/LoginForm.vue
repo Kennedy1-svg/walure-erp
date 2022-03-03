@@ -41,6 +41,7 @@ const forgotPassword:any = ():any => {
 const login:any = async () => {
     const logindata = {
         ...data,
+        grant_type: import.meta.env.VITE_APP_GRANT_TYPE,
         client_id: import.meta.env.VITE_APP_CLIENT_ID,
         client_secret: import.meta.env.VITE_APP_CLIENT_SECRET,
         scope: import.meta.env.VITE_APP_SCOPE
@@ -51,8 +52,7 @@ const login:any = async () => {
     
     const result = await axios.post(`${import.meta.env.VITE_APP_ROOT_API}/connect/token`, JSON.stringify(logindata), {
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'grant_type': `${import.meta.env.VITE_APP_GRANT_TYPE}`,
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
     })
     console.log('result is', result);
