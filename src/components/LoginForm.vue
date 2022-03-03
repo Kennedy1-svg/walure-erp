@@ -3,6 +3,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from './SvgIcons.vue';
 import axios from 'axios';
+import qs from 'qs';
 
 const route = useRouter()
 
@@ -39,13 +40,13 @@ const forgotPassword:any = ():any => {
 }
 
 const login:any = async () => {
-    const logindata = {
+    const logindata = qs.stringify({
         ...data,
         grant_type: import.meta.env.VITE_APP_GRANT_TYPE,
         client_id: import.meta.env.VITE_APP_CLIENT_ID,
         client_secret: import.meta.env.VITE_APP_CLIENT_SECRET,
         scope: import.meta.env.VITE_APP_SCOPE
-    }
+    })
     // data = {data, ...logindata}
     console.log('data is', logindata);
     console.log('url is', import.meta.env.VITE_APP_ROOT_API);
