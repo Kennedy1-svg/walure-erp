@@ -64,7 +64,7 @@ const login:any = async () => {
 
     //   await store.dispatch(actionTypes.FetchData, false)
     
-    const result = await axios.post(`${api_url}`, params, {
+    const result = await axios.post(`${api_url}connect/token`, params, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
