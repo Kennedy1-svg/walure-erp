@@ -58,23 +58,14 @@ const login:any = async () => {
     params.append('client_id', `${client_id}`);
     params.append('client_secret', `${client_secret}`);
     params.append('scope', `${scope}`);
-    // data = {data, ...logindata}
-    // console.log('data is', api_url);
-    // console.log('url is', import.meta.env.VITE_APP_ROOT_API);
-
-    //   await store.dispatch(actionTypes.FetchData, false)
+    
     const request:any = {
         url: `${api_url}/connect/token`,
         data: params,
     }
 
     const result:any =  await store.dispatch(actionTypes.FetchData, request)
-    
-    // const result = await axios.post(`${api_url}connect/token`, params, {
-    //     headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    //     }
-    // })
+
     console.log('result is', result);
     
     // route.push('/dashboard')

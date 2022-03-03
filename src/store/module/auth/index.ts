@@ -78,6 +78,10 @@ export default {
     async [actionTypes.FetchData] ({ commit }: any, data: any) {
       const user = await addData(data.url, data.data)
       commit(mutationTypes.SetData, user)
+      commit(mutationTypes.SetToken, user.access_token)
+      commit(mutationTypes.SetExpiresIn, user.expires_in)
+      commit(mutationTypes.SetRefreshToken, user.refresh_token)
+      commit(mutationTypes.SetTokenId, user.id_token)
     },
     async [actionTypes.FetchUser] ({ commit }: any, data: any) {
       commit(mutationTypes.SetUser, data)
