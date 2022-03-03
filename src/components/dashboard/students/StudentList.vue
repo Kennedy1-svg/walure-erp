@@ -67,10 +67,10 @@ onMounted(async() => {
                     </tr>
                     </thead>
 
-                    <tbody class="bg-white">
+                    <tbody id="students" class="bg-white">
                     <tr v-for="(student) in students" :key="student.id">
                         <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            3
+                            {{ (students.indexOf(student) + 1) }}
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ student.firstName }} {{ student.lastName }}
