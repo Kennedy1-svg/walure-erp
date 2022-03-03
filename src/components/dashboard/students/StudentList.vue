@@ -23,9 +23,11 @@ onMounted(async() => {
     await store.dispatch(actionTypes.FetchStudents, request)
     const students = store.getters.getStudents;
     console.log('I got here');
-    console.log('students are', JSON.parse(JSON.stringify(request.value)));
-    console.log('students', JSON.parse(JSON.stringify(store.getters.getStudents.value)));
-    console.log('students', JSON.parse(JSON.stringify(store.getters.getStudents)));
+    console.log('students are not yet here');
+    // console.log('students are', JSON.parse(JSON.stringify(request.value)));
+    console.log('students should', students);
+    console.log('students can', JSON.parse(JSON.stringify(store.getters.getStudents.value)));
+    console.log('students might', JSON.parse(JSON.stringify(store.getters.getStudents)));
     console.log('students', store.getters.getStudents.value);
     console.log('students', store.getters.getStudents);
     console.log('I am here now');
