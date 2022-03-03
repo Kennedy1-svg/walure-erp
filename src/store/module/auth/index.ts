@@ -1,101 +1,98 @@
 import { computed } from 'vue'
 import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
+import { addData, fetchData, editData, removeData } from '../../../helpers/api'
 
 export default {
   state: () => ({
-    loading: false,
-    open: false,
-    isEditing: false,
+    data: '',
+    user: '',
+    token: '',
+    token_type: 'Bearer ',
+    refresh_token: '',
+    id_token: '',
+    expires_in: '',
     errors: {
     },
     editing: false,
     title: ''
   }),
   getters: {
-    getLoadingState: (state: any) => {
+    getData: (state: any) => {
       return computed(() => {
-        return state.loading
+        return state.data
       })
     },
-    getOpenState: (state: any) => {
+    getUser: (state: any) => {
       return computed(() => {
-        return state.open
+        return state.user
       })
     },
-    getTitle: (state: any) => {
+    getToken: (state: any) => {
       return computed(() => {
-        return state.title
+        return state.token
       })
     },
-    getIsEditingStatus: (state: any) => {
+    getTokenType: (state: any) => {
       return computed(() => {
-        return state.isEditing
+        return state.token_type
       })
     },
-    geteditingStatus: (state: any) => {
+    getRefreshToken: (state: any) => {
       return computed(() => {
-        return state.editing
+        return state.refresh_token
       })
     },
-    getErrorStatus: (state: any) => {
+    getTokenId: (state: any) => {
       return computed(() => {
-        return state.errors
+        return state.id_token
       })
     },
-    getProviderErrorStatus: (state: any) => {
+    getExpiresIn: (state: any) => {
       return computed(() => {
-        return state.providererror
+        return state.expires_in
       })
     }
   },
   mutations: {
-    [mutationTypes.SetLoadingStatus] (state: any, data: any) {
-      state.loading = data
+    [mutationTypes.SetData] (state: any, data: any) {
+      state.data = data
     },
-    [mutationTypes.SetOpenStatus] (state: any, data: any) {
-      state.open = data
+    [mutationTypes.SetUser] (state: any, data: any) {
+      state.user = data
     },
-    [mutationTypes.SetTitle] (state: any, data: any) {
-      state.title = data
+    [mutationTypes.SetToken] (state: any, data: any) {
+      state.token = data
     },
-    [mutationTypes.SetEditingStatus] (state: any, data: any) {
-      state.isEditing = data
+    [mutationTypes.SetTokenId] (state: any, data: any) {
+      state.id_token = data
     },
-    [mutationTypes.SetEditingStatus] (state: any, data: any) {
-      state.editing = data
+    [mutationTypes.SetRefreshToken] (state: any, data: any) {
+      state.refresh_token = data
     },
-    [mutationTypes.EditErrorStatus] (state: any, data: any) {
-      state.errors = data
+    [mutationTypes.SetExpiresIn] (state: any, data: any) {
+      state.expires_in = data
     },
-    [mutationTypes.EditProviderErrorStatus] (state: any, data: any) {
-      state.providererror = data
-    }
   },
   actions: {
-    [actionTypes.UpdateOpenStatus] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetOpenStatus, data)
+    async [actionTypes.FetchData] ({ commit }: any, data: any) {
+      const user = await addData(data.url, data.data)
+      commit(mutationTypes.SetData, user)
     },
-    [actionTypes.UpdateProclient] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetProclient, data)
+    async [actionTypes.FetchUser] ({ commit }: any, data: any) {
+      commit(mutationTypes.SetUser, data)
     },
-    [actionTypes.UpdateLoadingStatus] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetLoadingStatus, data)
+    async [actionTypes.FetchToken] ({ commit }: any, data: any) {
+      commit(mutationTypes.SetToken, data)
     },
-    [actionTypes.UpdateTitle] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetTitle, data)
+    async [actionTypes.FetchExpiresIn] ({ commit }: any, data: any) {
+      commit(mutationTypes.SetExpiresIn, data)
     },
-    [actionTypes.UpdateEditingStatus] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetEditingStatus, data)
+    async [actionTypes.FetchRefreshToken] ({ commit }: any, data: any) {
+      commit(mutationTypes.SetRefreshToken, data)
     },
-    [actionTypes.UpdateEditingStatus] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetEditingStatus, data)
-    },
-    [actionTypes.UpdateErrorStatus] ({ commit }: any, data: any) {
-      commit(mutationTypes.EditErrorStatus, JSON.parse(JSON.stringify(data)))
-    },
-    [actionTypes.UpdateProviderErrorStatus] ({ commit }: any, data: any) {
-      commit(mutationTypes.EditProviderErrorStatus, JSON.parse(JSON.stringify(data)))
+    async [actionTypes.FetchTokenId] ({ commit }: any, data: any) {
+      commit(mutationTypes.SetTokenId, data)
     }
   }
 }

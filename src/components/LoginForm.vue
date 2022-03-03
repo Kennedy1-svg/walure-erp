@@ -50,7 +50,11 @@ const login:any = async () => {
     console.log('data is', logindata);
     console.log('url is', import.meta.env.VITE_APP_ROOT_API);
     
-    const result = await axios.post(`${import.meta.env.VITE_APP_ROOT_API}/connect/token`, logindata)
+    const result = await axios.post(`${import.meta.env.VITE_APP_ROOT_API}/connect/token`, logindata, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
     console.log('result is', result);
     
     // route.push('/dashboard')
