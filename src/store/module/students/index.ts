@@ -43,12 +43,12 @@ export default {
       console.log('token here', token)
       const students = await fetchData(data, token)
       console.log('data', data)
-      console.log('Istudents', students)
-      console.log('Istudents', students.value)
-      console.log('Istudents', JSON.parse(JSON.stringify(students)))
-      console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
+      console.log('Istudents', students.payload)
     //   console.log('Istudents', students.value)
-      commit(mutationTypes.SetStudent, students)
+    //   console.log('Istudents', JSON.parse(JSON.stringify(students)))
+    //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
+    //   console.log('Istudents', students.value)
+      commit(mutationTypes.SetStudent, students.payload)
     },
   }
 }

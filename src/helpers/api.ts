@@ -3,9 +3,6 @@ import axios from 'axios'
 // api helper to fetch data from the backend
 export const fetchData = async (url:any, token:any) => {
   try {
-    console.log('see')
-    console.log('url', url)
-    console.log('token', token)
     const response = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${token}` } });
     console.log('response', response)
     return response.data
