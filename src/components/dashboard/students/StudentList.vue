@@ -15,7 +15,7 @@ import { GetStudents } from '../../../store/module/students/constants/mutation';
 const store = useStore();
 
 const students:any = computed(async() => {
-    return store.getters.GetStudents
+    return store.getters.getStudents
 })
 
 onMounted(async() => {
