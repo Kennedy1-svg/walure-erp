@@ -48,7 +48,7 @@ onMounted(async() => {
         </div>
         <div class="table">
             <div class="block w-full overflow-x-auto rounded-lg">
-                <table class="overflow-hidden border items-center w-full">
+                <table class="overflow-hiden border items-center w-full">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
                         <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
