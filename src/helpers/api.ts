@@ -3,7 +3,7 @@ import { useStore } from 'vuex';
 
 const store:any = useStore();
 
-const token = localStorage.getItem('token')
+const token = store.getters.getToken;
 
 
 // api helper to fetch data from the backend
