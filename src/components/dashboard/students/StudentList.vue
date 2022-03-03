@@ -14,22 +14,22 @@ import { api_url } from '../../../config'
 const store = useStore();
 
 const students:any = computed(async() => {
-    return store.getters.getStudents
+    return JSON.parse(JSON.stringify(store.getters.getStudents.value))
 })
 
 onMounted(async() => {
     console.log('I started here');
     const request:any =  'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
     await store.dispatch(actionTypes.FetchStudents, request)
-    const students = store.getters.getStudents;
+    const students = JSON.parse(JSON.stringify(store.getters.getStudents.value));
     console.log('I got here');
     console.log('students are not yet here');
     // console.log('students are', JSON.parse(JSON.stringify(request.value)));
     console.log('students should', students);
-    console.log('students can', JSON.parse(JSON.stringify(store.getters.getStudents.value)));
-    console.log('students might', JSON.parse(JSON.stringify(store.getters.getStudents)));
-    console.log('students', store.getters.getStudents.value);
-    console.log('students', store.getters.getStudents);
+    // console.log('students can', JSON.parse(JSON.stringify(store.getters.getStudents.value)));
+    // console.log('students might', JSON.parse(JSON.stringify(store.getters.getStudents)));
+    // console.log('students', store.getters.getStudents.value);
+    // console.log('students', store.getters.getStudents);
     console.log('I am here now');
     
 })
@@ -43,6 +43,7 @@ onMounted(async() => {
             <p class="text-xl font-medium text-primary">Total : 20</p>
         </div>
         <div class="table">
+            {{ students }}
             <div class="block w-full overflow-x-auto rounded-lg">
                 <table class="overflow-hidden border items-center w-full">
                     <thead class="bg-table-head">
