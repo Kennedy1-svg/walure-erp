@@ -3,17 +3,28 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from './SvgIcons.vue';
 import axios from 'axios';
+import { useStore } from 'vuex'
+import * as actionTypes from '../store/module/auth/constants/action'
+import * as mutationTypes from '../store/module/auth/constants/mutation'
+import { grant_type, client_id, client_secret, scope, api_url } from '../config'
 
-const route = useRouter()
+const store = useStore();
+
+const route = useRouter();
+
+const close = async () => {
+//   await store.dispatch(actionTypes.UpdateOpenStatus, false)
+//   await store.dispatch(actionTypes.UpdateClientEditingStatus, false)
+//   await store.dispatch(actionTypes.UpdateProclient, oldProclient)
+//   await store.dispatch(actionTypes.UpdateErrorStatus, olderror)
+//   await store.dispatch(actionTypes.UpdateProviderErrorStatus, oldprovidererror)
+}
 
 let rememberChecked:any = ref(false);
 let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
 
-const grant_type = computed(() => {
-    return process.env.VITE_APP_GRANT_TYPE
-})
 
 let errors = reactive({
     username: false,
@@ -40,31 +51,27 @@ const forgotPassword:any = ():any => {
 
 const login:any = async () => {
     const params = new URLSearchParams();
-    const logindata = {
-        ...data,
-        grant_type: import.meta.env.VITE_APP_GRANT_TYPE,
-        client_id: import.meta.env.VITE_APP_CLIENT_ID,
-        client_secret: import.meta.env.VITE_APP_CLIENT_SECRET,
-        scope: import.meta.env.VITE_APP_SCOPE
-    }
+
     params.append('username', data.username);
     params.append('password', data.password);
-    params.append('grant_type', `${logindata.grant_type}`);
-    params.append('client_id', `${logindata.client_id}`);
-    params.append('client_secret', `${logindata.client_secret}`);
-    params.append('scope', `${logindata.scope}`);
+    params.append('grant_type', `${grant_type}`);
+    params.append('client_id', `${client_id}`);
+    params.append('client_secret', `${client_secret}`);
+    params.append('scope', `${scope}`);
     // data = {data, ...logindata}
-    console.log('data is', logindata);
-    console.log('url is', import.meta.env.VITE_APP_ROOT_API);
+    // console.log('data is', logindata);
+    // console.log('url is', import.meta.env.VITE_APP_ROOT_API);
+
+    //   await store.dispatch(actionTypes.FetchData, false)
     
-    const result = await axios.post(`${import.meta.env.VITE_APP_ROOT_API}/connect/token`, params, {
+    const result = await axios.post(`${api_url}`, params, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
     })
     console.log('result is', result);
     
-    // route.push('/dashboard')
+    route.push('/dashboard')
 }
 
 const checkError:any = () => {

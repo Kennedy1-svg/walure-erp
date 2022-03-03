@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { authHeader } from './headers'
 
 // api helper to fetch data from the backend
 export const fetchData = async (url:any) => {
