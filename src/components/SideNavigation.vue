@@ -64,7 +64,7 @@ import SvgIcons from './SvgIcons.vue'
 									Student Management
 								</p>
 							</div>
-							<div>
+							<div class="flex justify-end">
 								<SvgIcons class="ml-2" name="chevron-right" /> <!-- right icon -->
 							</div>
 						</button>        
@@ -85,11 +85,11 @@ import SvgIcons from './SvgIcons.vue'
 								<div>
 									<SvgIcons name="talent-management" /> <!-- talent icon -->
 								</div>
-								<p class="text-[15px]">
+								<p class="text-left text-[15px]">
 									Talent Management
 								</p>
 							</div>
-							<div class="">
+							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
 						</button>        
@@ -114,11 +114,11 @@ import SvgIcons from './SvgIcons.vue'
 								<div>
 									<SvgIcons name="service-management" /> <!-- service icon -->
 								</div>
-								<p class="text-[15px]">
+								<p class="text-left text-[15px]">
 									Service Management
 								</p>
 							</div>
-							<div class="">
+							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
 						</button>        
@@ -146,11 +146,11 @@ import SvgIcons from './SvgIcons.vue'
 								<div>
 									<SvgIcons name="user-management" /> <!-- user icon -->
 								</div>
-								<p class="text-[15px]">
+								<p class="text-left text-[15px]">
 									User Management
 								</p>
 							</div>
-							<div class="">
+							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
 						</button>        
@@ -203,7 +203,7 @@ import SvgIcons from './SvgIcons.vue'
 									Ipos
 								</p>
 							</div>
-							<div class="">
+							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
 						</button>        
