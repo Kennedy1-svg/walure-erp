@@ -86,17 +86,5 @@ export default {
     async [actionTypes.FetchUser] ({ commit }: any, data: any) {
       commit(mutationTypes.SetUser, data)
     },
-    async [actionTypes.FetchToken] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetToken, data)
-    },
-    async [actionTypes.FetchExpiresIn] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetExpiresIn, data)
-    },
-    async [actionTypes.FetchRefreshToken] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetRefreshToken, data)
-    },
-    async [actionTypes.FetchTokenId] ({ commit }: any, data: any) {
-      commit(mutationTypes.SetTokenId, data)
-    }
   }
 }

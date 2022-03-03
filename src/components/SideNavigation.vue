@@ -24,7 +24,7 @@ import SvgIcons from './SvgIcons.vue'
 				<li>					   
 					<div class="dropdown">
 						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2 gap-3">
-							<div class="flex items-center gap-4 py-4">
+							<div class="flex text-left items-center gap-4 py-4">
 								<div>
 									<SvgIcons name="course-management" /> <!-- course icon -->
 								</div>
@@ -56,7 +56,7 @@ import SvgIcons from './SvgIcons.vue'
 				<li>					   
 					<div class="dropdown">
 						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2">
-							<div class="flex items-center gap-3 py-4">
+							<div class="flex text-left items-center gap-3 py-4">
 								<div>
 									<SvgIcons name="education" /> <!-- student icon -->
 								</div>

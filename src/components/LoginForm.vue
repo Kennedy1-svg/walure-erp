@@ -2,7 +2,6 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from './SvgIcons.vue';
-import axios from 'axios';
 import { useStore } from 'vuex'
 import * as actionTypes from '../store/module/auth/constants/action'
 import * as mutationTypes from '../store/module/auth/constants/mutation'
@@ -11,14 +10,6 @@ import { grant_type, client_id, client_secret, scope, api_url } from '../config'
 const store = useStore();
 
 const route = useRouter();
-
-const close = async () => {
-//   await store.dispatch(actionTypes.UpdateOpenStatus, false)
-//   await store.dispatch(actionTypes.UpdateClientEditingStatus, false)
-//   await store.dispatch(actionTypes.UpdateProclient, oldProclient)
-//   await store.dispatch(actionTypes.UpdateErrorStatus, olderror)
-//   await store.dispatch(actionTypes.UpdateProviderErrorStatus, oldprovidererror)
-}
 
 let rememberChecked:any = ref(false);
 let isDisabled = ref(true);

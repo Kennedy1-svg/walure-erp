@@ -1,11 +1,19 @@
 import axios from 'axios'
-import { authHeader } from './headers'
+import { useStore } from 'vuex';
+
+const store:any = useStore();
+
+const getToken = async () => {
+  console.log('getToken', JSON.parse(JSON.stringify(store.getters.getToken.value)))
+  return JSON.parse(JSON.stringify(store.getters.getToken.value));
+}
+
 
 // api helper to fetch data from the backend
 export const fetchData = async (url:any) => {
   try {
-    const response = await axios.get(url)
-    return response.data.data
+    const response = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${await getToken()}` } });
+    return response.data
   } catch (err) {
     return err
   }
