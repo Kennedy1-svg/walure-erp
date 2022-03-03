@@ -23,7 +23,7 @@ export default {
         return state.open
       })
     },
-    getTitle: (state: any) => {
+    getTtle: (state: any) => {
       return computed(() => {
         return state.title
       })
