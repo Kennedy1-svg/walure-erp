@@ -6,6 +6,7 @@ import { addData, fetchData, editData, removeData } from '../../../helpers/api'
 export default {
   state: () => ({
     students: '',
+    total_count: '',
     isEditing: false,
     title: ''
   }),
@@ -13,6 +14,11 @@ export default {
     getStudents: (state: any) => {
       return computed(() => {
         return state.students
+      })
+    },
+    getTotalCount: (state: any) => {
+      return computed(() => {
+        return state.total_count
       })
     },
     getEditStatus: (state: any) => {
@@ -29,6 +35,9 @@ export default {
   mutations: {
     [mutationTypes.SetStudent] (state: any, data: any) {
       state.students = data
+    },
+    [mutationTypes.SetTotalCount] (state: any, data: any) {
+      state.total_count = data
     },
     [mutationTypes.SetEditStatus] (state: any, data: any) {
       state.isEditing = data
@@ -49,6 +58,7 @@ export default {
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
       commit(mutationTypes.SetStudent, students.payload)
+      commit(mutationTypes.SetTotalCount, students.totalCount
     },
   }
 }
