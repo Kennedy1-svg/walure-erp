@@ -39,7 +39,9 @@ export default {
   },
   actions: {
     async [actionTypes.FetchStudents] ({ commit }: any, data: any) {
-      const students = await fetchData(data)
+      const token:any = localStorage.getItem('token')
+      console.log('token here', token)
+      const students = await fetchData(data, token)
       console.log('data', data)
       console.log('Istudents', students)
       console.log('Istudents', students.value)

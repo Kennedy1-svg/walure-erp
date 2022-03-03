@@ -1,13 +1,7 @@
 import axios from 'axios'
-import { useStore } from 'vuex';
-
-const store:any = useStore();
-
-const token = store.getters.getToken;
-
 
 // api helper to fetch data from the backend
-export const fetchData = async (url:any) => {
+export const fetchData = async (url:any, token:any) => {
   try {
     console.log('see')
     console.log('url', url)
