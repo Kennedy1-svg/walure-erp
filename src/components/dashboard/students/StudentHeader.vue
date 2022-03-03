@@ -16,7 +16,7 @@ import AddStudent from './AddStudents.vue';
                 <div class="relative overflow-hdden">
                     <section class="flex h-full justify-ceter items-start">
                         <div onclick="document.getElementById('myoal').showModal()" id="btn">
-                            <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
+                            <span class="bg-blue p-1 flex justify-center text-white rounded-md">
                                 <SvgIcons name="plus" /> <!-- plus icon -->
                             </span>
                         </div>
