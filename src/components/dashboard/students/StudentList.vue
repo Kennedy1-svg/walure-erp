@@ -13,13 +13,14 @@ import { api_url } from '../../../config'
 
 const store = useStore();
 
-const students:any = computed(async() => {
-    return await JSON.parse(JSON.stringify(store.getters.getStudents.value))
+const students:any = computed(() => {
+    return JSON.parse(JSON.stringify(store.getters.getStudents.value))
 })
 
 onMounted(async() => {
     console.log('I started here');
-    const request:any =  'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
+    // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
+    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
     await store.dispatch(actionTypes.FetchStudents, request)
     const students = JSON.parse(JSON.stringify(store.getters.getStudents.value));
     console.log('I got here');
