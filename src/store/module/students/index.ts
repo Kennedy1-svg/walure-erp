@@ -58,7 +58,7 @@ export default {
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
       commit(mutationTypes.SetStudent, students.payload)
-      commit(mutationTypes.SetTotalCount, students.totalCount
+      commit(mutationTypes.SetTotalCount, students.totalCount)
     },
   }
 }
