@@ -14,7 +14,7 @@ import { api_url } from '../../../config'
 const store = useStore();
 
 const students:any = computed(async() => {
-    return JSON.parse(JSON.stringify(store.getters.getStudents.value))
+    return await JSON.parse(JSON.stringify(store.getters.getStudents.value))
 })
 
 onMounted(async() => {
