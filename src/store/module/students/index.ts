@@ -40,6 +40,7 @@ export default {
   actions: {
     async [actionTypes.FetchStudents] ({ commit }: any, data: any) {
       const students = await fetchData(data)
+      console.log('data', data)
       console.log('Istudents', students)
       console.log('Istudents', students.value)
       console.log('Istudents', JSON.parse(JSON.stringify(students)))
