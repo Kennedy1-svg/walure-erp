@@ -12,6 +12,7 @@ const getToken = async () => {
 // api helper to fetch data from the backend
 export const fetchData = async (url:any) => {
   try {
+    console.log('token', await getToken())
     const response = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${await getToken()}` } });
     return response.data
   } catch (err) {
