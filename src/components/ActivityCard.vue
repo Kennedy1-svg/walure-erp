@@ -4,7 +4,7 @@
 <template>
     <div class="main border rounded">
         <div class="top flex justify-between items-center">
-            <p class="font-medium">
+            <p class="font-bold text-[19px]">
                 <slot name="title">
                     Course Applicant
                 </slot>

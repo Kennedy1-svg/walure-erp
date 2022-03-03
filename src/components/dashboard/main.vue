@@ -3,9 +3,9 @@ import ActivityCard from '../ActivityCard.vue';
 </script>
 
 <template>
-    <div class="grid">
+    <div class="grid py-8">
         <div class="title">
-            <h1 class="text-xl font-bold">Recent Activity</h1>
+            <h1 class="text-xl font-semibold">Recent Activity</h1>
         </div>
         <div class="main">
             <div class="grid grid-cols-2 gap-5">
