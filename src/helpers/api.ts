@@ -24,7 +24,11 @@ export const fetchDataByParams = async (url: any) => {
 // api helper to add data to the backend
 export const addData = async (url: any, data: any) => {
   try {
-    const response = await axios.post(url, data)
+    const response = await axios.post(url, data, {headers: {
+             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+         }
+      }
+    )
     return response.data
   } catch (err) {
     return err
