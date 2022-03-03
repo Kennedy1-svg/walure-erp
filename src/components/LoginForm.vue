@@ -3,7 +3,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from './SvgIcons.vue';
 import axios from 'axios';
-import qs from 'qs';
 
 const route = useRouter()
 
@@ -40,18 +39,25 @@ const forgotPassword:any = ():any => {
 }
 
 const login:any = async () => {
-    const logindata = qs.stringify({
+    const params = new URLSearchParams();
+    const logindata = {
         ...data,
         grant_type: import.meta.env.VITE_APP_GRANT_TYPE,
         client_id: import.meta.env.VITE_APP_CLIENT_ID,
         client_secret: import.meta.env.VITE_APP_CLIENT_SECRET,
         scope: import.meta.env.VITE_APP_SCOPE
-    })
+    }
+    params.append('username', data.username);
+    params.append('password', data.password);
+    params.append('grant_type', `${logindata.grant_type}`);
+    params.append('client_id', `${logindata.client_id}`);
+    params.append('client_secret', `${logindata.client_secret}`);
+    params.append('scope', `${logindata.scope}`);
     // data = {data, ...logindata}
     console.log('data is', logindata);
     console.log('url is', import.meta.env.VITE_APP_ROOT_API);
     
-    const result = await axios.post(`${import.meta.env.VITE_APP_ROOT_API}/connect/token`, JSON.stringify(logindata), {
+    const result = await axios.post(`${import.meta.env.VITE_APP_ROOT_API}/connect/token`, params, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
