@@ -47,7 +47,6 @@ onMounted(async() => {
             <p class="text-xl font-medium text-primary">Total : {{ totalCount }}</p>
         </div>
         <div class="table">
-            {{ students }}
             <div class="block w-full overflow-x-auto rounded-lg">
                 <table class="overflow-hidden border items-center w-full">
                     <thead class="bg-table-head">
@@ -74,7 +73,7 @@ onMounted(async() => {
                             3
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ student.firstname }} {{ student.lastname }}
+                            {{ student.firstName }} {{ student.lastName }}
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ student.email }}
