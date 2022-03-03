@@ -18,11 +18,17 @@ const students:any = computed(async() => {
 })
 
 onMounted(async() => {
+    console.log('I started here');
     const request:any =  'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
     await store.dispatch(actionTypes.FetchStudents, request)
-    console.log('students are', request.value);
+    console.log('I got here');
+    console.log('students are', request);
     console.log('students are', JSON.parse(JSON.stringify(request.value)));
     console.log('students', JSON.parse(JSON.stringify(store.getters.getStudents.value)));
+    console.log('students', JSON.parse(JSON.stringify(store.getters.getStudents)));
+    console.log('students', store.getters.getStudents.value);
+    console.log('students', store.getters.getStudents);
+    console.log('I am here now');
     
 })
 
