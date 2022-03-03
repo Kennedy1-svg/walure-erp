@@ -7,7 +7,7 @@ export default {
   state: () => ({
     data: '',
     user: '',
-    token: '',
+    token: localStorage.getItem('token'),
     token_type: 'Bearer ',
     refresh_token: '',
     id_token: '',
@@ -62,7 +62,7 @@ export default {
       state.user = data
     },
     [mutationTypes.SetToken] (state: any, data: any) {
-      state.token = data
+      localStorage.setItem('token', state.token = data)
     },
     [mutationTypes.SetTokenId] (state: any, data: any) {
       state.id_token = data

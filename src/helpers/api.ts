@@ -3,10 +3,7 @@ import { useStore } from 'vuex';
 
 const store:any = useStore();
 
-const getToken = async () => {
-  console.log('getToken', JSON.parse(JSON.stringify(store.getters.getToken.value)))
-  return JSON.parse(JSON.stringify(store.getters.getToken.value));
-}
+const token = localStorage.getItem('token')
 
 
 // api helper to fetch data from the backend
@@ -14,7 +11,6 @@ export const fetchData = async (url:any) => {
   try {
     console.log('see')
     console.log('url', url)
-    const token = await getToken();
     console.log('token', token)
     const response = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${token}` } });
     console.log('response', response)
