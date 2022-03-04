@@ -97,21 +97,4 @@ const router = createRouter({
   routes,
 });
 
-onBeforeRouteLeave((to, from) => {
-  // if (to.meta.requiresAuth && !store.getters.getToken) {
-  //   next('/');
-  // // }
-  // console.log('I can work')
-  // const answer = window.confirm(
-  //   'Do you really want to leave? you have unsaved changes!'
-  // )
-  // cancel the navigation and stay on the same page
-  // if (!answer) return false
-  if (to.fullPath != '/' && to.fullPath != '/home') {
-    if (!store.getters.getToken) {
-      router.push('/')
-    }
-  }
-})
-
 export default router;
