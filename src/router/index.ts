@@ -103,6 +103,11 @@ router.beforeEach(async (to, from) => {
   const token:any = await localStorage.getItem('token') || ''
   console.log('token', token)
   // if (from.fullPath != '/') {}
+  if (to.meta.requiresAuth) {
+    if (!token) {
+      router.push({ name: 'Login' })
+    }
+  }
 })
 
 export default router;
