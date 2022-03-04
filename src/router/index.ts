@@ -97,4 +97,12 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach(async (to, from) => {
+  console.log(to)
+  console.log(from)
+  const token:any = await localStorage.getItem('token') || ''
+  console.log('token', token)
+  // if (from.fullPath != '/') {}
+})
+
 export default router;
