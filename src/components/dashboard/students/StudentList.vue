@@ -24,7 +24,7 @@ const totalCount:any = computed(() => {
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/student/get-students/1/10`;
     await store.dispatch(actionTypes.FetchStudents, request)
     // const students = JSON.parse(JSON.stringify(store.getters.getStudents.value));
     // console.log('I got here');
