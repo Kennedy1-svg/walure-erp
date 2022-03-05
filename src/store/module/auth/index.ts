@@ -12,8 +12,8 @@ export default {
     refresh_token: '',
     id_token: '',
     expires_in: '',
-    errors: {
-    },
+    alert_status: false,
+    alert_text: '',
     editing: false,
     title: ''
   }),
@@ -31,6 +31,16 @@ export default {
     getToken: (state: any) => {
       return computed(() => {
         return state.token
+      })
+    },
+    getLoginAlertStatus: (state: any) => {
+      return computed(() => {
+        return state.alert_status
+      })
+    },
+    getLoginAlertText: (state: any) => {
+      return computed(() => {
+        return state.alert_text
       })
     },
     getTokenType: (state: any) => {
@@ -64,6 +74,12 @@ export default {
     [mutationTypes.SetToken] (state: any, data: any) {
       localStorage.setItem('token', state.token = data)
     },
+    [mutationTypes.SetLoginAlertStatus] (state: any, data: any) {
+      state.alert_status = data
+    },
+    [mutationTypes.SetLoginAlertText] (state: any, data: any) {
+      state.alert_text = data
+    },
     [mutationTypes.SetTokenId] (state: any, data: any) {
       state.id_token = data
     },
@@ -77,11 +93,28 @@ export default {
   actions: {
     async [actionTypes.FetchData] ({ commit }: any, data: any) {
       const user = await addData(data.url, data.data)
-      commit(mutationTypes.SetData, user)
-      commit(mutationTypes.SetToken, user.access_token)
-      commit(mutationTypes.SetExpiresIn, user.expires_in)
-      commit(mutationTypes.SetRefreshToken, user.refresh_token)
-      commit(mutationTypes.SetTokenId, user.id_token)
+      if (user.access_token) {
+        commit(mutationTypes.SetLoginAlertText, 'Login Successful')
+        commit(mutationTypes.SetLoginAlertStatus, true)
+        commit(mutationTypes.SetData, user)
+        commit(mutationTypes.SetToken, user.access_token)
+        commit(mutationTypes.SetExpiresIn, user.expires_in)
+        commit(mutationTypes.SetRefreshToken, user.refresh_token)
+        commit(mutationTypes.SetTokenId, user.id_token)
+      } else if (user.message.includes('400')) {
+        commit(mutationTypes.SetLoginAlertText, 'Invalid Email or Password')
+        commit(mutationTypes.SetLoginAlertStatus, true)
+      } else if (user.message.includes('404')) {
+        commit(mutationTypes.SetLoginAlertText, 'Invalid connection string!')
+        commit(mutationTypes.SetLoginAlertStatus, true)
+      } else {        
+        commit(mutationTypes.SetLoginAlertText, 'Houston we have a problem!')
+        commit(mutationTypes.SetLoginAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetLoginAlertStatus, false)
+      }, 2000)
     },
     async [actionTypes.FetchUser] ({ commit }: any, data: any) {
       commit(mutationTypes.SetUser, data)

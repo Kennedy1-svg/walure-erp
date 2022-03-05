@@ -5,14 +5,19 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
 
-const status = ref('Disabled')
 const isActive = ref(false)
+
+const props:any = defineProps({
+  status: {
+      type: String,
+  }
+})
 
 const changeStatus:any = () => {
     isActive.value = !isActive.value
-    status.value = isActive.value ? 'Active' : 'Disabled'
+    // status.value = isActive.value ? 'Active' : 'Disabled'
 }
 </script>
 

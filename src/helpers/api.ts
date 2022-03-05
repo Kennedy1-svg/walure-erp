@@ -1,4 +1,7 @@
-import axios from 'axios'
+import axios from 'axios';
+import { useStore } from 'vuex';
+
+const store:any = useStore();
 
 // api helper to fetch data from the backend
 export const fetchData = async (url:any, token:any) => {
@@ -29,8 +32,13 @@ export const addData = async (url: any, data: any) => {
          }
       }
     )
+    console.log('response', response.data)
+    // setTimeout(() => {
+    //   store.dispatch()
+    // })
     return response.data
   } catch (err) {
+    console.log('err', err)
     return err
   }
 }

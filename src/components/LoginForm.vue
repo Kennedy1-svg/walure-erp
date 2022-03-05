@@ -65,13 +65,23 @@ const login:any = async () => {
     }
 
     await store.dispatch(actionTypes.FetchData, request)
+    .then(() => {
+        if (store.getters.getLoginAlertText.value.includes('Successful')) {
+            isLoading.value = false;
+            isDisabled.value = false;
+            route.push('/dashboard')
+        } else {
+            isLoading.value = false;
+            isDisabled.value = false;
+        }
+    })
 
     // console.log('result is', result);
     
-    route.push('/dashboard')
-    setTimeout(() => {
-      console.log('token is', JSON.parse(JSON.stringify(store.getters.getToken.value)));
-    }, 1000)
+    // route.push('/dashboard')
+    // setTimeout(() => {
+    //   console.log('token is', JSON.parse(JSON.stringify(store.getters.getToken.value)));
+    // }, 1000)
     
 }
 
