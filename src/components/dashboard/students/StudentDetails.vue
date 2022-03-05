@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'StudentDetails',
+}
+</script>
+
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 

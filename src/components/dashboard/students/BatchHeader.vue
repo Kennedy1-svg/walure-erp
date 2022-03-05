@@ -1,9 +1,50 @@
+<script lang="ts">
+export default {
+  name: 'BatchHeader',
+}
+</script>
+
 <script setup lang="ts">
+import { ref } from 'vue';
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
 import AddBatch from './AddBatch.vue';
+
+let searchText:any = ref('');
+
+const filter:any = async () => {
+  const search:any = searchText.value.toLowerCase();
+  const batch:any = document.getElementById('batchlist');
+  const rows:any = batch.getElementsByTagName('tr');
+
+  for (let i:any = 0; i < rows.length; i++) {
+    const firstCol:any = rows[i].getElementsByTagName('td')[1];
+    const secondCol:any = rows[i].getElementsByTagName('td')[2];
+    const thirdCol:any = rows[i].getElementsByTagName('td')[3];
+    const fourthCol:any = rows[i].getElementsByTagName('td')[4];
+    const fifthCol:any = rows[i].getElementsByTagName('td')[6];
+    const sixthCol:any = rows[i].getElementsByTagName('td')[7];
+
+    if (
+      firstCol.innerText.toLowerCase().indexOf(search) > -1 ||
+      secondCol.innerText.toLowerCase().indexOf(search) > -1 ||
+      thirdCol.innerText.toLowerCase().indexOf(search) > -1 ||
+      fourthCol.innerText.toLowerCase().indexOf(search) > -1 || fifthCol.innerText.toLowerCase().indexOf(search) > -1 || sixthCol.innerText.toLowerCase().indexOf(search) > - 1
+    ) {
+      rows[i].style.display = '';
+    } else {
+      rows[i].style.display = 'none';
+    }
+  }
+}
+
+const close:any = async () => {
+  searchText.value = ''
+}
 
 </script>
 
@@ -35,24 +76,10 @@ import AddBatch from './AddBatch.vue';
         <div class="filter bg-white rounded-t-lg justify-between items-center py-5">
             <div class="filter-items text-grey grid grid-cols-4 gap-3 bg-white rounded-t-lg px-11 py-5">
                 <div class="startdate">
-                    <Filter>
-                        <template #info>
-                            Start date
-                        </template>
-                        <template #input>
-                            <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status">
-                        </template>
-                    </Filter>
+                    <Datepicker class="" placeholder="Start Date" textInput/>
                 </div>
                 <div class="enddate">
-                    <Filter>
-                        <template #info>
-                            End date
-                        </template>
-                        <template #input>
-                            <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status">
-                        </template>
-                    </Filter>
+                    <Datepicker placeholder="End Date"  />
                 </div>
                 <div class="status">
                     <Filter>
@@ -98,7 +125,7 @@ import AddBatch from './AddBatch.vue';
                 <div class="search">
                     <Search>
                         <template #input>
-                            <input class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Enter title and BatchNo..">
+                            <input @keyup.esc="close" @keyup="filter" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Enter title and Batch No..">
                         </template>
                     </Search>
                 </div>
@@ -132,4 +159,8 @@ import AddBatch from './AddBatch.vue';
     transform: translateX(0);
   }
 } 
+
+.dp__input {
+    @apply py-6;
+}
 </style>

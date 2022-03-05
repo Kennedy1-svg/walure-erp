@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'MainDashboard',
+}
+</script>
+
 <script setup lang="ts">
 import ActivityCard from '../ActivityCard.vue';
 </script>

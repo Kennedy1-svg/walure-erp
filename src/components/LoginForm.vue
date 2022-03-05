@@ -1,7 +1,14 @@
+<script lang="ts">
+export default {
+  name: 'LoginForm',
+}
+</script>
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from './SvgIcons.vue';
+import spinner from './spinner.vue'
 import { useStore } from 'vuex'
 import * as actionTypes from '../store/module/auth/constants/action'
 import * as mutationTypes from '../store/module/auth/constants/mutation'
@@ -41,6 +48,8 @@ const forgotPassword:any = ():any => {
 }
 
 const login:any = async () => {
+    isLoading.value = true;
+    isDisabled.value = true;
     const params = new URLSearchParams();
 
     params.append('username', data.username);
@@ -150,7 +159,12 @@ onMounted(() => {
                 </div>
             </div>
             <div class="grid">
-                <button @click.prevent="submit" :disabled="isDisabled" :class="[isDisabled ? 'bg-grey' : 'bg-primary']" class="p-4 font-bold flex justify-center border text-white rounded-md">Login</button>
+                <button @click.prevent="submit" :disabled="isDisabled" :class="[isDisabled ? 'bg-grey' : 'bg-primary']" class="p-4 font-bold flex justify-center border text-white rounded-md">
+                    <span class="px-4 flex" :class="[isLoading ? '' : 'hidden']">
+                        <spinner />
+                    </span>
+                    Login
+                </button>
             </div>
         </form>
     </div>

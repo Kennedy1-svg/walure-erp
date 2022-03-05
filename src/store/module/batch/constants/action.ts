@@ -1,4 +1,4 @@
-export const FetchBatchs = 'FetchBatchs'
+export const FetchBatch = 'FetchBatch'
 export const AddBatch = 'AddBatch'
 export const UpdateBatch = 'UpdateBatch'
 export const RemoveBatch = 'RemoveBatch'

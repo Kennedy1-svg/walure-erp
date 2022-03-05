@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'StudentList',
+}
+</script>
+
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import StudentDetails from './StudentDetails.vue';
@@ -14,7 +20,11 @@ import { api_url } from '../../../config'
 const store = useStore();
 
 const students:any = computed(() => {
-    return JSON.parse(JSON.stringify(store.getters.getStudents.value))
+    return JSON.parse(JSON.stringify(store.getters.GetStudent.value))
+})
+
+const getFullName:any = computed(() => {
+    return `${students.value.first_name} ${students.value.last_name}`
 })
 
 const totalCount:any = computed(() => {
@@ -24,18 +34,8 @@ const totalCount:any = computed(() => {
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/student/get-students/1/10`;
+    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
     await store.dispatch(actionTypes.FetchStudents, request)
-    // const students = JSON.parse(JSON.stringify(store.getters.getStudents.value));
-    // console.log('I got here');
-    // console.log('students are not yet here');
-    // console.log('students are', JSON.parse(JSON.stringify(request.value)));
-    // console.log('students should', students);
-    // console.log('students can', JSON.parse(JSON.stringify(store.getters.getStudents.value)));
-    // console.log('students might', JSON.parse(JSON.stringify(store.getters.getStudents)));
-    // console.log('students', store.getters.getStudents.value);
-    // console.log('students', store.getters.getStudents);
-    // console.log('I am here now');    
 })
 
 </script>
@@ -73,7 +73,7 @@ onMounted(async() => {
                             {{ (students.indexOf(student) + 1) }}
                         </td>
                         <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ student.firstName }} {{ student.lastName }}
+                            {{ student.firstName + ' ' + student.lastName }}
                         </th>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ student.email }}

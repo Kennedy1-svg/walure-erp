@@ -11,7 +11,7 @@ export default {
     title: ''
   }),
   getters: {
-    getStudents: (state: any) => {
+    GetStudent: (state: any) => {
       return computed(() => {
         return state.students
       })

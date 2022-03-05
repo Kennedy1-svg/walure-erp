@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'Card',
+}
+</script>
+
 <script setup lang="ts">
 </script>
 

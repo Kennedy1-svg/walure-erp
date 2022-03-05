@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'DashboardHeader',
+}
+</script>
+
 <script setup lang="ts">
 import Cards from '../Card.vue';
 </script>

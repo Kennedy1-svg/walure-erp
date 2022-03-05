@@ -1,4 +1,7 @@
 export const SetBatch = 'SetBatch'
-export const GetBatchs = 'GetBatchs'
+export const GetBatch = 'GetBatch'
 export const DeleteBatch = 'DeleteBatch'
 export const UpdateBatch = 'UpdateBatch'
+export const  SetEditStatus = 'SetEditStatus'
+export const SetTitle = 'SetTitle'
+export const SetTotalCount = 'SetTotalCount'

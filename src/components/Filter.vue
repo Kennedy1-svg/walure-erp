@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'Filter',
+}
+</script>
+
 <script setup lang="ts">
 import SvgIcons from './SvgIcons.vue';
 </script>
@@ -16,6 +22,7 @@ import SvgIcons from './SvgIcons.vue';
                         <slot name="input"></slot><br>
                     </li>
                     <slot name="list">
+                        <ul id="listItem"></ul>
                         <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
                             Active
                         </p></li>

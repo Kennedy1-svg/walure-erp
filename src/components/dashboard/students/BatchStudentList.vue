@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'BatchStudentList',
+}
+</script>
+
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import StudentDetails from './StudentDetails.vue';

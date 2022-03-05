@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'AddToBatch',
+}
+</script>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'

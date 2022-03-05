@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'SideNavigation',
+}
+</script>
+
 <script setup lang="ts">
 import SvgIcons from './SvgIcons.vue'
 </script>

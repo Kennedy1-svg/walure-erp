@@ -1,7 +1,13 @@
+<script lang="ts">
+export default {
+  name: 'SvgIcons',
+}
+</script>
+
 <script setup lang="ts">
-const props = defineProps({
+const props = defineProps<{
     name: String
-})
+}>()
 </script>
 
 <template>

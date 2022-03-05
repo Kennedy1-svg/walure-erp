@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'TopNavigation',
+}
+</script>
+
 <script setup lang="ts">
 import SvgIcons from '../components/SvgIcons.vue';
 
