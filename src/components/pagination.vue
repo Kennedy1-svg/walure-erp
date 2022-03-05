@@ -5,83 +5,60 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, ref, toRefs, computed } from 'vue';
+import { defineEmits, defineProps, onMounted, ref, toRefs, computed } from 'vue';
 import SvgIcons from './SvgIcons.vue'
 
 const props = defineProps({
-    maxVisibleButtons: {
-        type: Number,
-        required: false,
-        default: 2,
-    },
     totalPages: {
-        type: Number,
-        required: true,
-    },
-    currentPage: {
-        type: Number,
-        required: true,
-    },
-    perPage: {
         type: Number,
         required: true,
     },
 })
 
-const { currentPage, maxVisibleButtons, totalPages } = toRefs(props)
+const { totalPages } = toRefs(props)
 
-const startPage:any = computed(() => {
-    if (props.currentPage == 1) {
-        return 1;
-    }
-    if (props.currentPage === totalPages.value) {
-        return props.totalPages - props.maxVisibleButtons;
-    }
-    return props.currentPage;
+const currentPage:any = ref(1)
+
+
+const isInFirstPage:any = onMounted(() => {
+    console.log('first cp',currentPage.value)
+  return currentPage.value === 1;
 });
 
-const page:any = computed(() => {
-    const start:any = startPage.value;
-    const end:any = start + props.maxVisibleButtons;
-    const pages:any = [];
-    for (let i:any = start; i <= Math.min(end - 1, totalPages.value); i++) {
-        pages.push({
-            name: i,
-            isDisabled: i === props.currentPage,
-        });
-    }
-    return pages;
-});
-
-const isInFirstPage:any = computed(() => {
-  return props.currentPage == 1;
-});
-
-const isInLastPage:any = computed(() => {
-  return props.currentPage == totalPages.value;
+const isInLastPage:any = onMounted(() => {
+    console.log('lastcp', currentPage.value)
+  return currentPage.value === props.totalPages;
 });
 
 const emit = defineEmits(['pageChanged']);
 
 const onClickFirstPage = () => {
+    console.log('first cp', currentPage.value)
     console.log('e suppose disable', isInFirstPage.value)
     emit('pageChanged', 1);
 }
 
 const onClickLastPage = () => {
+    console.log('e suppose disable', isInLastPage.value)
     emit('pageChanged', totalPages.value);
 }
 
 const onClickNextPage = () => {
-    console.log('current page na', props.currentPage)
-    emit('pageChanged', props.currentPage + 1);
+    console.log('current page na', currentPage.value)
+    if (currentPage.value < totalPages.value) {
+        emit('pageChanged', currentPage.value + 1);
+        currentPage.value = currentPage.value + 1;
+    }
 }
 const onClickPreviousPage = () => {
-    emit('pageChanged', props.currentPage - 1);
+    if (currentPage.value > 1) {
+        emit('pageChanged', currentPage.value - 1);
+        currentPage.value = currentPage.value - 1;
+    }
 }
 
 const isPageActive:any = (page:any) => {
-    return page == props.currentPage;
+    return page == currentPage.value;
 }
 
 </script>

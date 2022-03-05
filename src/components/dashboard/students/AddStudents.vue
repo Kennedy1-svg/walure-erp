@@ -47,7 +47,7 @@ const disabledView:any = 'bg-gray-300';
 </script>
 
 <template>
-    <div class="main w-full mt-[0.5px] px-[45px] bg-white">
+    <div class="main w-full mt-[0.5px] xl:px-[45px] px-6 bg-white">
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl"><slot name="title">Add</slot> Student</p>
             <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" />

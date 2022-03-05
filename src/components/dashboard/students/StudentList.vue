@@ -16,6 +16,8 @@ import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/students/constants/action'
 import * as mutationTypes from '../../../store/module/students/constants/mutation'
 import { api_url } from '../../../config'
+import pagination from '../../pagination.vue'
+import { nextTick } from 'process';
 
 const store = useStore();
 
@@ -31,10 +33,37 @@ const totalCount:any = computed(() => {
     return JSON.parse(JSON.stringify(store.getters.getTotalCount.value))
 })
 
+// const totalCount:any = ref(27)
+
+const totalPages:any = computed(() => {
+    // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
+    console.log(totalCount.value)
+    let total:any
+    if (totalCount.value % 10 != 0) {
+        total = Math.floor(totalCount.value / 10) + 1;
+    } else {
+        total = totalCount.value / 10;
+    }
+    return total
+})
+
+let pageIndex: any = ref(1);
+
+const onPageChange:any = async (page:any) => {
+    console.log('page suppose don change')
+    console.log('page na', page)
+    pageIndex.value = page;
+    console.log('pageIndex is', pageIndex.value)
+    const request:any = `${api_url}api/student/get-students/${pageIndex.value}/{pageSize}`;
+    console.log('url', request)
+    await store.dispatch(actionTypes.FetchStudents, request)
+}
+
+
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/student/get-students/${pageIndex.value}/{pageSize}`;
     await store.dispatch(actionTypes.FetchStudents, request)
 })
 
@@ -72,9 +101,9 @@ onMounted(async() => {
                         <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                             {{ (students.indexOf(student) + 1) }}
                         </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                        <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ student.firstName + ' ' + student.lastName }}
-                        </th>
+                        </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ student.email }}
                         </td>
@@ -260,21 +289,13 @@ onMounted(async() => {
                 </table>
                 <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
                     <div class="">
-                        Page 1 of 10
+                        Page {{ pageIndex }} of {{ totalPages }}
                     </div>
-                    <div class="border-t-0 font-normal align-middle border-l-0 border-r-0 whitespace-nowrap py-4 gap-10 text-left flex items-center">
-                        <span>
-                            <SvgIcons name="previous" />
-                        </span>
-                        <span>
-                            <SvgIcons name="chevron-left" />
-                        </span>
-                        <span>
-                            <SvgIcons name="chevron-right" />
-                        </span>
-                        <span>
-                            <SvgIcons name="next" />
-                        </span>
+                    <div class="">
+                        <pagination
+                            :totalPages=totalPages
+                            @pageChanged="onPageChange"
+                        />
                     </div>
                 </div>
             </div>

@@ -14,6 +14,7 @@ import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/batch/constants/action'
 import * as mutationTypes from '../../../store/module/batch/constants/mutation'
 import { api_url } from '../../../config'
+import pagination from '../../pagination.vue'
 
 const store = useStore();
 
@@ -22,13 +23,38 @@ const batch:any = computed(() => {
 })
 
 const totalCount:any = computed(() => {
-    return JSON.parse(JSON.stringify(store.getters.getTotalCount.value))
+    return JSON.parse(JSON.stringify(store.getters.getTotalBatchCount.value))
 })
+
+const totalPages:any = computed(() => {
+    // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
+    console.log(totalCount.value)
+    let total:any
+    if (totalCount.value % 10 != 0) {
+        total = Math.floor(totalCount.value / 10) + 1;
+    } else {
+        total = totalCount.value / 10;
+    }
+    return total
+})
+
+let pageIndex: any = ref(1);
+
+const onPageChange:any = async (page:any) => {
+    console.log('page suppose don change')
+    console.log('page na', page)
+    pageIndex.value = page;
+    console.log('pageIndex is', pageIndex.value)
+    const request:any = `${api_url}api/batch/get-batches/${pageIndex.value}/10`;
+    console.log('url', request)
+    await store.dispatch(actionTypes.FetchBatch, request)
+}
 
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/batch/get-batches/${pageIndex.value}/10`;
+    console.log('url', request)
     await store.dispatch(actionTypes.FetchBatch, request)
 })
 
@@ -45,51 +71,51 @@ onMounted(async() => {
                 <table class="overflow-hidden border items-center w-full">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
-                        <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="pl-4 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
                         S/N
                         </th>
                         <th class="align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Batch name
                         </th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Course Title
                         </th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Batch no</th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Start <br /> /End date(s)</th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Batch no</th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Start <br /> /End date(s)</th>
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Status</th>
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Instructors</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Levels</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
+                        <th class="px-4 align-middle py-4 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Levels</th>
+                        <th class="px-3 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                     </tr>
                     </thead>
                     <tbody id="batchlist" class="bg-white">
                     <tr v-for="(batchitem) in batch" :key="batchitem.id">
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                        <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                             {{ (batch.indexOf(batchitem) + 1) }}
                         </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                        <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ batchitem.batchName }}
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        </td>
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ batchitem.courseTitle }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ batchitem.batchNo }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ moment(batchitem.startdate).format('d/mm/YYYY') }} - <br />
-                            {{ moment(batchitem.enddate).format('d/mm/YYYY') }}
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            {{ moment(batchitem.startdate).format('D/MM/YYYY') }} - <br />
+                            {{ moment(batchitem.enddate).format('D/MM/YYYY') }}
+                        </td>
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            {{ batchitem.status == 1 ? 'Active' : 'Inactive' }}
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ batchitem.status }}
+                            {{ batchitem.instructor }} Andreas Tony
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ batchitem.instructor }}
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-4 text-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ batchitem.experienceLevel }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
+                        <td class="border-t-0 pl-3 pr-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
                                 <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">    <SvgIcons name="ellipsis" />
                                 </button>
@@ -244,21 +270,13 @@ onMounted(async() => {
                 </table>
                 <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
                     <div class="">
-                        Page 1 of 10
+                        Page {{ pageIndex }} of {{ totalPages }}
                     </div>
-                    <div class="border-t-0 font-normal align-middle border-l-0 border-r-0 whitespace-nowrap py-4 gap-10 text-left flex items-center">
-                        <span>
-                            <SvgIcons name="previous" />
-                        </span>
-                        <span>
-                            <SvgIcons name="chevron-left" />
-                        </span>
-                        <span>
-                            <SvgIcons name="chevron-right" />
-                        </span>
-                        <span>
-                            <SvgIcons name="next" />
-                        </span>
+                    <div class="">
+                        <pagination
+                            :totalPages=totalPages
+                            @pageChanged="onPageChange"
+                        />
                     </div>
                 </div>
             </div>
@@ -266,10 +284,7 @@ onMounted(async() => {
     </div>
 </template>
 
-
-
 <style scoped>
-
     .dropdown:focus-within .dropdown-menu {
     opacity:1;
     transform: translate(0) scale(1);

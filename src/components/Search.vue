@@ -31,6 +31,14 @@ const filter:any = async () => {
     } else {
       rows[i].style.display = 'none';
     }
+
+    // if (firstCol) {
+    //   const lang = firstCol.innerText
+    //   const sLang = secondCol.innerText
+    //   const tLang = thirdCol.innerText
+    //   const fLang = fourthCol.innerText
+    //   rows[i].style.display = ((lang.toUpperCase().indexOf(search) > -1) || (sLang.toUpperCase().indexOf(search) > -1) || (tLang.indexOf(search) > -1) || (fLang.toUpperCase().indexOf(search) > -1)) ? '' : 'none'
+    // }
   }
 }
 

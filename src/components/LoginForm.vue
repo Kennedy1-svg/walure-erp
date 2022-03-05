@@ -120,8 +120,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="main w-full bg-white">
-        <form class="text-sm grid my10">
+    <div class="relative main w-full bg-white">
+        <form class=" text-sm grid my10">
             <div class="grid gap-1 mb-4">
                 <label for="username" class="font-semibold">
                     Username

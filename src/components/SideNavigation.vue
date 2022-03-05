@@ -11,7 +11,8 @@ import SvgIcons from './SvgIcons.vue'
 <template>
 	<div class="grid min-h-screen">
 		<div class="bg-primary fixed w-1/5 flex px-2 lg:px-6 py-3 logo h-[76px]">
-			<img src="../assets/Walure-logo-white.png" alt="walure-logo">
+			<img class="" src="../assets/Walure-logo-white.png" alt="walure-logo">
+			<!-- <img class="xl:hidden" src="../assets/walure.png" alt="walure-logo"> -->
 		</div>
 		<div class="grid mt-28">
 			<ul>

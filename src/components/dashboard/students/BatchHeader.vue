@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
@@ -13,6 +13,11 @@ import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
 import AddBatch from './AddBatch.vue';
+import { useStore } from 'vuex'
+
+const store = useStore();
+const startDate:any = ref('');
+const endDate:any = ref('');
 
 let searchText:any = ref('');
 
@@ -25,21 +30,28 @@ const filter:any = async () => {
     const firstCol:any = rows[i].getElementsByTagName('td')[1];
     const secondCol:any = rows[i].getElementsByTagName('td')[2];
     const thirdCol:any = rows[i].getElementsByTagName('td')[3];
-    const fourthCol:any = rows[i].getElementsByTagName('td')[4];
-    const fifthCol:any = rows[i].getElementsByTagName('td')[6];
-    const sixthCol:any = rows[i].getElementsByTagName('td')[7];
+    const fourthCol:any = rows[i].getElementsByTagName('td')[6];
+    const fifthCol:any = rows[i].getElementsByTagName('td')[7];
 
     if (
       firstCol.innerText.toLowerCase().indexOf(search) > -1 ||
       secondCol.innerText.toLowerCase().indexOf(search) > -1 ||
       thirdCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      fourthCol.innerText.toLowerCase().indexOf(search) > -1 || fifthCol.innerText.toLowerCase().indexOf(search) > -1 || sixthCol.innerText.toLowerCase().indexOf(search) > - 1
+      fourthCol.innerText.toLowerCase().indexOf(search) > -1 || fifthCol.innerText.toLowerCase().indexOf(search) > -1
     ) {
       rows[i].style.display = '';
     } else {
       rows[i].style.display = 'none';
     }
   }
+}
+
+const format:any = (date:any) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
 }
 
 const close:any = async () => {
@@ -57,7 +69,7 @@ const close:any = async () => {
                 <div class="relative overflow-hdden">
                     <section class="flex h-full justify-ceter items-start">
                         <div onclick="document.getElementById('myl').showModal()" id="btn">
-                            <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
+                            <span class="bg-blue p-1 flex justify-center text-white rounded-md">
                                 <SvgIcons name="plus" /> <!-- plus icon -->
                             </span>
                         </div>
@@ -76,10 +88,10 @@ const close:any = async () => {
         <div class="filter bg-white rounded-t-lg justify-between items-center py-5">
             <div class="filter-items text-grey grid grid-cols-4 gap-3 bg-white rounded-t-lg px-11 py-5">
                 <div class="startdate">
-                    <Datepicker class="" placeholder="Start Date" textInput/>
+                    <Datepicker inputClassName="dp-custom-input" v-model="startDate" placeholder="Start Date" :format="format" textInput/>
                 </div>
                 <div class="enddate">
-                    <Datepicker placeholder="End Date"  />
+                    <Datepicker inputClassName="dp-custom-input" v-model="endDate" :format="format" placeholder="End Date"  />
                 </div>
                 <div class="status">
                     <Filter>
@@ -160,7 +172,14 @@ const close:any = async () => {
   }
 } 
 
-.dp__input {
-    @apply py-6;
+.dp-custom-input {
+    @apply py-6 text-[#1e9c26];
+    color: #1e9c26;
+}
+</style>
+
+<style>
+.dp-custom-input {
+    @apply py-3 rounded-md shadow-inner;
 }
 </style>

@@ -16,17 +16,17 @@ export default {
             return state.batch
         })
         },
-        getTotalCount: (state: any) => {
+        getTotalBatchCount: (state: any) => {
         return computed(() => {
             return state.total_count
         })
         },
-        getEditStatus: (state: any) => {
+        getEditBatchStatus: (state: any) => {
         return computed(() => {
             return state.isEditing
         })
         },
-        getTitle: (state: any) => {
+        getBatchTitle: (state: any) => {
         return computed(() => {
             return state.title
         })
