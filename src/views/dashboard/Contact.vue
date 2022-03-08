@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import MenuItem from '../../components/pagination.vue'
 import Chart from '../../components/switch.vue'
 // import addModal from '../../components/test.vue'
-import StudentDetails from '../../components/dashboard/students/newStudentDetails.vue'
+import StudentDetails from '../../components/dashboard/students/StudentDetails.vue'
 import * as actionTypes from '../../store/module/events/constants/action'
 import * as mutationTypes from '../../store/module/events/constants/mutation'
 import Test from '../../components/dashboard/students/AddStudents.vue'
