@@ -10,26 +10,66 @@ import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
 import AddStudent from './AddStudents.vue';
+import * as actionTypes from '../../../store/module/students/constants/action'
 import { ref } from 'vue';
+import { api_url } from '../../../config'
+import { useStore } from 'vuex'
+
+const store:any = useStore()
+
+let info:any = ref('Status')
+
+const batchId:any = ref('')
+
+const setFilterStatus:any = (name:any) => {
+  // let status:any = ref(1)
+  // let url:any = `${api_url}api/students/`
+  // console.log('base url', url)
+  if (name == 'All') {
+    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+    store.dispatch(actionTypes.FetchStudents, request)
+    store.getters.getStudents
+    // console.log('all url', url) 
+    return info.value = 'Status'
+  } else if (name == 'Active') {
+    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/1`;
+    store.dispatch(actionTypes.FilterStudent, request)
+    // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
+    store.getters.getStudents
+    // console.log('active url', url)
+    return info.value = name
+  } else if (name == 'Disabled') {
+    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/0`;
+    store.dispatch(actionTypes.FilterStudent, request)
+    store.getters.getStudents
+    // console.log('disabled url', url)
+    return info.value = name
+  }
+}
+
+const filterItems:any = ['Active', 'Disabled', 'All']
 
 let searchText:any = ref('');
 
 const filter:any = async () => {
   const search:any = searchText.value.toLowerCase();
-  const students:any = document.getElementById('students');
-  const rows:any = students.getElementsByTagName('tr');
+  console.log('search', search)
+  const status:any = document.getElementById('status');
+  console.log('status', status)
+  const rows:any = status.getElementsByTagName('ul');
+  console.log('rows', rows)
+  console.log('rows length', rows.length)
 
   for (let i:any = 0; i < rows.length; i++) {
-    const firstCol:any = rows[i].getElementsByTagName('td')[1];
-    const secondCol:any = rows[i].getElementsByTagName('td')[2];
-    const thirdCol:any = rows[i].getElementsByTagName('td')[3];
-    const fourthCol:any = rows[i].getElementsByTagName('td')[4];
-
+    const row:any = rows[i];
+    console.log('row', rows[0])
+    console.log('row', rows[1])
+    console.log('row', rows[2])
+    console.log('row', rows[0].textContent)
+    console.log('row', rows[1].textContent)
+    console.log('row', rows[2].textContent)
     if (
-      firstCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      secondCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      thirdCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      fourthCol.innerText.toLowerCase().indexOf(search) > -1
+      row.textContent.toLowerCase().indexOf(search) > -1 
     ) {
       rows[i].style.display = '';
     } else {
@@ -73,17 +113,17 @@ const close:any = async () => {
             <div class="status">
                 <Filter>
                     <template #info>
-                        <span class="pl-5 pr-56">Status</span>
+                        <span class="pl-5 pr-56">{{ info }}</span>
                     </template>
                     <template #input>
-                        <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status">
+                        <input @keyup.esc="close" @keyup="filter" v-model="searchText"  class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Filter Status">
                     </template>
                     <template #list>
-                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
-                            Active
-                        </p></li>
-                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Disabled</p></li>
-                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
+                      <div id="status">
+                        <ul class="overflow-auto" v-for="(item, index) in filterItems" :key="index">
+                            <li @click.prevent="setFilterStatus(item)" class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">{{ item }}</li>
+                        </ul>
+                      </div>
                     </template>
                 </Filter>
             </div>

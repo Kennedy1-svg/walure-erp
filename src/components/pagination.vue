@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, ref, toRefs, computed } from 'vue';
+import { onMounted, ref, toRefs, computed } from 'vue';
 import SvgIcons from './SvgIcons.vue'
 
 const props = defineProps({

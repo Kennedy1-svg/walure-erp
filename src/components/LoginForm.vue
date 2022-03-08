@@ -69,20 +69,14 @@ const login:any = async () => {
         if (store.getters.getLoginAlertText.value.includes('Successful')) {
             isLoading.value = false;
             isDisabled.value = false;
-            route.push('/dashboard')
+            setTimeout(() => {
+                route.push('/dashboard')
+            }, 600);
         } else {
             isLoading.value = false;
             isDisabled.value = false;
         }
-    })
-
-    // console.log('result is', result);
-    
-    // route.push('/dashboard')
-    // setTimeout(() => {
-    //   console.log('token is', JSON.parse(JSON.stringify(store.getters.getToken.value)));
-    // }, 1000)
-    
+    })    
 }
 
 const checkError:any = () => {
@@ -121,12 +115,6 @@ const submit:any = () => {
     checkError();
     !isError.value ? login() : '';
 }
-
-onMounted(() => {
-    console.log('hello Walure');
-    console.log('client_id', import.meta.env.VITE_APP_CLIENT_ID);
-    
-})
 </script>
 
 <template>

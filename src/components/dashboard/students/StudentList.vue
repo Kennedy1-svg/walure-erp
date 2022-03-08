@@ -8,7 +8,7 @@ export default {
 import SvgIcons from '../../SvgIcons.vue';
 import StudentDetails from './StudentDetails.vue';
 import AddToBatch from './AddToBatch.vue';
-import Modal from '../../Modal.vue';
+import Modal from '../../Modals.vue';
 import AddStudents from './AddStudents.vue';
 import Switch from '../../switch.vue';
 import { computed, ref, onMounted, reactive } from 'vue';
@@ -17,20 +17,17 @@ import * as actionTypes from '../../../store/module/students/constants/action'
 import * as mutationTypes from '../../../store/module/students/constants/mutation'
 import { api_url } from '../../../config'
 import pagination from '../../pagination.vue'
-import { nextTick } from 'process';
 
 const store = useStore();
 
 const students:any = computed(() => {
-    return JSON.parse(JSON.stringify(store.getters.GetStudent.value))
-})
-
-const getFullName:any = computed(() => {
-    return `${students.value.first_name} ${students.value.last_name}`
+    // console.log('students', JSON.parse(JSON.stringify(store.getters.getStudent.value)))
+    return JSON.parse(JSON.stringify(store.getters.getStudent.value))
 })
 
 const totalCount:any = computed(() => {
-    return JSON.parse(JSON.stringify(store.getters.getTotalCount.value))
+    // console.log('totalCount', JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value)))
+    return JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value))
 })
 
 // const totalCount:any = ref(27)
@@ -46,6 +43,29 @@ const totalPages:any = computed(() => {
     }
     return total
 })
+
+const setId:any = (id:any) => {
+    console.log('studentid', id)
+    const request:any = `${api_url}api/student/${id}`;
+    console.log('request forid', request)
+    store.dispatch(actionTypes.FetchEditStudent, request)
+}
+
+const showAddToBatch = ref(false);
+
+const showEdit = ref(false);
+
+const showDelete = ref(false);
+
+const showDetails = ref(false);
+
+const toggle:any = (status:any) => {
+    if (status == 0) {
+        return status = 1
+    } else {
+        return status = 0
+    }
+}
 
 let pageIndex: any = ref(1);
 
@@ -71,22 +91,22 @@ onMounted(async() => {
 
 <template>
     <div class="main grid">
-        <div class="title flex justify-between items-center mb-10">
+        <div class="title flex justify-between pr-32 xl:pr-0 items-center mb-10">
             <h1 class="text-2xl font-semibold text-black">Student List</h1>
             <p class="text-xl font-medium text-primary">Total : {{ totalCount }}</p>
         </div>
         <div class="table">
-            <div class="block w-full overflow-x-auto rounded-lg">
-                <table class="overflow-hidden border items-center w-full">
+            <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
+                <table class="overflow-x-scroll border items-center w-full">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
                         <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
                         S/N
                         </th>
-                        <th class="align-middle py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
                         Name
                         </th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Contact Email
                         </th>
                         <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Contact Phone</th>
@@ -101,20 +121,20 @@ onMounted(async() => {
                         <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                             {{ (students.indexOf(student) + 1) }}
                         </td>
-                        <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                        <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ student.firstName + ' ' + student.lastName }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ student.email }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ student.phoneNumber }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ student.regNumber }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <Switch />
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            <Switch :status="student.status" @toggle="toggle(student.status)" />
                         </td>
                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
@@ -123,103 +143,57 @@ onMounted(async() => {
                                 <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
                                     <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
                                         <div class="py-3 gap-3">
-                                            <div class="relative overflow-hdden">
-                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div class="focus:outline-none" onclick="document.getElementById('myModal').showModal()" id="btn">
-                                                        <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
-                                                            <SvgIcons name="doc-add" />
-                                                            Add to batch
-                                                        </span>
-                                                    </div>
-                                                </section>
+                                            <button
+                                            type="button"
+                                            @click="showAddToBatch = !showAddToBatch" @click.prevent="setId(student.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="doc-add" />
+                                                Add to batch
+                                            </button>
+                                            <Modal :show="showAddToBatch" @close="showAddToBatch = false">
+                                                <AddToBatch />
+                                            </Modal>
 
-                                                <dialog id="myModal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                                                    <div class="w-full h-auto">
-                                                        <!-- Modal Content-->
-                                                            <AddToBatch />
-                                                        <!-- End of Modal Content-->
-                                                    </div>
-                                                </dialog>
-                                            </div>
-                                            <div class="relative overflow-hdden">
-                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div class="focus:outline-none" onclick="document.getElementById('myMdal').showModal()" id="btn">
-                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="details" />
-                                                        Details
-                                                    </span>
-                                                    </div>
-                                                </section>
+                                            <button
+                                            type="button"
+                                            @click="showDetails = !showDetails" @click.prevent="setId(student.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="details" />
+                                                Details
+                                            </button>
+                                            <Modal :show="showDetails" @close="showDetails = false">
+                                                <StudentDetails />
+                                            </Modal>
 
-                                                <dialog id="myMdal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                                                    <div class="w-full h-auto">
-                                                        <!-- Modal Content-->
-                                                            <StudentDetails />
-                                                        <!-- End of Modal Content-->
-                                                    </div>
-                                                </dialog>
-                                            </div>
-                                            <div class="relative overflow-hdden">
-                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div onclick="document.getElementById('myModl').showModal()" id="btn">
-                                                       <span tabindex="0" class="focus:outline-none text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
-                                                            <SvgIcons name="edit" />
-                                                            Edit
-                                                        </span>
-                                                    </div>
-                                                </section>
+                                            <button
+                                            type="button"
+                                            @click="showEdit = !showEdit" @click.prevent="setId(student.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="edit" />
+                                                Edit
+                                            </button>
+                                            <Modal :show="showEdit" @close="showEdit = false">
+                                                <AddStudents />
+                                            </Modal>
 
-                                                <dialog id="myModl" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                                                    <div class="w-full h-auto">
-                                                        <!-- Modal Content-->
-                                                            <AddStudents>
-                                                                <template #title>
-                                                                    Edit
-                                                                </template>
-                                                            </AddStudents>
-                                                        <!-- End of Modal Content-->
-                                                    </div>
-                                                </dialog>
-                                            </div>
-                                            <div class="relative overflow-hdden">
-                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div class="focus:outline-none" onclick="document.getElementById('myodal').showModal()" id="btn">
-                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
-                                                            <SvgIcons name="delete" />
-                                                            Delete
-                                                        </span>
-                                                    </div>
-                                                </section>
-
-                                                <dialog id="myodal" class="w-11/12 md:w-2/5 p-5 bg-white rounded-md ">            
-                                                    <div class="w-full">
-                                                        <!-- Modal Content-->
-                                                        <div class="bg-white text-left p-7 rounded grid">
-                                                            <div class="flex justify-between mb-6">
-                                                                <h1 class="text-xl mb-4 font-medium">
-                                                                    Delete Student
-                                                                </h1>
-                                                                <span>
-                                                                    <SvgIcons name="o-cancel" />
-                                                                </span>
-                                                            </div>
-                                                            <p class="text-lg mb-10">Are you sure you want to delete student?</p>
-                                                            <div class="flex justify-between items-center mb-3">
-                                                                <button class="px-10 py-4 rounded text-primary font-bold">
-                                                                    Cancel
-                                                                </button>
-                                                                <button class="bg-red px-10 py-4 rounded text-white font-bold">
-                                                                    Yes, Delete Student
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End of Modal Content-->
-                                                    </div>
-                                                </dialog>
-                                            </div>
+                                            <button
+                                            type="button"
+                                            @click="showDelete = !showDelete"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="delete" />
+                                                Delete
+                                            </button>
+                                            <Modal :show="showDelete" @close="showDelete = false">
+                                            <p class="mb-4">No action</p>
+                                            
+                                            </Modal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
+                                                    <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left">
                                                         <SvgIcons name="doc-add" />
                                                         Add to batch
                                                     </span>
@@ -230,7 +204,7 @@ onMounted(async() => {
                                             </Modal>
                                             <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"  role="menuitem" >
                                                         <SvgIcons name="details" />
                                                         Details
                                                     </span>
@@ -241,7 +215,7 @@ onMounted(async() => {
                                             </Modal>
                                             <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"  role="menuitem" >
                                                         <SvgIcons name="edit" />
                                                         Edit
                                                     </span>
@@ -252,7 +226,7 @@ onMounted(async() => {
                                             </Modal>
                                             <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
+                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"  role="menuitem" >
                                                         <SvgIcons name="delete" />
                                                         Delete
                                                     </span>

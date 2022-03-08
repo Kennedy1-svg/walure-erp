@@ -5,7 +5,10 @@ import * as actionTypes from './constants/action'
 export default {
   state: () => ({
     loading: false,
-    open: false,
+    openAdd: false,
+    openDetails: false,
+    openDelete: false,
+    openAddBatch: false,
     isEditing: false,
     errors: {
     },
@@ -18,12 +21,22 @@ export default {
         return state.loading
       })
     },
-    getOpenState: (state: any) => {
+    getOpenAddState: (state: any) => {
       return computed(() => {
-        return state.open
+        return state.openAdd
       })
     },
-    getTtle: (state: any) => {
+    getOpenDetailState: (state: any) => {
+      return computed(() => {
+        return state.openDetails
+      })
+    },
+    getOpenDeleteState: (state: any) => {
+      return computed(() => {
+        return state.openDelete
+      })
+    },
+    getEventTitle: (state: any) => {
       return computed(() => {
         return state.title
       })
@@ -55,6 +68,15 @@ export default {
     },
     [mutationTypes.SetOpenStatus] (state: any, data: any) {
       state.open = data
+    },
+    [mutationTypes.SetOpenAddStatus] (state: any, data: any) {
+      state.openAdd = data
+    },
+    [mutationTypes.SetOpenDetailsStatus] (state: any, data: any) {
+      state.openDetails = data
+    },
+    [mutationTypes.SetOpenDeleteStatus] (state: any, data: any) {
+      state.openDelete = data
     },
     [mutationTypes.SetTitle] (state: any, data: any) {
       state.title = data

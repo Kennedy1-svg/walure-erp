@@ -2,7 +2,7 @@
 </script>
 
 <template>
-<div class="relative overflow-hdden">
+<div class="relative bg-transparent">
     <section class="flex h-full justify-center items-start">
         <div onclick="document.getElementById('myModal').showModal()" id="btn">
           <slot name="button">
@@ -13,7 +13,7 @@
         </div>
     </section>
 
-    <dialog id="myModal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+    <dialog id="myModal" class="h-auto w-11/12 md:w-1/2 p-5 bg-transparent rounded-md ">            
         <div class="flex flex-col w-full h-auto">
             <!-- Modal Content-->
             <slot name="modalContent">This is where the content lives</slot>

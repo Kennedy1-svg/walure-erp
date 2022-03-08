@@ -36,7 +36,7 @@ export default {
       [mutationTypes.SetBatch] (state: any, data: any) {
         state.batch = data
       },
-      [mutationTypes.SetTotalCount] (state: any, data: any) {
+      [mutationTypes.SetTotalBatchCount] (state: any, data: any) {
         state.total_count = data
       },
       [mutationTypes.SetEditStatus] (state: any, data: any) {
@@ -58,7 +58,15 @@ export default {
         //   console.log('Ibatchs', JSON.parse(JSON.stringify(batchs.value)))
         //   console.log('Ibatchs', batchs.value)
           commit(mutationTypes.SetBatch, batch.payload)
-          commit(mutationTypes.SetTotalCount, batch.totalCount)
+          commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
         },
+        async [actionTypes.AddStudentToBatch] ({ commit }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+            console.log('token here', token)
+            console.log('data is', data)
+          const addStudent = await addData(data.url, data.data, token)
+          // commit(mutationTypes.SetBatch, batch.payload)
+          // commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
+        }
     },
 }

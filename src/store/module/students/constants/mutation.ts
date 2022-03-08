@@ -1,6 +1,7 @@
 export const SetStudent = 'SetStudent'
-export const GetStudent = 'GetStudent'
+export const getStudent = 'getStudent'
 export const UpdateStudent = 'UpdateStudent'
 export const SetEditStatus = 'SetEditStatus'
 export const SetTitle = 'SetTitle'
 export const SetTotalCount = 'SetTotalCount'
+export const SetEditStudent = 'SetEditStudent'

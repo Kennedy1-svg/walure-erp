@@ -6,8 +6,10 @@ const store:any = useStore();
 // api helper to fetch data from the backend
 export const fetchData = async (url:any, token:any) => {
   try {
+    console.log('token here', token)
+    console.log('url here', url)
     const response = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${token}` } });
-    console.log('response', response)
+    // console.log('response', response)
     return response.data
   } catch (err) {
     return err
@@ -15,23 +17,22 @@ export const fetchData = async (url:any, token:any) => {
 }
 
 // api helper to fetch data by ID from the backend
-export const fetchDataByParams = async (url: any) => {
+export const fetchDataByParams = async (url: any, token:any) => {
   try {
-    const response = await axios.get(`${url}`, { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
-    return response.data.data
+    const response = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${token}` } })
+    // console.log('response', response.data)
+    return response.data
   } catch (err) {
     return err
   }
 }
 
 // api helper to add data to the backend
-export const addData = async (url: any, data: any) => {
+export const addData = async (url: any, data: any, token: any = null) => {
   try {
     const response = await axios.post(url, data, {headers: {
-             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-         }
-      }
-    )
+      Authorization: `Bearer ${token}` } 
+    })
     console.log('response', response.data)
     // setTimeout(() => {
     //   store.dispatch()
