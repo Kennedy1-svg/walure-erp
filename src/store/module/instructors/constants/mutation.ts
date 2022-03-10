@@ -1,0 +1,8 @@
+export const SetInstructor = 'SetInstructor'
+export const getInstructor = 'getInstructor'
+export const UpdateInstructor = 'UpdateInstructor'
+export const SetEditStatus = 'SetEditStatus'
+export const SetTitle = 'SetTitle'
+export const SetTotalCount = 'SetTotalCount'
+export const SetEditInstructor = 'SetEditInstructor'
+export const SetNewInstructor = 'SetNewInstructor'
