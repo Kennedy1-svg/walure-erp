@@ -1,9 +1,25 @@
+<script lang="ts">
+import { defineComponent, onMounted, reactive } from 'vue'
+import { useStore } from 'vuex'
+
+export default defineComponent({
+    name: 'CourseHeader',
+})
+</script>
+
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
-import AddCourse from './AddCourses.vue';
+import * as courseActionTypes from '../../../store/module/courses/constants/action';
+
+const store = useStore();
+
+onMounted(() => {
+    // store.commit('setPageTitle', 'Course List');
+    console.log('CourseHeader mounted');
+});
 
 </script>
 
@@ -15,7 +31,7 @@ import AddCourse from './AddCourses.vue';
                 <p class="text-grey font-semibold">Add Course</p>
                 <Modal>
                     <template #button>
-                        <span class="bg-blue-600 p-1 flex justify-center text-white rounded-md">
+                        <span class="bg-blue p-1 flex justify-center text-white rounded-md">
                             <SvgIcons name="plus" /> <!-- plus icon -->
                         </span>
                     </template>

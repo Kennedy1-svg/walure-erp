@@ -1,479 +1,203 @@
+<script lang="ts">
+import { defineComponent, onMounted, ref, reactive, computed } from 'vue'
+import { useStore } from 'vuex'
+
+export default defineComponent({
+    name: 'CourseList',
+})
+</script>
+
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import CourseDetails from './CourseDetails.vue';
-import AddToBatch from './AddToBatch.vue';
+import Switch from '../../switch.vue';
+import pagination from '../../pagination.vue'
 import Modal from '../../Modal.vue';
+import * as courseActionTypes from '../../../store/module/courses/constants/action';
+import { api_url } from '../../../config/index'
 
+const courses:any = computed(() => {
+    return store.getters.getCourses.value.payload;
+})
+
+const total_count:any = computed(() => {
+    return store.getters.getCourses.value.totalCount;
+})
+
+let pageIndex: any = ref(1);
+
+const onPageChange:any = async (page:any) => {
+    console.log('page suppose don change')
+    console.log('page na', page)
+    pageIndex.value = page;
+    console.log('pageIndex is', pageIndex.value)
+    const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
+    console.log('url', request)
+    await store.dispatch(courseActionTypes.FetchCourses, request)
+}
+
+const totalPages:any = computed(() => {
+    // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
+    console.log(total_count.value)
+    let total:any
+    if (total_count.value % 10 != 0) {
+        total = Math.floor(total_count.value / 10) + 1;
+    } else {
+        total = total_count.value / 10;
+    }
+    return total
+})
+
+const setId:any = (id:any) => {
+    console.log('studentid', id)
+    const request:any = `${api_url}api/student/${id}`;
+    console.log('request forid', request)
+    // store.dispatch(actionTypes.FetchEditStudent, request)
+}
+
+const toggle:any = (status:any) => {
+    if (status == 0) {
+        return status = 1
+    } else {
+        return status = 0
+    }
+}
+
+const showAddToBatch = ref(false);
+
+const showEdit = ref(false);
+
+const showDelete = ref(false);
+
+const showDetails = ref(false);
+
+const store = useStore();
+
+onMounted( async () => {
+    // store.commit('setPageTitle', 'Course List');
+    console.log('CourseList mounted');
+    const request:any = `${api_url}api/course/search-courses/{pageIndex}/{pageSize}`;
+    await store.dispatch(courseActionTypes.FetchCourses, request)
+});
 </script>
 
 <template>
     <div class="main grid">
         <div class="title flex justify-between items-center mb-10">
             <h1 class="text-2xl font-semibold text-black">Course List</h1>
-            <p class="text-xl font-medium text-primary">Total : 20</p>
+            <p class="text-xl font-medium text-primary">Total : {{ total_count }}</p>
         </div>
         <div class="table">
-            <div class="block w-full overflow-x-auto rounded-lg">
-                <table class=" border items-center w-full">
-                    <thead class="bg-table-head">
-                    <tr class="justify-items-center">
-                        <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
-                        S/N
-                        </th>
-                        <th class="align-middle py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                        Name
-                        </th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                        Contact Email
-                        </th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Contact Phone</th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Reg No.</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">IsActive </th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
-                    </tr>
-                    </thead>
+        <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
+            <table class="overflow-x-scroll border items-center w-full">
+                <thead class="bg-table-head">
+                <tr class="justify-items-center">
+                    <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
+                    S/N
+                    </th>
+                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                    Course title
+                    </th>
+                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                    Duration
+                    </th>
+                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Level</th>
+                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">isActive</th>
+                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
+                </tr>
+                </thead>
 
-                    <tbody class="bg-white">
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            1
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            2
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            3
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
+                <tbody id="students" class="bg-white">
+                  <tr v-for="(course) in courses" :key="course.id">
+                      <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                          {{ (courses.indexOf(course) + 1) }}
+                      </td>
+                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                          {{ course.title }}
+                      </td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          {{ course.duration }}
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          {{ course.levelTypeName }}
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          <Switch :status="course.isActive" @toggle="toggle(course.isActive)" />
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          
                             <div class="relative inline-block dropdown">
-                                <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">    <SvgIcons name="ellipsis" />
+                                <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                                    <SvgIcons name="ellipsis" />
                                 </button>
                                 <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
                                     <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                        <div class="py-1 gap-3">
-                                            <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left">
-                                                        <SvgIcons name="doc-add" />
-                                                        Add to batch
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <AddToBatch />
-                                                </template>
+                                        <div class="py-3 gap-3">
+                                            <button
+                                            type="button"
+                                            @click="showAddToBatch = !showAddToBatch" @click.prevent="setId(course.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="doc-add" />
+                                                Add to batch
+                                            </button>
+                                            <Modal :show="showAddToBatch" @close="showAddToBatch = false">
+                                                <AddToBatch />
                                             </Modal>
-                                            <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="details" />
-                                                        Details
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <CourseDetails />
-                                                </template>
+
+                                            <button
+                                            type="button"
+                                            @click="showDetails = !showDetails" @click.prevent="setId(course.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="details" />
+                                                Details
+                                            </button>
+                                            <Modal :show="showDetails" @close="showDetails = false">
+                                                <StudentDetails />
                                             </Modal>
-                                            <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="edit" />
-                                                        Edit
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <AddCourse />
-                                                </template>
+
+                                            <button
+                                            type="button"
+                                            @click="showEdit = !showEdit" @click.prevent="setId(course.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="edit" />
+                                                Edit
+                                            </button>
+                                            <Modal :show="showEdit" @close="showEdit = false">
+                                                <AddStudents />
                                             </Modal>
-                                            <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py- text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="delete" />
-                                                        Delete
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <div class="bg-white p-7 rounded grid">
-                                                        <div class="flex justify-between mb-6">
-                                                            <h1 class="text-xl mb-4 font-medium">
-                                                                Delete Course
-                                                            </h1>
-                                                            <span>
-                                                                <SvgIcons name="o-cancel" />
-                                                            </span>
-                                                        </div>
-                                                        <p class="text-lg mb-10">Are you sure you want to delete Course?</p>
-                                                        <div class="flex justify-between items-center mb-3">
-                                                            <button class="px-10 py-4 rounded text-primary font-bold">
-                                                                Cancel
-                                                            </button>
-                                                            <button class="bg-red px-10 py-4 rounded text-white font-bold">
-                                                                Yes, Delete Course
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </template>
+
+                                            <button
+                                            type="button"
+                                            @click="showDelete = !showDelete"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="delete" />
+                                                Delete
+                                            </button>
+                                            <Modal :show="showDelete" @close="showDelete = false">
+                                            <p class="mb-4">No action</p>
+                                            
                                             </Modal>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            4
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            5
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            6
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            7
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            8
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            9
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            10
-                        </td>
-                        <th class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            Temitope Araba
-                        </th>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            Olamilekan@gmail.com
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            09088009988
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            WAL/STUD/00009
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <div class="my-2 flex items-center">
-                                <label class="relative inline-block h-3 w-8">
-                                    <input 
-                                        type="checkbox" 
-                                        id="checkbox"
-                                        checked
-                                        >
-                                    <span class="toggler round"></span>
-                                </label>
-                                <p class="px-4">
-                                    Active
-                                </p> 
-                            </div>
-                        </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                        <SvgIcons name="ellipsis" />
-                        </td>
-                    </tr>
+                      </td>
+                  </tr>
                     </tbody>
                 </table>
                 <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
                     <div class="">
-                        Page 1 of 10
+                        Page {{ pageIndex }} of {{ totalPages }}
                     </div>
-                    <div class="border-t-0 font-normal align-middle border-l-0 border-r-0 whitespace-nowrap py-4 gap-10 text-left flex items-center">
-                        <span>
-                            <SvgIcons name="previous" />
-                        </span>
-                        <span>
-                            <SvgIcons name="chevron-left" />
-                        </span>
-                        <span>
-                            <SvgIcons name="chevron-right" />
-                        </span>
-                        <span>
-                            <SvgIcons name="next" />
-                        </span>
+                    <div class="">
+                        <pagination
+                            :totalPages=totalPages
+                            @pageChanged="onPageChange"
+                        />
                     </div>
                 </div>
             </div>

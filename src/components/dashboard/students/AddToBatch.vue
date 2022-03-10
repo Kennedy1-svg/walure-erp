@@ -11,6 +11,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
 import * as actionTypes from '../../../store/module/batch/constants/action'
 import { api_url } from '../../../config'
+import alert from '../../alerts.vue';
 
 const store:any = useStore()
 
@@ -31,6 +32,19 @@ const batchId:any = ref('')
 const student:any = computed(() => {
     console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
     return JSON.parse(JSON.stringify(store.getters.getEditStudent.value))
+})
+
+const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
+const alertText:any = computed(() => store.getters.getBatchAlertText.value)
+
+const status:any = computed(() => {
+    let answer:any
+    if (alertText.value.includes('successfully')) {
+        answer = true
+    } else {
+        answer = false
+    }
+    return answer
 })
 
 const setBatchId:any = async (id:any, name:any) => {
@@ -62,7 +76,7 @@ let searchText:any = ref('');
 const filter:any = async () => {
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
-  const status:any = document.getElementById('addToBatchstatus');
+  const status:any = document.getElementById('students');
   console.log('status', status)
   const rows:any = status.getElementsByTagName('ul');
   console.log('rows', rows)
@@ -104,7 +118,23 @@ onMounted(async() => {
 </script>
 
 <template>
-    <div class="main w-full px-6 lg:px-[45px] h-screen bg-white">
+    <div class="main relative w-full px-6 lg:px-[45px] h-screen bg-white">
+        <alert :class="[alertState ? '' : 'hidden']" class="absolute top-5 bg-white p-2 right-0" name="result">
+            <template #icon>
+                <p v-if="status" class="bg-green-accent rounded-full border p-2">
+                    <SvgIcons class="text-white" name="tick" />
+                </p>
+                <p v-else class="">
+                    <SvgIcons class="text-red" name="exclamation" />
+                </p>
+            </template>
+            <template #info>
+                <p class="text-sm">
+                    {{ alertText || 'Username or password Invalid' }}
+                </p>
+            </template>
+            <template #button></template>
+        </alert>
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl">Add to a batch</p>
             <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
@@ -122,7 +152,7 @@ onMounted(async() => {
                         <input @keyup.esc="close" @keyup="filter" v-model="searchText"  class="border-2 text-sm p-3 rounded h-10 w-full mx-auto">
                     </template>
                     <template #list>
-                        <div id="addToBatchstatus">
+                        <div id="students">
                             <ul class="overflow-auto" v-for="item in batch" :key="item.id">
                                 <li @click.prevent="setBatchId(item.id, item.batchName)" class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">{{ item.batchName }}</li>
                             </ul>

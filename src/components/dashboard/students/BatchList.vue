@@ -8,13 +8,16 @@ export default {
 import moment from 'moment'
 import SvgIcons from '../../SvgIcons.vue';
 import AddBatch from './AddBatch.vue';
-import Modal from '../../Modal.vue';
+import Modal from '../../Modals.vue';
 import { computed, ref, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/batch/constants/action'
 import * as mutationTypes from '../../../store/module/batch/constants/mutation'
 import { api_url } from '../../../config'
 import pagination from '../../pagination.vue'
+import { useRouter } from 'vue-router';
+
+const route = useRouter();
 
 const store = useStore();
 
@@ -25,6 +28,26 @@ const batch:any = computed(() => {
 const totalCount:any = computed(() => {
     return JSON.parse(JSON.stringify(store.getters.getTotalBatchCount.value))
 })
+
+const setId:any = (id:any) => {
+    console.log('batchid', id)
+    // route.push(`/dashboard/batch/view-student/${id}`)
+    route.push({
+        name: 'StudentInBatch',
+        params: {
+            id: id
+        }
+    })
+    // const request:any = `${api_url}api/batch/${id}`;
+    // console.log('request forid', request)
+    // store.dispatch(actionTypes.FetchBatch, request)
+}
+
+const showEdit = ref(false);
+
+const showDelete = ref(false);
+
+const showStudents = ref(false);
 
 const totalPages:any = computed(() => {
     // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
@@ -62,13 +85,13 @@ onMounted(async() => {
 
 <template>
     <div class="main grid">
-        <div class="title flex justify-between items-center mb-10">
+        <div class="title flex justify-between pr-32 xl:pr-0 items-center mb-10">
             <h1 class="text-2xl font-semibold text-black">Batch List</h1>
             <p class="text-xl font-medium text-primary">Total : {{ totalCount }}</p>
         </div>
         <div class="table">
-            <div class="block w-full overflow-x-auto rounded-lg">
-                <table class="overflow-hidden border items-center w-full">
+            <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
+                <table class="overflow-x-scroll border items-center w-full -mr-16">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
                         <th class="pl-4 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
@@ -91,7 +114,7 @@ onMounted(async() => {
                     <tbody id="batchlist" class="bg-white">
                     <tr v-for="(batchitem) in batch" :key="batchitem.id">
                         <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ (batch.indexOf(batchitem) + 1) }}
+                            {{ batch.indexOf(batchitem) + 1 }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ batchitem.batchName }}
@@ -122,82 +145,39 @@ onMounted(async() => {
                                 <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-44">
                                     <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
                                         <div class="py-3 gap-3">
-                                            <div class="relative overflow-hdden">
-                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div onclick="document.getElementById('myModl').showModal()" id="btn">
-                                                       <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
-                                                            <SvgIcons name="edit" />
-                                                            Edit
-                                                        </span>
-                                                    </div>
-                                                </section>
+                                            <button
+                                            type="button"
+                                            @click="showEdit = !showEdit" @click.prevent="setId(batchitem.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="edit" />
+                                                Edit
+                                            </button>
+                                            <Modal :show="showEdit" @close="showEdit = false">
+                                                <AddStudents />
+                                            </Modal>
 
-                                                <dialog id="myModl" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                                                    <div class="w-full h-auto">
-                                                        <!-- Modal Content-->
-                                                            <AddBatch>
-                                                                <template #title>
-                                                                    Edit
-                                                                </template>
-                                                            </AddBatch>
-                                                        <!-- End of Modal Content-->
-                                                    </div>
-                                                </dialog>
-                                            </div>
-                                            <div class="relative overflow-hdden">
-                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div onclick="document.getElementById('myMdal').showModal()" id="btn">
-                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="eye" />
-                                                        View Student
-                                                    </span>
-                                                    </div>
-                                                </section>
+                                            <button
+                                            type="button"
+                                            @click="showStudents = !showStudents" @click.prevent="setId(batchitem.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >                                        
+                                                <SvgIcons name="eye" />
+                                                View Student
+                                            </button>
 
-                                                <dialog id="myMdal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                                                    <div class="w-full h-auto">
-                                                        <!-- Modal Content-->
-                                                            <!-- <StudentDetails /> -->
-                                                        <!-- End of Modal Content-->
-                                                    </div>
-                                                </dialog>
-                                            </div>
-                                            <div class="relative overflow-hdden">
-                                                <section class="flex h-full justify-start items-center py-1 hover:bg-gray-100">
-                                                    <div onclick="document.getElementById('myodal').showModal()" id="btn">
-                                                        <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
-                                                            <SvgIcons name="delete" />
-                                                            Delete
-                                                        </span>
-                                                    </div>
-                                                </section>
-
-                                                <dialog id="myodal" class="w-11/12 md:w-2/5 p-5 bg-white rounded-md ">            
-                                                    <div class="w-full">
-                                                        <!-- Modal Content-->
-                                                        <div class="bg-white text-left p-7 rounded grid">
-                                                            <div class="flex justify-between mb-6">
-                                                                <h1 class="text-xl mb-4 font-medium">
-                                                                    Delete Student
-                                                                </h1>
-                                                                <span>
-                                                                    <SvgIcons name="o-cancel" />
-                                                                </span>
-                                                            </div>
-                                                            <p class="text-lg mb-10">Are you sure you want to delete student?</p>
-                                                            <div class="flex justify-between items-center mb-3">
-                                                                <button class="px-10 py-4 rounded text-primary font-bold">
-                                                                    Cancel
-                                                                </button>
-                                                                <button class="bg-red px-10 py-4 rounded text-white font-bold">
-                                                                    Yes, Delete Student
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End of Modal Content-->
-                                                    </div>
-                                                </dialog>
-                                            </div>
+                                            <button
+                                            type="button"
+                                            @click="showDelete = !showDelete"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="delete" />
+                                                Delete
+                                            </button>
+                                            <Modal :show="showDelete" @close="showDelete = false">
+                                            <p class="mb-4">No action</p>
+                                            
+                                            </Modal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
                                                     <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left">

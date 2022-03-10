@@ -29,6 +29,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
+        path: 'batch/view-student/:id',
+        name: 'StudentInBatch',
+        component: () => import('../views/dashboard/students/StudentsInBatch.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: 'student-management',
         name: 'StudentManagement',
         component: () => import('../views/dashboard/students/Index.vue'),
@@ -40,8 +46,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/dashboard/students/Batch.vue'),
         meta: { requiresAuth: true },
       },
+
       {
-        path: 'course-management',
+        path: 'talent-management/instructors',
+        name: 'Instructors',
+        component: () => import('../views/dashboard/instructors/Index.vue'),
+        meta: { requiresAuth: true },
+      },      {
+        path: 'course-management/courses',
         name: 'CourseManagement',
         component: () => import('../views/dashboard/courses/Index.vue'),
         meta: { requiresAuth: true },

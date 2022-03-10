@@ -30,8 +30,24 @@ export const fetchDataByParams = async (url: any, token:any) => {
 // api helper to add data to the backend
 export const addData = async (url: any, data: any, token: any = null) => {
   try {
-    const response = await axios.post(url, data, {headers: {
+    const response = await axios.post(url, data, { headers: {
       Authorization: `Bearer ${token}` } 
+    })
+    console.log('response', response.data)
+    // setTimeout(() => {
+    //   store.dispatch()
+    // })
+    return response.data
+  } catch (err) {
+    console.log('err', err)
+    return err
+  }
+}
+
+export const addDataFile = async (url: any, data: any, token: any = null) => {
+  try {
+    const response = await axios.post(url, data, { headers: { 'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${token}` } 
     })
     console.log('response', response.data)
     // setTimeout(() => {

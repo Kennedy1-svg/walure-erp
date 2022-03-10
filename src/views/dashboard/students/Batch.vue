@@ -1,3 +1,11 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    name: 'StudentInBatch', 
+});
+</script>
+
 <script setup lang="ts">
 import BatchHeader from '../../../components/dashboard/students/BatchHeader.vue';
 import BatchList from '../../../components/dashboard/students/BatchList.vue';

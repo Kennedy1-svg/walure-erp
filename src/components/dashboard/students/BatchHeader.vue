@@ -51,7 +51,7 @@ const format:any = (date:any) => {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
-    return `${day}/${month}/${year}`;
+    return `${month}/${day}/${year}`;
 }
 
 const close:any = async () => {
@@ -88,10 +88,10 @@ const close:any = async () => {
         <div class="filter bg-white rounded-t-lg justify-between items-center py-5">
             <div class="filter-items text-grey grid grid-cols-4 gap-3 bg-white rounded-t-lg px-11 py-5">
                 <div class="startdate">
-                    <Datepicker inputClassName="dp-custom-input" v-model="startDate" placeholder="Start Date" :format="format" textInput/>
+                    <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format" textInput/>
                 </div>
                 <div class="enddate">
-                    <Datepicker inputClassName="dp-custom-input" v-model="endDate" :format="format" placeholder="End Date"  />
+                    <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date"  />
                 </div>
                 <div class="status">
                     <Filter>
@@ -172,10 +172,6 @@ const close:any = async () => {
   }
 } 
 
-.dp-custom-input {
-    @apply py-6 text-[#1e9c26];
-    color: #1e9c26;
-}
 </style>
 
 <style>

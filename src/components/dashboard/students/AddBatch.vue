@@ -9,10 +9,14 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css'
 
 const route = useRouter()
 
 let isChecked:any = ref(false);
+const startDate:any = ref('');
+const endDate:any = ref('');
 
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
@@ -21,6 +25,14 @@ const check:any = ():any => {
 const addStudent:any = () => {
     console.log('hi');
     // route.push('/dashboard/student-management')
+}
+
+const format:any = (date:any) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return `${month}/${day}/${year}`;
 }
 
 let isActive:any = ref(false);
@@ -35,9 +47,9 @@ const disabledView:any = 'bg-gray-300';
     <div class="main w-full mt-[0.5px] px-[45px] bg-white">
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl"><slot name="title">Add</slot> batch</p>
-            <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" />
+            <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
         </div>
-        <form class="text-sm text-left grid">
+        <form id="addbatch" class="text-sm text-left grid">
             <div class="grid grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="name" class="font-semibold">
@@ -61,7 +73,7 @@ const disabledView:any = 'bg-gray-300';
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
-                    <label for="lastname" class="font-semibold">
+                    <label for="trainingtype" class="font-semibold">
                         Training Type*
                     </label>
                     
@@ -85,27 +97,13 @@ const disabledView:any = 'bg-gray-300';
                     <label for="startdate" class="font-semibold">
                         Start date*
                     </label>
-                    
-                    <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="startdate" id="startdate">
-                        <option value="">Start Date</option>
-                        <option value="active">Male</option>
-                        <option value="inactive">Female</option>
-                        <option value="inactive">Not sure</option>
-                        <option value="inactive">Prefer not to say</option>
-                    </select>
+                    <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format"/>
                 </div>
                 <div class="grid gap-4">
                     <label for="enddate" class="font-semibold">
                         End date*
                     </label>
-                    
-                    <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="enddate" id="enddate">
-                        <option value="">Select option</option>
-                        <option value="active">Male</option>
-                        <option value="inactive">Female</option>
-                        <option value="inactive">Not sure</option>
-                        <option value="inactive">Prefer not to say</option>
-                    </select>
+                    <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date" />
                 </div>
             </div>
             <div class="grid gap-8 mb-10">
@@ -146,3 +144,10 @@ const disabledView:any = 'bg-gray-300';
         </form>
     </div>
 </template>
+
+<style scoped>
+.dp-custom-calendar{
+    background: #ae0000;
+    z-index: 9999;  
+}
+</style>

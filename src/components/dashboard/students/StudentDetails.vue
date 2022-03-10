@@ -17,7 +17,7 @@ const store = useStore();
 const showProfilePicture = ref(false);
 
 const student:any = computed(() => {
-    console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
+    // console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
     return JSON.parse(JSON.stringify(store.getters.getEditStudent.value))
 })
 

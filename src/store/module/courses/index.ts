@@ -15,7 +15,7 @@ export default {
       },
     },
     mutations: {
-      [mutationTypes.SetCourse] (state: any, data: any) {
+      [mutationTypes.SetCourses] (state: any, data: any) {
         state.courses = data
       },
     },
@@ -23,8 +23,8 @@ export default {
       async [actionTypes.FetchCourses] ({ commit }: any, data: any) {
         const token:any = localStorage.getItem('token')
         const courses:any = await fetchData(data, token)
-
-        commit(mutationTypes.SetCourse, data)
+        console.log('courses', courses)
+        commit(mutationTypes.SetCourses, courses)
       },
     },
 }

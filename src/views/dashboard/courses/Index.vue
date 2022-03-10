@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import StudentHeader from '../../../components/dashboard/students/StudentHeader.vue';
-import StudentList from '../../../components/dashboard/students/StudentList.vue';
+import CourseHeader from '../../../components/dashboard/courses/CourseHeader.vue';
+import CourseList from '../../../components/dashboard/courses/CourseList.vue';
 </script>
 
 <template>
     <div class="main mx-9">
-        <StudentHeader />
-        <StudentList />
+        <CourseHeader />
+        <CourseList />
     </div>
 </template>

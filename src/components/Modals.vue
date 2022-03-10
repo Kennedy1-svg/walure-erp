@@ -32,7 +32,7 @@
               v-show="showModal"
               aria-labelledby="modal-headline"
             >
-              <button class="absolute top-4 right-4">
+              <button class="absolute top-4 z-50 right-4">
                 <SvgIcons name="cancel" @click="closeModal" />
               </button>
               <slot>I'm empty inside</slot>
