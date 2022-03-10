@@ -1,0 +1,229 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "ViewStudentList",
+});
+</script>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { api_url } from '../../../config';
+import pagination from '../../pagination.vue'
+import SvgIcons from '../../SvgIcons.vue';
+import * as studentActionTypes from '../../../store/module/students/constants/action'
+import * as courseActionTypes from '../../../store/module/courses/constants/action'
+import { useStore } from 'vuex'
+
+const store = useStore();
+
+onMounted(() => {
+//   store.dispatch(studentActionTypes.GET_STUDENTS);
+    console.log('oya, na we dey here');
+    
+});
+
+</script>
+
+<template>
+  <div class="main grid">
+        <div class="title flex justify-between items-center mb-10">
+            <h1 class="text-2xl font-semibold text-black">Student List</h1>
+            <p class="text-xl font-medium text-primary">Total : 20</p>
+        </div>
+    <div class="table">
+        <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
+            <table class="overflow-x-scroll border items-center w-full">
+                <thead class="bg-table-head">
+                <tr class="justify-items-center">
+                    <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
+                    S/N
+                    </th>
+                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                    Student name
+                    </th>
+                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                    Course
+                    </th>
+                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">ID</th>
+                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
+                </tr>
+                </thead>
+
+                <tbody id="students" class="bg-white">
+                  <tr>
+                      <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                          1
+                      </td>
+                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                          Temitope Araba
+                      </td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          Hacking
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          WAL/STUD/00004
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          <SvgIcons name="delete" />
+                      </td>
+                  </tr>
+                  <!-- <tr v-for="(student) in students" :key="student.id"> -->
+                      <!-- <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                          {{ (students.indexOf(student) + 1) }}
+                      </td>
+                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                          {{ student.firstName + ' ' + student.lastName }}
+                      </td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          {{ student.email }}
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          {{ student.phoneNumber }}
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          {{ student.regNumber }}
+                      </td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          <Switch :status="student.status" @toggle="toggle(student.status)" />
+                      </td> -->
+                      <!-- <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right"> -->
+                          <!-- <div class="relative inline-block dropdown"> -->
+                              <!-- <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">    <SvgIcons name="ellipsis" />
+                              </button> -->
+                              <!-- <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                  <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                                      <div class="py-3 gap-3"> -->
+                                          <!-- <button
+                                          type="button"
+                                          @click="showAddToBatch = !showAddToBatch" @click.prevent="setId(student.id)"
+                                          class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                          >
+                                              <SvgIcons name="doc-add" />
+                                              Add to batch
+                                          </button>
+                                          <Modal :show="showAddToBatch" @close="showAddToBatch = false">
+                                              <AddToBatch />
+                                          </Modal>
+
+                                          <button
+                                          type="button"
+                                          @click="showDetails = !showDetails" @click.prevent="setId(student.id)"
+                                          class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                          >
+                                              <SvgIcons name="details" />
+                                              Details
+                                          </button>
+                                          <Modal :show="showDetails" @close="showDetails = false">
+                                              <StudentDetails />
+                                          </Modal>
+
+                                          <button
+                                          type="button"
+                                          @click="showEdit = !showEdit" @click.prevent="setId(student.id)"
+                                          class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                          >
+                                              <SvgIcons name="edit" />
+                                              Edit
+                                          </button>
+                                          <Modal :show="showEdit" @close="showEdit = false">
+                                              <AddStudents />
+                                          </Modal>
+
+                                          <button
+                                          type="button"
+                                          @click="showDelete = !showDelete"
+                                          class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                          >
+                                              <SvgIcons name="delete" />
+                                              Delete
+                                          </button>
+                                          <Modal :show="showDelete" @close="showDelete = false">
+                                          <p class="mb-4">No action</p>
+                                          
+                                          </Modal> -->
+                                          <!-- <Modal class="flex py-2 hover:bg-gray-100">
+                                              <template #button>
+                                                  <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left">
+                                                      <SvgIcons name="doc-add" />
+                                                      Add to batch
+                                                  </span>
+                                              </template>
+                                              <template #content>
+                                                  <AddToBatch />
+                                              </template>
+                                          </Modal>
+                                          <Modal class="flex py-2 hover:bg-gray-100">
+                                              <template #button>
+                                                  <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"  role="menuitem" >
+                                                      <SvgIcons name="details" />
+                                                      Details
+                                                  </span>
+                                              </template>
+                                              <template #content>
+                                                  <StudentDetails />
+                                              </template>
+                                          </Modal>
+                                          <Modal class="flex py-2 hover:bg-gray-100">
+                                              <template #button>
+                                                  <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"  role="menuitem" >
+                                                      <SvgIcons name="edit" />
+                                                      Edit
+                                                  </span>
+                                              </template>
+                                              <template #content>
+                                                  <AddStudent />
+                                              </template>
+                                          </Modal>
+                                          <Modal class="flex py-2 hover:bg-gray-100">
+                                              <template #button>
+                                                  <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"  role="menuitem" >
+                                                      <SvgIcons name="delete" />
+                                                      Delete
+                                                  </span>
+                                              </template>
+                                              <template #content>
+                                                  <div class="bg-white p-7 rounded grid">
+                                                      <div class="flex justify-between mb-6">
+                                                          <h1 class="text-xl mb-4 font-medium">
+                                                              Delete Student
+                                                          </h1>
+                                                          <span>
+                                                              <SvgIcons name="o-cancel" />
+                                                          </span>
+                                                      </div>
+                                                      <p class="text-lg mb-10">Are you sure you want to delete student?</p>
+                                                      <div class="flex justify-between items-center mb-3">
+                                                          <button class="px-10 py-4 rounded text-primary font-bold">
+                                                              Cancel
+                                                          </button>
+                                                          <button class="bg-red px-10 py-4 rounded text-white font-bold">
+                                                              Yes, Delete Student
+                                                          </button>
+                                                      </div>
+                                                  </div>
+                                              </template>
+                                          </Modal> -->
+                                      <!-- </div> -->
+                                  <!-- </div> -->
+                              <!-- </div> -->
+                          <!-- </div> -->
+                      <!-- </td> -->
+                  <!-- </tr> -->
+                </tbody>
+            </table>
+            <!-- <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                <div class="">
+                    Page {{ pageIndex }} of {{ totalPages }}
+                </div>
+                <div class="">
+                    <pagination
+                        :totalPages=totalPages
+                        @pageChanged="onPageChange"
+                    />
+                </div>
+            </div> -->
+        </div>
+    </div>
+  </div>
+</template>
