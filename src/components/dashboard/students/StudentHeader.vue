@@ -47,6 +47,13 @@ const setFilterStatus:any = (name:any) => {
   }
 }
 
+const closeModal:any = () => {
+  // document.getElementById('myoal').showModal()
+  console.log('close modal')
+  let doc:any = document.getElementById('myoal')
+  doc.close()
+}
+
 const filterItems:any = ['Active', 'Disabled', 'All']
 
 let searchText:any = ref('');
@@ -102,7 +109,7 @@ const close:any = async () => {
                     <dialog id="myoal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
-                                <AddStudent />
+                                <AddStudent @close="closeModal" />
                             <!-- End of Modal Content-->
                         </div>
                     </dialog>

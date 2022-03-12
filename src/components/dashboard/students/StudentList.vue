@@ -153,7 +153,7 @@ onMounted(async() => {
                                                 Add to batch
                                             </button>
                                             <Modal :show="showAddToBatch" @close="showAddToBatch = false">
-                                                <AddToBatch />
+                                                <AddToBatch @close="showAddToBatch = !showAddToBatch" />
                                             </Modal>
 
                                             <button
@@ -165,7 +165,7 @@ onMounted(async() => {
                                                 Details
                                             </button>
                                             <Modal :show="showDetails" @close="showDetails = false">
-                                                <StudentDetails />
+                                                <StudentDetails @close="showDetails = !showDetails" />
                                             </Modal>
 
                                             <button
@@ -177,7 +177,7 @@ onMounted(async() => {
                                                 Edit
                                             </button>
                                             <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddStudents />
+                                                <AddStudents @close="showEdit = !showEdit" />
                                             </Modal>
 
                                             <button

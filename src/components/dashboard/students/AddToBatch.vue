@@ -69,6 +69,7 @@ const addStudent:any = async () => {
 
     console.log('requestData', requestData)
     store.dispatch(actionTypes.AddStudentToBatch, requestData)
+    closeModal()
 }
 
 let searchText:any = ref('');
@@ -106,6 +107,12 @@ const close:any = async () => {
   searchText.value = ''
 }
 
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+}
+
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
@@ -137,7 +144,7 @@ onMounted(async() => {
         </alert>
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl">Add to a batch</p>
-            <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
+            <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form class="text-sm text-left grid">
             <div class="grid gap-1 mb-10">

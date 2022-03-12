@@ -10,6 +10,7 @@ import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import alert from '../../alerts.vue';
 import SvgIcons from '../../SvgIcons.vue';
+import Modal from '../../Modal.vue'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
@@ -51,6 +52,27 @@ const courses:any = computed(() => {
     return store.getters.getCourses.value.payload;
 })
 
+const resetInput:any = () => {
+    return newStudent.value = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        courseId: '',
+        imageFile: '',
+        image: '',
+        imageUrl: '',
+    }
+}
+
+const emits = defineEmits(['close'])
+
+const closeModal:any =  () => {
+  emits('close')
+}
+
+const showProfilePicture = ref(false);
+
 let isActive:any = computed(() => {
     if (newStudent.value.imageFile) {
         return true
@@ -63,6 +85,8 @@ const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newStudent.value.imageFile = event.target.files[0]
     formData.append('file', event.target.files[0])
+    let image: any = document.getElementById('output')
+    image.src = URL.createObjectURL(event.target.files[0])
     console.log('newStudent image', newStudent.value.imageFile)
 }
 
@@ -103,8 +127,11 @@ const addStudent:any = async () => {
         data: formData
     }
     console.log('newData', newData)
-    await store.dispatch(studentActionTypes.AddNewStudent, newData)
+    // await store.dispatch(studentActionTypes.AddNewStudent, newData)
     const result = await store.getters.getStudent
+    closeModal()
+    resetInput()
+    // form.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
 }
@@ -141,7 +168,7 @@ const disabledView:any = 'bg-gray-300';
         </alert>
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl"><slot name="title">Add</slot> Student</p>
-            <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" />
+            <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="formElem" class="text-sm grid">
             <div class="grid justify-items-center gap-1 mb-[88px]">
@@ -153,12 +180,27 @@ const disabledView:any = 'bg-gray-300';
                     </span>
                 </div>
                 <div class="buttons text-grey flex gap-[50px]">
-                    <button @click.prevent="removeImage" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeRemove : disabledRemove]">
+                    <button @click.prevent="removeImage" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeRemove : disabledRemove]" :disabled = !isActive>
                         Remove
                     </button>
-                    <button class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]">
+
+                <Modal id="profile" :show="showProfilePicture" @close="showProfilePicture = false">
+                    <template #button>
+                    <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
                         View Passport
                     </button>
+                    </template>
+                    <template #modalContent>
+                        <img id="output" alt="user img">
+                    </template>
+                </Modal>
+
+                <!-- <button @click="showProfilePicture = !showProfilePicture" type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
+                    View Passport
+                </button>
+                <Modal :show="showProfilePicture" @close="showProfilePicture = false">
+                    <img id="output" alt="user img">
+                </Modal> -->
                 </div>
             </div>
             <div class="grid text-left grid-cols-2 gap-8 mb-10">

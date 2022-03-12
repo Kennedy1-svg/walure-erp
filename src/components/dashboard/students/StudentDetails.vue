@@ -15,6 +15,13 @@ import * as actionTypes from '../../../store/module/students/constants/action'
 const store = useStore();
 
 const showProfilePicture = ref(false);
+const emits = defineEmits(['close'])
+
+const closeModal:any = () => {
+  // document.getElementById('myoal').showModal()
+  console.log('close modal')
+  emits('close')
+}
 
 const student:any = computed(() => {
     // console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
@@ -34,7 +41,7 @@ const student:any = computed(() => {
         <div class="grid mb-[88px]">
             <div class="flex justify-between py-[53px] items-center ">
                 <p class="text-2xl">Student Details</p>
-                <SvgIcons name="cancel" onclick="document.getElementById('myMdal').close();" class="cursor-pointer" />
+                <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
             </div>
             <div class="image grid justify-items-center">
                 <span class=" border p-1 rounded-full mb-9">
@@ -46,7 +53,7 @@ const student:any = computed(() => {
                 <!-- <Modal :show="showProfilePicture" @close="showProfilePicture = false">
                     <img class="" :src=student.image alt="user img">
                 </Modal> -->
-                <Modal :show="showProfilePicture" @close="showProfilePicture = false">
+                <Modal id="picture" :show="showProfilePicture" @close="showProfilePicture = false">
                     <template #button>
                         <button type="button" @click="showProfilePicture = !showProfilePicture"  class="rounded bg-primary text-white text-sm px-10 py-4">
                             View Passport

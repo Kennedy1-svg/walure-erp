@@ -1,3 +1,50 @@
+
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'ModalDialog',
+});
+</script>
+
+<script setup lang="ts">
+import { ref, watch, toRefs } from 'vue';
+import SvgIcons from './SvgIcons.vue'
+// import useClickOutside from '../composables/useClickOutside.js';
+
+const props = defineProps({
+  show: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emits = defineEmits(['close']);
+
+const { show } = toRefs(props);
+const showModal = ref(false);
+const modal = ref(null);
+// const { onClickOutside } = useClickOutside();
+const closeModal:any = () => {
+  emits('close')
+}
+
+// onClickOutside(modal, () => {
+//   if (showModal.value === true) {
+//     closeModal();
+//   }
+// });
+
+watch(
+  () => props.show,
+  show => {
+    showModal.value = show;
+  },
+);
+
+</script>
+
 <template>
   <teleport to="body">
     <transition
@@ -32,9 +79,9 @@
               v-show="showModal"
               aria-labelledby="modal-headline"
             >
-              <button class="absolute top-4 z-50 right-4">
+              <!-- <button class="absolute top-4 z-50 right-4">
                 <SvgIcons name="cancel" @click="closeModal" />
-              </button>
+              </button> -->
               <slot>I'm empty inside</slot>
             </div>
           </transition>
@@ -43,50 +90,5 @@
     </transition>
   </teleport>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'ModalDialog',
-});
-</script>
-
-<script setup lang="ts">
-import { ref, watch, toRefs } from 'vue';
-import SvgIcons from './SvgIcons.vue'
-// import useClickOutside from '../composables/useClickOutside.js';
-
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-const emits = defineEmits(['close']);
-
-const { show } = toRefs(props);
-const showModal = ref(false);
-const modal = ref(null);
-// const { onClickOutside } = useClickOutside();
-const closeModal:any = async () => {
-  emits('close')
-}
-
-// onClickOutside(modal, () => {
-//   if (showModal.value === true) {
-//     closeModal();
-//   }
-// });
-
-watch(
-  () => props.show,
-  show => {
-    showModal.value = show;
-  },
-);
-
-</script>
 
 <style></style>
