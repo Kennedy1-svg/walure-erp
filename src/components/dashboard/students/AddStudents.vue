@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import alert from '../../alerts.vue';
@@ -18,6 +18,10 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 const route = useRouter();
+
+let isDisabled = ref(true);
+let isError:any = ref(false);
+let isLoading:any = ref(false);
 
 const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
 const alertText:any = computed(() => store.getters.getBatchAlertText.value)
@@ -43,6 +47,90 @@ const check:any = ():any => {
 const newStudent:any = computed(() => {
     return store.getters.getNewStudent.value;
 })
+
+const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+const phone ='^[0]+[0-9]';
+
+const checkError:any = () => {
+    if (!newStudent.value.firstName) {
+        errors.firstName = true;
+        errors.firstNameText = 'First name is required'
+    } else if (newStudent.value.firstName.length <= 3) {
+        errors.firstNameText = 'First name needs to be more than 3 characters'
+    } else {
+        errors.firstName = false;
+    }
+    
+    if (!newStudent.value.lastName) {
+        errors.lastName = true;
+        errors.lastNameText = 'Last name is required'
+    } else if (newStudent.value.lastName.length <= 3) {
+        errors.lastNameText = 'Last name needs to be more than 3 characters'
+    } else {
+        errors.lastName = false;
+    }
+
+    if (!newStudent.value.otherName) {
+        errors.otherName = true;
+        errors.otherNameText = 'Other name is required'
+    } else if (newStudent.value.otherName.length <= 3) {
+        errors.otherNameText = 'Other name needs to be more than 3 characters'
+    } else {
+        errors.otherName = false;
+    }
+
+    if (!newStudent.value.gender) {
+        errors.gender = true;
+        errors.genderText = 'Gender is required. Please select a gender'
+    } else {
+        errors.gender = false;
+    }
+
+    if (!newStudent.value.course) {
+        errors.course = true;
+        errors.courseText = 'Course is required. Please select a course'
+    } else {
+        errors.course = false;
+    }
+
+    if (!newStudent.value.email) {
+        errors.email = true;
+        errors.emailText = 'email is required'
+    } else if (!newStudent.value.email.match(email)) {
+        errors.emailText = `Email must should have the format 'brianadams@walure.com`
+    } else {
+        errors.email = false;
+    }
+
+    if (!newStudent.value.phoneNumber) {
+        errors.phone = true;
+        errors.phoneText = 'Phone number is required'
+    } else if (isNaN(newStudent.value.phoneNumber)) {
+        errors.phone = true;
+        errors.phoneText = 'Phone number cannot contain letters'
+    } else if (!newStudent.value.phoneNumber.match(phone)) {
+        errors.phoneText = 'Phone numer must start with 0'
+    } else if (newStudent.value.phoneNumber.length <= 9) {
+        errors.phoneText = 'Phone numer cannot be less than 10 digits'
+    } else {
+        errors.phone = false;
+    }
+
+    if (!newStudent.value.addresss) {
+        errors.address = true;
+        errors.addressText = 'Address is required'
+    } else if (newStudent.value.addresss.length <= 13) {
+        errors.addressText = 'Address needs to be more than 3 words'
+    } else {
+        errors.address = false;
+    }
+}
+
+const submit:any = () => {
+    console.log('hello');
+    checkError();
+    !isError.value ? addStudent() : '';
+}
 
 const removeImage:any = async () => {
     return newStudent.value.imageFile = ''
@@ -79,6 +167,29 @@ let isActive:any = computed(() => {
     } else {
         return false
     }
+})
+
+let errors = reactive({
+    firstName: false,
+    firstNameText: 'firstname',
+    lastName: false,
+    lastNameText: 'lastname',
+    otherName: false,
+    otherNameText: 'othername',
+    password: false,
+    passwordtext: 'passwordtext',
+    gender: false,
+    genderText: 'gender',
+    email: false,
+    emailText: 'email',
+    phone: false,
+    phoneText: 'phone',
+    course: false,
+    courseText: 'course',
+    image: false,
+    imageText: 'image',
+    address: false,
+    addressText: 'address',
 })
 
 const onChange:any = (event:any):any => {
@@ -173,11 +284,17 @@ const disabledView:any = 'bg-gray-300';
         <form id="formElem" class="text-sm grid">
             <div class="grid justify-items-center gap-1 mb-[88px]">
                 <div class="relative mb-8">
-                    <SvgIcons class="text-gray-300" name="pic-avatar" />
-                    <span class="absolute cursor-pointer left-3/5 bottom-0 bg-black rounded-full p-2">                   
-                        <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept="image/*" />
-                        <SvgIcons class="text-white" name="camera" />
-                    </span>
+                    <p class="text-[10px] text-red">
+                        {{ errors.image ? errors.imageText : '' }}
+                    </p>
+                    <div v-if="!isActive">
+                        <SvgIcons v-if="!isActive" :class="[errors.image ? 'border rounded-full text-red border-red' : '']" class="text-gray-300" name="pic-avatar" />
+                        <span class="absolute cursor-pointer left-3/5 bottom-0 bg-black rounded-full p-2">                   
+                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept="image/*" />
+                            <SvgIcons class="text-white" name="camera" />
+                        </span>
+                    </div>
+                    <img class="w-20 h-20 border p-1 rounded-full" :class="[ isActive ? '' : 'hidden' ]" id="output" alt="user img">
                 </div>
                 <div class="buttons text-grey flex gap-[50px]">
                     <button @click.prevent="removeImage" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeRemove : disabledRemove]" :disabled = !isActive>
@@ -208,13 +325,19 @@ const disabledView:any = 'bg-gray-300';
                     <label for="firstname" class="font-semibold">
                         First name
                     </label>
-                    <input type="text" v-model="newStudent.firstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.firstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.firstName ? errors.firstNameText : '' }}
+                    </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="lastname" class="font-semibold">
                         Last name
                     </label>
-                    <input type="text" v-model="newStudent.lastName" name="lastname" id="lastname" placeholder="Enter last name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.lastName" name="lastname" id="lastname" placeholder="Enter last name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.lastName ? errors.lastNameText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
@@ -222,13 +345,19 @@ const disabledView:any = 'bg-gray-300';
                     <label for="othername" class="font-semibold">
                         Other name
                     </label>
-                    <input type="text" v-model="newStudent.otherName" name="othername" id="othername" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.otherName" name="othername" id="othername" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.otherName ? errors.otherNameText : '' }}
+                    </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="phone" class="font-semibold">
                         Phone number*
                     </label>
-                    <input type="text" v-model="newStudent.phoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.phoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.phone ? errors.phoneText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
@@ -236,18 +365,24 @@ const disabledView:any = 'bg-gray-300';
                     <label for="email" class="font-semibold">
                         Email*
                     </label>
-                    <input type="email" v-model="newStudent.email" name="email" id="email" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="email" @focus="checkError" @keyup="checkError" v-model="newStudent.email" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.email ? errors.emailText : '' }}
+                    </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="gender" class="font-semibold">
                         Gender*
                     </label>
                     
-                    <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" v-model="newStudent.gender" name="gender" id="gender">
+                    <select @focus="checkError" @keyup="checkError" class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" v-model="newStudent.gender" name="gender" id="gender">
                         <option value="">Select option</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.gender ? errors.genderText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="grid text-left gap-8 mb-10">
@@ -255,10 +390,13 @@ const disabledView:any = 'bg-gray-300';
                     <label for="course" class="font-semibold">
                         Course*
                     </label>
-                    <select class="pl-5 pr-52 py-3 bg-transparent rounded border text-grey" v-model="newStudent.courseId" name="course" id="course">
+                    <select @focus="checkError" @keyup="checkError" class="pl-5 pr-52 py-3 bg-transparent rounded border text-grey" v-model="newStudent.courseId" name="course" id="course">
                         <option value="">Select option</option>
                         <option  v-for="item in courses" :key="item.id"  :value=item.id>{{ item.title }}</option>
                     </select>
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.course ? errors.courseText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="grid text-left gap-8 mb-10">
@@ -266,7 +404,10 @@ const disabledView:any = 'bg-gray-300';
                     <label for="address" class="font-semibold">
                         Address
                     </label>
-                    <textarea type="text" v-model="newStudent.addresss" name="address" id="address" placeholder="Input address" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" />
+                    <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.addresss" name="address" id="address" placeholder="Input address" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" />
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.address ? errors.addressText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="flex justify-end pb-10">
