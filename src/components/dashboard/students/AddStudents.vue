@@ -182,9 +182,6 @@ const checkError:any = () => {
     } else if (errors.gender) {
         errors.gender = true;
         isError.value = true;
-    } else if (errors.lastName) {
-        errors.lastName = true;
-        isError.value = true;
     } else if (errors.course) {
         errors.course = true;
         isError.value = true;
@@ -265,7 +262,7 @@ const addStudent:any = async () => {
         data: formData
     }
     console.log('newData', newData)
-    // await store.dispatch(studentActionTypes.AddNewStudent, newData)
+    await store.dispatch(studentActionTypes.AddNewStudent, newData)
     const result = await store.getters.getStudent
     closeModal()
     // form.reset()
@@ -276,6 +273,7 @@ const addStudent:any = async () => {
 const submit:any = () => {
     console.log('hello');
     checkError();
+    console.log('iserror value', isError.value)
     !isError.value ? addStudent() : '';
 }
 
@@ -322,7 +320,7 @@ const disabledView:any = 'bg-gray-300';
                     <div v-if="!isActive">
                         <SvgIcons v-if="!isActive" :class="[errors.image ? 'border rounded-full text-red border-red' : '']" class="text-gray-300" name="pic-avatar" />
                         <span class="absolute cursor-pointer left-3/5 bottom-0 bg-black rounded-full p-2">                   
-                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept="image/*" />
+                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .jpeg" />
                             <SvgIcons class="text-white" name="camera" />
                         </span>
                     </div>
@@ -443,7 +441,7 @@ const disabledView:any = 'bg-gray-300';
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="addStudent()" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
             </div>
         </form>
     </div>
