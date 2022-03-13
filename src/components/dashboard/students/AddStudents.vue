@@ -26,6 +26,27 @@ let isLoading:any = ref(false);
 const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
 const alertText:any = computed(() => store.getters.getBatchAlertText.value)
 
+let errors = reactive({
+    firstName: false,
+    firstNameText: '',
+    lastName: false,
+    lastNameText: '',
+    otherName: false,
+    otherNameText: '',
+    gender: false,
+    genderText: '',
+    email: false,
+    emailText: '',
+    phone: false,
+    phoneText: '',
+    course: false,
+    courseText: '',
+    image: false,
+    imageText: '',
+    address: false,
+    addressText: '',
+})
+
 const status:any = computed(() => {
     let answer:any
     if (alertText.value.includes('successfully')) {
@@ -136,12 +157,41 @@ const checkError:any = () => {
     } else {
         errors.address = false;
     }
-}
 
-const submit:any = () => {
-    console.log('hello');
-    checkError();
-    !isError.value ? addStudent() : '';
+    if (errors.firstName) {
+        errors.firstName = true;
+        isError.value = true;
+    } else if (errors.lastName) {
+        errors.lastName = true;
+        isError.value = true;
+    } else if (errors.otherName) {
+        errors.otherName = true;
+        isError.value = true;
+    } else if (errors.email) {
+        errors.email = true;
+        isError.value = true;
+    } else if (errors.address) {
+        errors.address = true;
+        isError.value = true;
+    } else if (errors.image) {
+        errors.image = true;
+        isError.value = true;
+    } else if (errors.phone) {
+        errors.phone = true;
+        isError.value = true;
+    } else if (errors.gender) {
+        errors.gender = true;
+        isError.value = true;
+    } else if (errors.lastName) {
+        errors.lastName = true;
+        isError.value = true;
+    } else if (errors.course) {
+        errors.course = true;
+        isError.value = true;
+    } else {
+        isError.value = false;
+        isDisabled.value = false;
+    }   
 }
 
 const removeImage:any = async () => {
@@ -152,17 +202,6 @@ const courses:any = computed(() => {
     return store.getters.getCourses.value.payload;
 })
 
-const resetInput:any = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        courseId: '',
-        imageFile: '',
-        otherName: '',
-        addresss: '',
-        gender: ''
-    }
 
 const emits = defineEmits(['close'])
 
@@ -178,29 +217,6 @@ let isActive:any = computed(() => {
     } else {
         return false
     }
-})
-
-let errors = reactive({
-    firstName: false,
-    firstNameText: '',
-    lastName: false,
-    lastNameText: '',
-    otherName: false,
-    otherNameText: '',
-    password: false,
-    passwordtext: '',
-    gender: false,
-    genderText: '',
-    email: false,
-    emailText: '',
-    phone: false,
-    phoneText: '',
-    course: false,
-    courseText: '',
-    image: false,
-    imageText: '',
-    address: false,
-    addressText: '',
 })
 
 const onChange:any = (event:any):any => {
@@ -252,10 +268,15 @@ const addStudent:any = async () => {
     // await store.dispatch(studentActionTypes.AddNewStudent, newData)
     const result = await store.getters.getStudent
     closeModal()
-    resetInput()
     // form.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
+}
+
+const submit:any = () => {
+    console.log('hello');
+    checkError();
+    !isError.value ? addStudent() : '';
 }
 
 onMounted(async () => {
