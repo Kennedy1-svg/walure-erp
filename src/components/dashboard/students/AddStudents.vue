@@ -322,7 +322,7 @@ const disabledView:any = 'bg-gray-300';
                     <div v-if="!isActive">
                         <SvgIcons v-if="!isActive" :class="[errors.image ? 'border rounded-full text-red border-red' : '']" class="text-gray-300" name="pic-avatar" />
                         <span class="absolute cursor-pointer left-3/5 bottom-0 bg-black rounded-full p-2">                   
-                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .jpeg" />
+                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept="image/*" />
                             <SvgIcons class="text-white" name="camera" />
                         </span>
                     </div>
