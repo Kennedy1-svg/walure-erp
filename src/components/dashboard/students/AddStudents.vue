@@ -220,7 +220,9 @@ const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newStudent.value.imageFile = event.target.files[0]
     formData.append('file', event.target.files[0])
-    let image: any = document.getElementById('output')
+    let images: any = document.getElementById('output')
+    let image:any = document.getElementById('displayoutput')
+    images.src = URL.createObjectURL(event.target.files[0])
     image.src = URL.createObjectURL(event.target.files[0])
     console.log('newStudent image', newStudent.value.imageFile.type)
 }
@@ -324,7 +326,7 @@ const disabledView:any = 'bg-gray-300';
                             <SvgIcons class="text-white" name="camera" />
                         </span>
                     </div>
-                    <img class="w-20 h-20 border p-1 rounded-full" :class="[ isActive ? '' : 'hidden' ]" id="output" alt="user img">
+                    <img class="w-20 h-20 border p-1 rounded-full" :class="[ isActive ? '' : 'hidden' ]" id="displayoutput" alt="user img">
                 </div>
                 <div class="buttons text-grey flex gap-[50px]">
                     <button @click.prevent="removeImage" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeRemove : disabledRemove]" :disabled = !isActive>
