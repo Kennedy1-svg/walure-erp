@@ -443,7 +443,7 @@ const disabledView:any = 'bg-gray-300';
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button @click.prevent="addStudent()" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
             </div>
         </form>
     </div>
