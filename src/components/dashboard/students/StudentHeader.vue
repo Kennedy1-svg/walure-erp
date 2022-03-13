@@ -47,11 +47,11 @@ const setFilterStatus:any = (name:any) => {
   }
 }
 
-const closeModal:any = () => {
+const closeModal:any =  async () => {
   // document.getElementById('myoal').showModal()
   console.log('close modal')
   let doc:any = document.getElementById('myoal')
-  doc.close()
+  await doc.close()  
 }
 
 const filterItems:any = ['Active', 'Disabled', 'All']

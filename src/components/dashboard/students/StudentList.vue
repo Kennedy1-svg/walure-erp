@@ -27,7 +27,7 @@ const students:any = computed(() => {
 
 const totalCount:any = computed(() => {
     // console.log('totalCount', JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value)))
-    return JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value))
+    // return JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value))
 })
 
 // const totalCount:any = ref(27)

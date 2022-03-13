@@ -52,6 +52,8 @@ const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 const phone ='^[0]+[0-9]';
 
 const checkError:any = () => {
+    let imageType:String = newStudent.value.imageFile.type;
+    console.log('imageType is', imageType)
     if (!newStudent.value.firstName) {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
@@ -86,7 +88,17 @@ const checkError:any = () => {
         errors.gender = false;
     }
 
-    if (!newStudent.value.course) {
+    if (!newStudent.value.imageFile) {
+        errors.image = true;
+        errors.imageText = 'Image is required. Please upload an image'
+    } else if (newStudent.value.imageFile.size > 5242880) {
+        errors.image = true;
+        errors.imageText = 'Image size should not be more than 5MB'
+    } else {
+        errors.image = false;
+    }
+
+    if (!newStudent.value.courseId) {
         errors.course = true;
         errors.courseText = 'Course is required. Please select a course'
     } else {
@@ -140,18 +152,17 @@ const courses:any = computed(() => {
     return store.getters.getCourses.value.payload;
 })
 
-const resetInput:any = () => {
-    return newStudent.value = {
+const resetInput:any = {
         firstName: '',
         lastName: '',
         email: '',
-        phone: '',
+        phoneNumber: '',
         courseId: '',
         imageFile: '',
-        image: '',
-        imageUrl: '',
+        otherName: '',
+        addresss: '',
+        gender: ''
     }
-}
 
 const emits = defineEmits(['close'])
 
@@ -171,25 +182,25 @@ let isActive:any = computed(() => {
 
 let errors = reactive({
     firstName: false,
-    firstNameText: 'firstname',
+    firstNameText: '',
     lastName: false,
-    lastNameText: 'lastname',
+    lastNameText: '',
     otherName: false,
-    otherNameText: 'othername',
+    otherNameText: '',
     password: false,
-    passwordtext: 'passwordtext',
+    passwordtext: '',
     gender: false,
-    genderText: 'gender',
+    genderText: '',
     email: false,
-    emailText: 'email',
+    emailText: '',
     phone: false,
-    phoneText: 'phone',
+    phoneText: '',
     course: false,
-    courseText: 'course',
+    courseText: '',
     image: false,
-    imageText: 'image',
+    imageText: '',
     address: false,
-    addressText: 'address',
+    addressText: '',
 })
 
 const onChange:any = (event:any):any => {
@@ -198,7 +209,7 @@ const onChange:any = (event:any):any => {
     formData.append('file', event.target.files[0])
     let image: any = document.getElementById('output')
     image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newStudent image', newStudent.value.imageFile)
+    console.log('newStudent image', newStudent.value.imageFile.type)
 }
 
 const addStudent:any = async () => {
@@ -283,14 +294,14 @@ const disabledView:any = 'bg-gray-300';
         </div>
         <form id="formElem" class="text-sm grid">
             <div class="grid justify-items-center gap-1 mb-[88px]">
-                <div class="relative mb-8">
                     <p class="text-[10px] text-red">
                         {{ errors.image ? errors.imageText : '' }}
                     </p>
+                <div class="relative mb-8">
                     <div v-if="!isActive">
                         <SvgIcons v-if="!isActive" :class="[errors.image ? 'border rounded-full text-red border-red' : '']" class="text-gray-300" name="pic-avatar" />
                         <span class="absolute cursor-pointer left-3/5 bottom-0 bg-black rounded-full p-2">                   
-                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept="image/*" />
+                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .jpeg" />
                             <SvgIcons class="text-white" name="camera" />
                         </span>
                     </div>
@@ -411,7 +422,7 @@ const disabledView:any = 'bg-gray-300';
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="addStudent" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
             </div>
         </form>
     </div>
