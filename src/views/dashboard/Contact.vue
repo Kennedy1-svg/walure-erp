@@ -16,11 +16,11 @@ import Filter from '../../components/Filter.vue'
 // import InstructorDetails from '../../components/dashboard/instructors/InstructorDetails.vue';
 // import AddTalents from '../../components/dashboard/instructors/AddTalents.vue';
 // import UpdateStatus from '../../components/dashboard/instructors/UpdateStatus.vue';
-import AddSkill from '../../components/dashboard/instructors/AddSkill.vue';
-import ContactHeader from '../../components/dashboard/contact/ContactHeader.vue';
-import ContactList from '../../components/dashboard/contact/ContactList.vue';
+// import AddSkill from '../../components/dashboard/instructors/AddSkill.vue';
+// import ContactHeader from '../../components/dashboard/contact/ContactHeader.vue';
+// import ContactList from '../../components/dashboard/contact/ContactList.vue';
 import Delete from '../../components/delete.vue';
-import ContactDetails from '../../components/dashboard/contact/ContactDetails.vue';
+// import ContactDetails from '../../components/dashboard/contact/ContactDetails.vue';
 
 
 const store = useStore()
