@@ -5,26 +5,213 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { api_url } from '../../../config'
+import moment from 'moment';
 import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
+import datepicker from '../../datepicker.vue'
+import multiselect from '@vueform/multiselect'
+import * as courseActionTypes from '../../../store/module/courses/constants/action'
+import * as batchActionTypes from '../../../store/module/batch/constants/action'
+import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
 
-const route = useRouter()
+const store = useStore();
+
+const route = useRouter();
+
+let isDisabled = ref(true);
+let isError:any = ref(false);
+let isLoading:any = ref(false);
+
+let formData = new FormData()
+
+const newBatch:any = computed(() => {
+    return store.getters.getNewBatch.value
+})
+
+const checkError:any = () => {
+    // if (!newBatch.value.name) {
+    //     errors.name = true;
+    //     errors.nameText = 'First name is required'
+    // } else if (newBatch.value.name.length <= 3) {
+    //     errors.nameText = 'First name needs to be more than 3 characters'
+    // } else {
+    //     errors.name = false;
+    // }
+    
+    // if (!newBatch.value.trainingType) {
+    //     errors.trainingType = true;
+    //     errors.trainingTypeText = 'Last name is required'
+    // } else if (newBatch.value.trainingType.length <= 3) {
+    //     errors.trainingTypeText = 'Last name needs to be more than 3 characters'
+    // } else {
+    //     errors.trainingType = false;
+    // }
+
+    // if (!newBatch.value.batchCapacity) {
+    //     errors.batchCapacity = true;
+    //     errors.batchCapacityText = 'Other name is required'
+    // } else if (newBatch.value.batchCapacity.length <= 3) {
+    //     errors.batchCapacityText = 'Other name needs to be more than 3 characters'
+    // } else {
+    //     errors.batchCapacity = false;
+    // }
+
+    // if (!newBatch.value.startDate) {
+    //     errors.startDate = true;
+    //     errors.startDateText = 'Gender is required. Please select a startDate'
+    // } else {
+    //     errors.startDate = false;
+    // }
+
+    // if (!newBatch.value.courseId) {
+    //     errors.course = true;
+    //     errors.courseText = 'Course is required. Please select a course'
+    // } else {
+    //     errors.course = false;
+    // }
+
+    // if (!newBatch.value.endDate) {
+    //     errors.endDate = true;
+    //     errors.endDateText = 'endDate is required'
+    // } else if (!newBatch.value.endDate.match(endDate)) {
+    //     errors.endDateText = `Email must should have the format 'brianadams@walure.com`
+    // } else {
+    //     errors.endDate = false;
+    // }
+
+    // if (!newBatch.value.instructor) {
+    //     errors.instructor = true;
+    //     errors.instructorText = 'Address is required'
+    // } else if (newBatch.value.instructor.length <= 13) {
+    //     errors.instructorText = 'Address needs to be more than 3 words'
+    // } else {
+    //     errors.instructor = false;
+    // }
+
+    // if (errors.name) {
+    //     errors.name = true;
+    //     isError.value = true;
+    // } else if (errors.trainingType) {
+    //     errors.trainingType = true;
+    //     isError.value = true;
+    // } else if (errors.batchCapacity) {
+    //     errors.batchCapacity = true;
+    //     isError.value = true;
+    // } else if (errors.endDate) {
+    //     errors.endDate = true;
+    //     isError.value = true;
+    // } else if (errors.instructor) {
+    //     errors.instructor = true;
+    //     isError.value = true;
+    // } else if (errors.startDate) {
+    //     errors.startDate = true;
+    //     isError.value = true;
+    // } else if (errors.course) {
+    //     errors.course = true;
+    //     isError.value = true;
+    // } else {
+    //     isError.value = false;
+    //     isDisabled.value = false;
+    // }   
+}
 
 let isChecked:any = ref(false);
 const startDate:any = ref('');
 const endDate:any = ref('');
 
+const courses:any = computed(() => {
+  return store.getters.getCourses.value.payload;
+});
+
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
 }
 
-const addStudent:any = () => {
+let errors = reactive({
+    name: false,
+    nameText: '',
+    trainingType: false,
+    trainingTypeText: '',
+    batchCapacity: false,
+    batchCapacityText: '',
+    startDate: false,
+    startDateText: '',
+    endDate: false,
+    endDateText: '',
+    instructor: false,
+    instructorText: '',
+    course: false,
+    courseText: '',
+})
+
+
+
+const instructors:any = computed(() => {
+  return store.getters.getInstructor.value.payload;
+});
+
+const training:any = ref('')
+
+const instructor:any = ref([])
+
+const trainingoptions:any = ref([
+    {
+        label: "Onsite",
+        value: 0
+    },
+    {
+        label: "Online",
+        value: 1
+    }
+]);
+
+const emits = defineEmits(['close'])
+
+const closeModal:any =  () => {
+    emits('close')
+}
+
+const batchcourse:any = ref('')
+
+const addbatch:any = async () => {
     console.log('hi');
-    // route.push('/dashboard/student-management')
+    const request:any = `${api_url}api/batch/create-batch`;
+
+    // const batchdata:any = {
+    //     Title: newBatch.value.name,
+    //     TrainingType: newBatch.value.trainingType,
+    //     BatchCapacity: newBatch.value.batchCapacity,
+    //     // StartDate: moment(newBatch.value.startDate).format('MM/DD/YYYY'),
+    //     // EndDate: moment(newBatch.value.endDate).format('MM/DD/YYYY'),
+    //     StartDate: newBatch.value.startDate,
+    //     EndDate: newBatch.value.endDate,
+    //     Instructors: JSON.parse(JSON.stringify(newBatch.value.instructor)),
+    //     CourseId: newBatch.value.courseId,
+    // }
+    
+    formData.append('Title', newBatch.value.name);
+    formData.append('TrainingType', newBatch.value.trainingType);
+    formData.append('BatchCapacity', newBatch.value.batchCapacity);
+    formData.append('StartDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
+    formData.append('EndDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
+    formData.append('Instructors', newBatch.value.instructor);
+    formData.append('CourseId', newBatch.value.courseId);
+
+    const newData:any = {
+        url: request,
+        data: formData,
+    }
+    console.log('newData', newData)
+    await store.dispatch(batchActionTypes.AddBatch, newData)
+    await store.dispatch(batchActionTypes.FetchBatch)
+    const result = await store.getters.getBatch
+    closeModal()
 }
 
 const format:any = (date:any) => {
@@ -37,10 +224,25 @@ const format:any = (date:any) => {
 
 let isActive:any = ref(false);
 
+const submit:any = () => {
+    console.log('hello batch');
+    checkError();
+    console.log('iserror value', isError.value)
+    !isError.value ? addbatch() : '';
+}
+
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
 const disabledRemove:any = 'border-grey text-grey';
 const activeView:any = 'bg-primary hover:opacity-80';
 const disabledView:any = 'bg-gray-300';
+
+onMounted(async () => {
+    console.log('I am now here')
+    const request:any = `${api_url}api/course/get-courses`;
+    await store.dispatch(courseActionTypes.FetchCourses, request)
+    const instructorrequest:any = `${api_url}api/instructor/get-instructors`;
+    await store.dispatch(instructorActionTypes.FetchInstructors, instructorrequest)
+})
 </script>
 
 <template>
@@ -48,6 +250,7 @@ const disabledView:any = 'bg-gray-300';
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl"><slot name="title">Add</slot> batch</p>
             <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
+            <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="addbatch" class="text-sm text-left grid">
             <div class="grid grid-cols-2 gap-8 mb-10">
@@ -55,20 +258,18 @@ const disabledView:any = 'bg-gray-300';
                     <label for="name" class="font-semibold">
                         Name*
                     </label>
-                    <input type="text" name="name" id="name" placeholder="Enter name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" v-model="newBatch.name" name="name" id="name" placeholder="Enter name" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
                 </div>
                 <div class="grid gap-4">
                     <label for="course" class="font-semibold">
                         Course*
                     </label>
+                  <multiselect v-model="newBatch.courseId" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Select option" :searchable="true" class="multiselect-blue" />
                     
-                    <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
+                    <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
                         <option value="">Select option</option>
-                        <option value="active">Male</option>
-                        <option value="inactive">Female</option>
-                        <option value="inactive">Not sure</option>
-                        <option value="inactive">Prefer not to say</option>
-                    </select>
+                        <option  v-for="item in courses" :key="item.id"  :value=item.id>{{ item.title }}</option>
+                    </select> -->
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">
@@ -76,41 +277,43 @@ const disabledView:any = 'bg-gray-300';
                     <label for="trainingtype" class="font-semibold">
                         Training Type*
                     </label>
+
+                    <multiselect v-model="newBatch.trainingType" valueProp="value" :options="trainingoptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
                     
-                    <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="trainingtype" id="trainingtype">
+                    <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="trainingtype" id="trainingtype">
                         <option value="">Select option</option>
-                        <option value="active">Male</option>
-                        <option value="inactive">Female</option>
-                        <option value="inactive">Not sure</option>
-                        <option value="inactive">Prefer not to say</option>
-                    </select>
+                        <option value="Online">Online</option>
+                        <option value="Onsite">Onsite</option>
+                    </select> -->
                 </div>
                 <div class="grid gap-4">
                     <label for="capacity" class="font-semibold">
                         Batch capacity*
                     </label>
-                    <input type="text" name="capacity" id="capacity" placeholder="Enter number" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" v-model="newBatch.batchCapacity" name="capacity" id="capacity" placeholder="Enter number" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">                
-                <div class="grid gap-4">
+                <div class="grid gap-4" id="startdate">
                     <label for="startdate" class="font-semibold">
                         Start date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format"/>
+                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
+                    <!-- <datepicker /> -->
                 </div>
-                <div class="grid gap-4">
+                <div class="grid gap-4" id="enddate">
                     <label for="enddate" class="font-semibold">
                         End date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date" />
+                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
                 </div>
             </div>
             <div class="grid gap-8 mb-10">
                 <label for="instructor" class="font-semibold">
                     Instructor
                 </label>
-                <Filter>
+                <multiselect v-model="newBatch.instructor" mode="tags" :close-on-select="false" valueProp="id" :options="instructors" track-by="fullName" label="fullName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                <!-- <Filter>
                     <template #info>
                         <span class="pl-5 pr-56">
                             <p class="text-grey">
@@ -128,26 +331,18 @@ const disabledView:any = 'bg-gray-300';
                         <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Araba Temi</p></li>
                         <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Araba Temi</p></li>
                     </template>
-                </Filter>
-            </div>
-            <div class="grid gap-8 mb-10">
-                <div class="grid gap-4">
-                    <label for="address" class="font-semibold">
-                        Address
-                    </label>
-                    <textarea type="text" name="address" id="address" placeholder="Input address" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" />
-                </div>
+                </Filter> -->
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="addStudent" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
             </div>
         </form>
     </div>
 </template>
 
-<style scoped>
-.dp-custom-calendar{
-    background: #ae0000;
-    z-index: 9999;  
+<style lang="scss">
+
+.dp-custom-menu {
+    position: static;
 }
 </style>

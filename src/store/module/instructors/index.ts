@@ -45,12 +45,12 @@ export default {
         return state.total_count
       })
     },
-    getEditStatus: (state: any) => {
+    getEditInstructorStatus: (state: any) => {
       return computed(() => {
         return state.isEditing
       })
     },
-    getTitle: (state: any) => {
+    getInstructorTitle: (state: any) => {
       return computed(() => {
         return state.title
       })
@@ -77,18 +77,18 @@ export default {
     },
   },
   actions: {
-    async [actionTypes.FetchInstructors] ({ commit }: any, data: any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`) {
+    async [actionTypes.FetchInstructors] ({ commit }: any, data: any = `${api_url}api/instructor/get-instructors`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
       const instructors = await fetchData(data, token)
       console.log('data fe', data)
-    //   console.log('Iinstructors', instructors.payload)
+      console.log('Iinstructors', instructors.payload)
     //   console.log('Iinstructors', instructors.value)
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors)))
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors.value)))
     //   console.log('Iinstructors', instructors.value)
-      commit(mutationTypes.SetInstructor, instructors.payload)
-      commit(mutationTypes.SetTotalCount, instructors.totalCount)
+      await commit(mutationTypes.SetInstructor, instructors)
+      await commit(mutationTypes.SetTotalCount, instructors.totalCount)
     },
     async [actionTypes.FetchEditInstructor] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')

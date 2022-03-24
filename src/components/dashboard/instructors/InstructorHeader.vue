@@ -1,24 +1,35 @@
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useStore } from 'vuex'
 
-export default defineComponent({
+export default {
     name: 'InstructorHeader',
-})
+}
 </script>
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
+import AddInstructor from './AddInstructors.vue'
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
+import { api_url } from '../../../config/index'
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
 
 const store = useStore();
 
-onMounted(() => {
-    // store.commit('setPageTitle', 'Course List');
+const closeModal:any = () => {
+  // document.getElementById('addinstructor').showModal()
+  console.log('close student modal')
+  let doc:any = document.getElementById('addinstructor')
+  doc.close()  
+}
+
+onMounted( async () => {
+    // store.commit('setPageTitle', 'Instructor List');
     console.log('InstructorHeader mounted');
+    const request:any = `${api_url}api/course/get-courses`;
+    await store.dispatch(courseActionTypes.FetchCourses, request)
 });
 
 </script>
@@ -29,16 +40,23 @@ onMounted(() => {
             <h1 class="font-semibold text-2xl">Instructors</h1>
             <button class="focus:outline-none flex items-center gap-3 text-sm">
                 <p class="text-grey font-semibold">Add Instructor</p>
-                <Modal>
-                    <template #button>
-                        <span class="bg-blue p-1 flex justify-center text-white rounded-md">
-                            <SvgIcons name="plus" /> <!-- plus icon -->
-                        </span>
-                    </template>
-                    <template #content>
-                        <AddCourse />
-                    </template>
-                </Modal>
+              <div class="relative overflow-hdden">
+                  <section class="flex h-full justify-ceter items-start">
+                      <div onclick="document.getElementById('addinstructor').showModal()" id="btn">
+                          <span class="bg-blue p-1 flex justify-center text-white rounded-md">
+                              <SvgIcons name="plus" /> <!-- plus icon -->
+                          </span>
+                      </div>
+                  </section>
+
+                  <dialog id="addinstructor" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">            
+                      <div class="w-full h-auto">
+                          <!-- Modal Content-->
+                              <AddInstructor @close="closeModal" />
+                          <!-- End of Modal Content-->
+                      </div>
+                  </dialog>
+              </div>
             </button>
         </div>
         <div class="filter flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
@@ -65,3 +83,30 @@ onMounted(() => {
         </div>
     </div>
 </template>
+
+<style scoped>
+
+  dialog[open] {
+    position: absolute !important;
+    right: -19%;
+    animation: appear .25s cubic-bezier(0.0, 0.0, 0.58, 1.0);
+}
+
+  dialog::backdrop {
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
+    backdrop-filter: blur(3px);
+  }
+  
+ 
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateX(-40rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} 
+</style>

@@ -1,9 +1,8 @@
 import { computed } from 'vue'
 import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
-import { api_url } from '../../../config/index'
+import { api_url } from '../../../config'
 import { addData, addDataFile, fetchData, editData, removeData } from '../../../helpers/api'
-import { SetNewStudent } from './constants/mutation';
 
 export default {
   state: () => ({

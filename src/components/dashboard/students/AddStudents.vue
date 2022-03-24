@@ -31,8 +31,8 @@ let errors = reactive({
     firstNameText: '',
     lastName: false,
     lastNameText: '',
-    otherName: false,
-    otherNameText: '',
+    OtherName: false,
+    OtherNameText: '',
     gender: false,
     genderText: '',
     email: false,
@@ -56,6 +56,8 @@ const status:any = computed(() => {
     }
     return answer
 })
+
+const formEl:any = ref(null)
 
 let isChecked:any = ref(false);
 
@@ -93,13 +95,13 @@ const checkError:any = () => {
         errors.lastName = false;
     }
 
-    if (!newStudent.value.otherName) {
-        errors.otherName = true;
-        errors.otherNameText = 'Other name is required'
-    } else if (newStudent.value.otherName.length <= 3) {
-        errors.otherNameText = 'Other name needs to be more than 3 characters'
+    if (!newStudent.value.OtherName) {
+        errors.OtherName = true;
+        errors.OtherNameText = 'Other name is required'
+    } else if (newStudent.value.OtherName.length <= 3) {
+        errors.OtherNameText = 'Other name needs to be more than 3 characters'
     } else {
-        errors.otherName = false;
+        errors.OtherName = false;
     }
 
     if (!newStudent.value.gender) {
@@ -143,8 +145,8 @@ const checkError:any = () => {
         errors.phoneText = 'Phone number cannot contain letters'
     } else if (!newStudent.value.phoneNumber.match(phone)) {
         errors.phoneText = 'Phone numer must start with 0'
-    } else if (newStudent.value.phoneNumber.length <= 9) {
-        errors.phoneText = 'Phone numer cannot be less than 10 digits'
+    } else if (newStudent.value.phoneNumber.length <= 10) {
+        errors.phoneText = 'Phone numer cannot be less than 11 digits'
     } else {
         errors.phone = false;
     }
@@ -164,8 +166,8 @@ const checkError:any = () => {
     } else if (errors.lastName) {
         errors.lastName = true;
         isError.value = true;
-    } else if (errors.otherName) {
-        errors.otherName = true;
+    } else if (errors.OtherName) {
+        errors.OtherName = true;
         isError.value = true;
     } else if (errors.email) {
         errors.email = true;
@@ -202,8 +204,8 @@ const courses:any = computed(() => {
 
 const emits = defineEmits(['close'])
 
-const closeModal:any =  () => {
-  emits('close')
+const closeModal:any = () => {
+    emits('close')
 }
 
 const showProfilePicture = ref(false);
@@ -227,6 +229,18 @@ const onChange:any = (event:any):any => {
     console.log('newStudent image', newStudent.value.imageFile.type)
 }
 
+const resetForm:any = Object.freeze({
+        firstName: '',
+        lastName: '',
+        OtherName: '',
+        email: '',
+        phoneNumber: '',
+        addresss: '',
+        imageFile: '',
+        gender: '',
+        courseId: ''
+})
+
 const addStudent:any = async () => {
     console.log('hi');
     console.log('newstudent', newStudent.value)
@@ -236,7 +250,7 @@ const addStudent:any = async () => {
     // const formElem = document.getElementById('formElem')
     formData.append('firstName', newStudent.value.firstName)
     formData.append('lastName', newStudent.value.lastName)
-    formData.append('otherName', newStudent.value.otherName)
+    formData.append('OtherName', newStudent.value.OtherName)
     formData.append('imageFile', newStudent.value.imageFile, newStudent.value.imageFile.name)
     formData.append('addresss', newStudent.value.addresss)
     formData.append('phoneNumber', newStudent.value.phoneNumber)
@@ -267,7 +281,7 @@ const addStudent:any = async () => {
     await store.dispatch(studentActionTypes.AddNewStudent, newData)
     const result = await store.getters.getStudent
     closeModal()
-    // form.reset()
+    // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
 }
@@ -281,7 +295,7 @@ const submit:any = () => {
 
 onMounted(async () => {
     console.log('I am now here')
-    const request:any = `${api_url}api/course/search-courses/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/course/get-courses`;
     await store.dispatch(courseActionTypes.FetchCourses, request)
 })
 
@@ -313,7 +327,7 @@ const disabledView:any = 'bg-gray-300';
             <p class="text-2xl"><slot name="title">Add</slot> Student</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
-        <form id="formElem" class="text-sm grid">
+        <form id="formElem" ref="formEl" class="text-sm grid">
             <div class="grid justify-items-center gap-1 mb-[88px]">
                     <p class="text-[10px] text-red">
                         {{ errors.image ? errors.imageText : '' }}
@@ -333,16 +347,16 @@ const disabledView:any = 'bg-gray-300';
                         Remove
                     </button>
 
-                <Modal id="profile" :show="showProfilePicture" @close="showProfilePicture = false">
-                    <template #button>
-                    <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
-                        View Passport
-                    </button>
-                    </template>
-                    <template #modalContent>
-                        <img id="output" alt="user img">
-                    </template>
-                </Modal>
+                    <Modal id="profile" :show="showProfilePicture" @close="showProfilePicture = false">
+                        <template #button>
+                        <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
+                            View Passport
+                        </button>
+                        </template>
+                        <template #modalContent>
+                            <img id="output" alt="user img">
+                        </template>
+                    </Modal>
 
                 <!-- <button @click="showProfilePicture = !showProfilePicture" type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
                     View Passport
@@ -377,9 +391,9 @@ const disabledView:any = 'bg-gray-300';
                     <label for="othername" class="font-semibold">
                         Other name
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.otherName" name="othername" id="othername" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.OtherName" name="othername" id="othername" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.otherName ? errors.otherNameText : '' }}
+                        {{ errors.OtherName ? errors.OtherNameText : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
@@ -409,8 +423,8 @@ const disabledView:any = 'bg-gray-300';
                     
                     <select @focus="checkError" @keyup="checkError" class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" v-model="newStudent.gender" name="gender" id="gender">
                         <option value="">Select option</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                     </select>
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.gender ? errors.genderText : '' }}

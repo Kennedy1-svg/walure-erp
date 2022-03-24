@@ -11,7 +11,11 @@ import { ref, toRefs, computed } from 'vue'
 const props:any = defineProps({
   status: {
     type: Boolean,
-  }
+  },
+  statusText: {
+    type: String,
+    default: '',
+  },
 })
 
 const checked:any = computed(() => {
@@ -24,7 +28,7 @@ const checked:any = computed(() => {
   return answer
 })
 
-const { status } = toRefs(props)
+const { status, statusText } = toRefs(props)
 
 const emit = defineEmits(['toggle'])
 
@@ -50,6 +54,7 @@ const changeStatus:any = () => {
   }
 }
 </script>
+
 <template>
     <div class="my-2 flex items-center">
         <label class="relative inline-block h-3 w-8">
@@ -62,10 +67,11 @@ const changeStatus:any = () => {
             <span class="toggler round"></span>
         </label>
         <p class="px-4">
-            {{ studentStatus }}
-        </p> 
+            {{ props.statusText }}
+        </p>
     </div>
 </template>
+
 <style scoped>
     input {
         opacity: 0;

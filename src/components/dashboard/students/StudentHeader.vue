@@ -9,6 +9,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
+import multiselect from '@vueform/multiselect'
 import AddStudent from './AddStudents.vue';
 import * as actionTypes from '../../../store/module/students/constants/action'
 import { ref } from 'vue';
@@ -20,6 +21,50 @@ const store:any = useStore()
 let info:any = ref('Status')
 
 const batchId:any = ref('')
+
+const deselect:any = async () => {
+    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+    store.dispatch(actionTypes.FetchStudents, request)
+    store.getters.getStudents
+}
+
+const cancan:any = async (name:any) => {
+  console.log('i can can')
+  console.log('name', name)
+  // if (name == 'All') {
+  //   const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+  //   store.dispatch(actionTypes.FetchStudents, request)
+  //   store.getters.getStudents
+  //   // console.log('all url', url) 
+  //   return info.value = 'Status'
+  // } else if (name == 'Active') {
+    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/${name}`;
+    store.dispatch(actionTypes.FilterStudent, request)
+  //   // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
+  //   store.getters.getStudents
+  //   // console.log('active url', url)
+  //   return info.value = name
+  // } else if (name == 'Disabled') {
+  //   const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/0`;
+  //   store.dispatch(actionTypes.FilterStudent, request)
+  //   store.getters.getStudents
+  //   // console.log('disabled url', url)
+  //   return info.value = name
+  // }
+}
+
+const statusoptions:any = [
+  {
+    label: 'Disabled',
+    value: 0
+  },
+  {
+    label: 'Active',
+    value: 1
+  }
+]
+
+const statusField:any = ref('')
 
 const setFilterStatus:any = (name:any) => {
   // let status:any = ref(1)
@@ -48,9 +93,9 @@ const setFilterStatus:any = (name:any) => {
 }
 
 const closeModal:any = () => {
-  // document.getElementById('myoal').showModal()
-  console.log('close modal')
-  let doc:any = document.getElementById('myoal')
+  // document.getElementById('addstudent').showModal()
+  console.log('close student modal')
+  let doc:any = document.getElementById('addstudent')
   doc.close()  
 }
 
@@ -93,51 +138,54 @@ const close:any = async () => {
 
 <template>
     <div class="main pt-[50px] grid gap-5 pb-[90px]">
-        <div class="top flex justify-between items-center">
-            <h1 class="font-semibold text-2xl">Students</h1>
-            <button class="focus:outline-none flex items-center gap-3 text-sm">
-                <p class="text-grey font-semibold">Add Student</p>
-                <div class="relative overflow-hdden">
-                    <section class="flex h-full justify-ceter items-start">
-                        <div onclick="document.getElementById('myoal').showModal()" id="btn">
-                            <span class="bg-blue p-1 flex justify-center text-white rounded-md">
-                                <SvgIcons name="plus" /> <!-- plus icon -->
-                            </span>
-                        </div>
-                    </section>
-
-                    <dialog id="myoal" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                        <div class="w-full h-auto">
-                            <!-- Modal Content-->
-                                <AddStudent @close="closeModal" />
-                            <!-- End of Modal Content-->
-                        </div>
-                    </dialog>
-                </div>
-            </button>
-        </div>
-        <div class="filter flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
-            <div class="status">
-                <Filter>
-                    <template #info>
-                        <span class="pl-5 pr-56">{{ info }}</span>
-                    </template>
-                    <template #input>
-                        <input @keyup.esc="close" @keyup="filter" v-model="searchText"  class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Filter Status">
-                    </template>
-                    <template #list>
-                      <div id="status">
-                        <ul class="overflow-auto" v-for="(item, index) in filterItems" :key="index">
-                            <li @click.prevent="setFilterStatus(item)" class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">{{ item }}</li>
-                        </ul>
+      <div class="top flex justify-between items-center">
+          <h1 class="font-semibold text-2xl">Students</h1>
+          <button class="focus:outline-none flex items-center gap-3 text-sm">
+              <p class="text-grey font-semibold">Add Student</p>
+              <div class="relative overflow-hdden">
+                  <section class="flex h-full justify-ceter items-start">
+                      <div onclick="document.getElementById('addstudent').showModal()" id="btn">
+                          <span class="bg-blue p-1 flex justify-center text-white rounded-md">
+                              <SvgIcons name="plus" /> <!-- plus icon -->
+                          </span>
                       </div>
-                    </template>
-                </Filter>
-            </div>
-            <div class="search">
-                <Search />
-            </div>
+                  </section>
+
+                  <dialog id="addstudent" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                      <div class="w-full h-auto">
+                          <!-- Modal Content-->
+                              <AddStudent @close="closeModal" />
+                          <!-- End of Modal Content-->
+                      </div>
+                  </dialog>
+              </div>
+          </button>
+      </div>
+      <div class="filter flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
+        <!-- <div class="status"> -->
+          <!-- <Filter>
+            <template #info>
+              <span class="pl-5 pr-56">{{ info }}</span>
+            </template>
+            <template #input>
+              <input @keyup.esc="close" @keyup="filter" v-model="searchText"  class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Filter Status">
+            </template>
+            <template #list>
+              <div id="status">
+                <ul class="overflow-auto" v-for="(item, index) in filterItems" :key="index">
+                  <li @click.prevent="setFilterStatus(item)" class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">{{ item }}</li>
+                </ul>
+              </div>
+            </template>
+          </Filter> -->
+          <div class="w-1/3">
+            <multiselect v-model="statusField" @clear="deselect" @select="cancan(statusField)" valueProp="value" :options="statusoptions" track-by="label" label="label" placeholder="Status" :searchable="true" class="multiselect-blue" />
+          </div>
+        <!-- </div> -->
+        <div class="search">
+            <Search />
         </div>
+      </div>
     </div>
 </template>
 
@@ -166,4 +214,27 @@ const close:any = async () => {
     transform: translateX(0);
   }
 } 
+.multiselect-blue {
+  --ms-option-bg: #DBEAFE;
+  --ms-option-color: #2563EB;
+  --ms-bg: #FFFFFF;
+}
 </style>
+
+
+<style>
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
+}
+.multiselect-blue {
+  /* --ms-option-bg: #DBEAFE; */
+  --ms-option-color: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-dropdown-bg: #FFFFFF;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-py: 8px;
+  --ms-font-size: 12px;
+}
+</style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

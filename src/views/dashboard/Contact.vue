@@ -5,12 +5,23 @@ import MenuItem from '../../components/pagination.vue'
 import Chart from '../../components/switch.vue'
 // import addModal from '../../components/test.vue'
 import StudentDetails from '../../components/dashboard/students/StudentDetails.vue'
+import StudentInBatch from '../../components/dashboard/students/ViewStudentHeader.vue'
+import CourseDetails from '../../components/dashboard/courses/CourseDetails.vue'
 import * as actionTypes from '../../store/module/events/constants/action'
 import * as mutationTypes from '../../store/module/events/constants/mutation'
 import Test from '../../components/dashboard/students/AddStudents.vue'
 import spinner from '../../components/spinner.vue'
 import ModalDialog from '../../components/Modals.vue'
 import Filter from '../../components/Filter.vue'
+import InstructorDetails from '../../components/dashboard/instructors/InstructorDetails.vue';
+import AddTalents from '../../components/dashboard/instructors/AddTalents.vue';
+import UpdateStatus from '../../components/dashboard/instructors/UpdateStatus.vue';
+import AddSkill from '../../components/dashboard/instructors/AddSkill.vue';
+import ContactHeader from '../../components/dashboard/contact/ContactHeader.vue';
+import ContactList from '../../components/dashboard/contact/ContactList.vue';
+import Delete from '../../components/delete.vue';
+import ContactDetails from '../../components/dashboard/contact/ContactDetails.vue';
+
 
 const store = useStore()
 
@@ -121,6 +132,14 @@ const onEdit = () => {
         </table> -->
       </template>
   </Filter>
+  <CourseDetails />
+  <Delete />
+  <InstructorDetails />
+  <ContactHeader />
+  <ContactList />
+  <ContactDetails />
+  <AddTalents />
+  <UpdateStatus />
   <spinner />
     <Chart />
     <button
@@ -134,6 +153,10 @@ const onEdit = () => {
       <p class="mb-4">Gokuu is...</p>
       <img src="https://i.gifer.com/QjMQ.gif" />
     </ModalDialog>
+
+    <StudentInBatch />
+
+    <AddSkill />
 
     <button
       type="button"

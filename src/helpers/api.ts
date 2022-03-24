@@ -47,7 +47,7 @@ export const addData = async (url: any, data: any, token: any = null) => {
 export const addDataFile = async (url: any, data: any, token: any = null) => {
   try {
     const response = await axios.post(url, data, { headers: { 'Content-Type': 'multipart/form-data',
-      'Authorization': `Bearer ${token}` } 
+      Authorization: `Bearer ${token}` } 
     })
     console.log('response', response.data)
     // setTimeout(() => {
@@ -71,9 +71,14 @@ export const editData = async (url: any, payload: any) => {
 }
 
 // api helper to delete data from the backend
-export const removeData = async (url: any) => {
+export const removeData = async (url: any, token:any) => {
+  console.log('token here', token)
+  console.log('url here', url)
+  console.log('i am here')
+
   try {
-    const response = await axios.delete(`${url}`)
+    const response = await axios.delete(url, { headers: { Authorization: `Bearer ${token}` } 
+  })
     return response.data
   } catch (err) {
     return err

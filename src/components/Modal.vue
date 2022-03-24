@@ -1,9 +1,9 @@
 <script lang="ts">
-import { defineComponent, onMounted, toRefs } from 'vue'
+import { onMounted, toRefs } from 'vue'
 
-export default defineComponent({
+export default {
   name: 'ModalId'
-})
+}
 </script>
 
 

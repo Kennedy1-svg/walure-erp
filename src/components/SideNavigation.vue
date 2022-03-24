@@ -47,13 +47,13 @@ import SvgIcons from './SvgIcons.vue'
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
 									<li class="hover:text-primary">
-										<router-link active-class="active" to="/dashboard/course-management/course-category">Course Category</router-link>
+										<router-link active-class="active" to="/dashboard/course-management/course-categories">Course Category</router-link>
 									</li>
 									<li class="hover:text-primary">
 										<router-link active-class="active" to="/dashboard/course-management/courses">Courses</router-link>
 									</li>
 									<li class="hover:text-primary pb-3">
-										<router-link active-class="active" to="/dashboard/course-management/course-applicant">Course Applicant</router-link>
+										<router-link active-class="active" to="/dashboard/course-management/course-applicants">Course Applicant</router-link>
 									</li>
 								</ul>
 							</div>
@@ -78,8 +78,8 @@ import SvgIcons from './SvgIcons.vue'
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
-									<li class="hover:text-primary"><router-link active-class="active" to="/dashboard/student-management">Student</router-link></li>
-									<li class="hover:text-primary pb-3"><router-link active-class="active" to="/dashboard/batch">Batch</router-link></li>
+									<li class="hover:text-primary"><router-link active-class="active" to="/dashboard/student-management/students">Student</router-link></li>
+									<li class="hover:text-primary pb-3"><router-link active-class="active" to="/dashboard/student-management/batch">Batch</router-link></li>
 								</ul>
 							</div>
 						</div>
@@ -107,7 +107,7 @@ import SvgIcons from './SvgIcons.vue'
 										<router-link active-class="active" to="/dashboard/talent-management/instructors">Instructors</router-link>
 									</li>
 									<li class="hover:text-primary pb-3">
-										<router-link active-class="active" to="/dashboard/batch">Talent Pool</router-link>
+										<router-link active-class="active" to="/dashboard/talent-management/talent-pool">Talent Pool</router-link>
 									</li>
 								</ul>
 							</div>

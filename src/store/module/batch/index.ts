@@ -6,16 +6,32 @@ import { addData, fetchData, editData, removeData } from '../../../helpers/api'
 
 export default {
     state: () => ({
-        batch: '',
+        batches: '',
+        batch: {
+          name: '',
+          courseId: '',
+          startDate: '',
+          endDate: '',
+          instructor: [],
+          batchCapacity: '',
+          trainingType: '',
+          course: ''
+        },
         total_count: '',
         alert_status: false,
         alert_text: '',
         editing: false,
         isEditing: false,
+        studentsInBatch: '',
         title: ''
     }),
     getters: {
         getBatch: (state: any) => {
+        return computed(() => {
+            return state.batches
+        })
+        },
+        getNewBatch: (state: any) => {
         return computed(() => {
             return state.batch
         })
@@ -45,9 +61,18 @@ export default {
             return state.title
         })
         },
+        getStudentsInBatch: (state: any) => {
+          console.log(state.studentsInBatch)
+          return computed(() => {
+            return state.studentsInBatch
+          })
+        }
     },
     mutations: {
       [mutationTypes.SetBatch] (state: any, data: any) {
+        state.batches = data
+      },
+      [mutationTypes.SetNewBatch] (state: any, data: any) {
         state.batch = data
       },
       [mutationTypes.SetTotalBatchCount] (state: any, data: any) {
@@ -65,9 +90,13 @@ export default {
       [mutationTypes.SetBatchAlertText] (state: any, data: any) {
         state.alert_text = data
       },
+      [mutationTypes.SetStudentsInBatch] (state: any, data: any) {
+        console.log('studentsInaBatch', data)
+        state.studentsInBatch = data
+      },
     },
     actions: {
-        async [actionTypes.FetchBatch] ({ commit }: any, data: any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`) {
+        async [actionTypes.FetchBatch] ({ commit }: any, data: any = `${api_url}api/batch/get-batches`) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here', token)
           const batch = await fetchData(data, token)
@@ -106,6 +135,81 @@ export default {
           }, 2000)
           // commit(mutationTypes.SetBatch, batch.payload)
           // commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
+        },
+        async [actionTypes.FetchStudentsInBatch] ({ commit }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+        //   console.log('token here', token)
+          const studentsinbatch = await fetchData(data, token)
+        //   console.log('data', data)
+          console.log('Ibatchs', studentsinbatch.payload)
+        //   console.log('Ibatchs', batchs.value)
+        //   console.log('Ibatchs', JSON.parse(JSON.stringify(batchs)))
+        //   console.log('Ibatchs', JSON.parse(JSON.stringify(batchs.value)))
+        //   console.log('Ibatchs', batchs.value)
+          commit(mutationTypes.SetStudentsInBatch, studentsinbatch)
+          commit(mutationTypes.SetTotalBatchCount, studentsinbatch.totalCount)
+        },
+        async [actionTypes.AddBatch] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here', token)
+          console.log('all data is', data.url, data.data)
+          const newbatch = await addData(data.url, data.data, token)
+          if (newbatch.payload) {
+            await commit(mutationTypes.SetBatchAlertText, 'Batch added successfully')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+            await dispatch(actionTypes.FetchBatch)
+          } else if (newbatch.message.includes('400')) {
+            await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetBatchAlertStatus, false)
+          }, 2000)
+        },
+        async [actionTypes.RemoveBatch] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here', token)
+          console.log('all data is', data)
+          const newbatch = await removeData(data, token)
+          console.log('newbatch', newbatch)
+          if (!newbatch.hasErrors) {
+            await commit(mutationTypes.SetBatchAlertText, 'Batch removed successfully')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+            await dispatch(actionTypes.FetchBatch)
+          } else if (newbatch.message.includes('400')) {
+            await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetBatchAlertStatus, false)
+          }, 2000)
+        },
+        async [actionTypes.RemoveStudentFromBatch] ({ commit, dispatch }: any, data: any) {
+          console.log('i am here')
+          const token:any = localStorage.getItem('token')
+          console.log('token here', token)
+          console.log('all data is', data)
+          const newbatch = await addData(data.url, data.data, token)
+          console.log('newbatch', newbatch)
+          if (!newbatch.hasErrors) {
+            await commit(mutationTypes.SetBatchAlertText, 'Student removed successfully')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+            await dispatch(actionTypes.FetchBatch)
+          } else if (newbatch.message.includes('400')) {
+            await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          }
         }
     },
 }

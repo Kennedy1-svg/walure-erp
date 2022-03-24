@@ -22,12 +22,14 @@ const store = useStore();
 
 const students:any = computed(() => {
     // console.log('students', JSON.parse(JSON.stringify(store.getters.getStudent.value)))
-    return JSON.parse(JSON.stringify(store.getters.getStudent.value))
+    // return JSON.parse(JSON.stringify(store.getters.getStudent.value))
+    return store.getters.getStudent.value
 })
 
 const totalCount:any = computed(() => {
     // console.log('totalCount', JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value)))
-    return JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value))
+    // return JSON.parse(JSON.stringify(store.getters.getStudentTotalCount.value))
+    return store.getters.getStudentTotalCount.value
 })
 
 // const totalCount:any = ref(27)

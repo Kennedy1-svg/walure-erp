@@ -11,6 +11,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
 import * as actionTypes from '../../../store/module/batch/constants/action'
 import { api_url } from '../../../config'
+import multiselect from '@vueform/multiselect'
 import alert from '../../alerts.vue';
 
 const store:any = useStore()
@@ -74,6 +75,12 @@ const addStudent:any = async () => {
 
 let searchText:any = ref('');
 
+// const filterbatch:any = async (batch_id:any) => {
+//     console.log('i can get here')
+//     console.log('batch_id', batch_id)
+//     const request:any = `${api_url}api/batch/get-batch-students/${batch_id}`;
+// }
+
 const filter:any = async () => {
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
@@ -113,10 +120,16 @@ const closeModal:any = async () => {
   emits('close')
 }
 
+const deselect:any = async () => {
+    const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
+    store.dispatch(actionTypes.FetchBatch, request)
+    store.getters.getBatch
+}
+
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/batch/get-batches`;
     await store.dispatch(actionTypes.FetchBatch, request)
     // await store.getters.getEditStudent
     // console.log('student is', store.getters.getEditStudent.value)
@@ -151,7 +164,7 @@ onMounted(async() => {
                 <label for="batch" class="font-semibold">
                     Select from batch available*
                 </label>
-                <Filter>
+                <!-- <Filter>
                     <template #info>
                         <span class="px-5 lg:pr-56">{{ info }}</span>
                     </template>
@@ -165,7 +178,8 @@ onMounted(async() => {
                             </ul>
                         </div>
                     </template>
-                </Filter>
+                </Filter> -->
+                <multiselect @clear="deselect" v-model="batchId" valueProp="id" :options="batch" track-by="batchName" label="batchName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="flex justify-end pb-10">
                 <button @click.prevent="addStudent" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
@@ -173,3 +187,29 @@ onMounted(async() => {
         </form>
     </div>
 </template>
+
+<style>
+
+.multiselect-blue {
+  --ms-option-bg: #DBEAFE;
+  --ms-option-color: #2563EB;
+  --ms-bg: #FFFFFF;
+}
+</style>
+
+<style>
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
+}
+.multiselect-blue {
+  /* --ms-option-bg: #DBEAFE; */
+  --ms-option-color: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-dropdown-bg: #FFFFFF;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-py: 8px;
+  --ms-font-size: 12px;
+}
+</style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

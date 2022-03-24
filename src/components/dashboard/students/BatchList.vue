@@ -9,12 +9,14 @@ import moment from 'moment'
 import SvgIcons from '../../SvgIcons.vue';
 import AddBatch from './AddBatch.vue';
 import Modal from '../../Modals.vue';
+import DeleteModal from '../../DeleteModal.vue';
 import { computed, ref, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/batch/constants/action'
 import * as mutationTypes from '../../../store/module/batch/constants/mutation'
 import { api_url } from '../../../config'
 import pagination from '../../pagination.vue'
+import Delete from '../../delete.vue'
 import { useRouter } from 'vue-router';
 
 const route = useRouter();
@@ -22,11 +24,11 @@ const route = useRouter();
 const store = useStore();
 
 const batch:any = computed(() => {
-    return JSON.parse(JSON.stringify(store.getters.getBatch.value))
+    return store.getters.getBatch.value
 })
 
 const totalCount:any = computed(() => {
-    return JSON.parse(JSON.stringify(store.getters.getTotalBatchCount.value))
+    return store.getters.getTotalBatchCount.value
 })
 
 const setId:any = (id:any) => {
@@ -42,6 +44,8 @@ const setId:any = (id:any) => {
     // console.log('request forid', request)
     // store.dispatch(actionTypes.FetchBatch, request)
 }
+
+// const today:any = '2023-11-15T13:45:30'
 
 const showEdit = ref(false);
 
@@ -63,6 +67,28 @@ const totalPages:any = computed(() => {
 
 let pageIndex: any = ref(1);
 
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
+
+const deleteBatch:any = async (id:any) => {
+    console.log('batch id', id);
+
+    const request:any = `${api_url}api/batch/delete/${id}`;
+
+    console.log('requestData', request)
+    store.dispatch(actionTypes.RemoveBatch, request)
+    // closeModal()
+    const fetchrequest:any = `${api_url}api/batch/get-batches`;
+    console.log('url', fetchrequest)
+    await store.dispatch(actionTypes.FetchBatch, fetchrequest)
+}
+
 const onPageChange:any = async (page:any) => {
     console.log('page suppose don change')
     console.log('page na', page)
@@ -76,7 +102,7 @@ const onPageChange:any = async (page:any) => {
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/batch/get-batches/${pageIndex.value}/10`;
+    const request:any = `${api_url}api/batch/get-batches`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchBatch, request)
 })
@@ -90,7 +116,7 @@ onMounted(async() => {
             <p class="text-xl font-medium text-primary">Total : {{ totalCount }}</p>
         </div>
         <div class="table">
-            <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
+            <div class="block w-full oveflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
                 <table class="overflow-x-scroll border items-center w-full -mr-16">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
@@ -100,47 +126,49 @@ onMounted(async() => {
                         <th class="align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Batch name
                         </th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="px-4 align-middle py-2 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Course Title
                         </th>
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Batch no</th>
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Start <br /> /End date(s)</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Status</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Instructors</th>
-                        <th class="px-4 align-middle py-4 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Levels</th>
+                        <th class="px-4 align-middle py-2 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Status</th>
+                        <th class="px-4 align-middle py-2 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Instructors</th>
+                        <th class="px-4 align-middle py-2 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Levels</th>
                         <th class="px-3 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                     </tr>
                     </thead>
                     <tbody id="batchlist" class="bg-white">
                     <tr v-for="(batchitem) in batch" :key="batchitem.id">
+                    <!-- {{ batchitem }} -->
                         <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                             {{ batch.indexOf(batchitem) + 1 }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ batchitem.batchName }}
                         </td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             {{ batchitem.courseTitle }}
                         </td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             {{ batchitem.batchNo }}
                         </td>
                         <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ moment(batchitem.startdate).format('D/MM/YYYY') }} - <br />
-                            {{ moment(batchitem.enddate).format('D/MM/YYYY') }}
+                            {{ moment(batchitem.startDate).format('MM/DD/YYYY') }} - <br /> 
+                            {{ moment(batchitem.endDate).format('MM/DD/YYYY') }}
                         </td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ batchitem.status == 1 ? 'Active' : 'Inactive' }}
+                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                            {{ moment().isBefore(batchitem.startDate) ? 'Pending' : moment().isAfter(batchitem.endDate) ? 'Completed' : 'Ongoing' }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ batchitem.instructor }} Andreas Tony
+                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                            {{ batchitem.instructors.map((e:any) => e.fullName).join(', ') }}
                         </td>
-                        <td class="border-t-0 px-4 text-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ batchitem.experienceLevel }}
+                        <td class="border-t-0 px-2 text-left align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            {{ batchitem.instructors.map((e:any) => e.experienceLevel == 1 ? 'Beginner' : e.experienceLevel == 2 ? 'Intermediate' : e.experienceLevel == 3 ? 'Experienced' : null ).join(', ') }}
                         </td>
                         <td class="border-t-0 pl-3 pr-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
-                                <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">    <SvgIcons name="ellipsis" />
+                                <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                                    <SvgIcons name="ellipsis" />
                                 </button>
                                 <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-44">
                                     <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
@@ -174,10 +202,19 @@ onMounted(async() => {
                                                 <SvgIcons name="delete" />
                                                 Delete
                                             </button>
-                                            <Modal :show="showDelete" @close="showDelete = false">
-                                            <p class="mb-4">No action</p>
-                                            
-                                            </Modal>
+                                            <DeleteModal :show="showDelete" @close="showDelete = false">
+                                                <Delete @close="showDelete = !showDelete" @delete="deleteBatch(batchitem.id)">
+                                                    <template #title>
+                                                        Delete batch
+                                                    </template>
+                                                    <template #info>
+                                                        Are you sure you want to remove batch?
+                                                    </template>
+                                                    <template #delete>
+                                                        Yes, Delete Batch
+                                                    </template>
+                                                </Delete>
+                                            </DeleteModal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
                                                     <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left">

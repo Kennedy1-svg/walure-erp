@@ -1,10 +1,10 @@
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useStore } from 'vuex'
 
-export default defineComponent({
+export default {
     name: 'Instructor',
-})
+}
 </script>
 
 <script setup lang="ts">

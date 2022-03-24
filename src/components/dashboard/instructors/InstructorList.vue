@@ -1,10 +1,10 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive, computed } from 'vue'
+import { onMounted, ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 
-export default defineComponent({
+export default {
     name: 'InstructorList',
-})
+}
 </script>
 
 <script setup lang="ts">
@@ -15,6 +15,8 @@ import pagination from '../../pagination.vue'
 import Modal from '../../Modal.vue';
 import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
 import { api_url } from '../../../config/index'
+import Delete from '../../delete.vue'
+import DeleteModal from '../../DeleteModal.vue';
 
 const instructors:any = computed(() => {
     return store.getters.getInstructors;
@@ -31,9 +33,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
-    console.log('url', request)
-    await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    // const request:any = `${api_url}api/instructor/get-instructors`;
+    // console.log('url', request)
+    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
 }
 
 const totalPages:any = computed(() => {

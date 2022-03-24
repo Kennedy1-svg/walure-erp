@@ -95,6 +95,10 @@ const student:any = computed(() => {
                 <p>{{ student.gender }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
+                <p>Course</p>
+                <p>{{ student.courseName }}</p>
+            </div>
+            <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Address</p>
                 <p>{{ student.addresss }}</p>
             </div>

@@ -1,26 +1,74 @@
 <script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
+export default {
   name: "ViewStudentList",
-});
+};
 </script>
+
+let id: any = ref();
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { api_url } from '../../../config';
 import pagination from '../../pagination.vue'
+import DeleteModal from '../../DeleteModal.vue';
+import Delete from '../../delete.vue'
 import SvgIcons from '../../SvgIcons.vue';
-import * as studentActionTypes from '../../../store/module/students/constants/action'
+import * as batchActionTypes from '../../../store/module/batch/constants/action'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import { useStore } from 'vuex'
 
 const store = useStore();
+const route = useRoute();
 
-onMounted(() => {
+const studentsInBatch:any = computed(() => {
+  return store.getters.getStudentsInBatch.value.payload;
+});
+
+const showDelete = ref(false);
+
+const totalCount:any = computed(() => {
+  return store.getters.getStudentsInBatch.value.totalCount;
+});
+
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
+
+const removeStudent:any = async (id:any) => {
+    console.log('student id', id);
+    const batchid:any = route.params.id;
+    console.log('batch id', batchid);
+
+    const data:any = {
+        batchId: batchid,
+        studentId: id
+    }
+
+    const request:any = `${api_url}api/batch/removeStudent-fromBatch`;
+
+    const requestData:any = {
+        data: data,
+        url: request,
+    }
+
+    console.log('requestData', requestData)
+    store.dispatch(batchActionTypes.RemoveStudentFromBatch, requestData)
+    closeModal()
+}
+
+onMounted( async () => {
 //   store.dispatch(studentActionTypes.GET_STUDENTS);
     console.log('oya, na we dey here');
-    
+    const id:any = route.params.id;
+    console.log('id', id);
+    const request:any = `${api_url}api/batch/students-inbatch/${id}`;
+    await store.dispatch(batchActionTypes.FetchStudentsInBatch, request);    
 });
 
 </script>
@@ -29,7 +77,7 @@ onMounted(() => {
   <div class="main grid">
         <div class="title flex justify-between items-center mb-10">
             <h1 class="text-2xl font-semibold text-black">Student List</h1>
-            <p class="text-xl font-medium text-primary">Total : 20</p>
+            <p class="text-xl font-medium text-primary">Total : {{ totalCount }}</p>
         </div>
     <div class="table">
         <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
@@ -51,21 +99,41 @@ onMounted(() => {
                 </thead>
 
                 <tbody id="students" class="bg-white">
-                  <tr>
+                  <tr v-for="students in studentsInBatch" :key="students.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          1
+                          {{ (studentsInBatch.indexOf(students) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          Temitope Araba
+                          {{ students.firstName }}
                       </td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          Hacking
+                          {{ students.course }}
                       </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          WAL/STUD/00004
+                          {{ students.regNumber }}
                       </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <SvgIcons name="delete" />
+                            <!-- <SvgIcons @click="removeStudent(students.id)" name="delete" /> -->
+                            <button
+                                type="button"
+                                @click="showDelete = !showDelete"
+                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                            >
+                                <SvgIcons name="delete" />
+                            </button>
+                            <DeleteModal :show="showDelete" @close="showDelete = false">
+                                <Delete @close="showDelete = !showDelete" @delete="removeStudent(students.id)">
+                                    <template #title>
+                                        Remove Student
+                                    </template>
+                                    <template #info>
+                                        Are you sure you want to remove student from batch?
+                                    </template>
+                                    <template #delete>
+                                        Yes, Remove Student
+                                    </template>
+                                </Delete>
+                            </DeleteModal>
                       </td>
                   </tr>
                   <!-- <tr v-for="(student) in students" :key="student.id"> -->

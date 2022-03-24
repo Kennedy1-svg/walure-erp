@@ -1,11 +1,9 @@
 
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
+export default {
   name: 'ModalDialog',
-});
+};
 </script>
 
 <script setup lang="ts">

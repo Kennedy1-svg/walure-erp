@@ -29,39 +29,69 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
-        path: 'batch/view-student/:id',
+        path: 'student-management/batch/view-student/:id',
         name: 'StudentInBatch',
         component: () => import('../views/dashboard/students/StudentsInBatch.vue'),
         meta: { requiresAuth: true },
       },
       {
-        path: 'student-management',
+        path: 'student-management/students',
         name: 'StudentManagement',
         component: () => import('../views/dashboard/students/Index.vue'),
         meta: { requiresAuth: true },
       },
       {
-        path: 'batch',
+        path: 'student-management/batch',
         name: 'Batch',
         component: () => import('../views/dashboard/students/Batch.vue'),
         meta: { requiresAuth: true },
       },
-
       {
         path: 'talent-management/instructors',
         name: 'Instructors',
         component: () => import('../views/dashboard/instructors/Index.vue'),
         meta: { requiresAuth: true },
-      },      {
+      },
+      {
         path: 'course-management/courses',
         name: 'CourseManagement',
         component: () => import('../views/dashboard/courses/Index.vue'),
         meta: { requiresAuth: true },
       },
       {
-        path: 'talent-management',
-        name: 'TalentManagement',
-        component: () => import('../views/dashboard/talents/Index.vue'),
+        path: 'course-management/course-applicants',
+        name: 'CourseApplicants',
+        component: () => import('../views/dashboard/courses/Applicant.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'course-management/course-categories',
+        name: 'CourseCategory',
+        component: () => import('../views/dashboard/courses/Category.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'course-management/curriculum',
+        name: 'Curriculum',
+        component: () => import('../views/dashboard/courses/Curriculum.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'talent-management/instructors',
+        name: 'Instructors',
+        component: () => import('../views/dashboard/instructors/Index.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'talent-management/talent-pool',
+        name: 'Talents',
+        component: () => import('../views/dashboard/instructors/Talent.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'talent-management/skills',
+        name: 'Skills',
+        component: () => import('../views/dashboard/instructors/Skill.vue'),
         meta: { requiresAuth: true },
       },
       {
