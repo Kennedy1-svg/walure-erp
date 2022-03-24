@@ -13,9 +13,9 @@ import Test from '../../components/dashboard/students/AddStudents.vue'
 import spinner from '../../components/spinner.vue'
 import ModalDialog from '../../components/Modals.vue'
 import Filter from '../../components/Filter.vue'
-import InstructorDetails from '../../components/dashboard/instructors/InstructorDetails.vue';
-import AddTalents from '../../components/dashboard/instructors/AddTalents.vue';
-import UpdateStatus from '../../components/dashboard/instructors/UpdateStatus.vue';
+// import InstructorDetails from '../../components/dashboard/instructors/InstructorDetails.vue';
+// import AddTalents from '../../components/dashboard/instructors/AddTalents.vue';
+// import UpdateStatus from '../../components/dashboard/instructors/UpdateStatus.vue';
 import AddSkill from '../../components/dashboard/instructors/AddSkill.vue';
 import ContactHeader from '../../components/dashboard/contact/ContactHeader.vue';
 import ContactList from '../../components/dashboard/contact/ContactList.vue';

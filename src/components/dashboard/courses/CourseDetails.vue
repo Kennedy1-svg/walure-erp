@@ -118,7 +118,7 @@ const course:any = computed(() => {
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Categories</p>
-                <!-- <p>{{ courseDetails.categories.map((e) => e).join(', ') }}</p> -->
+                <p>{{ courseDetails.categories.map((e) => e).join(', ') }}</p>
             </div>
         </div>
     </div>
