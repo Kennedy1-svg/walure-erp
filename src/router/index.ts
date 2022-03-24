@@ -82,18 +82,18 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/dashboard/instructors/Index.vue'),
         meta: { requiresAuth: true },
       },
-      {
-        path: 'talent-management/talent-pool',
-        name: 'Talents',
-        component: () => import('../views/dashboard/instructors/Talent.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'talent-management/skills',
-        name: 'Skills',
-        component: () => import('../views/dashboard/instructors/Skill.vue'),
-        meta: { requiresAuth: true },
-      },
+      // {
+      //   path: 'talent-management/talent-pool',
+      //   name: 'Talents',
+      //   component: () => import('../views/dashboard/instructors/Talent.vue'),
+      //   meta: { requiresAuth: true },
+      // },
+      // {
+      //   path: 'talent-management/skills',
+      //   name: 'Skills',
+      //   component: () => import('../views/dashboard/instructors/Skill.vue'),
+      //   meta: { requiresAuth: true },
+      // },
       {
         path: 'user-management',
         name: 'UserManagement',
