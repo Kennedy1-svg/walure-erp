@@ -1,11 +1,11 @@
 {
-  "name": "vite-tailwind-vuex-starter",
+  "name": "walure-backoffice",
   "version": "0.0.0",
-  "description": "a simple vite-tailwind-vuex-starter",
+  "description": "a simple backoffice dashboard for Walure Capital",
   "author": {
     "name": "Oluwashina Odumosu",
     "email": "odumz20@gmail.com",
-    "url": "https://github.com/Odumz/vite-tailwind-vuex-starter"
+    "url": "https://github.com/Odumz/backoffice-walure"
   },
   "keywords": [
     "vite",
@@ -13,12 +13,13 @@
     "vuex",
     "starter",
     "vite-tailwind-vuex-starter",
-    "invoice-app",
+    "dashboard application",
     "store"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "pre-build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
