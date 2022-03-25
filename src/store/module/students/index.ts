@@ -119,6 +119,7 @@ export default {
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
       commit(mutationTypes.SetEditStudent, student.payload)
+      commit(mutationTypes.SetNewStudent, student.payload)
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
     async [actionTypes.FilterStudent] ({ commit }: any, data: any) {
@@ -153,6 +154,29 @@ export default {
 
       setTimeout(() => {
         commit(mutationTypes.SetStudentAlertStatus, false)
+        commit(mutationTypes.SetStudentAlertText, '')
+      }, 2000)
+    },
+    async [actionTypes.EditStudent] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here', token)
+      console.log('data is', data)
+      const student = await editData(data.url, data.data, token)
+      if (student.payload) {
+        await commit(mutationTypes.SetStudentAlertText, 'Student added successfully')
+        await commit(mutationTypes.SetStudentAlertStatus, true)
+        await dispatch(actionTypes.FetchStudents)
+      } else if (student.message.includes('400')) {
+        await commit(mutationTypes.SetStudentAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetStudentAlertStatus, true)
+      } else {
+        await commit(mutationTypes.SetStudentAlertText, 'Houston, we have a problem!')
+        await commit(mutationTypes.SetStudentAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetStudentAlertStatus, false)
+        commit(mutationTypes.SetStudentAlertText, '')
       }, 2000)
     }
   }

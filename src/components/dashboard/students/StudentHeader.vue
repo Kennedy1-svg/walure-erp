@@ -95,6 +95,8 @@ const setFilterStatus:any = (name:any) => {
 const closeModal:any = () => {
   // document.getElementById('addstudent').showModal()
   console.log('close student modal')
+    // localStorage.removeItem('newstudent')
+    // localStorage.removeItem('editstudent')
   let doc:any = document.getElementById('addstudent')
   doc.close()  
 }
@@ -154,7 +156,7 @@ const close:any = async () => {
                   <dialog id="addstudent" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                       <div class="w-full h-auto">
                           <!-- Modal Content-->
-                              <AddStudent @close="closeModal" />
+                              <AddStudent name="Add" @close="closeModal" />
                           <!-- End of Modal Content-->
                       </div>
                   </dialog>

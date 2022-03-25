@@ -17,11 +17,11 @@ const props = defineProps({
 const { id }:any = toRefs(props)
 
 const onClick:any = () => {
-  console.log('id nah', props.id)
+  // console.log('id nah', props.id)
   // let id = props.id
-  console.log(id.value)
+  // console.log(id.value)
   let doc:any = document.getElementById(id.value)
-  console.log('doc', doc)
+  // console.log('doc', doc)
   doc.showModal()
 }
 
@@ -42,7 +42,6 @@ const onClick:any = () => {
     <dialog :id="props.id" class="h-auto w-11/12 md:w-1/2 p-5 bg-transparent rounded-md ">            
         <div class="flex flex-col w-full h-auto">
             <!-- Modal Content-->
-            {{ props.id }}
             <slot name="modalContent">This is where the content lives</slot>
             <!-- End of Modal Content-->
         </div>

@@ -5,14 +5,13 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, reactive } from 'vue';
+import { computed, ref, onMounted, watch, reactive } from 'vue';
 import { useStore } from 'vuex'
 import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
 import * as actionTypes from '../../../store/module/batch/constants/action'
 import { api_url } from '../../../config'
 import multiselect from '@vueform/multiselect'
-import alert from '../../alerts.vue';
 
 const store:any = useStore()
 
@@ -35,24 +34,11 @@ const student:any = computed(() => {
     return JSON.parse(JSON.stringify(store.getters.getEditStudent.value))
 })
 
-const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
-const alertText:any = computed(() => store.getters.getBatchAlertText.value)
-
-const status:any = computed(() => {
-    let answer:any
-    if (alertText.value.includes('successfully')) {
-        answer = true
-    } else {
-        answer = false
-    }
-    return answer
-})
-
-const setBatchId:any = async (id:any, name:any) => {
-    console.log('batchid', id)
-    info.value = name
-    return batchId.value = id
-}
+// const setBatchId:any = async (id:any, name:any) => {
+//     console.log('batchid', id)
+//     info.value = name
+//     return batchId.value = id
+// }
 
 const addStudent:any = async () => {
     console.log('I will add student');
@@ -72,6 +58,26 @@ const addStudent:any = async () => {
     store.dispatch(actionTypes.AddStudentToBatch, requestData)
     closeModal()
 }
+
+// let isReady:any = computed(() => {
+//     let answer:any
+//     if (batchId.value !== '') {
+//         answer = true
+//     } else {
+//         answer = false
+//     }
+//     return answer;
+// })
+
+const isReady:any = ref(false)
+
+watch(
+  () => batchId.value,
+  (newbatchId, oldbatchId) => {
+    // console.log('batchId', batchId.value)
+    isReady.value = !isReady.value;
+  },
+);
 
 let searchText:any = ref('');
 
@@ -121,10 +127,13 @@ const closeModal:any = async () => {
 }
 
 const deselect:any = async () => {
-    const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/batch/get-batches`;
     store.dispatch(actionTypes.FetchBatch, request)
-    store.getters.getBatch
+    store.getters.getBatch.value
 }
+
+const activeView:any = 'bg-primary hover:opacity-80';
+const disabledView:any = 'bg-gray-300';
 
 onMounted(async() => {
     console.log('I started here');
@@ -139,22 +148,6 @@ onMounted(async() => {
 
 <template>
     <div class="main relative w-full px-6 lg:px-[45px] h-screen bg-white">
-        <alert :class="[alertState ? '' : 'hidden']" class="absolute top-5 bg-white p-2 right-0" name="result">
-            <template #icon>
-                <p v-if="status" class="bg-green-accent rounded-full border p-2">
-                    <SvgIcons class="text-white" name="tick" />
-                </p>
-                <p v-else class="">
-                    <SvgIcons class="text-red" name="exclamation" />
-                </p>
-            </template>
-            <template #info>
-                <p class="text-sm">
-                    {{ alertText || 'Username or password Invalid' }}
-                </p>
-            </template>
-            <template #button></template>
-        </alert>
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl">Add to a batch</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
@@ -182,7 +175,7 @@ onMounted(async() => {
                 <multiselect @clear="deselect" v-model="batchId" valueProp="id" :options="batch" track-by="batchName" label="batchName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="addStudent" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button type="button" @click.prevent="addStudent" :class="[ isReady ? activeView : disabledView ]" :disabled="!isReady" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
             </div>
         </form>
     </div>

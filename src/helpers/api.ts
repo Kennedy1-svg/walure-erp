@@ -61,9 +61,11 @@ export const addDataFile = async (url: any, data: any, token: any = null) => {
 }
 
 // api helper to edit data in the backend
-export const editData = async (url: any, payload: any) => {
+export const editData = async (url: any, payload: any, token: any) => {
   try {
-    const response = await axios.put(url, payload)
+    const response = await axios.put(url, payload, { headers: { 'Content-Type': 'multipart/form-data',
+    Authorization: `Bearer ${token}` } 
+  })
     return response.data
   } catch (err) {
     return err

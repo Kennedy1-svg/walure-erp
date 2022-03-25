@@ -132,6 +132,7 @@ export default {
 
           setTimeout(() => {
             commit(mutationTypes.SetBatchAlertStatus, false)
+            commit(mutationTypes.SetBatchAlertText, '')
           }, 2000)
           // commit(mutationTypes.SetBatch, batch.payload)
           // commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
@@ -168,6 +169,7 @@ export default {
     
           setTimeout(() => {
             commit(mutationTypes.SetBatchAlertStatus, false)
+            commit(mutationTypes.SetBatchAlertText, '')
           }, 2000)
         },
         async [actionTypes.RemoveBatch] ({ commit, dispatch }: any, data: any) {
@@ -190,6 +192,7 @@ export default {
     
           setTimeout(() => {
             commit(mutationTypes.SetBatchAlertStatus, false)
+            commit(mutationTypes.SetBatchAlertText, '')
           }, 2000)
         },
         async [actionTypes.RemoveStudentFromBatch] ({ commit, dispatch }: any, data: any) {
@@ -210,6 +213,11 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
           }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetBatchAlertStatus, false)
+            commit(mutationTypes.SetBatchAlertText, '')
+          }, 2000)
         }
     },
 }

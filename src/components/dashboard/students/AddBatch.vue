@@ -35,90 +35,91 @@ const newBatch:any = computed(() => {
 })
 
 const checkError:any = () => {
-    // if (!newBatch.value.name) {
-    //     errors.name = true;
-    //     errors.nameText = 'First name is required'
-    // } else if (newBatch.value.name.length <= 3) {
-    //     errors.nameText = 'First name needs to be more than 3 characters'
-    // } else {
-    //     errors.name = false;
-    // }
+    if (!newBatch.value.name) {
+        errors.name = true;
+        errors.nameText = 'Batch name is required'
+    } else if (newBatch.value.name.length <= 3) {
+        errors.nameText = 'Batch name needs to be more than 3 characters'
+    } else {
+        errors.name = false;
+        errors.nameText = ''
+    }
     
-    // if (!newBatch.value.trainingType) {
-    //     errors.trainingType = true;
-    //     errors.trainingTypeText = 'Last name is required'
-    // } else if (newBatch.value.trainingType.length <= 3) {
-    //     errors.trainingTypeText = 'Last name needs to be more than 3 characters'
-    // } else {
-    //     errors.trainingType = false;
-    // }
+    if (!newBatch.value.trainingType && newBatch.value.trainingType != '0') {
+        errors.trainingType = true;
+        errors.trainingTypeText = 'Training Type is required'
+    } else {
+        errors.trainingType = false;
+        errors.trainingTypeText = ''
+    }
 
-    // if (!newBatch.value.batchCapacity) {
-    //     errors.batchCapacity = true;
-    //     errors.batchCapacityText = 'Other name is required'
-    // } else if (newBatch.value.batchCapacity.length <= 3) {
-    //     errors.batchCapacityText = 'Other name needs to be more than 3 characters'
-    // } else {
-    //     errors.batchCapacity = false;
-    // }
+    if (!newBatch.value.batchCapacity) {
+        errors.batchCapacity = true;
+        errors.batchCapacityText = 'Other name is required'
+    } else if (newBatch.value.batchCapacity <= 0) {
+        errors.batchCapacityText = 'Batch capacity name needs to be more than 0'
+    } else {
+        errors.batchCapacity = false;
+        errors.batchCapacityText = '';
+    }
 
-    // if (!newBatch.value.startDate) {
-    //     errors.startDate = true;
-    //     errors.startDateText = 'Gender is required. Please select a startDate'
-    // } else {
-    //     errors.startDate = false;
-    // }
+    if (!newBatch.value.startDate) {
+        errors.startDate = true;
+        errors.startDateText = 'Start date is required. Please select a startDate'
+    } else {
+        errors.startDate = false;
+        errors.startDateText = '';
+    }
 
-    // if (!newBatch.value.courseId) {
-    //     errors.course = true;
-    //     errors.courseText = 'Course is required. Please select a course'
-    // } else {
-    //     errors.course = false;
-    // }
+    if (!newBatch.value.courseId) {
+        errors.course = true;
+        errors.courseText = 'Course is required. Please select a course'
+    } else {
+        errors.course = false;
+        errors.courseText = '';
+    }
 
-    // if (!newBatch.value.endDate) {
-    //     errors.endDate = true;
-    //     errors.endDateText = 'endDate is required'
-    // } else if (!newBatch.value.endDate.match(endDate)) {
-    //     errors.endDateText = `Email must should have the format 'brianadams@walure.com`
-    // } else {
-    //     errors.endDate = false;
-    // }
+    if (!newBatch.value.endDate) {
+        errors.endDate = true;
+        errors.endDateText = 'End date is required'
+    } else {
+        errors.endDate = false;
+        errors.endDateText = '';
+    }
 
-    // if (!newBatch.value.instructor) {
-    //     errors.instructor = true;
-    //     errors.instructorText = 'Address is required'
-    // } else if (newBatch.value.instructor.length <= 13) {
-    //     errors.instructorText = 'Address needs to be more than 3 words'
-    // } else {
-    //     errors.instructor = false;
-    // }
+    if (newBatch.value.instructor.length === 0) {
+        errors.instructor = true;
+        errors.instructorText = 'Instructor(s) is required'
+    } else {
+        errors.instructor = false;
+        errors.instructorText = '';
+    }
 
-    // if (errors.name) {
-    //     errors.name = true;
-    //     isError.value = true;
-    // } else if (errors.trainingType) {
-    //     errors.trainingType = true;
-    //     isError.value = true;
-    // } else if (errors.batchCapacity) {
-    //     errors.batchCapacity = true;
-    //     isError.value = true;
-    // } else if (errors.endDate) {
-    //     errors.endDate = true;
-    //     isError.value = true;
-    // } else if (errors.instructor) {
-    //     errors.instructor = true;
-    //     isError.value = true;
-    // } else if (errors.startDate) {
-    //     errors.startDate = true;
-    //     isError.value = true;
-    // } else if (errors.course) {
-    //     errors.course = true;
-    //     isError.value = true;
-    // } else {
-    //     isError.value = false;
-    //     isDisabled.value = false;
-    // }   
+    if (errors.name) {
+        errors.name = true;
+        isError.value = true;
+    } else if (errors.trainingType) {
+        errors.trainingType = true;
+        isError.value = true;
+    } else if (errors.batchCapacity) {
+        errors.batchCapacity = true;
+        isError.value = true;
+    } else if (errors.endDate) {
+        errors.endDate = true;
+        isError.value = true;
+    } else if (errors.instructor) {
+        errors.instructor = true;
+        isError.value = true;
+    } else if (errors.startDate) {
+        errors.startDate = true;
+        isError.value = true;
+    } else if (errors.course) {
+        errors.course = true;
+        isError.value = true;
+    } else {
+        isError.value = false;
+        isDisabled.value = false;
+    }   
 }
 
 let isChecked:any = ref(false);
@@ -258,13 +259,19 @@ onMounted(async () => {
                     <label for="name" class="font-semibold">
                         Name*
                     </label>
-                    <input type="text" v-model="newBatch.name" name="name" id="name" placeholder="Enter name" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.name" name="name" id="name" placeholder="Enter name" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] text-red">
+                        {{ errors.name ? errors.nameText : '' }}
+                    </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="course" class="font-semibold">
                         Course*
                     </label>
-                  <multiselect v-model="newBatch.courseId" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                    <multiselect @select="checkError" @clear="checkError" v-model="newBatch.courseId" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                    <p class="text-[10px] text-red">
+                        {{ errors.course ? errors.courseText : '' }}
+                    </p>
                     
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
                         <option value="">Select option</option>
@@ -278,7 +285,11 @@ onMounted(async () => {
                         Training Type*
                     </label>
 
-                    <multiselect v-model="newBatch.trainingType" valueProp="value" :options="trainingoptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                    <multiselect @select="checkError" @clear="checkError"  v-model="newBatch.trainingType" valueProp="value" :options="trainingoptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+
+                    <p class="text-[10px] text-red">
+                        {{ errors.trainingType ? errors.trainingTypeText : '' }}
+                    </p>
                     
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="trainingtype" id="trainingtype">
                         <option value="">Select option</option>
@@ -290,7 +301,10 @@ onMounted(async () => {
                     <label for="capacity" class="font-semibold">
                         Batch capacity*
                     </label>
-                    <input type="text" v-model="newBatch.batchCapacity" name="capacity" id="capacity" placeholder="Enter number" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.batchCapacity" name="capacity" id="capacity" placeholder="Enter number" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] text-red">
+                        {{ errors.batchCapacity ? errors.batchCapacityText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">                
@@ -298,21 +312,30 @@ onMounted(async () => {
                     <label for="startdate" class="font-semibold">
                         Start date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
+                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
                     <!-- <datepicker /> -->
+                    <p class="text-[10px] text-red">
+                        {{ errors.startDate ? errors.startDateText : '' }}
+                    </p>
                 </div>
                 <div class="grid gap-4" id="enddate">
                     <label for="enddate" class="font-semibold">
                         End date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
+                    <Datepicker inputClassName="dp-custom-input"  @focus="checkError" @cleared="checkError" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
+                    <p class="text-[10px] text-red">
+                        {{ errors.endDate ? errors.endDateText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="grid gap-8 mb-10">
                 <label for="instructor" class="font-semibold">
                     Instructor
                 </label>
-                <multiselect v-model="newBatch.instructor" mode="tags" :close-on-select="false" valueProp="id" :options="instructors" track-by="fullName" label="fullName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                <multiselect @select="checkError" @clear="checkError" v-model="newBatch.instructor" mode="tags" :close-on-select="false" valueProp="id" :options="instructors" track-by="fullName" label="fullName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                <p class="text-[10px] text-red">
+                    {{ errors.instructor ? errors.instructorText : '' }}
+                </p>
                 <!-- <Filter>
                     <template #info>
                         <span class="pl-5 pr-56">

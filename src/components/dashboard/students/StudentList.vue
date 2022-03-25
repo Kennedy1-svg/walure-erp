@@ -53,6 +53,16 @@ const setId:any = (id:any) => {
     store.dispatch(actionTypes.FetchEditStudent, request)
 }
 
+const editStudent:any = async (id:any) => {
+    console.log('studentid', id)
+    const request:any = `${api_url}api/student/${id}`;
+    console.log('request for the', request)
+    await store.dispatch(actionTypes.FetchEditStudent, request)
+    // console.log('student', student)
+    // console.log('student', student.value)
+
+}
+
 const showAddToBatch = ref(false);
 
 const showEdit = ref(false);
@@ -172,14 +182,14 @@ onMounted(async() => {
 
                                             <button
                                             type="button"
-                                            @click="showEdit = !showEdit" @click.prevent="setId(student.id)"
+                                            @click="showEdit = !showEdit" @click.prevent="editStudent(student.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="edit" />
                                                 Edit
                                             </button>
                                             <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddStudents @close="showEdit = !showEdit" />
+                                                <AddStudents name="Edit" @close="showEdit = !showEdit" />
                                             </Modal>
 
                                             <button
