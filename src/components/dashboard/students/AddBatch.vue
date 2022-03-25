@@ -366,13 +366,7 @@ onMounted(async () => {
 <style lang="scss">
 
 .dp-custom-menu {
-    position: fixed;
+    position: static !important;
     left: 0;
-}
-</style>
-
-<style scoped>
-* {
-    overflow: hidden;
 }
 </style>
