@@ -76,6 +76,16 @@ const closeModal:any = async () => {
   }, 500);
 }
 
+const editBatch:any = async (id:any) => {
+    console.log('studentid', id)
+    const request:any = `${api_url}api/batch/${id}`;
+    console.log('request for the', request)
+    await store.dispatch(actionTypes.FetchEditBatch, request)
+    // console.log('student', student)
+    // console.log('student', student.value)
+
+}
+
 const deleteBatch:any = async (id:any) => {
     console.log('batch id', id);
 
@@ -175,14 +185,14 @@ onMounted(async() => {
                                         <div class="py-3 gap-3">
                                             <button
                                             type="button"
-                                            @click="showEdit = !showEdit" @click.prevent="setId(batchitem.id)"
+                                            @click="showEdit = !showEdit" @click.prevent="editBatch(batchitem.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="edit" />
                                                 Edit
                                             </button>
                                             <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddStudents />
+                                                <AddBatch name="Edit"  @close="showEdit = !showEdit"  />
                                             </Modal>
 
                                             <button

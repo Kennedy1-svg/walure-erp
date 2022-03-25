@@ -81,6 +81,9 @@ export default {
       [mutationTypes.SetEditStatus] (state: any, data: any) {
         state.isEditing = data
       },
+      [mutationTypes.SetEditBatch] (state: any, data: any) {
+        state.batch = data
+      },
       [mutationTypes.SetTitle] (state: any, data: any) {
         state.title = data
       },
@@ -218,6 +221,14 @@ export default {
             commit(mutationTypes.SetBatchAlertStatus, false)
             commit(mutationTypes.SetBatchAlertText, '')
           }, 2000)
+        },
+        async [actionTypes.FetchEditBatch] ({ commit }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here', token)
+          console.log('all data is', data)
+          const batch = await fetchData(data, token)
+          console.log('batch', batch)
+          commit(mutationTypes.SetEditBatch, batch.payload)
         }
     },
 }

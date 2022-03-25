@@ -55,16 +55,6 @@ let errors = reactive({
     addressText: '',
 })
 
-const status:any = computed(() => {
-    let answer:any
-    if (alertText.value.includes('successfully')) {
-        answer = true
-    } else {
-        answer = false
-    }
-    return answer
-})
-
 const formEl:any = ref(null)
 
 let isChecked:any = ref(false);

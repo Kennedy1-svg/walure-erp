@@ -216,7 +216,7 @@ onMounted( async() => {
                     <dialog id="addBatch" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
-                                <AddBatch @close="closeModal" />
+                                <AddBatch name="Add" @close="closeModal" />
                             <!-- End of Modal Content-->
                         </div>
                     </dialog>

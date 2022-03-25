@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { api_url } from '../../../config'
@@ -29,6 +29,14 @@ let isError:any = ref(false);
 let isLoading:any = ref(false);
 
 let formData = new FormData()
+
+const props = defineProps({
+    name: {
+    type: String,
+  }
+});
+
+const { name } = toRefs(props);
 
 const newBatch:any = computed(() => {
     return store.getters.getNewBatch.value
@@ -215,6 +223,42 @@ const addbatch:any = async () => {
     closeModal()
 }
 
+const editbatch:any = async () => {
+    console.log('hi');
+    const request:any = `${api_url}api/batch/edit-batch`;
+
+    // const batchdata:any = {
+    //     Title: newBatch.value.name,
+    //     TrainingType: newBatch.value.trainingType,
+    //     BatchCapacity: newBatch.value.batchCapacity,
+    //     // StartDate: moment(newBatch.value.startDate).format('MM/DD/YYYY'),
+    //     // EndDate: moment(newBatch.value.endDate).format('MM/DD/YYYY'),
+    //     StartDate: newBatch.value.startDate,
+    //     EndDate: newBatch.value.endDate,
+    //     Instructors: JSON.parse(JSON.stringify(newBatch.value.instructor)),
+    //     CourseId: newBatch.value.courseId,
+    // }
+    
+    formData.append('Title', newBatch.value.name);
+    formData.append('Id', newBatch.value.id);
+    formData.append('TrainingType', newBatch.value.trainingType);
+    formData.append('BatchCapacity', newBatch.value.batchCapacity);
+    formData.append('StartDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
+    formData.append('EndDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
+    formData.append('Instructors', newBatch.value.instructor);
+    formData.append('CourseId', newBatch.value.courseId);
+
+    const newData:any = {
+        url: request,
+        data: formData,
+    }
+    console.log('newData', newData)
+    await store.dispatch(batchActionTypes.EditBatch, newData)
+    await store.dispatch(batchActionTypes.FetchBatch)
+    const result = await store.getters.getBatch
+    closeModal()
+}
+
 const format:any = (date:any) => {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -223,9 +267,22 @@ const format:any = (date:any) => {
     return `${month}/${day}/${year}`;
 }
 
-let isActive:any = ref(false);
+let isActive:any = computed(() => {
+    if (props.name == 'Edit') {
+        return true
+    } else {
+        return false
+    }
+})
 
 const submit:any = () => {
+    console.log('hello batch');
+    checkError();
+    console.log('iserror value', isError.value)
+    !isError.value ? addbatch() : '';
+}
+
+const submitEdit:any = () => {
     console.log('hello batch');
     checkError();
     console.log('iserror value', isError.value)
@@ -249,17 +306,18 @@ onMounted(async () => {
 <template>
     <div class="main w-full mt-[0.5px] px-[45px] bg-white">
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl"><slot name="title">Add</slot> batch</p>
+            <p class="text-2xl">{{ props.name }} batch</p>
             <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="addbatch" class="text-sm text-left grid">
             <div class="grid grid-cols-2 gap-8 mb-10">
+                <!-- {{ newBatch }} -->
                 <div class="grid gap-4">
                     <label for="name" class="font-semibold">
                         Name*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.name" name="name" id="name" placeholder="Enter name" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.title" name="name" id="name" placeholder="Enter name" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] text-red">
                         {{ errors.name ? errors.nameText : '' }}
                     </p>
@@ -367,6 +425,5 @@ onMounted(async () => {
 
 .dp-custom-menu {
     position: static !important;
-    left: 0;
 }
 </style>
