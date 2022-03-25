@@ -511,7 +511,7 @@ const disabledView:any = 'bg-gray-300';
 
 <template>
     <div class="main w-full mt-[0.5px] xl:px-[45px] overflow-hidden px-6 bg-white">
-        {{ newStudent }}
+        <!-- {{ newStudent }} -->
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl">{{ props.name }} Student</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />

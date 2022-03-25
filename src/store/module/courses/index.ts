@@ -10,7 +10,10 @@ export default {
         categories: '',
         editcourse: '',
         course_categories: '',
-        course_category: {},
+        course_category: {
+          name: '',
+          description: '',
+        },
         alert_status: false,
         alert_text: '',
     }),

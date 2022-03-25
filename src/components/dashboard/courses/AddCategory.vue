@@ -71,34 +71,35 @@ const phone ='^[0]+[0-9]';
 const checkError:any = () => {
     // let imageType:String = newCategory.value.imageFile.type;
     // console.log('imageType is', imageType)
-    // if (!newCategory.value.name) {
-    //     errors.name = true;
-    //     errors.nameText = 'Name is required'
-    // } else if (newCategory.value.name.length <= 3) {
-    //     errors.nameText = 'Name needs to be more than 3 characters'
-    // } else {
-    //     errors.name = false;
-    // }
+    if (!newCategory.value.name) {
+        errors.name = true;
+        errors.nameText = 'Name is required'
+    } else if (newCategory.value.name.length <= 3) {
+        errors.nameText = 'Name needs to be more than 3 characters'
+    } else {
+        errors.name = false;
+        errors.nameText = ''
+    }
     
-    // if (!newCategory.value.description) {
-    //     errors.description = true;
-    //     errors.descriptionText = 'Last name is required'
-    // } else if (newCategory.value.description.length <= 3) {
-    //     errors.descriptionText = 'Last name needs to be more than 3 characters'
-    // } else {
-    //     errors.description = false;
-    // }
+    if (!newCategory.value.description) {
+        errors.description = true;
+        errors.descriptionText = 'Description is required'
+    } else if (newCategory.value.description.length <= 10) {
+        errors.descriptionText = 'Description needs to be more than 10 characters'
+    } else {
+        errors.description = false;
+    }
 
-    // if (errors.name) {
-    //     errors.name = true;
-    //     isError.value = true;
-    // } else if (errors.description) {
-    //     errors.description = true;
-    //     isError.value = true;
-    // } else {
-    //     isError.value = false;
-    //     isDisabled.value = false;
-    // }   
+    if (errors.name) {
+        errors.name = true;
+        isError.value = true;
+    } else if (errors.description) {
+        errors.description = true;
+        isError.value = true;
+    } else {
+        isError.value = false;
+        isDisabled.value = false;
+    }   
 }
 
 const removeImage:any = async () => {
@@ -152,8 +153,8 @@ const resetForm:any = Object.freeze({
 
 const addCategory:any = async () => {
     console.log('hi');
-    console.log('newstudent', newCategory.value)
-    console.log('newstudent', newCategory.value.imageFile)
+    // console.log('newstudent', newCategory.value)
+    // console.log('newstudent', newCategory.value.imageFile)
     const request:any = `${api_url}api/coursecategory/create-category`;
 
     // const formElem = document.getElementById('formElem')
@@ -197,8 +198,9 @@ const submit:any = () => {
 
 onMounted(async () => {
     console.log('I am now here')
-    // const request:any = `${api_url}api/course/search-courses/{pageIndex}/{pageSize}`;
-    // await store.dispatch(courseActionTypes.FetchCourses, request)
+    const request:any = `${api_url}api/coursecategory/get-categories`;
+    await store.dispatch(courseActionTypes.FetchCourseCategories, request)
+
 })
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
@@ -231,6 +233,7 @@ const disabledView:any = 'bg-gray-300';
         </div>
         <form class="text-sm grid">
             <div class="grid text-left gap-8 mb-10">
+                <!-- {{ newCategory }} -->
                 <div class="grid gap-4">
                     <label for="name" class="font-semibold">
                         Name*
