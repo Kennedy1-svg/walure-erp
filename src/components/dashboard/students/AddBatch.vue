@@ -367,5 +367,12 @@ onMounted(async () => {
 
 .dp-custom-menu {
     position: fixed;
+    left: 0;
+}
+</style>
+
+<style scoped>
+* {
+    overflow: hidden;
 }
 </style>
