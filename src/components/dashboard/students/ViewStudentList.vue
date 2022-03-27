@@ -25,7 +25,34 @@ const studentsInBatch:any = computed(() => {
   return store.getters.getStudentsInBatch.value.payload;
 });
 
+const totalPages:any = computed(() => {
+    // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
+    console.log(totalCount.value)
+    let total:any
+    if (totalCount.value % 10 != 0) {
+        total = Math.floor(totalCount.value / 10) + 1;
+    } else {
+        total = totalCount.value / 10;
+    }
+    return total
+})
+
+let pageIndex: any = ref(1);
+
+const onPageChange:any = async (page:any) => {
+    console.log('page suppose don change')
+    console.log('page na', page)
+    const batchid:any = route.params.id;
+    pageIndex.value = page;
+    console.log('pageIndex is', pageIndex.value)
+    const request:any = `${api_url}api/batch/students-inbatch/${batchid}`;
+    console.log('url', request)
+    await store.dispatch(batchActionTypes.FetchBatch, request)
+}
+
 const showDelete = ref(false);
+
+let studenttodelete:any = ref('')
 
 const totalCount:any = computed(() => {
   return store.getters.getStudentsInBatch.value.totalCount;
@@ -38,6 +65,13 @@ const closeModal:any = async () => {
   setTimeout(() => {
     showDelete.value = false;
   }, 500);
+}
+
+const setId:any = (id:any) => {
+    console.log('set id student id is', id)
+    studenttodelete.value = id
+    console.log('batchitemtodelete', studenttodelete.value)
+    return studenttodelete
 }
 
 const removeStudent:any = async (id:any) => {
@@ -58,7 +92,11 @@ const removeStudent:any = async (id:any) => {
     }
 
     console.log('requestData', requestData)
-    store.dispatch(batchActionTypes.RemoveStudentFromBatch, requestData)
+    await store.dispatch(batchActionTypes.RemoveStudentFromBatch, requestData)
+
+    console.log('batch id', batchid);
+    const fetch:any = `${api_url}api/batch/students-inbatch/${batchid}`;
+    await store.dispatch(batchActionTypes.FetchStudentsInBatch, fetch); 
     closeModal()
 }
 
@@ -99,6 +137,7 @@ onMounted( async () => {
                 </thead>
 
                 <tbody id="students" class="bg-white">
+                    <!-- {{ studentsInBatch }}   -->
                   <tr v-for="students in studentsInBatch" :key="students.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                           {{ (studentsInBatch.indexOf(students) + 1) }}
@@ -117,12 +156,12 @@ onMounted( async () => {
                             <button
                                 type="button"
                                 @click="showDelete = !showDelete"
+                                @click.prevent="setId(students.studentId)"
                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                             >
                                 <SvgIcons name="delete" />
                             </button>
-                            <DeleteModal :show="showDelete" @close="showDelete = false">
-                                <Delete @close="showDelete = !showDelete" @delete="removeStudent(students.id)">
+                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="removeStudent(studenttodelete)">
                                     <template #title>
                                         Remove Student
                                     </template>
@@ -132,7 +171,6 @@ onMounted( async () => {
                                     <template #delete>
                                         Yes, Remove Student
                                     </template>
-                                </Delete>
                             </DeleteModal>
                       </td>
                   </tr>
@@ -280,7 +318,7 @@ onMounted( async () => {
                   <!-- </tr> -->
                 </tbody>
             </table>
-            <!-- <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+            <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
                 <div class="">
                     Page {{ pageIndex }} of {{ totalPages }}
                 </div>
@@ -290,7 +328,7 @@ onMounted( async () => {
                         @pageChanged="onPageChange"
                     />
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
   </div>

@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(['close']);
+const emits = defineEmits(['close', 'delete']);
 
 const { show } = toRefs(props);
 const showModal = ref(false);
@@ -26,6 +26,10 @@ const modal = ref(null);
 // const { onClickOutside } = useClickOutside();
 const closeModal:any = () => {
   emits('close')
+}
+
+const deleteItem:any = async () => {
+  emits('delete')
 }
 
 // onClickOutside(modal, () => {
@@ -80,7 +84,28 @@ watch(
               <!-- <button class="absolute top-4 z-50 right-4">
                 <SvgIcons name="cancel" @click="closeModal" />
               </button> -->
-              <slot>I'm empty inside</slot>
+              <!-- <slot>I'm empty inside</slot> -->
+              <div class="main p-6">
+                  <div class="title pb-5 flex justify-between items-center">
+                      <p class="text-xl font-semibold">
+                          <slot name="title">Delete</slot>
+                      </p>
+                      <svgIcons @click="closeModal" name="o-cancel" class="cursor-pointer" />
+                  </div>
+                  <div class="info pb-24">
+                      <p class="text-lg">
+                          <slot name="info">Are you sure?</slot>
+                      </p>
+                  </div>
+                  <div class="buttons flex justify-center items-center gap-3">
+                      <button @click="closeModal" type="button" class="py-4 px-10 text-primary rounded">
+                          Cancel
+                      </button>
+                      <button @click="deleteItem" type="button" class="py-4 px-10 text-white bg-red rounded">
+                          <slot name="delete">Yes, Delete</slot>
+                      </button>
+                  </div>
+              </div>
             </div>
           </transition>
         </div>

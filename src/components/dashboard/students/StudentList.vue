@@ -134,7 +134,7 @@ onMounted(async() => {
                             {{ pageIndex == 1 ? (students.indexOf(student) + 1) : ((pageIndex - 1) * 10) + (students.indexOf(student) + 1) }}
                         </td>
                         <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ student.firstName + ' ' + student.lastName }}
+                            {{ student.fullName }}
                         </td>
                         <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ student.email }}
@@ -196,7 +196,7 @@ onMounted(async() => {
                                             type="button"
                                             @click="showDelete = !showDelete"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            >
+                                            disabled>
                                                 <SvgIcons name="delete" />
                                                 Delete
                                             </button>

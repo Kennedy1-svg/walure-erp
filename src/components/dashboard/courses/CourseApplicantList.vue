@@ -622,6 +622,17 @@ onMounted( async () => {
                         </tr>
                     </tbody>
                 </table>
+                <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                    <div class="">
+                        Page {{ pageIndex }} of {{ totalPages }}
+                    </div>
+                    <div class="">
+                        <pagination
+                            :totalPages=totalPages
+                            @pageChanged="onPageChange"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     </div>

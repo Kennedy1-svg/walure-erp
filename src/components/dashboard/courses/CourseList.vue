@@ -188,8 +188,8 @@ onMounted( async () => {
                                                     <SvgIcons name="edit" />
                                                     Edit
                                                 </button>
-                                                <Modal :show="showEdit" @close="showEdit = false">
-                                                    <AddStudents />
+                                                <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                    <AddCourse name="Edit"  @close="showEdit = !showEdit" />
                                                 </Modal>
 
                                                 <button

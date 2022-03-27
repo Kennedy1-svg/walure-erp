@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+    name: 'CourseApplicantView',
+};
+</script>
+
 <script setup lang="ts">
 import CourseApplicantHeader from '../../../components/dashboard/courses/CourseApplicantHeader.vue';
 import CourseApplicantList from '../../../components/dashboard/courses/CourseApplicantList.vue';

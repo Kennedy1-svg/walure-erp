@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-    name: 'StudentInBatch', 
+    name: 'Batch', 
 };
 </script>
 
@@ -32,6 +32,22 @@ const status:any = computed(() => {
 
 <template>
     <div class="main mx-5 px-5 overflow-hidden">
+        <alert :class="[alertState ? '' : batchAlertState ? '' : 'hidden']"  class="fixed z-60 top-40 bg-white p-2 right-0" name="result">
+            <template #icon>
+                <p v-if="status" class="bg-green-accent rounded-full border p-2">
+                    <SvgIcons class="text-white" name="tick" />
+                </p>
+                <p v-else class="">
+                    <SvgIcons class="text-red" name="exclamation" />
+                </p>
+            </template>
+            <template #info>
+                <p class="text-sm">
+                    {{ alertText || batchAlertText }}
+                </p>
+            </template>
+            <template #button></template>
+        </alert>
         <div class="top">
             <BatchHeader />
         </div>

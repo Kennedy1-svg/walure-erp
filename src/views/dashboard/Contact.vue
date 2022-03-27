@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from 'vuex'
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import MenuItem from '../../components/pagination.vue'
 import Chart from '../../components/switch.vue'
 // import addModal from '../../components/test.vue'
@@ -12,6 +12,9 @@ import * as mutationTypes from '../../store/module/events/constants/mutation'
 import Test from '../../components/dashboard/students/AddStudents.vue'
 import spinner from '../../components/spinner.vue'
 import ModalDialog from '../../components/Modals.vue'
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css';
+import moment from 'moment';
 import Filter from '../../components/Filter.vue'
 // import InstructorDetails from '../../components/dashboard/instructors/InstructorDetails.vue';
 // import AddTalents from '../../components/dashboard/instructors/AddTalents.vue';
@@ -51,7 +54,21 @@ const filterItems:any = ['Active', 'Disabled', 'All']
 
 let searchText:any = ref('');
 
+const anotherTime = ref(moment().format('MM/DD/YYYY'));
 
+const tryout = {
+  name: 'Bade',
+  endDate: moment().format('MM/DD/YYYY'),
+  birthday: '03/20/2022'
+};
+
+const newBatch:any = computed(() => {
+  return {
+    name: 'Bade',
+    endDate: moment().format('MM/DD/YYYY'),
+    birthday: '03/20/2022'
+  }
+});
 
 const filter:any = async () => {
   const search:any = searchText.value.toLowerCase();
@@ -80,6 +97,14 @@ const filter:any = async () => {
   }
 }
 
+const format:any = (date:any) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return `${month}/${day}/${year}`;
+}
+
 const onAdd:any = () => {
   console.log('add')
   store.commit(mutationTypes.SetOpenAddStatus, true)
@@ -88,7 +113,8 @@ const onAdd:any = () => {
 
 const onView = () => {
   console.log('view')
-  store.commit(mutationTypes.SetOpenDetailsStatus, true)
+  console.log('new batch is', newBatch.value.endDate)
+  // store.commit(mutationTypes.SetOpenDetailsStatus, true)
   // await store.dispatch(actionTypes.UpdateClientEditingStatus, true)
 }
 
@@ -103,7 +129,7 @@ const onEdit = () => {
 <template>
 <div class="grid p-20 gap-4">
   <button @click="onAdd">Click</button>
-  <button @click.prevent="onView">Click</button>
+  <button @click="onView">Click</button>
   <button @click.prevent="onEdit">Click</button>
    <Filter>
       <template #info>
@@ -132,6 +158,20 @@ const onEdit = () => {
         </table> -->
       </template>
   </Filter>
+            <div class="grid grid-cols-2 gap-8 mb-10">                
+                <div class="grid gap-4" id="startdate">
+                    <label for="startdate" class="font-semibold">
+                        Start date*
+                    </label>
+                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="anotherTime" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
+                </div>
+                <div class="grid gap-4" id="enddate">
+                    <label for="enddate" class="font-semibold">
+                        End date*
+                    </label>
+                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
+                </div>
+            </div>
   <CourseDetails />
   <Delete />
   <InstructorDetails />

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import StudentHeader from '../../../components/dashboard/students/StudentHeader.vue';
-import StudentList from '../../../components/dashboard/students/StudentList.vue';
+import ProjectHeader from '../../../components/dashboard/services/ProjectHeader.vue';
+import ProjectList from '../../../components/dashboard/services/ProjectList.vue';
 </script>
 
 <template>
     <div class="main mx-9">
-        <StudentHeader />
-        <StudentList />
+        <ProjectHeader />
+        <ProjectList />
     </div>
 </template>

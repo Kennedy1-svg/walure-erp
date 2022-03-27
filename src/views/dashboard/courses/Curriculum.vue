@@ -1,7 +1,7 @@
 <script lang="ts">
 import { ref, computed, onMounted } from 'vue';
 export default {
-  name: 'Curriculum',
+  name: 'CurriculumView',
 }
 </script>
 

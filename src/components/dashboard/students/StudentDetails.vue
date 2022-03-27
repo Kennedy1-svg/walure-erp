@@ -77,7 +77,7 @@ const student:any = computed(() => {
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Other name</p>
-                <p>othername</p>
+                <p>{{ student.otherName }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Reg number</p>

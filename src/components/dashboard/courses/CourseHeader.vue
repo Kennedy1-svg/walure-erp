@@ -35,7 +35,7 @@ const categories:any = computed(() => {
 const batchId:any = ref('')
 
 const deselect:any = async () => {
-    const request:any = `${api_url}api/ccoursecategory/get-categories`;
+    const request:any = `${api_url}api/coursecategory/get-categories`;
     store.dispatch(courseActionTypes.FetchCourseCategories, request)
     store.getters.getCourseCategories
 }
@@ -206,6 +206,7 @@ onMounted( async() => {
   --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
   --ms-py: 8px;
   --ms-font-size: 12px;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
 }
 </style>
 

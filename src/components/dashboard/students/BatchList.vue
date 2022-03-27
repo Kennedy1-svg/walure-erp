@@ -16,7 +16,6 @@ import * as actionTypes from '../../../store/module/batch/constants/action'
 import * as mutationTypes from '../../../store/module/batch/constants/mutation'
 import { api_url } from '../../../config'
 import pagination from '../../pagination.vue'
-import Delete from '../../delete.vue'
 import { useRouter } from 'vue-router';
 
 const route = useRouter();
@@ -27,9 +26,13 @@ const batch:any = computed(() => {
     return store.getters.getBatch.value
 })
 
+const del:any = ref(false)
+
 const totalCount:any = computed(() => {
     return store.getters.getTotalBatchCount.value
 })
+
+let batchitemtodelete:any = ref('')
 
 const setId:any = (id:any) => {
     console.log('batchid', id)
@@ -43,6 +46,23 @@ const setId:any = (id:any) => {
     // const request:any = `${api_url}api/batch/${id}`;
     // console.log('request forid', request)
     // store.dispatch(actionTypes.FetchBatch, request)
+}
+
+const sendId:any = (id:any) => {
+    console.log('batchid', id)
+    // route.push(`/dashboard/batch/view-student/${id}`)
+    // route.push({
+    //     name: 'StudentInBatch',
+    //     params: {
+    //         id: id
+    //     }
+    // })
+    // const request:any = `${api_url}api/batch/${id}`;
+    // console.log('request forid', request)
+    // store.dispatch(actionTypes.FetchBatch, request)
+    batchitemtodelete.value = id
+    console.log('batchitemtodelete', batchitemtodelete.value)
+    return batchitemtodelete
 }
 
 // const today:any = '2023-11-15T13:45:30'
@@ -67,13 +87,19 @@ const totalPages:any = computed(() => {
 
 let pageIndex: any = ref(1);
 
-const emits = defineEmits(['close']);
+const emits = defineEmits(['close', 'deletebatch']);
 
 const closeModal:any = async () => {
   emits('close')
   setTimeout(() => {
     showDelete.value = false;
   }, 500);
+}
+
+const deletesbatch:any = async () => {
+    emits('deletebatch')
+    console.log('i dey oh')
+    del.value = true;
 }
 
 const editBatch:any = async (id:any) => {
@@ -93,9 +119,10 @@ const deleteBatch:any = async (id:any) => {
 
     console.log('requestData', request)
     store.dispatch(actionTypes.RemoveBatch, request)
-    // closeModal()
+    closeModal()
     const fetchrequest:any = `${api_url}api/batch/get-batches`;
     console.log('url', fetchrequest)
+    del.value = false
     await store.dispatch(actionTypes.FetchBatch, fetchrequest)
 }
 
@@ -148,6 +175,7 @@ onMounted(async() => {
                     </tr>
                     </thead>
                     <tbody id="batchlist" class="bg-white">
+                        <!-- {{ batch }} -->
                     <tr v-for="(batchitem) in batch" :key="batchitem.id">
                     <!-- {{ batchitem }} -->
                         <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
@@ -170,10 +198,14 @@ onMounted(async() => {
                             {{ moment().isBefore(batchitem.startDate) ? 'Pending' : moment().isAfter(batchitem.endDate) ? 'Completed' : 'Ongoing' }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            {{ batchitem.instructors.map((e:any) => e.fullName).join(', ') }}
+                            <!-- <p class="w-28 truncate"> -->
+                                {{ batchitem.instructors.map((e:any) => e.fullName).join(', ') }}
+                            <!-- </p>                             -->
                         </td>
                         <td class="border-t-0 px-2 text-left align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ batchitem.instructors.map((e:any) => e.experienceLevel == 1 ? 'Beginner' : e.experienceLevel == 2 ? 'Intermediate' : e.experienceLevel == 3 ? 'Experienced' : null ).join(', ') }}
+                            <!-- <p class="w-28 truncate"> -->
+                                {{ batchitem.instructors.map((e:any) => e.experienceLevel == 1 ? 'Beginner' : e.experienceLevel == 2 ? 'Intermediate' : e.experienceLevel == 3 ? 'Experienced' : null ).join(', ') }}
+                            <!-- </p>     -->
                         </td>
                         <td class="border-t-0 pl-3 pr-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
@@ -206,14 +238,13 @@ onMounted(async() => {
 
                                             <button
                                             type="button"
-                                            @click="showDelete = !showDelete"
+                                            @click="showDelete = !showDelete" @click.prevent="sendId(batchitem.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="delete" />
                                                 Delete
                                             </button>
-                                            <DeleteModal :show="showDelete" @close="showDelete = false">
-                                                <Delete @close="showDelete = !showDelete" @delete="deleteBatch(batchitem.id)">
+                                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteBatch(batchitemtodelete)">
                                                     <template #title>
                                                         Delete batch
                                                     </template>
@@ -223,7 +254,6 @@ onMounted(async() => {
                                                     <template #delete>
                                                         Yes, Delete Batch
                                                     </template>
-                                                </Delete>
                                             </DeleteModal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>

@@ -229,6 +229,28 @@ export default {
           const batch = await fetchData(data, token)
           console.log('batch', batch)
           commit(mutationTypes.SetEditBatch, batch.payload)
+        },
+        async [actionTypes.EditBatch] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here', token)
+          console.log('all data is', data.url, data.data)
+          const newbatch = await editData(data.url, data.data, token)
+          if (newbatch.payload) {
+            await commit(mutationTypes.SetBatchAlertText, 'Batch updated successfully')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+            await dispatch(actionTypes.FetchBatch)
+          } else if (newbatch.message.includes('400')) {
+            await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetBatchAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetBatchAlertStatus, false)
+            commit(mutationTypes.SetBatchAlertText, '')
+          }, 2000)
         }
     },
 }

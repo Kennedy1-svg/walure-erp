@@ -14,7 +14,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css'
-import datepicker from '../../datepicker.vue'
+// import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as batchActionTypes from '../../../store/module/batch/constants/action'
@@ -22,13 +22,13 @@ import * as instructorActionTypes from '../../../store/module/instructors/consta
 
 const store = useStore();
 
-const route = useRouter();
+// const route = useRouter();
 
 let isDisabled = ref(true);
 let isError:any = ref(false);
-let isLoading:any = ref(false);
+// let isLoading:any = ref(false);
 
-let formData = new FormData()
+// let formData = new FormData()
 
 const props = defineProps({
     name: {
@@ -43,11 +43,11 @@ const newBatch:any = computed(() => {
 })
 
 const checkError:any = () => {
-    if (!newBatch.value.name) {
+    if (!newBatch.value.title) {
         errors.name = true;
-        errors.nameText = 'Batch name is required'
-    } else if (newBatch.value.name.length <= 3) {
-        errors.nameText = 'Batch name needs to be more than 3 characters'
+        errors.nameText = 'Batch title is required'
+    } else if (newBatch.value.title.length <= 3) {
+        errors.nameText = 'Batch title needs to be more than 3 characters'
     } else {
         errors.name = false;
         errors.nameText = ''
@@ -95,7 +95,7 @@ const checkError:any = () => {
         errors.endDateText = '';
     }
 
-    if (newBatch.value.instructor.length === 0) {
+    if (newBatch.value.instructors.length === 0) {
         errors.instructor = true;
         errors.instructorText = 'Instructor(s) is required'
     } else {
@@ -142,6 +142,16 @@ const check:any = ():any => {
     isChecked.value = !isChecked.value;
 }
 
+const isEditing:any = computed(() => {
+    let answer:any = ref(false)
+    if (props.name == 'Add') {
+        return
+    } else if (props.name == 'Edit') {
+        answer = true
+    }
+    return answer;
+})
+
 let errors = reactive({
     name: false,
     nameText: '',
@@ -161,7 +171,7 @@ let errors = reactive({
 
 
 
-const instructors:any = computed(() => {
+const Instructors:any = computed(() => {
   return store.getters.getInstructor.value.payload;
 });
 
@@ -180,6 +190,8 @@ const trainingoptions:any = ref([
     }
 ]);
 
+const anotherTime:any = ref(moment('03/12/2022').format('MM/DD/YYYY'))
+
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
@@ -192,29 +204,27 @@ const addbatch:any = async () => {
     console.log('hi');
     const request:any = `${api_url}api/batch/create-batch`;
 
-    // const batchdata:any = {
-    //     Title: newBatch.value.name,
-    //     TrainingType: newBatch.value.trainingType,
-    //     BatchCapacity: newBatch.value.batchCapacity,
-    //     // StartDate: moment(newBatch.value.startDate).format('MM/DD/YYYY'),
-    //     // EndDate: moment(newBatch.value.endDate).format('MM/DD/YYYY'),
-    //     StartDate: newBatch.value.startDate,
-    //     EndDate: newBatch.value.endDate,
-    //     Instructors: JSON.parse(JSON.stringify(newBatch.value.instructor)),
-    //     CourseId: newBatch.value.courseId,
-    // }
+    const batchdata:any = {
+        title: newBatch.value.title,
+        trainingType: newBatch.value.trainingType,
+        batchCapacity: newBatch.value.batchCapacity,
+        startDate: moment(newBatch.value.startDate).format('MM/DD/YYYY'),
+        endDate: moment(newBatch.value.endDate).format('MM/DD/YYYY'),
+        instructors: newBatch.value.instructors,
+        courseId: newBatch.value.courseId,
+    }
     
-    formData.append('Title', newBatch.value.name);
-    formData.append('TrainingType', newBatch.value.trainingType);
-    formData.append('BatchCapacity', newBatch.value.batchCapacity);
-    formData.append('StartDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
-    formData.append('EndDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
-    formData.append('Instructors', newBatch.value.instructor);
-    formData.append('CourseId', newBatch.value.courseId);
+    // formData.append('title', newBatch.value.title);
+    // formData.append('trainingType', newBatch.value.trainingType);
+    // formData.append('batchCapacity', newBatch.value.batchCapacity);
+    // formData.append('startDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
+    // formData.append('endDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
+    // formData.append('instructors', newBatch.value.instructors);
+    // formData.append('courseId', newBatch.value.courseId);
 
     const newData:any = {
         url: request,
-        data: formData,
+        data: batchdata,
     }
     console.log('newData', newData)
     await store.dispatch(batchActionTypes.AddBatch, newData)
@@ -227,30 +237,29 @@ const editbatch:any = async () => {
     console.log('hi');
     const request:any = `${api_url}api/batch/edit-batch`;
 
-    // const batchdata:any = {
-    //     Title: newBatch.value.name,
-    //     TrainingType: newBatch.value.trainingType,
-    //     BatchCapacity: newBatch.value.batchCapacity,
-    //     // StartDate: moment(newBatch.value.startDate).format('MM/DD/YYYY'),
-    //     // EndDate: moment(newBatch.value.endDate).format('MM/DD/YYYY'),
-    //     StartDate: newBatch.value.startDate,
-    //     EndDate: newBatch.value.endDate,
-    //     Instructors: JSON.parse(JSON.stringify(newBatch.value.instructor)),
-    //     CourseId: newBatch.value.courseId,
-    // }
+    const batchdata:any = {
+        id: newBatch.value.id,
+        title: newBatch.value.title,
+        trainingType: newBatch.value.trainingType,
+        batchCapacity: newBatch.value.batchCapacity,
+        startDate: moment(newBatch.value.startDate).format('MM/DD/YYYY'),
+        endDate: moment(newBatch.value.endDate).format('MM/DD/YYYY'),
+        instructors: JSON.parse(JSON.stringify(newBatch.value.instructors)),
+        courseId: newBatch.value.courseId,
+    }
     
-    formData.append('Title', newBatch.value.name);
-    formData.append('Id', newBatch.value.id);
-    formData.append('TrainingType', newBatch.value.trainingType);
-    formData.append('BatchCapacity', newBatch.value.batchCapacity);
-    formData.append('StartDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
-    formData.append('EndDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
-    formData.append('Instructors', newBatch.value.instructor);
-    formData.append('CourseId', newBatch.value.courseId);
+    // formData.append('Title', newBatch.value.title);
+    // formData.append('Id', newBatch.value.id);
+    // formData.append('TrainingType', newBatch.value.trainingType);
+    // formData.append('BatchCapacity', newBatch.value.batchCapacity);
+    // formData.append('StartDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
+    // formData.append('EndDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
+    // formData.append('Instructors', newBatch.value.instructors);
+    // formData.append('CourseId', newBatch.value.courseId);
 
     const newData:any = {
         url: request,
-        data: formData,
+        data: batchdata,
     }
     console.log('newData', newData)
     await store.dispatch(batchActionTypes.EditBatch, newData)
@@ -286,11 +295,9 @@ const submitEdit:any = () => {
     console.log('hello batch');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? addbatch() : '';
+    !isError.value ? editbatch() : '';
 }
 
-const activeRemove:any = 'border-primary text-primary hover:opacity-80';
-const disabledRemove:any = 'border-grey text-grey';
 const activeView:any = 'bg-primary hover:opacity-80';
 const disabledView:any = 'bg-gray-300';
 
@@ -317,7 +324,7 @@ onMounted(async () => {
                     <label for="name" class="font-semibold">
                         Name*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.title" name="name" id="name" placeholder="Enter name" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.title" name="name" id="name" placeholder="Enter name" class="px-4 py-[10px] w-full border rounded-md focus:outline-none">
                     <p class="text-[10px] text-red">
                         {{ errors.name ? errors.nameText : '' }}
                     </p>
@@ -359,7 +366,7 @@ onMounted(async () => {
                     <label for="capacity" class="font-semibold">
                         Batch capacity*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.batchCapacity" name="capacity" id="capacity" placeholder="Enter number" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newBatch.batchCapacity" name="capacity" id="capacity" placeholder="Enter number" class="px-4 py-[10px] w-full border rounded-md focus:outline-none">
                     <p class="text-[10px] text-red">
                         {{ errors.batchCapacity ? errors.batchCapacityText : '' }}
                     </p>
@@ -370,7 +377,7 @@ onMounted(async () => {
                     <label for="startdate" class="font-semibold">
                         Start date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
+                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
                     <!-- <datepicker /> -->
                     <p class="text-[10px] text-red">
                         {{ errors.startDate ? errors.startDateText : '' }}
@@ -380,7 +387,7 @@ onMounted(async () => {
                     <label for="enddate" class="font-semibold">
                         End date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input"  @focus="checkError" @cleared="checkError" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
+                    <Datepicker inputClassName="dp-custom-input" @cleared="checkError" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
                     <p class="text-[10px] text-red">
                         {{ errors.endDate ? errors.endDateText : '' }}
                     </p>
@@ -390,7 +397,7 @@ onMounted(async () => {
                 <label for="instructor" class="font-semibold">
                     Instructor
                 </label>
-                <multiselect @select="checkError" @clear="checkError" v-model="newBatch.instructor" mode="tags" :close-on-select="false" valueProp="id" :options="instructors" track-by="fullName" label="fullName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                <multiselect @select="checkError" @clear="checkError" v-model="newBatch.instructors" mode="tags" :close-on-select="false" valueProp="id" :options="Instructors" track-by="fullName" label="fullName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
                 <p class="text-[10px] text-red">
                     {{ errors.instructor ? errors.instructorText : '' }}
                 </p>
@@ -415,7 +422,8 @@ onMounted(async () => {
                 </Filter> -->
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button v-if="!isEditing" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button v-else @click.prevent="submitEdit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
             </div>
         </form>
     </div>

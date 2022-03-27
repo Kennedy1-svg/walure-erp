@@ -5,13 +5,14 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, toRefs } from 'vue'
 import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import alert from '../../alerts.vue';
 import SvgIcons from '../../SvgIcons.vue';
 import Switch from '../../switch.vue'
-import Modal from '../../Modal.vue'
+import Modal from '../../Modal.vue';
+import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
@@ -68,6 +69,14 @@ let errors = reactive({
     courseDescription: false,
     courseDescriptionText: '',
 })
+
+const props = defineProps({
+    name: {
+    type: String,
+  }
+});
+
+const { name } = toRefs(props);
 
 const status:any = computed(() => {
     let answer:any
@@ -264,6 +273,37 @@ const toggle:any = (status:any) => {
     }
 }
 
+const level_options:any = [
+    {
+        value: 'Beginner',
+        label: 'Beginner'
+    },
+    {
+        value: 'Intermediate',
+        label: 'Intermediate'
+    },
+    {
+        value: 'Advanced',
+        label: 'Advanced'
+    }
+]
+
+const deselectCategory:any = async () => {
+    console.log('on deselect')
+    const request:any = `${api_url}api/coursecategory/get-categories`;
+    await store.dispatch(courseActionTypes.FetchCourseCategories, request)  
+}
+
+const deselect:any = async () => {
+    console.log('on deselect')
+    const request:any = `${api_url}api/coursecategory/get-categories`;
+    await store.dispatch(courseActionTypes.FetchCourseCategories, request)  
+}
+
+const categories:any = computed(() => {
+    return store.getters.getCourseCategories.value.payload;
+})
+
 const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newCourse.value.imageFile = event.target.files[0]
@@ -353,24 +393,8 @@ const disabledView:any = 'bg-gray-300';
 
 <template>
     <div class="main w-full mt-[0.5px] xl:px-[45px] overflow-hidden px-6 bg-white">
-        <alert :class="[alertState ? '' : 'hidden']" class="absolute top-5 bg-white p-2 right-0" name="result">
-            <template #icon>
-                <p v-if="status" class="bg-green-accent rounded-full border p-2">
-                    <SvgIcons class="text-white" name="tick" />
-                </p>
-                <p v-else class="">
-                    <SvgIcons class="text-red" name="exclamation" />
-                </p>
-            </template>
-            <template #info>
-                <p class="text-sm">
-                    {{ alertText || 'Username or password Invalid' }}
-                </p>
-            </template>
-            <template #button></template>
-        </alert>
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl"><slot name="title">Add</slot> Course</p>
+            <p class="text-2xl">{{ props.name }} Course</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="forrmElem" ref="forrmEl" class="text-sm grid">
@@ -469,12 +493,13 @@ const disabledView:any = 'bg-gray-300';
                         Levels*
                     </label>
                     
-                    <select @focus="checkError" @keyup="checkError" class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" v-model="newCourse.levels" name="levels" id="levels">
+                    <!-- <select @focus="checkError" @keyup="checkError" class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" v-model="newCourse.levels" name="levels" id="levels">
                         <option value="">Select option</option>
                         <option value="beginner">Beginner</option>
                         <option value="intermediate">Intermediate</option>
                         <option value="experienced">Experienced</option>
-                    </select>
+                    </select> -->
+                    <multiselect @clear="deselect" v-model="newCourse.levels" valueProp="value" :options="level_options" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.levels ? errors.levelsText : '' }}
                     </p>
@@ -482,10 +507,12 @@ const disabledView:any = 'bg-gray-300';
             </div>
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
+                    <!-- {{ categories }} -->
                     <label for="categories" class="font-semibold">
                         Categories*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.categories" name="categories" id="categories" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.categories" name="categories" id="categories" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                    <multiselect @clear="deselect" v-model="newCourse.categories" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Select category" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.categories ? errors.categoriesText : '' }}
                     </p>
@@ -601,3 +628,29 @@ const disabledView:any = 'bg-gray-300';
         </form>
     </div>
 </template>
+
+<style scoped>
+.multiselect-blue {
+  --ms-option-bg: #DBEAFE;
+  --ms-option-color: #2563EB;
+  --ms-bg: #FFFFFF;
+}
+</style>
+
+<style>
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
+}
+.multiselect-blue {
+  /* --ms-option-bg: #DBEAFE; */
+  --ms-option-color: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-dropdown-bg: #FFFFFF;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-py: 8px;
+  --ms-font-size: 12px;
+  --ms-option-bg-selected-pointed: hsla(var(--color-primary), var(--tw-bg-opacity));
+}
+</style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

@@ -70,11 +70,11 @@ const course:any = computed(() => {
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Sub-Title</p>
-                <p class="text-right w-2/3">{{ courseDetails.subTitle }}</p>
+                <p class="text-justify flex justify-end w-2/3">{{ courseDetails.subTitle }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Description</p>
-                <p class="text-right w-2/3">{{ courseDetails.description }}</p>
+                <p class="text-justify flex justify-end w-2/3">{{ courseDetails.description }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Resource Materials</p>
@@ -118,7 +118,7 @@ const course:any = computed(() => {
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Categories</p>
-                <p>{{ courseDetails.categories.map((e) => e).join(', ') }}</p>
+                <!-- <p>{{ courseDetails.categories.map((e) => e).join(', ') }}</p> -->
             </div>
         </div>
     </div>

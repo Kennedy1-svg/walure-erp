@@ -202,6 +202,7 @@ onMounted(async() => {
   --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
   --ms-py: 8px;
   --ms-font-size: 12px;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
 }
 </style>
 

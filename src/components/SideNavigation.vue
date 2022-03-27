@@ -106,8 +106,11 @@ import SvgIcons from './SvgIcons.vue'
 									<li class="hover:text-primary">
 										<router-link active-class="active" to="/dashboard/talent-management/instructors">Instructors</router-link>
 									</li>
-									<li class="hover:text-primary pb-3">
+									<li class="hover:text-primary">
 										<router-link active-class="active" to="/dashboard/talent-management/talent-pool">Talent Pool</router-link>
+									</li>
+									<li class="hover:text-primary pb-3">
+										<router-link active-class="active" to="/dashboard/talent-management/skills">Skill</router-link>
 									</li>
 								</ul>
 							</div>
@@ -133,7 +136,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
 									<li class="hover:text-primary">
-										<router-link active-class="active" to="/dashboard/talent-management/instructors">Project</router-link>
+										<router-link active-class="active" to="/dashboard/service-management/projects">Project</router-link>
 									</li>
 									<li class="hover:text-primary">
 										<router-link active-class="active" to="/dashboard/talent-management/instructors">Outsourcing</router-link>
