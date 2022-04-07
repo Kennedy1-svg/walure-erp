@@ -17,7 +17,11 @@ import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
 import { api_url } from '../../../config/index'
-import AddCourse from './AddCourse.vue';  
+import AddCourse from './AddCourse.vue';
+import { useRouter } from 'vue-router';
+
+
+const route = useRouter();
 
 const courses:any = computed(() => {
     return store.getters.getCourses.value.payload;
@@ -39,6 +43,15 @@ const onPageChange:any = async (page:any) => {
     await store.dispatch(courseActionTypes.FetchCourses, request)
 }
 
+let courseitemtodelete:any = ref('')
+
+const sendId:any = (id:any) => {
+    console.log('course identity', id)
+    courseitemtodelete.value = id
+    console.log('courseitemtodelete', courseitemtodelete.value)
+    return courseitemtodelete
+}
+
 const totalPages:any = computed(() => {
     // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
     console.log(total_count.value)
@@ -51,6 +64,17 @@ const totalPages:any = computed(() => {
     return total
 })
 
+const setCurriculumId:any = async(id:any) => {
+    console.log('course id', id)
+    // await store.dispatch(id)
+    route.push({
+        name: 'Curriculum',
+        params: {
+            id: id
+        }
+    })
+}
+
 const setId:any = async (id:any) => {
     console.log('studentid', id)
     const request:any = `${api_url}api/course/${id}`;
@@ -59,6 +83,29 @@ const setId:any = async (id:any) => {
     // store.dispatch(actionTypes.FetchEditStudent, request)
     // return coursedetails
 }
+
+const deleteCourse:any = async (course:any) => {
+    console.log('course identity', courseitemtodelete.value)
+    const request:any = `${api_url}api/course/delete/${course}`;
+    console.log('request forid', request)
+    await store.dispatch(courseActionTypes.RemoveCourse, request)
+    closeModal()
+    const fetchrequest:any = `${api_url}api/course/get-courses`;
+    console.log('url', fetchrequest)
+    await store.dispatch(courseActionTypes.FetchCourses, fetchrequest)
+    // store.dispatch(actionTypes.FetchEditStudent, request)
+    // return coursedetails
+}
+
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
+
 
 const toggle:any = (status:any) => {
     if (status == 0) {
@@ -146,14 +193,22 @@ onMounted( async () => {
                                                     <SvgIcons name="details" />
                                                     Details
                                                 </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
+                                                <Modal :show="showDetails" @close="showDetails = !showDetails">
                                                     <CourseDetails :id="course.id" @close="showDetails = !showDetails" />
                                                 </Modal>
 
-                                                <router-link active-class="active" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left" to='/dashboard/course-management/curriculum'>
+                                                <!-- <router-link active-class="active" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left" to='/dashboard/course-management/curriculum'>
                                                     <SvgIcons name="curriculum" />
                                                     Curriculum
-                                                </router-link>
+                                                </router-link> -->
+                                                <button
+                                                type="button"
+                                                @click="showCurriculum = !showCurriculum" @click.prevent="setCurriculumId(course.id)"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="curriculum" />
+                                                    Curriculum
+                                                </button>
 <!-- 
                                                 <button
                                                 type="button"
@@ -195,16 +250,23 @@ onMounted( async () => {
                                                 <button
                                                 type="button"
                                                 @click="showDelete = !showDelete"
-                                                @click.prevent="setId(course.id)"
+                                                @click.prevent="sendId(course.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="delete" />
                                                     Delete
                                                 </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
+                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteCourse(courseitemtodelete)">
+                                                    <template #title>
+                                                        Delete Course
+                                                    </template>
+                                                    <template #info>
+                                                        Are you sure you want to remove course?
+                                                    </template>
+                                                    <template #delete>
+                                                        Yes, Delete Course
+                                                    </template>
+                                                </DeleteModal>
                                             </div>
                                         </div>
                                     </div>
@@ -213,7 +275,7 @@ onMounted( async () => {
                         </tr>
                     </tbody>
                 </table>
-                <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                <div class="flex items-center pt-6 px-6 mb-40 text-xs text-gray-700 justify-between">
                     <div class="">
                         Page {{ pageIndex }} of {{ totalPages }}
                     </div>

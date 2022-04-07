@@ -1,5 +1,5 @@
 <script lang="ts">
-import { onMounted, reactive } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -10,17 +10,57 @@ export default {
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
-// import AddSkill from './AddSkills.vue'
+import AddSkill from './AddSkill.vue'
 import Filter from '../../Filter.vue';
+import { api_url } from '../../../config'
 import Modal from '../../Modal.vue';
-import * as courseActionTypes from '../../../store/module/courses/constants/action';
+import * as actionTypes from '../../../store/module/instructors/constants/action';
 
 const store = useStore();
+
+let searchText:any = ref('');
+
+const filter:any = async () => {
+  const search:any = searchText.value.toLowerCase();
+  console.log('search', search)
+  const request:any = `${api_url}api/skill/search-skill/{pageIndex}/{pageSize}/${search}`;
+  store.dispatch(actionTypes.FetchSkills, request)
+//   // store.getters.getStudents
+
+//   // const status:any = document.getElementById('status');
+//   // console.log('status', status)
+//   // const rows:any = status.getElementsByTagName('ul');
+//   // console.log('rows', rows)
+//   // console.log('rows length', rows.length)
+
+//   // for (let i:any = 0; i < rows.length; i++) {
+//   //   const row:any = rows[i];
+//   //   console.log('row', rows[0])
+//   //   console.log('row', rows[1])
+//   //   console.log('row', rows[2])
+//   //   console.log('row', rows[0].textContent)
+//   //   console.log('row', rows[1].textContent)
+//   //   console.log('row', rows[2].textContent)
+//   //   if (
+//   //     row.textContent.toLowerCase().indexOf(search) > -1 
+//   //   ) {
+//   //     rows[i].style.display = '';
+//   //   } else {
+//   //     rows[i].style.display = 'none';
+//   //   }
+//   // }
+}
+
+const close:any = async () => {
+  searchText.value = ''
+  const request:any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`;
+  await store.dispatch(actionTypes.FetchSkills, request)
+}
 
 const closeModal:any = () => {
   // document.getElementById('addinstructor').showModal()
   console.log('close student modal')
-  let doc:any = document.getElementById('addinstructor')
+  let doc:any = document.getElementById('addskill')
   doc.close()  
 }
 
@@ -50,7 +90,7 @@ onMounted(() => {
                     <dialog id="addskill" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
-                                <AddSkill @close="closeModal" />
+                                <AddSkill name="Add" @close="closeModal" />
                             <!-- End of Modal Content-->
                         </div>
                     </dialog>
@@ -60,7 +100,14 @@ onMounted(() => {
         </div>
         <div class="filter flex bg-white rounded-t-lg justify-end items-center px-11 py-5">
             <div class="search">
-                <Search />
+                <Search>
+                    <template #input>
+                        <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
+                        <span class="w-auto flex justify-end items-center text-grey p-2">
+                            <SvgIcons name="search" @click="filter"  />
+                        </span>
+                    </template>
+                </Search>
             </div>
         </div>
     </div>

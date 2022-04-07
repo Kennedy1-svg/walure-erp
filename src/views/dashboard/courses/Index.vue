@@ -15,6 +15,16 @@ const store = useStore();
 
 const alertState:any = computed(() => store.getters.getCourseAlertStatus.value)
 const alertText:any = computed(() => store.getters.getCourseAlertText.value)
+
+const status:any = computed(() => {
+    let answer:any
+    if (alertText.value.includes('successfully')) {
+        answer = true
+    } else {
+        answer = false
+    }
+    return answer
+})
 </script>
 
 <template>

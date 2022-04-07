@@ -9,19 +9,20 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-import CourseDetails from './InstructorDetails.vue';
 import Switch from '../../switch.vue';
 import pagination from '../../pagination.vue'
-import Modal from '../../Modal.vue';
+import Modal from '../../Modals.vue';
+import DeleteModal from '../../DeleteModal.vue';
 import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
-import { api_url } from '../../../config/index'
+import { api_url } from '../../../config/index';
+import AddSkill from './AddSkill.vue';
 
-const instructors:any = computed(() => {
-    return store.getters.getInstructors;
+const skills:any = computed(() => {
+    return store.getters.getSkills.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getInstructors;
+    return store.getters.getSkills.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
@@ -63,7 +64,46 @@ const toggle:any = (status:any) => {
     }
 }
 
-const showAddToBatch = ref(false);
+const editSkill:any = async (skill:any) => {
+    console.log('skill', skill)
+    const editingSkill:any = skill;
+    // const request:any = `${api_url}api/batch/${id}`;
+    // console.log('request for the', request)
+    await store.dispatch(instructorActionTypes.FetchEditSkill, skill)
+    // console.log('student', student)
+    // console.log('student', student.value)
+}
+
+let skillitemtodelete:any = ref('')
+
+const sendId:any = (id:any) => {
+    console.log('batchid', id)
+    skillitemtodelete.value = id
+    console.log('skillitemtodelete', skillitemtodelete.value)
+    return skillitemtodelete
+}
+
+const deleteSkill:any = async (skill:any) => {
+    console.log('category category', skill);
+
+    const request:any = `${api_url}api/skill/delete/${skill}`;
+
+    console.log('requestData', request)
+    await store.dispatch(instructorActionTypes.RemoveSkill, request)
+    closeModal()
+    const fetchrequest:any = `${api_url}api/skill/get-skills/{pageNumber}/{pageSize}`;
+    console.log('url', fetchrequest)
+    await store.dispatch(instructorActionTypes.FetchSkills, fetchrequest)
+}
+
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
 
 const showEdit = ref(false);
 
@@ -75,9 +115,9 @@ const store = useStore();
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
-    console.log('TalentList mounted');
-    // const request:any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`;
-    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    console.log('SkillList mounted');
+    const request:any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`;
+    await store.dispatch(instructorActionTypes.FetchSkills, request)
 });
 </script>
 
@@ -92,53 +132,61 @@ onMounted( async () => {
                 <table class="overflow-x-scroll border items-center w-full">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
-                        <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="pl-6 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
                         S/N
                         </th>
-                        <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="align-middle pr-4 py-3 text-xs items-center whitespace-nowrap font-medium text-gray-500 text-left">
                         Name
                         </th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
+                        <th class="px-4 align-middle flex justify-end xl:pr-32 pr-14 py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                     </tr>
                     </thead>
 
-                    <tbody id="students" class="bg-white">{{ instructors }}
-                    <tr v-for="(instructor) in instructors" :key="instructor.id">
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ (instructors.indexOf(instructor) + 1) }}
+                    <tbody id="students" class="bg-white">
+                    <tr v-for="(skill) in skills" :key="skill.id">
+                            <td class="border-t-0 pl-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                            {{ (skills.indexOf(skill) + 1) }}
                             </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                {{ instructor.title }}
+                            <td class="border-t-0 pr-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ skill.name }}
                             </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                <button
-                                type="button"
-                                @click="showEdit = !showEdit" @click.prevent="setId(instructor.id)"
-                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                >
-                                    <SvgIcons name="edit" />
-                                    Edit
-                                </button>
-                                <Modal :show="showEdit" @close="showEdit = false">
-                                    <AddStudents />
-                                </Modal>
-                                <button
-                                type="button"
-                                @click="showDelete = !showDelete"
-                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                >
-                                    <SvgIcons name="delete" />
-                                    Delete
-                                </button>
-                                <Modal :show="showDelete" @close="showDelete = false">
-                                <p class="mb-4">No action</p>
-                                
-                                </Modal>
+                            <td class="border-t-0 pl-3 flex justify-end align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                                <div class="flex w-2/5 items-center">
+                                    <button
+                                    type="button"
+                                    @click="showEdit = !showEdit" @click.prevent="editSkill(skill)"
+                                    class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
+                                    >
+                                        <SvgIcons name="edit" />
+                                    </button>
+                                    <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                        <AddSkill name="Edit" @close="showEdit = !showEdit"  />
+                                    </Modal>
+
+                                    <button
+                                    type="button"
+                                    @click="showDelete = !showDelete" @click.prevent="sendId(skill.id)" 
+                                    class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                    >
+                                        <SvgIcons name="delete" />
+                                    </button>
+                                    <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteSkill(skillitemtodelete)">
+                                            <template #title>
+                                                Delete Skill
+                                            </template>
+                                            <template #info>
+                                                Are you sure you want to remove course skill?
+                                            </template>
+                                            <template #delete>
+                                                Yes, Delete Skill
+                                            </template>
+                                    </DeleteModal>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                <div class="flex items-center pt-6 px-6 mb-40 text-xs text-gray-700 justify-between">
                     <div class="">
                         Page {{ pageIndex }} of {{ totalPages }}
                     </div>

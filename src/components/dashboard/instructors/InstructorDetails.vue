@@ -6,6 +6,27 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
+import { api_url } from '../../../config'
+import { ref, toRefs, computed, onMounted } from 'vue';
+import { useStore } from 'vuex'
+import Modal from '../../Modal.vue'
+import * as actionTypes from '../../../store/module/instructors/constants/action'
+
+const store = useStore();
+
+const showProfilePicture = ref(false);
+const emits = defineEmits(['close'])
+
+const closeModal:any = () => {
+  // document.getElementById('myoal').showModal()
+  console.log('close modal')
+  emits('close')
+}
+
+const instructor:any = computed(() => {
+    // console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
+    return JSON.parse(JSON.stringify(store.getters.getEditInstructor.value))
+})
 
 </script>
 
@@ -14,13 +35,14 @@ import SvgIcons from '../../SvgIcons.vue';
         <div class="grid mb-7">
             <div class="flex justify-between py-[53px] items-center ">
                 <p class="text-2xl">Instructor Details</p>
-                <SvgIcons name="cancel" class="cursor-pointer" />
+                <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
             </div>
+            <!-- {{ instructor }} -->
             <div class="image grid justify-items-center">
                 <span class=" border p-1 rounded-full mb-9">
-                    <img class="w-32 h-32 rounded-full" src="../../../assets/user_one.jpg" alt="user img">
+                    <img class="w-32 h-32 rounded-full" :src="instructor.picture" alt="user img">
                 </span>
-                <p class="text-2xl font-semibold">Marcus Smith</p>
+                <p class="text-2xl font-semibold">{{ instructor.fullName }}</p>
                 <p class="text-grey font-medium">Instructor</p>
             </div>
         </div>
@@ -28,35 +50,35 @@ import SvgIcons from '../../SvgIcons.vue';
             <div class="grid border-y py-3 text-xl font-medium justify-items-start">
                 <p>About</p>
                 <p class="py-2 text-grey text-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis molestie aliquam leo quis. Adipiscing sit dictumst dignissim mattis.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis molestie aliquam leo quis. Adipiscing sit dictumst dignissim mattis.
+                    {{ instructor.bio }}
                 </p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>First name</p>
-                <p>Tope</p>
+                <p>{{ instructor.firstName }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Gender</p>
-                <p>Male</p>
+                <p>{{ instructor.gender == 0 ? 'Male' : instructor.gender == 1 ? 'Female' : null }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Mobile number</p>
-                <p>090345734869</p>
+                <p>{{ instructor.phoneNumber }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Email</p>
-                <p>topelanre@gmail.com</p>
+                <p>{{ instructor.email }}</p>
             </div>
             <div class="flex py-14 justify-start gap-4 items-center">
-                <router-link to="" >
+                <a target="_blank" :href="instructor.twitterUrl" >
                     <SvgIcons name="twitter" class="text-twitter cursor-pointer" />
-                </router-link>
-                <router-link to="" >
+                </a>
+                <a target="_blank" :href="instructor.facebookUrl" >
                     <SvgIcons name="facebook" class="text-facebook cursor-pointer" />
-                </router-link>
-                <router-link to="" >
+                </a>
+                <a target="_blank" :href="instructor.linkedInUrl" >
                     <SvgIcons name="linkedin" class="text-linkedin cursor-pointer" />
-                </router-link>
+                </a>
             </div>
         </div>
     </div>

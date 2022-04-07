@@ -6,6 +6,27 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
+import { api_url } from '../../../config'
+import { ref, toRefs, computed, onMounted } from 'vue';
+import { useStore } from 'vuex'
+import Modal from '../../Modal.vue'
+import * as actionTypes from '../../../store/module/instructors/constants/action'
+
+const store = useStore();
+
+const showProfilePicture = ref(false);
+const emits = defineEmits(['close'])
+
+const closeModal:any = () => {
+  // document.getElementById('myoal').showModal()
+  console.log('close modal')
+  emits('close')
+}
+
+const talent:any = computed(() => {
+    // console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
+    return JSON.parse(JSON.stringify(store.getters.getEditTalent.value))
+})
 
 </script>
 
@@ -14,7 +35,8 @@ import SvgIcons from '../../SvgIcons.vue';
         <div class="grid mb-7">
             <div class="flex justify-between py-[53px] items-center ">
                 <p class="text-2xl">Talent Details</p>
-                <SvgIcons name="cancel" class="cursor-pointer" />
+                <!-- {{ talent }} -->
+                <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
             </div>
             <!-- <div class="image grid justify-items-center">
                 <span class=" border p-1 rounded-full mb-9">
@@ -27,47 +49,59 @@ import SvgIcons from '../../SvgIcons.vue';
         <div class="bottom">
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>First name</p>
-                <p>Tope</p>
+                <p>{{ talent.firstName }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Last name</p>
-                <p>Tope</p>
+                <p>{{ talent.lastName }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Other name(s)</p>
-                <p>Tope</p>
+                <p>{{ talent.otherName }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Email</p>
-                <p>topelanre@gmail.com</p>
+                <p>{{ talent.email }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Mobile number</p>
-                <p>090345734869</p>
+                <p>{{ talent.phoneNumber }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Gender</p>
-                <p>Male</p>
+                <p>{{ talent.gender == '0' ? 'Male' : talent.gender == 1 ? 'Female' : null }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Role</p>
-                <p>DevOps</p>
+                <p>{{ talent.roleName }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Skills</p>
-                <p>kubernetes, ansible, terraform</p>
+                <p>{{ talent.skills.map((e) => e).join(', ') }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Proficiency</p>
-                <p>Intermediate</p>
+                <p>{{ talent.proficiencyLevelName }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Status</p>
-                <p>Active</p>
+                <p>{{ talent.status == 0 ? 'Inactive' : 'Active' }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Resume</p>
-                <p>DevOps</p>
+                <div class="bg-primary-accent p-4 gap-4 justify-between items-center rounded flex">
+                    <div class="text">
+                        <p class="font-semibold">
+                            Resume, PDF
+                        </p>
+                        <p class="text-grey text-xs">
+                            <!-- {{ talent.resumeUrl }} -->
+                        </p>
+                    </div>
+                    <div class="view">
+                        <SvgIcons name="eye" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>

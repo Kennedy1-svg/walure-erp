@@ -5,6 +5,7 @@ import students from './module/students'
 import courses from './module/courses'
 import batch from './module/batch'
 import instructors from './module/instructors'
+import services from './module/services'
 
 const store = createStore({
     modules: {
@@ -13,7 +14,8 @@ const store = createStore({
         students,
         courses,
         batch,
-        instructors
+        instructors,
+        services,
     }
 })
 

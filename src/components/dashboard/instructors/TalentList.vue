@@ -9,22 +9,49 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-import CourseDetails from './InstructorDetails.vue';
+import TalentDetails from './TalentDetails.vue';
+import UpdateTalent from './UpdateTalentStatus.vue';
 import Switch from '../../switch.vue';
 import pagination from '../../pagination.vue'
-import Modal from '../../Modal.vue';
+import DeleteModal from '../../DeleteModal.vue';
+import Modal from '../../Modals.vue';
 import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
 import { api_url } from '../../../config/index'
 
-const instructors:any = computed(() => {
-    return store.getters.getInstructors;
+const store = useStore();
+
+const talents:any = computed(() => {
+    return store.getters.getTalents.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getInstructors;
+    return store.getters.getTalents.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
+
+let itemtodelete:any = ref('')
+
+const setId:any = (id:any) => {
+    console.log('batchid', id)
+    // route.push(`/dashboard/batch/view-student/${id}`)
+    // route.push({
+    //     name: 'StudentInBatch',
+    //     params: {
+    //         id: id
+    //     }
+    // })
+    const request:any = `${api_url}api/talentpool/${id}`;
+    console.log('request forid', request)
+    store.dispatch(instructorActionTypes.FetchEditTalent, request)
+}
+
+const sendId:any = (id:any) => {
+    console.log('batchid', id)
+    itemtodelete.value = id
+    console.log('itemtodelete', itemtodelete.value)
+    return itemtodelete
+}
 
 const onPageChange:any = async (page:any) => {
     console.log('page suppose don change')
@@ -48,12 +75,12 @@ const totalPages:any = computed(() => {
     return total
 })
 
-const setId:any = (id:any) => {
-    console.log('studentid', id)
-    const request:any = `${api_url}api/student/${id}`;
-    console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditStudent, request)
-}
+// const setId:any = (id:any) => {
+//     console.log('studentid', id)
+//     const request:any = `${api_url}api/student/${id}`;
+//     console.log('request forid', request)
+//     // store.dispatch(actionTypes.FetchEditStudent, request)
+// }
 
 const toggle:any = (status:any) => {
     if (status == 0) {
@@ -63,7 +90,30 @@ const toggle:any = (status:any) => {
     }
 }
 
-const showAddToBatch = ref(false);
+const emits = defineEmits(['close', 'deletebatch']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
+
+const deleteTalent:any = async (id:any) => {
+    console.log('batch id', id);
+
+    const request:any = `${api_url}api/talentpool/delete/${id}`;
+
+    console.log('requestData', request)
+    await store.dispatch(instructorActionTypes.RemoveTalent, request)
+    await closeModal()
+    // const fetchrequest:any = `${api_url}api/batch/get-batches`;
+    // console.log('url', fetchrequest)
+    // del.value = false
+    await store.dispatch(instructorActionTypes.FetchTalents)
+}
+
+const showUpdateStatus = ref(false);
 
 const showEdit = ref(false);
 
@@ -71,13 +121,11 @@ const showDelete = ref(false);
 
 const showDetails = ref(false);
 
-const store = useStore();
-
 onMounted( async () => {
-    // store.commit('setPageTitle', 'Course List');
+    // store.commit('setPageTitle', 'Talent List');
     console.log('TalentList mounted');
-    // const request:any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`;
-    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    // const request:any = `${api_url}api/talentpool/get-talents/{pageNumber}/{pageSize}`;
+    await store.dispatch(instructorActionTypes.FetchTalents)
 });
 </script>
 
@@ -96,33 +144,38 @@ onMounted( async () => {
                     S/N
                     </th>
                     <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Course title
+                    Applicant name
                     </th>
                     <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Duration
+                    Contact Email
                     </th>
-                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Level</th>
-                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">isActive</th>
+                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Contact Phone</th>
+                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Role</th>
+                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Status</th>
                     <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                 </tr>
                 </thead>
 
-                <tbody id="students" class="bg-white">{{ instructors }}
-                  <tr v-for="(instructor) in instructors" :key="instructor.id">
+                <tbody id="students" class="bg-white">
+                    <!-- {{ talents }} -->
+                  <tr v-for="(talent) in talents" :key="talent.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ (instructors.indexOf(instructor) + 1) }}
+                          {{ (talents.indexOf(talent) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ instructor.title }}
+                          {{ talent.firstName }} {{ talent.lastName }}
                       </td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ instructor.duration }}
+                          {{ talent.email }}
                       </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ instructor.levelTypeName }}
+                          {{ talent.phoneNumber }}
                       </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <Switch :status="instructor.isActive" @toggle="toggle(instructor.isActive)" />
+                          {{ talent.roleName }}
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          {{ talent.status == '0' ? 'Pending' : talent.status == 1 ? 'Approved' : 'Rejected' }}
                       </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                           
@@ -130,36 +183,24 @@ onMounted( async () => {
                                 <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                     <SvgIcons name="ellipsis" />
                                 </button>
-                                <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-44">
                                     <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
                                         <div class="py-3 gap-3">
                                             <button
                                             type="button"
-                                            @click="showAddToBatch = !showAddToBatch" @click.prevent="setId(instructor.id)"
-                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            >
-                                                <SvgIcons name="doc-add" />
-                                                Add to batch
-                                            </button>
-                                            <Modal :show="showAddToBatch" @close="showAddToBatch = false">
-                                                <AddToBatch />
-                                            </Modal>
-
-                                            <button
-                                            type="button"
-                                            @click="showDetails = !showDetails" @click.prevent="setId(instructor.id)"
+                                            @click="showDetails = !showDetails" @click.prevent="setId(talent.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="details" />
                                                 Details
                                             </button>
                                             <Modal :show="showDetails" @close="showDetails = false">
-                                                <StudentDetails />
+                                                <TalentDetails @close="showDetails = !showDetails" />
                                             </Modal>
 
                                             <button
                                             type="button"
-                                            @click="showEdit = !showEdit" @click.prevent="setId(instructor.id)"
+                                            @click="showEdit = !showEdit" @click.prevent="setId(talent.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="edit" />
@@ -171,16 +212,35 @@ onMounted( async () => {
 
                                             <button
                                             type="button"
-                                            @click="showDelete = !showDelete"
+                                            @click="showUpdateStatus = !showUpdateStatus" @click.prevent="setId(talent.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="doc-add" />
+                                                Update Status
+                                            </button>
+                                            <Modal :show="showUpdateStatus" @close="showUpdateStatus = !showUpdateStatus">
+                                                <UpdateTalent @close="showUpdateStatus = !showUpdateStatus" />
+                                            </Modal>
+
+                                            <button
+                                            type="button"
+                                            @click="showDelete = !showDelete" @click.prevent="sendId(talent.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="delete" />
                                                 Delete
                                             </button>
-                                            <Modal :show="showDelete" @close="showDelete = false">
-                                            <p class="mb-4">No action</p>
-                                            
-                                            </Modal>
+                                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteTalent(itemtodelete)">
+                                                <template #title>
+                                                    Delete talent
+                                                </template>
+                                                <template #info>
+                                                    Are you sure you want to remove talent?
+                                                </template>
+                                                <template #delete>
+                                                    Yes, Delete Talent
+                                                </template>
+                                            </DeleteModal>
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +249,7 @@ onMounted( async () => {
                   </tr>
                     </tbody>
                 </table>
-                <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                <div class="flex items-center pt-6 px-6 mb-40 text-xs text-gray-700 justify-between">
                     <div class="">
                         Page {{ pageIndex }} of {{ totalPages }}
                     </div>

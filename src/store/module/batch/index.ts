@@ -8,11 +8,11 @@ export default {
     state: () => ({
         batches: '',
         batch: {
-          name: '',
+          title: '',
           courseId: '',
           startDate: '',
           endDate: '',
-          instructor: [],
+          instructors: [],
           batchCapacity: '',
           trainingType: '',
           course: ''
@@ -99,24 +99,24 @@ export default {
       },
     },
     actions: {
-        async [actionTypes.FetchBatch] ({ commit }: any, data: any = `${api_url}api/batch/get-batches`) {
+        async [actionTypes.FetchBatch] ({ commit }: any, data: any = `${api_url}api/batch/get-batches/{page}/{limit}`) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here', token)
-          const batch = await fetchData(data, token)
+          const batch = await fetchData(data)
         //   console.log('data', data)
         //   console.log('Ibatchs', batchs.payload)
         //   console.log('Ibatchs', batchs.value)
         //   console.log('Ibatchs', JSON.parse(JSON.stringify(batchs)))
         //   console.log('Ibatchs', JSON.parse(JSON.stringify(batchs.value)))
         //   console.log('Ibatchs', batchs.value)
-          commit(mutationTypes.SetBatch, batch.payload)
-          commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
+          await commit(mutationTypes.SetBatch, batch.payload)
+          await commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
         },
         async [actionTypes.AddStudentToBatch] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
-            console.log('token here', token)
+            console.log('token here')
             console.log('data is', data)
-          const addStudent = await addData(data.url, data.data, token)
+          const addStudent = await addData(data.url, data.data)
           console.log('addStudent', addStudent)
           if (addStudent.payload) {
             commit(mutationTypes.SetBatchAlertText, 'Student added to batch successfully')
@@ -140,24 +140,52 @@ export default {
           // commit(mutationTypes.SetBatch, batch.payload)
           // commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
         },
+        async [actionTypes.AddInstructorToBatch] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+            console.log('token here')
+            console.log('data is', data)
+          const addInstructor = await addData(data.url, data.data)
+          console.log('addInstructor', addInstructor)
+          if (addInstructor.payload) {
+            commit(mutationTypes.SetBatchAlertText, 'Instructor added to batch successfully')
+            commit(mutationTypes.SetBatchAlertStatus, true)
+            dispatch(actionTypes.FetchBatch)
+          } else if (addInstructor.message.includes('400')) {
+            commit(mutationTypes.SetBatchAlertText, 'Instructor already added to batch')
+            commit(mutationTypes.SetBatchAlertStatus, true)
+          } else if (addInstructor.message.includes('404')) {
+            commit(mutationTypes.SetBatchAlertText, 'Batch not found')
+            commit(mutationTypes.SetBatchAlertStatus, true)
+          } else {
+            commit(mutationTypes.SetBatchAlertText, 'Something went wrong')
+            commit(mutationTypes.SetBatchAlertStatus, true)
+          }
+
+          setTimeout(() => {
+            commit(mutationTypes.SetBatchAlertStatus, false)
+            commit(mutationTypes.SetBatchAlertText, '')
+          }, 2000)
+          // commit(mutationTypes.SetBatch, batch.payload)
+          // commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
+        },
         async [actionTypes.FetchStudentsInBatch] ({ commit }: any, data: any) {
           const token:any = localStorage.getItem('token')
-        //   console.log('token here', token)
-          const studentsinbatch = await fetchData(data, token)
+        //   console.log('token here')
+          const studentsinbatch = await fetchData(data)
         //   console.log('data', data)
           console.log('Ibatchs', studentsinbatch.payload)
         //   console.log('Ibatchs', batchs.value)
         //   console.log('Ibatchs', JSON.parse(JSON.stringify(batchs)))
         //   console.log('Ibatchs', JSON.parse(JSON.stringify(batchs.value)))
         //   console.log('Ibatchs', batchs.value)
-          commit(mutationTypes.SetStudentsInBatch, studentsinbatch)
-          commit(mutationTypes.SetTotalBatchCount, studentsinbatch.totalCount)
+          await commit(mutationTypes.SetStudentsInBatch, studentsinbatch)
+          await commit(mutationTypes.SetTotalBatchCount, studentsinbatch.totalCount)
         },
         async [actionTypes.AddBatch] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data.url, data.data)
-          const newbatch = await addData(data.url, data.data, token)
+          const newbatch = await addData(data.url, data.data)
           if (newbatch.payload) {
             await commit(mutationTypes.SetBatchAlertText, 'Batch added successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
@@ -177,9 +205,9 @@ export default {
         },
         async [actionTypes.RemoveBatch] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data)
-          const newbatch = await removeData(data, token)
+          const newbatch = await removeData(data)
           console.log('newbatch', newbatch)
           if (!newbatch.hasErrors) {
             await commit(mutationTypes.SetBatchAlertText, 'Batch removed successfully')
@@ -201,9 +229,9 @@ export default {
         async [actionTypes.RemoveStudentFromBatch] ({ commit, dispatch }: any, data: any) {
           console.log('i am here')
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data)
-          const newbatch = await addData(data.url, data.data, token)
+          const newbatch = await addData(data.url, data.data)
           console.log('newbatch', newbatch)
           if (!newbatch.hasErrors) {
             await commit(mutationTypes.SetBatchAlertText, 'Student removed successfully')
@@ -223,18 +251,19 @@ export default {
           }, 2000)
         },
         async [actionTypes.FetchEditBatch] ({ commit }: any, data: any) {
-          const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          // const token:any = localStorage.getItem('token')
+          // console.log('token here')
           console.log('all data is', data)
-          const batch = await fetchData(data, token)
-          console.log('batch', batch)
+          const batch = await fetchData(data)
+          console.log('batch now now', batch)
           commit(mutationTypes.SetEditBatch, batch.payload)
+          // commit(mutationTypes.SetNewBatch, batch.payload)
         },
         async [actionTypes.EditBatch] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data.url, data.data)
-          const newbatch = await editData(data.url, data.data, token)
+          const newbatch = await editData(data.url, data.data)
           if (newbatch.payload) {
             await commit(mutationTypes.SetBatchAlertText, 'Batch updated successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)

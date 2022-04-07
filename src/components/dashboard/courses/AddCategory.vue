@@ -5,13 +5,11 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, toRefs } from 'vue'
 import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
-import alert from '../../alerts.vue';
 import SvgIcons from '../../SvgIcons.vue';
 import Switch from '../../switch.vue'
-import Modal from '../../Modal.vue'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
@@ -29,6 +27,14 @@ let isLoading:any = ref(false);
 
 const alertState:any = ref(false)
 const alertText:any = ref(false)
+
+const props = defineProps({
+    name: {
+    type: String,
+  }
+});
+
+const { name } = toRefs(props);
 
 let errors = reactive({
     name: false,
@@ -102,18 +108,20 @@ const checkError:any = () => {
     }   
 }
 
-const removeImage:any = async () => {
-    return newCategory.value.imageFile = ''
-}
-
-const courses:any = computed(() => {
-    return store.getters.getCourses.value.payload;
-})
-
 const test = () => {
     console.log('hi')
     // console.log('new notes', newCategory.courseDescription.value)
 }
+
+const isEditing:any = computed(() => {
+    let answer:any = ref(false)
+    if (props.name == 'Add') {
+        return
+    } else if (props.name == 'Edit') {
+        answer = true
+    }
+    return answer;
+})
 
 const newText = () => {
     console.log('hello')
@@ -161,6 +169,11 @@ const addCategory:any = async () => {
     formData.append('Name', newCategory.value.name)
     formData.append('Description', newCategory.value.description)
 
+    // const data:any = {
+    //     name: newCategory.value.name,
+    //     description: newCategory.value.description,
+    // }
+
     // console.log('formData', JSON.parse(JSON.stringify(formData)))
     
     // Display the values
@@ -173,8 +186,8 @@ const addCategory:any = async () => {
     //     ...formData,
     //     imageFile: newCategory.value.imageFile
     // }
-    console.log('formData', formData)
-    // console.log('formdata items', [...formData.entries()])
+    console.log('added Data', formData)
+    // console.log('formdata items', [...data.entries()])
 
     const newData:any = {
         url: request,
@@ -196,6 +209,57 @@ const submit:any = () => {
     !isError.value ? addCategory() : '';
 }
 
+const editCategory:any = async () => {
+    console.log('hi');
+    // console.log('newstudent', newCategory.value)
+    // console.log('newstudent', newCategory.value.imageFile)
+    const request:any = `${api_url}api/coursecategory/edit-category`;
+
+    // const formElem = document.getElementById('formElem')
+    // formData.append('Name', newCategory.value.name)
+    // formData.append('Description', newCategory.value.description)
+
+    const data:any = {
+        id: newCategory.value.id,
+        name: newCategory.value.name,
+        description: newCategory.value.description,
+    }
+
+    // console.log('formData', JSON.parse(JSON.stringify(formData)))
+    
+    // Display the values
+// for (var value of formData.entries()) {
+//    console.log(value);
+// }
+    // const formData = JSON.parse(JSON.stringify(newCategory.value))
+
+    // const submitdata = {
+    //     ...formData,
+    //     imageFile: newCategory.value.imageFile
+    // }
+    console.log('edited data', data)
+    // console.log('formdata items', [...formData.entries()])
+
+    const newData:any = {
+        url: request,
+        data: data
+    }
+    console.log('newData', newData)
+    await store.dispatch(courseActionTypes.EditCourseCategory, newData)
+    const result = await store.getters.getCourseCategories
+    closeModal()
+    // formEl.reset()
+    // console.log('result', JSON.parse(JSON.stringify(result.value)))
+    // route.push('/dashboard/student-management')
+}
+
+const submitEdit:any = () => {
+    console.log('hello');
+    checkError();
+    console.log('iserror value', isError.value)
+    !isError.value ? editCategory() : '';
+}
+
 onMounted(async () => {
     console.log('I am now here')
     const request:any = `${api_url}api/coursecategory/get-categories`;
@@ -211,24 +275,8 @@ const disabledView:any = 'bg-gray-300';
 
 <template>
     <div class="main w-full mt-[0.5px] xl:px-[45px] overflow-hidden px-6 bg-white">
-        <alert :class="[alertState ? '' : 'hidden']" class="absolute top-5 bg-white p-2 right-0" name="result">
-            <template #icon>
-                <p v-if="status" class="bg-green-accent rounded-full border p-2">
-                    <SvgIcons class="text-white" name="tick" />
-                </p>
-                <p v-else class="">
-                    <SvgIcons class="text-red" name="exclamation" />
-                </p>
-            </template>
-            <template #info>
-                <p class="text-sm">
-                    {{ alertText || 'Username or password Invalid' }}
-                </p>
-            </template>
-            <template #button></template>
-        </alert>
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl"><slot name="name">Add</slot> Category</p>
+            <p class="text-2xl">{{ props.name }} Category</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form class="text-sm grid">
@@ -254,7 +302,8 @@ const disabledView:any = 'bg-gray-300';
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button v-if="!isEditing" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button v-else @click.prevent="submitEdit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
             </div>
         </form>
     </div>

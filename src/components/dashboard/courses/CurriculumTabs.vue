@@ -8,17 +8,36 @@ export default {
 import { ref, reactive, computed, onMounted } from 'vue';
 import AddTopic from './AddTopics.vue'
 import UploadTopic from './UploadTopics.vue'
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex'
+import * as actionTypes from '../../../store/module/courses/constants/action'
+import { api_url } from '../../../config'
+
+const store = useStore();
+const route = useRoute();
 
 const activeTab:any = ref(0)
 const tabs:any = [
-          "Add Topics",
-          "Upload Topics",
-      ]
+	"Add Topics",
+	"Upload Topics",
+]
+
+const curriculum:any = computed(():any => {
+	return store.getters.getCurriculum.value.payload
+})
+
+onMounted( async() => {
+	const id:any = route.params.id;
+	const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
+	await store.dispatch(actionTypes.FetchCurriculum, request)
+})
+
 </script>
 
 <template>
 <div class="flex justify-center">
 	<!--actual component start-->
+	{{ curriculum }}
 	<div class="w-full relative grid justify-items-center bg-white">
 		<ul class="flex w-full justify-evenly items-center my-4">
 			<template v-for="(tab, index) in tabs" :key="index">

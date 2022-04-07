@@ -17,7 +17,7 @@ import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
 import { api_url } from '../../../config';
-import AddCourse from './AddCourse.vue';  
+import AddCategory from './AddCategory.vue';  
 
 const categories:any = computed(() => {
     console.log('categories', store.getters.getCourseCategories.value.payload)
@@ -67,15 +67,36 @@ const toggle:any = (status:any) => {
     }
 }
 
+const editingCategory:any = ref('')
+
+const editCategory:any = async (categoryitem:any) => {
+    console.log('coursecategoryitem', categoryitem)
+    const editingCategory:any = categoryitem;
+    // const request:any = `${api_url}api/batch/${id}`;
+    // console.log('request for the', request)
+    await store.dispatch(courseActionTypes.FetchEditCourseCategory, categoryitem)
+    // console.log('student', student)
+    // console.log('student', student.value)
+}
+
+let categoryitemtodelete:any = ref('')
+
+const sendId:any = (id:any) => {
+    console.log('batchid', id)
+    categoryitemtodelete.value = id
+    console.log('categoryitemtodelete', categoryitemtodelete.value)
+    return categoryitemtodelete
+}
+
 const deleteCourseCategory:any = async (category_id:any) => {
     console.log('category category', category_id);
 
-    const request:any = `${api_url}api/coursecategory/${category_id}`;
+    const request:any = `${api_url}api/coursecategory/delete/${category_id}`;
 
     console.log('requestData', request)
-    store.dispatch(courseActionTypes.RemoveCourseCategory, request)
+    await store.dispatch(courseActionTypes.RemoveCourseCategory, request)
     closeModal()
-    const fetchrequest:any = `${api_url}api/coursecategory/get-categories`;
+    const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
     console.log('url', fetchrequest)
     await store.dispatch(courseActionTypes.FetchCourseCategories, fetchrequest)
 }
@@ -100,7 +121,7 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('Course category List mounted');
-    const request:any = `${api_url}api/coursecategory/get-categories`;
+    const request:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
     await store.dispatch(courseActionTypes.FetchCourseCategories, request)
 });
 </script>
@@ -242,25 +263,23 @@ onMounted( async () => {
                                 <div class="flex w-2/5 items-center">
                                     <button
                                     type="button"
-                                    @click="showEdit = !showEdit"
+                                    @click="showEdit = !showEdit" @click.prevent="editCategory(category)"
                                     class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
                                     >
                                         <SvgIcons name="edit" />
                                     </button>
-                                    <Modal :show="showEdit" @close="showEdit = false">
-                                        <AddStudents />
+                                    <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                        <AddCategory name="Edit" @close="showEdit = !showEdit"  />
                                     </Modal>
 
                                     <button
                                     type="button"
-                                    @click="showDelete = !showDelete"
+                                    @click="showDelete = !showDelete" @click.prevent="sendId(category.id)" 
                                     class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                     >
                                         <SvgIcons name="delete" />
                                     </button>
-                                    <DeleteModal :show="showDelete" @close="showDelete = false">
-                                        <!-- {{ category.id }} -->
-                                        <Delete @close="showDelete = !showDelete" @delete="deleteCourseCategory(category.id)">
+                                    <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteCourseCategory(categoryitemtodelete)">
                                             <template #title>
                                                 Delete Category
                                             </template>
@@ -270,7 +289,6 @@ onMounted( async () => {
                                             <template #delete>
                                                 Yes, Delete Category
                                             </template>
-                                        </Delete>
                                     </DeleteModal>
                                 </div>
                             </td>

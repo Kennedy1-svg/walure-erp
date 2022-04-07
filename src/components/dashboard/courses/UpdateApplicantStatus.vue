@@ -9,66 +9,84 @@ import { computed, ref, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex'
 import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
-import * as actionTypes from '../../../store/module/batch/constants/action'
+import * as actionTypes from '../../../store/module/courses/constants/action'
 import { api_url } from '../../../config'
-import alert from '../../alerts.vue';
+import multiselect from '@vueform/multiselect'
 
 const store:any = useStore()
 
-let info:any = ref('Status')
+// let info:any = ref('Status')
 
 let isChecked:any = ref(false);
 
-const batch:any = computed(() => {
-  return JSON.parse(JSON.stringify(store.getters.getBatch.value))
+const applicant:any = computed(() => {
+  // console.log('applicants', JSON.parse(JSON.stringify(store.getters.getEditCourseApplicant.value)))
+  return JSON.parse(JSON.stringify(store.getters.getEditCourseApplicant.value))
 })
+
+const statusOptions:any = [
+  {
+    label: 'Pending',
+    value: 0
+  },
+  {
+    label: 'Approved',
+    value: 1
+  },
+  {
+    label: 'Rejected',
+    value: 2
+  }]
 
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
 }
 
-const batchId:any = ref('')
+const applicantId:any = ref('')
 
-const student:any = computed(() => {
-    console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
-    return JSON.parse(JSON.stringify(store.getters.getEditStudent.value))
-})
+// const student:any = computed(() => {
+//     console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
+//     return JSON.parse(JSON.stringify(store.getters.getEditStudent.value))
+// })
 
-const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
-const alertText:any = computed(() => store.getters.getBatchAlertText.value)
+// const setBatchId:any = async (id:any, name:any) => {
+//     console.log('applicantid', id)
+//     info.value = name
+//     return applicantId.value = id
+// }
 
-const status:any = computed(() => {
-    let answer:any
-    if (alertText.value.includes('successfully')) {
-        answer = true
-    } else {
-        answer = false
-    }
-    return answer
-})
+const statusId:any = ref('')
 
-const setBatchId:any = async (id:any, name:any) => {
-    console.log('batchid', id)
-    info.value = name
-    return batchId.value = id
+const filterClicked = ref(false)
+
+const deselect:any = async () => {
+    // const request:any = `${api_url}api/courseapplicant/get-courseapplicant/{pageNumber}/{pageSize}`;
+    // store.dispatch(actionTypes.FetchCourseApplicants, request)
+    // store.getters.getCourseApplicants.value
+
+    console.log('on deselect')
+    // filterClicked.value = false;
+    // const batchrequest:any = `${api_url}api/batch/get-batches`;
+    // await store.dispatch(actionTypes.FetchCourseApplicants, batchrequest)  
 }
 
-const addStudent:any = async () => {
-    console.log('I will add student');
+const updateApplicantStatus:any = async () => {
+    console.log('I will update applicant status');
+    console.log('applicant id should be', applicant.value.id)
+    console.log('status value should be', statusId.value)
     // route.push('/dashboard/student-management')
     const data:any = {
-        batchId: batchId.value,
-        studentId: student.value.id,
+        applicantId: applicant.value,
     }
-    const request:any = `${api_url}api/batch/addstudent-tobatch`;
+    const request:any = `${api_url}api/courseapplicant/updatestatus/${applicant.value.id}/${statusId.value}`;
 
-    const requestData:any = {
-        data: data,
-        url: request,
-    }
+    // const requestData:any = {
+    //     data: data,
+    //     url: request,
+    // }
 
-    console.log('requestData', requestData)
-    store.dispatch(actionTypes.AddStudentToBatch, requestData)
+    console.log('requestData', request)
+    await store.dispatch(actionTypes.UpdateApplicantStatus, request)
     closeModal()
 }
 
@@ -116,8 +134,8 @@ const closeModal:any = async () => {
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
-    await store.dispatch(actionTypes.FetchBatch, request)
+    const request:any = `${api_url}api/applicant/get-applicantes/{pageIndex}/{pageSize}`;
+    // await store.dispatch(a ctionTypes.FetchBatch, request)
     // await store.getters.getEditStudent
     // console.log('student is', store.getters.getEditStudent.value)
     // console.log('I finished here');
@@ -126,50 +144,47 @@ onMounted(async() => {
 
 <template>
     <div class="main relative w-full px-6 lg:px-[45px] h-screen bg-white">
-        <alert :class="[alertState ? '' : 'hidden']" class="absolute top-5 bg-white p-2 right-0" name="result">
-            <template #icon>
-                <p v-if="status" class="bg-green-accent rounded-full border p-2">
-                    <SvgIcons class="text-white" name="tick" />
-                </p>
-                <p v-else class="">
-                    <SvgIcons class="text-red" name="exclamation" />
-                </p>
-            </template>
-            <template #info>
-                <p class="text-sm">
-                    {{ alertText || 'Username or password Invalid' }}
-                </p>
-            </template>
-            <template #button></template>
-        </alert>
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl">Update Applicant Status</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form class="text-sm text-left grid">
             <div class="grid gap-1 mb-10">
-                <label for="batch" class="font-semibold">
+                <label for="applicant" class="font-semibold">
                     Select Status*
                 </label>
-                <Filter>
-                    <template #info>
-                        <span class="px-5 lg:pr-56">{{ info }}</span>
-                    </template>
-                    <template #input>                        
-                        <input @keyup.esc="close" @keyup="filter" v-model="searchText"  class="border-2 text-sm p-3 rounded h-10 w-full mx-auto">
-                    </template>
-                    <template #list>
-                        <div id="students">
-                            <ul class="overflow-auto" v-for="item in batch" :key="item.id">
-                                <li @click.prevent="setBatchId(item.id, item.batchName)" class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">{{ item.batchName }}</li>
-                            </ul>
-                        </div>
-                    </template>
-                </Filter>
+                <multiselect @clear="deselect" v-model="statusId" valueProp="value" :options="statusOptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="addStudent" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button @click.prevent="updateApplicantStatus" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
             </div>
         </form>
     </div>
 </template>
+
+<style>
+
+.multiselect-blue {
+  --ms-option-bg: #DBEAFE;
+  --ms-option-color: #2563EB;
+  --ms-bg: #FFFFFF;
+}
+</style>
+
+<style>
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
+}
+.multiselect-blue {
+  /* --ms-option-bg: #DBEAFE; */
+  --ms-option-color: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-dropdown-bg: #FFFFFF;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-py: 8px;
+  --ms-font-size: 12px;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+}
+</style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

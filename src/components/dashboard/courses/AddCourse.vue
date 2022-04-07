@@ -30,6 +30,22 @@ let isLoading:any = ref(false);
 
 const alertState:any = ref(false)
 const alertText:any = ref(false)
+const isBannerActive:any = computed(() => {
+    let answer:any = false
+    if (newCourse.value.banner) {
+        answer = true
+    }
+    return answer
+})
+const isThumbnailActive:any = computed(() => {
+    let answer:any = false
+    if (newCourse.value.thumbnail) {
+        answer = true
+    }
+    return answer
+})
+const isBannerRemoved:any = ref(false)
+const isThumbnailRemoved:any = ref(false)
 
 let errors = reactive({
     title: false,
@@ -38,16 +54,16 @@ let errors = reactive({
     courseCodeText: '',
     cost: false,
     costText: '',
-    courseContentOne: false,
-    courseContentOneText: '',
-    courseContentTwo: false,
-    courseContentTwoText: '',
-    courseContentThree: false,
-    courseContentThreeText: '',
-    courseContentFour: false,
-    courseContentFourText: '',
-    courseContentFive: false,
-    courseContentFiveText: '',
+    CourseLine1: false,
+    CourseLine1Text: '',
+    CourseLine2: false,
+    CourseLine2Text: '',
+    CourseLine3: false,
+    CourseLine3Text: '',
+    CourseLine4: false,
+    CourseLine4Text: '',
+    CourseLine5: false,
+    CourseLine5Text: '',
     resource: false,
     resourceText: '',
     levels: false,
@@ -56,8 +72,8 @@ let errors = reactive({
     categoriesText: '',
     duration: false,
     durationText: '',
-    subtext: false,
-    subtextText: '',
+    subTitle: false,
+    subTitleText: '',
     banner: false,
     bannerText: '',
     thumbnail: false,
@@ -98,13 +114,13 @@ const check:any = ():any => {
     isChecked.value = !isChecked.value;
 }
 
-// const newCourse:any = computed(() => {
-//     return store.getters.getNewCourse.value;
-// })
+const newCourse:any = computed(() => {
+    return store.getters.getNewCourse.value;
+})
 
-const newCourse:any = {}
+// const newCourse:any = {}
 
-const courseContentTwo ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+const CourseLine2 ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 const phone ='^[0]+[0-9]';
 
 const checkError:any = () => {
@@ -112,88 +128,146 @@ const checkError:any = () => {
     // console.log('imageType is', imageType)
     if (!newCourse.value.title) {
         errors.title = true;
-        errors.titleText = 'First name is required'
+        errors.titleText = 'Course title is required'
     } else if (newCourse.value.title.length <= 3) {
-        errors.titleText = 'First name needs to be more than 3 characters'
+        errors.titleText = 'Course title needs to be more than 3 characters'
     } else {
         errors.title = false;
+        errors.titleText = ''
     }
     
     if (!newCourse.value.courseCode) {
         errors.courseCode = true;
-        errors.courseCodeText = 'Last name is required'
+        errors.courseCodeText = 'Course code is required'
     } else if (newCourse.value.courseCode.length <= 3) {
-        errors.courseCodeText = 'Last name needs to be more than 3 characters'
+        errors.courseCodeText = 'Course code needs to be more than 3 characters'
     } else {
         errors.courseCode = false;
+        errors.courseCodeText = ''
     }
 
     if (!newCourse.value.cost) {
         errors.cost = true;
-        errors.costText = 'Other name is required'
-    } else if (newCourse.value.cost.length <= 3) {
-        errors.costText = 'Other name needs to be more than 3 characters'
+        errors.costText = 'Cost is required'
     } else {
         errors.cost = false;
+        errors.costText = ''
     }
 
-    if (!newCourse.value.courseContentOne) {
-        errors.courseContentOne = true;
-        errors.courseContentOneText = 'courseContentOne is required. Please select a courseContentOne'
+    if (!newCourse.value.CourseLine1) {
+        errors.CourseLine1 = true;
+        errors.CourseLine1Text = 'Course content one is required.'
     } else {
-        errors.courseContentOne = false;
+        errors.CourseLine1 = false;
+        errors.CourseLine1Text = ''
     }
 
     if (!newCourse.value.banner) {
         errors.banner = true;
-        errors.bannerText = 'Image is required. Please upload an banner'
+        errors.bannerText = 'Banner is required. Please upload an banner'
     } else if (newCourse.value.banner.size > 5242880) {
         errors.banner = true;
-        errors.bannerText = 'Image size should not be more than 5MB'
+        errors.bannerText = 'Banner size should not be more than 5MB'
     } else {
         errors.banner = false;
+        errors.bannerText = ''
     }
 
     if (!newCourse.value.thumbnail) {
         errors.thumbnail = true;
-        errors.thumbnailText = 'Image is required. Please upload an thumbnail'
+        errors.thumbnailText = 'Thumbnail is required. Please upload an thumbnail'
     } else if (newCourse.value.thumbnail.size > 5242880) {
         errors.thumbnail = true;
-        errors.thumbnailText = 'Image size should not be more than 5MB'
+        errors.thumbnailText = 'Thumbnail size should not be more than 5MB'
     } else {
         errors.thumbnail = false;
+        errors.thumbnailText = ''
     }
 
-    if (!newCourse.value.courseContentTwo) {
-        errors.courseContentTwo = true;
-        errors.courseContentTwoText = 'courseContentTwo is required'
-    } else if (!newCourse.value.courseContentTwo.match(courseContentTwo)) {
-        errors.courseContentTwoText = `courseContentTwo must should have the format 'brianadams@walure.com`
+    if (!newCourse.value.CourseLine2) {
+        errors.CourseLine2 = true;
+        errors.CourseLine2Text = 'Course content two is required'
     } else {
-        errors.courseContentTwo = false;
+        errors.CourseLine2 = false;
+        errors.CourseLine2Text = ''
     }
 
-    if (!newCourse.value.phoneNumber) {
+    if (!newCourse.value.CourseLine3) {
+        errors.CourseLine3 = true;
+        errors.CourseLine3Text = 'Course content three is required'
+    } else {
+        errors.CourseLine3 = false;
+        errors.CourseLine3Text = ''
+    }
+
+    if (!newCourse.value.CourseLine4) {
+        errors.CourseLine4 = true;
+        errors.CourseLine4Text = 'Course content four is required'
+    } else {
+        errors.CourseLine4 = false;
+        errors.CourseLine4Text = ''
+    }
+
+    if (!newCourse.value.CourseLine5) {
+        errors.CourseLine5 = true;
+        errors.CourseLine5Text = 'Course content five is required'
+    } else {
+        errors.CourseLine5 = false;
+        errors.CourseLine5Text = ''
+    }
+
+    if (!newCourse.value.levelType) {
         errors.levels = true;
-        errors.levelsText = 'Phone number is required'
-    } else if (isNaN(newCourse.value.levelsNumber)) {
-        errors.levels = true;
-        errors.levelsText = 'Phone number cannot contain letters'
-    } else if (!newCourse.value.levelsNumber.match(phone)) {
-        errors.levelsText = 'Phone numer must start with 0'
-    } else if (newCourse.value.levelsNumber.length <= 9) {
-        errors.levelsText = 'Phone numer cannot be less than 10 digits'
+        errors.levelsText = 'Level is required'
     } else {
         errors.levels = false;
+        errors.levelsText = ''
     }
 
-    if (!newCourse.value.addresss) {
-        errors.resourceText = 'true';
-        errors.resourceText = 'Address is required'
-    } else if (newCourse.value.resources.length <= 13) {
-        errors.resourceText = 'Address needs to be more than 3 words'
+    if (!newCourse.value.categories) {
+        errors.categories = true;
+        errors.categoriesText = 'Please select a category'
     } else {
-        errors.resourceText = 'false';
+        errors.categories = false;
+        errors.categoriesText = ''
+    }
+
+    if (!newCourse.value.duration) {
+        errors.duration = true;
+        errors.durationText = 'Duration is required'
+    } else {
+        errors.duration = false;
+        errors.durationText = ''
+    }
+
+    if (!newCourse.value.resourceUrl) {
+        errors.resource = true;
+        errors.resourceText = 'Add a resource url'
+    } else if (newCourse.value.resourceUrl.length <= 5) {
+        errors.resourceText = 'Url needs to be more than 5 characters'
+    } else {
+        errors.resource = false;
+        errors.resourceText = '';
+    }
+
+    if (!newCourse.value.subTitle) {
+        errors.subTitle = true;
+        errors.subTitleText = 'Add a sub text'
+    } else if (newCourse.value.subTitle.length <= 5) {
+        errors.subTitleText = 'Sub text needs to be more than 5 characters'
+    } else {
+        errors.subTitle = false;
+        errors.subTitleText = '';
+    }
+
+    if (!notes.value) {
+        errors.courseDescription = true;
+        errors.courseDescriptionText = 'Add a course description'
+    } else if (notes.value.length <= 10) {
+        errors.courseDescriptionText = 'Description needs to be more than 10 characters'
+    } else {
+        errors.courseDescription = false;
+        errors.courseDescriptionText = '';
     }
 
     if (errors.title) {
@@ -205,20 +279,20 @@ const checkError:any = () => {
     } else if (errors.cost) {
         errors.cost = true;
         isError.value = true;
-    } else if (errors.courseContentTwo) {
-        errors.courseContentTwo = true;
+    } else if (errors.CourseLine2) {
+        errors.CourseLine2 = true;
         isError.value = true;
     } else if (errors.levels) {
         errors.levels = true;
         isError.value = true;
-    } else if (errors.courseContentThree) {
-        errors.courseContentThree = true;
+    } else if (errors.CourseLine3) {
+        errors.CourseLine3 = true;
         isError.value = true;
-    } else if (errors.courseContentTwo) {
-        errors.courseContentTwo = true;
+    } else if (errors.CourseLine2) {
+        errors.CourseLine2 = true;
         isError.value = true;
-    } else if (errors.courseContentOne) {
-        errors.courseContentOne = true;
+    } else if (errors.CourseLine1) {
+        errors.CourseLine1 = true;
         isError.value = true;
     } else if (errors.courseCode) {
         errors.courseCode = true;
@@ -266,10 +340,24 @@ let isActive:any = computed(() => {
 })
 
 const toggle:any = (status:any) => {
+    console.log('i can switch up')
     if (status == 0) {
-        return status = 1
+        console.log('i can switch on', status)
+        return newCourse.value.isFeatured = true
     } else {
-        return status = 0
+        console.log('i can switch off', status)
+        return newCourse.value.isFeatured = false
+    }
+}
+
+const toggleActive:any = (status:any) => {
+    console.log('i can switch up')
+    if (status == 0) {
+        console.log('i can switch on', status)
+        return newCourse.value.isActive = true
+    } else {
+        console.log('i can switch off', status)
+        return newCourse.value.isActive = false
     }
 }
 
@@ -304,45 +392,63 @@ const categories:any = computed(() => {
     return store.getters.getCourseCategories.value.payload;
 })
 
-const onChange:any = (event:any):any => {
+const onChangeBanner:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
-    newCourse.value.imageFile = event.target.files[0]
+    newCourse.value.banner = event.target.files[0]
     formData.append('file', event.target.files[0])
-    let images: any = document.getElementById('output')
-    let image:any = document.getElementById('displayoutput')
+    let images: any = document.getElementById('bannerimage')
     images.src = URL.createObjectURL(event.target.files[0])
-    image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newCourse image', newCourse.value.imageFile.type)
+    console.log('newCourse image', newCourse.value.banner.type)
 }
 
-const resetForm:any = Object.freeze({
-        firstName: '',
-        courseCode: '',
-        cost: '',
-        courseContentTwo: '',
-        phoneNumber: '',
-        addresss: '',
-        imageFile: '',
-        courseContentOne: '',
-        courseId: ''
-})
+const onChangeThumbnail:any = (event:any):any => {
+    console.log('event', event.target.files[0].name)
+    newCourse.value.thumbnail = event.target.files[0]
+    formData.append('file', event.target.files[0])
+    let images: any = document.getElementById('thumbnailimage')
+    images.src = URL.createObjectURL(event.target.files[0])
+    console.log('newCourse image', newCourse.value.thumbnail.type)
+}
+
+// const resetForm:any = Object.freeze({
+//         firstName: '',
+//         courseCode: '',
+//         cost: '',
+//         CourseLine2: '',
+//         phoneNumber: '',
+//         resourceUrl: '',
+//         imageFile: '',
+//         CourseLine1: '',
+//         courseId: ''
+// })
 
 const addCourse:any = async () => {
     console.log('hi');
-    console.log('newstudent', newCourse.value)
-    console.log('newstudent', newCourse.value.imageFile)
-    const request:any = `${api_url}api/student/create-student`;
+    console.log('newcourse', newCourse.value)
+    console.log('new banner', newCourse.value.banner)
+    console.log('new thumbnail', newCourse.value.thumbnail)
+    const request:any = `${api_url}api/course/create-course`;
 
     // const formElem = document.getElementById('formElem')
-    formData.append('firstName', newCourse.value.firstName)
+    formData.append('title', newCourse.value.title)
     formData.append('courseCode', newCourse.value.courseCode)
     formData.append('cost', newCourse.value.cost)
-    formData.append('imageFile', newCourse.value.imageFile, newCourse.value.imageFile.name)
-    formData.append('addresss', newCourse.value.addresss)
-    formData.append('phoneNumber', newCourse.value.phoneNumber)
-    formData.append('courseContentOne', newCourse.value.courseContentOne)
+    formData.append('banner', newCourse.value.banner, newCourse.value.banner.name)
+    formData.append('thumbnail', newCourse.value.thumbnail, newCourse.value.thumbnail.name)
+    formData.append('resourceUrl', newCourse.value.resourceUrl)
+    formData.append('levelType', newCourse.value.levelType)
+    formData.append('CourseLine1', newCourse.value.CourseLine1)
     // formData.append('courseId', newCourse.value.courseId)
-    formData.append('courseContentTwo', newCourse.value.courseContentTwo)
+    formData.append('CourseLine2', newCourse.value.CourseLine2)
+    formData.append('CourseLine3', newCourse.value.CourseLine3)
+    formData.append('CourseLine4', newCourse.value.CourseLine4)
+    formData.append('CourseLine5', newCourse.value.CourseLine5)
+    formData.append('categories', newCourse.value.categories)
+    formData.append('duration', newCourse.value.duration)
+    formData.append('isFeatured', newCourse.value.isFeatured)
+    formData.append('description', notes.value)
+    formData.append('subTitle', newCourse.value.subTitle)
+    formData.append('isActive', newCourse.value.isActive)
 
     // console.log('formData', JSON.parse(JSON.stringify(formData)))
     
@@ -364,7 +470,7 @@ const addCourse:any = async () => {
         data: formData
     }
     console.log('newData', newData)
-    // await store.dispatch(studentActionTypes.AddNewCourse, newData)
+    await store.dispatch(courseActionTypes.AddNewCourse, newData)
     const result = await store.getters.getCourse
     closeModal()
     // formEl.reset()
@@ -432,7 +538,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="resource" class="font-semibold">
                         Resource Download*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.resource" name="resource" id="resource" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.resourceUrl" name="resource" id="resource" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.resource ? errors.resourceText : '' }}
                     </p>
@@ -440,56 +546,56 @@ const disabledView:any = 'bg-gray-300';
             </div>
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
-                    <label for="courseContentOne" class="font-semibold">
+                    <label for="CourseLine1" class="font-semibold">
                         Course Content (1)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseContentOne" name="courseContentOne" id="courseContentOne" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine1" name="CourseLine1" id="CourseLine1" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.courseContentOne ? errors.courseContentOneText : '' }}
+                        {{ errors.CourseLine1 ? errors.CourseLine1Text : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
-                    <label for="courseContentTwo" class="font-semibold">
+                    <label for="CourseLine2" class="font-semibold">
                         Course Content (2)*
                     </label>
-                    <input type="courseContentTwo" @focus="checkError" @keyup="checkError" v-model="newCourse.courseContentTwo" name="courseContentTwo" id="courseContentTwo" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="CourseLine2" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine2" name="CourseLine2" id="CourseLine2" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.courseContentTwo ? errors.courseContentTwoText : '' }}
+                        {{ errors.CourseLine2 ? errors.CourseLine2Text : '' }}
                     </p>
                 </div>
             </div>
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
-                    <label for="courseContentThree" class="font-semibold">
+                    <label for="CourseLine3" class="font-semibold">
                         Course Content (3)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseContentThree" name="courseContentThree" id="courseContentThree" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine3" name="CourseLine3" id="CourseLine3" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.courseContentThree ? errors.courseContentThreeText : '' }}
+                        {{ errors.CourseLine3 ? errors.CourseLine3Text : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
-                    <label for="courseContentFour" class="font-semibold">
+                    <label for="CourseLine4" class="font-semibold">
                         Course Content (4)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseContentFour" name="courseContentFour" id="courseContentFour" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine4" name="CourseLine4" id="CourseLine4" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.courseContentFour ? errors.courseContentFourText : '' }}
+                        {{ errors.CourseLine4 ? errors.CourseLine4Text : '' }}
                     </p>
                 </div>
             </div>
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
-                    <label for="courseContentFive" class="font-semibold">
+                    <label for="CourseLine5" class="font-semibold">
                         Course Content (5)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseContentFive" name="courseContentFive" id="courseContentFive" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine5" name="CourseLine5" id="CourseLine5" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.courseContentFive ? errors.courseContentFiveText : '' }}
+                        {{ errors.CourseLine5 ? errors.CourseLine5Text : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
-                    <label for="courseContentOne" class="font-semibold">
+                    <label for="CourseLine1" class="font-semibold">
                         Levels*
                     </label>
                     
@@ -499,7 +605,7 @@ const disabledView:any = 'bg-gray-300';
                         <option value="intermediate">Intermediate</option>
                         <option value="experienced">Experienced</option>
                     </select> -->
-                    <multiselect @clear="deselect" v-model="newCourse.levels" valueProp="value" :options="level_options" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                    <multiselect @clear="deselect" v-model="newCourse.levelType" valueProp="value" :options="level_options" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.levels ? errors.levelsText : '' }}
                     </p>
@@ -529,12 +635,12 @@ const disabledView:any = 'bg-gray-300';
             </div>
             <div class="grid text-left gap-8 mb-10">
                 <div class="grid gap-4">
-                    <label for="subtext" class="font-semibold">
+                    <label for="subTitle" class="font-semibold">
                         Sub Text*
                     </label>
-                    <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.subtext" name="subtext" id="subtext" placeholder="Write something" rows="5" class="p-4 border rounded-md text-xs focus:outline-none" />
+                    <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.subTitle" name="subTitle" id="subTitle" placeholder="Write something" rows="5" class="p-4 border rounded-md text-xs focus:outline-none" />
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.subtext ? errors.subtextText : '' }}
+                        {{ errors.subTitle ? errors.subTitleText : '' }}
                     </p>
                 </div>
             </div>
@@ -544,14 +650,15 @@ const disabledView:any = 'bg-gray-300';
                         Banner
                     </label>
                     <div class="flex items-center justify-start w-full">
-                        <label :class="[errors.banner ? 'rounded-full text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                        <label :class="[errors.banner ? 'text-red border-red' : '', isBannerActive ? 'hidden' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>
-                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
+                            <input type="file" name="imageFile" @change="onChangeBanner" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
                         </label>
+                        <img class="w-36 p-1 " :class="[isBannerActive && props.name == 'Add' && !isBannerRemoved ? '' : 'hidden']" id="bannerimage" alt="course banner image">
                     </div>
                     <p class="text-xs font-medium">
                         Allowed Formats: jpg, png, mp4
@@ -565,14 +672,15 @@ const disabledView:any = 'bg-gray-300';
                         Thumbnail
                     </label>
                     <div class="flex items-center justify-start w-full">
-                        <label :class="[errors.thumbnail ? 'rounded-full text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                        <label :class="[errors.thumbnail ? 'text-red border-red' : '', isThumbnailActive ? 'hidden' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>                            
-                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
+                            <input type="file" name="imageFile" @change="onChangeThumbnail" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
                         </label>
+                        <img class="w-36 p-1 " :class="[isThumbnailActive && props.name == 'Add' && !isThumbnailRemoved ? '' : 'hidden']" id="thumbnailimage" alt="course thumbnail image">
                     </div>
                     <p class="text-xs font-medium">
                         Allowed Formats: jpg, png, mp4
@@ -584,22 +692,16 @@ const disabledView:any = 'bg-gray-300';
             </div>
             <div class="grid text-left grid-cols-4 gap-8 mb-10">
                 <div class="flex items-center gap-4">
-                    <Switch />
-                    <label for="categories" class="font-semibold">
+                    <Switch name="course" :status="newCourse.isFeatured" @toggle="toggle" />
+                    <label for="isFeatured" class="font-semibold">
                         Is Featured
                     </label>
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.isFeatured ? errors.isFeaturedText : '' }}
-                    </p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <Switch :status="newCourse.isFeatured" @toggle="toggle(newCourse.isFeatured)" />
-                    <label for="duration" class="font-semibold">
+                    <Switch name="course" :status="newCourse.isActive" @toggle="toggleActive" />
+                    <label for="isActive" class="font-semibold">
                         Is Active
                     </label>
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.duration ? errors.durationText : '' }}
-                    </p>
                 </div>
             </div>
             <div class="grid text-left gap-8 mb-10">

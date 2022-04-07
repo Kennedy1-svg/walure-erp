@@ -98,7 +98,7 @@ export default {
     async [actionTypes.FetchStudents] ({ commit }: any, data: any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const students = await fetchData(data, token)
+      const students = await fetchData(data)
       console.log('data fe', data)
     //   console.log('Istudents', students.payload)
     //   console.log('Istudents', students.value)
@@ -110,22 +110,35 @@ export default {
     },
     async [actionTypes.FetchEditStudent] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
-      console.log('token here', token)
-      const student = await fetchData(data, token)
-      console.log('data tch', data)
+      console.log('token here')
+      const student = await fetchData(data)
+      // console.log('data tch', data)
       // console.log('Istudents', student.payload)
     //   console.log('Istudents', students.value)
     //   console.log('Istudents', JSON.parse(JSON.stringify(students)))
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
-      commit(mutationTypes.SetEditStudent, student.payload)
-      commit(mutationTypes.SetNewStudent, student.payload)
+      await commit(mutationTypes.SetEditStudent, student.payload)
+      await commit(mutationTypes.SetNewStudent, student.payload)
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
     async [actionTypes.FilterStudent] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
-      console.log('token here', token)
-      const student = await fetchData(data, token)
+      console.log('token here')
+      const student = await fetchData(data)
+      console.log('data', data)
+      console.log('Istudents', student.payload)
+    //   console.log('Istudents', students.value)
+    //   console.log('Istudents', JSON.parse(JSON.stringify(students)))
+    //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
+    //   console.log('Istudents', students.value)
+      commit(mutationTypes.SetStudent, student.payload)
+      // commit(mutationTypes.SetTotalCount, students.totalCount)
+    },
+    async [actionTypes.SearchStudent] ({ commit }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here')
+      const student = await fetchData(data)
       console.log('data', data)
       console.log('Istudents', student.payload)
     //   console.log('Istudents', students.value)
@@ -137,9 +150,9 @@ export default {
     },
     async [actionTypes.AddNewStudent] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
-      console.log('token here', token)
+      console.log('token here')
       console.log('data is', data)
-      const student = await addDataFile(data.url, data.data, token)
+      const student = await addDataFile(data.url, data.data)
       if (student.payload) {
         await commit(mutationTypes.SetStudentAlertText, 'Student added successfully')
         await commit(mutationTypes.SetStudentAlertStatus, true)
@@ -159,11 +172,11 @@ export default {
     },
     async [actionTypes.EditStudent] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
-      console.log('token here', token)
+      console.log('token here')
       console.log('data is', data)
-      const student = await editData(data.url, data.data, token)
+      const student = await editData(data.url, data.data)
       if (student.payload) {
-        await commit(mutationTypes.SetStudentAlertText, 'Student added successfully')
+        await commit(mutationTypes.SetStudentAlertText, 'Student updated successfully')
         await commit(mutationTypes.SetStudentAlertStatus, true)
         await dispatch(actionTypes.FetchStudents)
       } else if (student.message.includes('400')) {

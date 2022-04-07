@@ -154,6 +154,7 @@ onMounted(async() => {
         </div>
         <form class="text-sm text-left grid">
             <div class="grid gap-1 mb-10">
+                <!-- {{ batch }} -->
                 <label for="batch" class="font-semibold">
                     Select from batch available*
                 </label>
@@ -172,7 +173,7 @@ onMounted(async() => {
                         </div>
                     </template>
                 </Filter> -->
-                <multiselect @clear="deselect" v-model="batchId" valueProp="id" :options="batch" track-by="batchName" label="batchName" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                <multiselect @clear="deselect" v-model="batchId" valueProp="id" :options="batch" track-by="title" label="title" placeholder="Select option" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="flex justify-end pb-10">
                 <button type="button" @click.prevent="addStudent" :class="[ isReady ? activeView : disabledView ]" :disabled="!isReady" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>

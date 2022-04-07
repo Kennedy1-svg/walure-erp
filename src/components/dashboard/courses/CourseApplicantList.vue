@@ -9,32 +9,64 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-import CourseDetails from './CourseDetails.vue';
+import CourseApplicantDetails from './CourseApplicantDetails.vue';
 import Switch from '../../switch.vue';
 import pagination from '../../pagination.vue'
+import DeleteModal from '../../DeleteModal.vue';
 import Modal from '../../Modals.vue';
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
 import { api_url } from '../../../config/index'
-import AddCourse from './AddCourse.vue';  
+import UpdateApplicantStatus from './UpdateApplicantStatus.vue';
 
-const courses:any = computed(() => {
-    return store.getters.getCourses.value.payload;
+const courseapplicants:any = computed(() => {
+    return store.getters.getCourseApplicants.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getCourses.value.totalCount;
+    return store.getters.getCourseApplicants.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
+
+let applicantitemtodelete:any = ref('')
+
+const sendId:any = (id:any) => {
+    console.log('applicant identity', id)
+    applicantitemtodelete.value = id
+    console.log('applicantitemtodelete', applicantitemtodelete.value)
+    return applicantitemtodelete
+}
+
+const deleteCourseApplicant:any = async (applicant:any) => {
+    console.log('course identity', applicantitemtodelete.value)
+    const request:any = `${api_url}api/courseapplicant/delete/${applicant}`;
+    console.log('request forid', request)
+    await store.dispatch(courseActionTypes.RemoveCourseApplicant, request)
+    closeModal()
+    const fetchrequest:any = `${api_url}api/courseapplicant/get-courseapplicant/{pageNumber}/{pageSize}`;
+    console.log('url', fetchrequest)
+    await store.dispatch(courseActionTypes.FetchCourseCategories, fetchrequest)
+    // store.dispatch(actionTypes.FetchEditStudent, request)
+    // return coursedetails
+}
+
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
 
 const onPageChange:any = async (page:any) => {
     console.log('page suppose don change')
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    // const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
-    // console.log('url', request)
-    // await store.dispatch(courseActionTypes.FetchCourses, request)
+    const request:any = `${api_url}api/courseapplicant/get-courseapplicant/{pageNumber}/{pageSize}`;
+    console.log('url', request)
+    await store.dispatch(courseActionTypes.FetchCourseApplicants, request)
 }
 
 const totalPages:any = computed(() => {
@@ -50,10 +82,10 @@ const totalPages:any = computed(() => {
 })
 
 const setId:any = (id:any) => {
-    console.log('studentid', id)
-    const request:any = `${api_url}api/student/${id}`;
+    console.log('applicant id is', id)
+    const request:any = `${api_url}api/courseapplicant/${id}`;
     console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditStudent, request)
+    store.dispatch(courseActionTypes.FetchEditCourseApplicant, request)
 }
 
 const toggle:any = (status:any) => {
@@ -66,7 +98,7 @@ const toggle:any = (status:any) => {
 
 const showCurriculum = ref(false);
 
-const showEdit = ref(false);
+const showUpdateStatus = ref(false);
 
 const showDelete = ref(false);
 
@@ -77,8 +109,8 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('CourseList mounted');
-    // const request:any = `${api_url}api/course/search-courses/{pageIndex}/{pageSize}`;
-    // await store.dispatch(courseActionTypes.FetchCourses, request)
+    const request:any = `${api_url}api/courseapplicant/get-courseapplicant/{pageNumber}/{pageSize}`;
+    await store.dispatch(courseActionTypes.FetchCourseApplicants, request)
 });
 </script>
 
@@ -110,510 +142,82 @@ onMounted( async () => {
                     </thead>
 
                     <tbody id="students" class="bg-white">
-                        <!-- <tr v-for="(course) in courses" :key="course.id">
+                        <tr v-for="(applicant) in courseapplicants" :key="applicant.id">
                             <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                {{ (courses.indexOf(course) + 1) }}
+                                {{ (courseapplicants.indexOf(applicant) + 1) }}
                             </td>
                             <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                {{ course.title }}
+                                {{ applicant.fullName }}
                             </td>
                             <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ course.duration }}
+                                {{ applicant.course }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ course.levelTypeName }}
+                                {{ applicant.email }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                <Switch :status="course.isActive" @toggle="toggle(course.isActive)" />
+                                {{ applicant.phoneNumber }}
+                            </td>
+                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                <p v-if="applicant.status == 0" class="text-yellow bg-yellow rounded-full bg-opacity-10 p-1 flex justify-center">{{ applicant.status == 0 ? 'Pending' : applicant.status == 1 ? 'Approved' : 'Rejected' }}</p>
+                                <p v-if="applicant.status == 1" class="text-green-accent bg-green-accent rounded-full bg-opacity-10 p-1 flex justify-center">{{ applicant.status == 0 ? 'Pending' : applicant.status == 1 ? 'Approved' : 'Rejected' }}</p>
+                                <p v-if="applicant.status == 2" class="text-red bg-red bg-opacity-10 rounded-full p-1 flex justify-center">{{ applicant.status == 0 ? 'Pending' : applicant.status == 1 ? 'Approved' : 'Rejected' }}</p>
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
                                 <div class="relative inline-block dropdown">
                                     <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                         <SvgIcons name="ellipsis" />
                                     </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                    <div class="absolute z-40 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-44">
                                         <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
                                             <div class="py-3 gap-3">
                                                 <button
                                                 type="button"
-                                                @click="showDetails = !showDetails" @click.prevent="setId(course.id)"
+                                                @click="showUpdateStatus = !showUpdateStatus"
+                                                @click.prevent="setId(applicant.id)"    
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
-                                                    <SvgIcons name="details" />
-                                                    Details
+                                                    <SvgIcons name="update" />
+                                                    Update Status
                                                 </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <router-link active-class="active" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left" to='/dashboard/course-management/curriculum'>
-                                                    <SvgIcons name="curriculum" />
-                                                    Curriculum
-                                                </router-link>
-
-                                                <button
-                                                type="button"
-                                                @click="showCurriculum = !showCurriculum" @click.prevent="setId(course.id)"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="curriculum" />
-                                                    Curriculum
-                                                </button>
-                                                <Modal :show="showCurriculum" @close="showCurriculum = false">
-                                                    <AddToBatch />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails" @click.prevent="setId(course.id)"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showEdit = !showEdit" @click.prevent="setId(course.id)"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="edit" />
-                                                    Edit
-                                                </button>
-                                                <Modal :show="showEdit" @close="showEdit = false">
-                                                    <AddStudents />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDelete = !showDelete"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="delete" />
-                                                    Delete
-                                                </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr> -->
-                        <tr>
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                1
-                            </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                title
-                            </td>
-                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                duration
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                levelTypeName
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
-                                <div class="relative inline-block dropdown">
-                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                        <SvgIcons name="ellipsis" />
-                                    </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                            <div class="py-3 gap-3">
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="status" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
+                                                <Modal :show="showUpdateStatus" @close="showUpdateStatus = !showUpdateStatus">
+                                                    <UpdateApplicantStatus @close="showUpdateStatus = !showUpdateStatus" />
                                                 </Modal>
 
 
                                                 <button
                                                 type="button"
                                                 @click="showDetails = !showDetails"
+                                                @click.prevent="setId(applicant.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="details" />
                                                     Details
                                                 </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
+                                                <Modal :show="showDetails" @close="showDetails = !showDetails">
+                                                    <CourseApplicantDetails :id="applicant.id" @close="showDetails = !showDetails" />
                                                 </Modal>
 
                                                 <button
                                                 type="button"
                                                 @click="showDelete = !showDelete"
+                                                @click.prevent="sendId(applicant.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="delete" />
                                                     Delete
                                                 </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                1
-                            </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                title
-                            </td>
-                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                duration
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                levelTypeName
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
-                                <div class="relative inline-block dropdown">
-                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                        <SvgIcons name="ellipsis" />
-                                    </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                            <div class="py-3 gap-3">
-                                                <button
-                                                type="button"
-                                                @click="showCurriculum = !showCurriculum"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="doc-add" />
-                                                    Add to batch
-                                                </button>
-                                                <Modal :show="showCurriculum" @close="showCurriculum = false">
-                                                    <AddToBatch />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDelete = !showDelete"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="delete" />
-                                                    Delete
-                                                </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                1
-                            </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                title
-                            </td>
-                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                duration
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                levelTypeName
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
-                                <div class="relative inline-block dropdown">
-                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                        <SvgIcons name="ellipsis" />
-                                    </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                            <div class="py-3 gap-3">
-                                                <button
-                                                type="button"
-                                                @click="showCurriculum = !showCurriculum"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="doc-add" />
-                                                    Add to batch
-                                                </button>
-                                                <Modal :show="showCurriculum" @close="showCurriculum = false">
-                                                    <AddToBatch />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDelete = !showDelete"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="delete" />
-                                                    Delete
-                                                </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                1
-                            </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                title
-                            </td>
-                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                duration
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                levelTypeName
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
-                                <div class="relative inline-block dropdown">
-                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                        <SvgIcons name="ellipsis" />
-                                    </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                            <div class="py-3 gap-3">
-                                                <button
-                                                type="button"
-                                                @click="showCurriculum = !showCurriculum"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="doc-add" />
-                                                    Add to batch
-                                                </button>
-                                                <Modal :show="showCurriculum" @close="showCurriculum = false">
-                                                    <AddToBatch />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDelete = !showDelete"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="delete" />
-                                                    Delete
-                                                </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                1
-                            </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                title
-                            </td>
-                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                duration
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                levelTypeName
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
-                                <div class="relative inline-block dropdown">
-                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                        <SvgIcons name="ellipsis" />
-                                    </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                            <div class="py-3 gap-3">
-                                                <button
-                                                type="button"
-                                                @click="showCurriculum = !showCurriculum"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="doc-add" />
-                                                    Add to batch
-                                                </button>
-                                                <Modal :show="showCurriculum" @close="showCurriculum = false">
-                                                    <AddToBatch />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDelete = !showDelete"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="delete" />
-                                                    Delete
-                                                </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                1
-                            </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                title
-                            </td>
-                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                duration
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                levelTypeName
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
-                                <div class="relative inline-block dropdown">
-                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                        <SvgIcons name="ellipsis" />
-                                    </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                            <div class="py-3 gap-3">
-                                                <button
-                                                type="button"
-                                                @click="showCurriculum = !showCurriculum"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="doc-add" />
-                                                    Add to batch
-                                                </button>
-                                                <Modal :show="showCurriculum" @close="showCurriculum = false">
-                                                    <AddToBatch />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDelete = !showDelete"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="delete" />
-                                                    Delete
-                                                </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
+                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteCourseApplicant(applicantitemtodelete)">
+                                                    <template #title>
+                                                        Delete Course Applicant
+                                                    </template>
+                                                    <template #info>
+                                                        Are you sure you want to remove course applicant?
+                                                    </template>
+                                                    <template #delete>
+                                                        Yes, Delete Applicant
+                                                    </template>
+                                                </DeleteModal>
                                             </div>
                                         </div>
                                     </div>

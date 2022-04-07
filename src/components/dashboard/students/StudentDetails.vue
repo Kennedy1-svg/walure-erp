@@ -45,7 +45,7 @@ const student:any = computed(() => {
             </div>
             <div class="image grid justify-items-center">
                 <span class=" border p-1 rounded-full mb-9">
-                    <img class="w-32 h-32 rounded-full" :src=student.image alt="user img">
+                    <img class="w-32 h-32 rounded-full" :src=student.imageFile alt="user img">
                 </span>
                 <!-- <button type="button" @click="showProfilePicture = !showProfilePicture"  class="rounded bg-primary text-white text-sm px-10 py-4">
                     View Passport
@@ -60,7 +60,7 @@ const student:any = computed(() => {
                         </button>
                     </template>
                     <template #modalContent>
-                        <img class="" :src=student.image alt="user img">
+                        <img class="" :src=student.imageFile alt="user img">
                     </template>
                 </Modal>
             </div>

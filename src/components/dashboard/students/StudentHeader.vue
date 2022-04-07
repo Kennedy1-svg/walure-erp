@@ -23,9 +23,9 @@ let info:any = ref('Status')
 const batchId:any = ref('')
 
 const deselect:any = async () => {
-    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-    store.dispatch(actionTypes.FetchStudents, request)
-    store.getters.getStudents
+    // const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+    await store.dispatch(actionTypes.FetchStudents)
+    await store.getters.getStudents
 }
 
 const cancan:any = async (name:any) => {
@@ -39,7 +39,7 @@ const cancan:any = async (name:any) => {
   //   return info.value = 'Status'
   // } else if (name == 'Active') {
     const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/${name}`;
-    store.dispatch(actionTypes.FilterStudent, request)
+    await store.dispatch(actionTypes.FilterStudent, request)
   //   // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
   //   store.getters.getStudents
   //   // console.log('active url', url)
@@ -66,27 +66,27 @@ const statusoptions:any = [
 
 const statusField:any = ref('')
 
-const setFilterStatus:any = (name:any) => {
+const setFilterStatus:any = async (name:any) => {
   // let status:any = ref(1)
   // let url:any = `${api_url}api/students/`
   // console.log('base url', url)
   if (name == 'All') {
     const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-    store.dispatch(actionTypes.FetchStudents, request)
-    store.getters.getStudents
+    await store.dispatch(actionTypes.FetchStudents, request)
+    await store.getters.getStudents
     // console.log('all url', url) 
     return info.value = 'Status'
   } else if (name == 'Active') {
     const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/1`;
-    store.dispatch(actionTypes.FilterStudent, request)
+    await store.dispatch(actionTypes.FilterStudent, request)
     // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
-    store.getters.getStudents
+    await store.getters.getStudents
     // console.log('active url', url)
     return info.value = name
   } else if (name == 'Disabled') {
     const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/0`;
-    store.dispatch(actionTypes.FilterStudent, request)
-    store.getters.getStudents
+    await store.dispatch(actionTypes.FilterStudent, request)
+    await store.getters.getStudents
     // console.log('disabled url', url)
     return info.value = name
   }
@@ -108,32 +108,38 @@ let searchText:any = ref('');
 const filter:any = async () => {
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
-  const status:any = document.getElementById('status');
-  console.log('status', status)
-  const rows:any = status.getElementsByTagName('ul');
-  console.log('rows', rows)
-  console.log('rows length', rows.length)
+  const request:any = `${api_url}api/student/search-student/{pageIndex}/{pageSize}/${search}`;
+  await store.dispatch(actionTypes.SearchStudent, request)
+  // store.getters.getStudents
 
-  for (let i:any = 0; i < rows.length; i++) {
-    const row:any = rows[i];
-    console.log('row', rows[0])
-    console.log('row', rows[1])
-    console.log('row', rows[2])
-    console.log('row', rows[0].textContent)
-    console.log('row', rows[1].textContent)
-    console.log('row', rows[2].textContent)
-    if (
-      row.textContent.toLowerCase().indexOf(search) > -1 
-    ) {
-      rows[i].style.display = '';
-    } else {
-      rows[i].style.display = 'none';
-    }
-  }
+  // const status:any = document.getElementById('status');
+  // console.log('status', status)
+  // const rows:any = status.getElementsByTagName('ul');
+  // console.log('rows', rows)
+  // console.log('rows length', rows.length)
+
+  // for (let i:any = 0; i < rows.length; i++) {
+  //   const row:any = rows[i];
+  //   console.log('row', rows[0])
+  //   console.log('row', rows[1])
+  //   console.log('row', rows[2])
+  //   console.log('row', rows[0].textContent)
+  //   console.log('row', rows[1].textContent)
+  //   console.log('row', rows[2].textContent)
+  //   if (
+  //     row.textContent.toLowerCase().indexOf(search) > -1 
+  //   ) {
+  //     rows[i].style.display = '';
+  //   } else {
+  //     rows[i].style.display = 'none';
+  //   }
+  // }
 }
 
 const close:any = async () => {
   searchText.value = ''
+  // const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+  await store.dispatch(actionTypes.FetchStudents)
 }
 
 </script>
@@ -185,7 +191,14 @@ const close:any = async () => {
           </div>
         <!-- </div> -->
         <div class="search">
-            <Search />
+            <Search>
+              <template #input>
+                <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
+                <span class="w-auto flex justify-end items-center text-grey p-2">
+                    <SvgIcons name="search" @click="filter"  />
+                </span>
+              </template>
+            </Search>
         </div>
       </div>
     </div>

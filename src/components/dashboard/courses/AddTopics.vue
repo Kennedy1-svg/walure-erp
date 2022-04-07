@@ -19,6 +19,21 @@ let isChecked:any = ref(false);
 const startDate:any = ref('');
 const endDate:any = ref('');
 
+const props = defineProps({
+  isChecked: {
+    type: Boolean,
+    default: false,
+  },
+  startDate: {
+    type: String,
+    default: '',
+  },
+  endDate: {
+    type: String,
+    default: '',
+  },
+});
+
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
 }
@@ -61,7 +76,7 @@ const disabledView:any = 'bg-gray-300';
                     <input type="text" name="title" id="title" placeholder="Enter title" class="p-4 border rounded-md text-xs focus:outline-none">
                 </div>
                 <div class="grid gap-4">
-                    <label for="course" class="font-semibold">
+                    <label for="duration" class="font-semibold">
                         Duration
                     </label>
                     <input type="text" name="duration" id="duration" class="p-4 border rounded-md text-xs focus:outline-none">
@@ -81,9 +96,17 @@ const disabledView:any = 'bg-gray-300';
         </form>
         <div class="">
             <h1 class="text-2xl text-left font-semibold pb-3">Experience</h1>
-            <ExperienceCard class="my-6" />
-            <ExperienceCard class="my-6" />
-            <ExperienceCard class="my-6" />
+            <ExperienceCard class="my-6">
+                <template #title>
+
+                </template>
+                <template #date>
+
+                </template>
+                <template #description>
+
+                </template>
+            </ExperienceCard>
         </div>
     </div>
 </template>

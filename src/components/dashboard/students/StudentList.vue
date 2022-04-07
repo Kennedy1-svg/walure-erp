@@ -9,7 +9,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import StudentDetails from './StudentDetails.vue';
 import AddToBatch from './AddToBatch.vue';
 import Modal from '../../Modals.vue';
-import AddStudents from './AddStudents.vue';
+import EditStudent from './EditStudent.vue';
 import Switch from '../../switch.vue';
 import { computed, ref, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex'
@@ -46,11 +46,11 @@ const totalPages:any = computed(() => {
     return total
 })
 
-const setId:any = (id:any) => {
+const setId:any = async (id:any) => {
     console.log('studentid', id)
     const request:any = `${api_url}api/student/${id}`;
     console.log('request forid', request)
-    store.dispatch(actionTypes.FetchEditStudent, request)
+    await store.dispatch(actionTypes.FetchEditStudent, request)
 }
 
 const editStudent:any = async (id:any) => {
@@ -189,7 +189,7 @@ onMounted(async() => {
                                                 Edit
                                             </button>
                                             <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddStudents name="Edit" @close="showEdit = !showEdit" />
+                                                <EditStudent name="Edit" @close="showEdit = !showEdit" />
                                             </Modal>
 
                                             <button
@@ -274,7 +274,7 @@ onMounted(async() => {
                     </tr>
                     </tbody>
                 </table>
-                <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                <div class="flex items-center pt-6 px-6 mb-40 text-xs text-gray-700 justify-between">
                     <div class="">
                         Page {{ pageIndex }} of {{ totalPages }}
                     </div>

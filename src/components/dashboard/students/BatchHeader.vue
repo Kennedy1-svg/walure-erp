@@ -108,18 +108,20 @@ const filter:any = async () => {
 
 const filterCourse:any = async () => {
   const search:any = searchText.value.toLowerCase();
-  const batch:any = document.getElementById('course');
-  const rows:any = batch.getElementsByTagName('ul');
+  // const batch:any = document.getElementById('course');
+  // const rows:any = batch.getElementsByTagName('ul');
 
-  for (let i:any = 0; i < rows.length; i++) {
-    const row:any = rows[i];
+  // for (let i:any = 0; i < rows.length; i++) {
+  //   const row:any = rows[i];
 
-    if (row.textContent.toLowerCase().indexOf(search) > -1) {
-      rows[i].style.display = '';
-    } else {
-      rows[i].style.display = 'none';
-    }
-  }
+  //   if (row.textContent.toLowerCase().indexOf(search) > -1) {
+  //     rows[i].style.display = '';
+  //   } else {
+  //     rows[i].style.display = 'none';
+  //   }
+  // }
+  const request:any = `${api_url}api/batch/search-batch/{pageIndex}/{pageSize}/${search}`;
+  await store.dispatch(batchActionTypes.FetchBatch, request)
 }
 
 const filtercourse:any = async () => {
@@ -156,8 +158,8 @@ const cancan:any = async () => {
 const deselect:any = async () => {
     console.log('on deselect')
     filterClicked.value = false;
-    const batchrequest:any = `${api_url}api/batch/get-batches`;
-    await store.dispatch(batchActionTypes.FetchBatch, batchrequest)  
+    // const batchrequest:any = `${api_url}api/batch/get-batches`;
+    await store.dispatch(batchActionTypes.FetchBatch)  
 }
 
 const format:any = (date:any) => {
@@ -170,6 +172,8 @@ const format:any = (date:any) => {
 
 const close:any = async () => {
   searchText.value = ''
+  // const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
+  await store.dispatch(batchActionTypes.FetchBatch)
 }
 
 const closeModal:any = () => {
@@ -224,73 +228,43 @@ onMounted( async() => {
             </button>
         </div>
         <div class="filter bg-white rounded-t-lg justify-between items-center py-5">
-            <div class="filter-items text-grey grid grid-cols-4 gap-3 bg-white rounded-t-lg px-11 py-5">
-                <div class="startdate">
-                    <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format" textInput/>
-                </div>
-                <div class="enddate">
-                    <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date"  />
-                </div>
-                <div class="status">
-                  <multiselect v-model="statusField" @clear="deselect" @select="cancan" valueProp="value" :options="statusoptions" track-by="label" label="label" placeholder="Status" :searchable="true" class="multiselect-blue" />
-                    <!-- <Filter>
-                        <template #info>
-                            Status
-                        </template>
-                        <template #input>
-                            <input class="border-2 text-sm p-3 rounded h-10 w-full mx-auto" placeholder="Add Status">
-                        </template>
-                    <template #list>
-                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
-                            Ongoing
-                        </p></li>
-                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">Disabled</p></li>
-                        <li><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">None</p></li>
-                    </template>
-                    </Filter> -->
-                </div>
-                <div class="courses">
-                  <multiselect @click="filtercourse" @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" />
-                  <!-- <multiselect v-model="courseField" deselect-label="Can't remove this value" track-by="name" label="name" placeholder="Select one" :options="options" :searchable="false" :allow-empty="false">
-                    <template #singleLabel slot-scope="{ options }"><strong>{{ options.name }}</strong> is written in<strong>  {{ options.id }}</strong></template>
-                  </multiselect> -->
-                    <!-- <Filter>
-                        <template #info>
-                            Courses
-                        </template>
-                        <template #input>
-                            <input @keyup.esc="close" @keyup="filterCourse" v-model="searchText"  class="border-2 text-sm p-3 rounded h-10 w-full mx-auto">
-                        </template>
-                    <template #list>
-                        <div id="course">
-                            <ul v-for="course in courses" :key="course.id">
-                                <li @click.prevent="setFilterStatus(course.id)"><p class="py-2 px-5 hover:bg-gray-50 block hover:bg-grey-light cursor-pointer">
-                                    {{ course.title }}
-                                </p></li>
-
-                            </ul>
-                        </div>
-                    </template>
-                    </Filter> -->
-                </div>
+          <div class="filter-items text-grey grid grid-cols-4 gap-3 bg-white rounded-t-lg px-11 py-5">
+            <div class="startdate">
+                <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format" textInput/>
             </div>
-            <div class="search-items flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
-                <div class="status flex gap-4 items-center">
-                    <button @click="filterAllBatch" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
-                        Apply Filter
-                    </button>
-                    <button @click="deselect" class="text-3xl" :class="[filterClicked ? 'flex' : 'hidden']">
-                      <SvgIcons name="refresh" />
-                    </button>
-                </div>
-                <div class="search">
-                    <Search>
-                        <template #input>
-                            <input @keyup.esc="close" @keyup="filter" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Enter title and Batch No..">
-                        </template>
-                    </Search>
-                </div>
+            <div class="enddate">
+                <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date"  />
             </div>
+            <div class="status">
+              <multiselect v-model="statusField" @clear="deselect" @select="cancan" valueProp="value" :options="statusoptions" track-by="label" label="label" placeholder="Status" :searchable="true" class="multiselect-blue" />
+            </div>
+            <div class="courses">
+              <multiselect @click="filtercourse" @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" />
+              <!-- <multiselect v-model="courseField" deselect-label="Can't remove this value" track-by="name" label="name" placeholder="Select one" :options="options" :searchable="false" :allow-empty="false">
+                <template #singleLabel slot-scope="{ options }"><strong>{{ options.name }}</strong> is written in<strong>  {{ options.id }}</strong></template>
+              </multiselect> -->
+            </div>
+          </div>
+          <div class="search-items flex bg-white rounded-t-lg justify-between items-center px-11 py-5">
+            <div class="status flex gap-4 items-center">
+              <button @click="filterAllBatch" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
+                Apply Filter
+              </button>
+              <button @click="deselect" class="text-3xl" :class="[filterClicked ? 'flex' : 'hidden']">
+                <SvgIcons name="refresh" />
+              </button>
+            </div>
+            <div class="search">
+              <Search>
+                <template #input>
+                  <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Enter title and Batch No..">
+                  <span class="w-auto flex justify-end items-center text-grey p-2">
+                      <SvgIcons name="search" @click="filterCourse"  />
+                  </span>
+                </template>
+              </Search>
+            </div>
+          </div>
         </div>
     </div>
 </template>

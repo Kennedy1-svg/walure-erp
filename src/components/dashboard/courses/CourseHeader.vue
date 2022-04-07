@@ -36,8 +36,24 @@ const batchId:any = ref('')
 
 const deselect:any = async () => {
     const request:any = `${api_url}api/coursecategory/get-categories`;
-    store.dispatch(courseActionTypes.FetchCourseCategories, request)
-    store.getters.getCourseCategories
+    store.dispatch(courseActionTypes.FetchCourses)
+    store.getters.getCourses
+}
+
+let searchText:any = ref('');
+
+const filter:any = async () => {
+  const search:any = searchText.value.toLowerCase();
+  console.log('search', search)
+  const request:any = `${api_url}api/course/search-course/{pageIndex}/{pageSize}/${search}`;
+  await store.dispatch(courseActionTypes.FetchCourses, request)
+  // store.getters.getStudents
+}
+
+const close:any = async () => {
+  searchText.value = ''
+//   const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
+  await store.dispatch(courseActionTypes.FetchCourses)
 }
 
 const cancan:any = async (name:any) => {
@@ -51,14 +67,14 @@ const cancan:any = async (name:any) => {
   //   return info.value = 'Status'
   // } else if (name == 'Active') {
     const request:any = `${api_url}api/course/filter-course/{pageNumber}/{pageSize}/${name}`;
-    // store.dispatch(courseActionTypes.FetchCourseCategories, request)
+    store.dispatch(courseActionTypes.FetchCourses, request)
   //   // store.dispatch(courseActionTypes.FilterCourseCategorie, `${url}filter-students/1/10/1`)
   //   store.getters.getCourseCategories
   //   // console.log('active url', url)
   //   return info.value = name
   // } else if (name == 'Disabled') {
   //   const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/0`;
-  //   store.dispatch(courseActionTypes.FilterCourseCategorie, request)
+  //   store.dispatch(courseActionTypes.FilterCourseCategories, request)
   //   store.getters.getCourseCategories
   //   // console.log('disabled url', url)
   //   return info.value = name
@@ -126,7 +142,7 @@ onMounted( async() => {
                     <dialog id="addcourse" class="h-auto w-11/12 md:w-3/4 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
-                                <AddCourse @close="closeModal" />
+                                <AddCourse name="Add" @close="closeModal" />
                             <!-- End of Modal Content-->
                         </div>
                     </dialog>
@@ -152,10 +168,17 @@ onMounted( async() => {
                     </template>
                 </Filter> -->
                 <!-- {{ categories }} -->
-            <multiselect v-model="categoryId" @clear="deselect" @select="cancan(categoryId)" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
+            <multiselect v-model="categoryId" @clear="deselect" @select="cancan(categoryId)" valueProp="name" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="search">
-                <Search />
+                <Search>
+                    <template #input>
+                        <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
+                        <span class="w-auto flex justify-end items-center text-grey p-2">
+                            <SvgIcons name="search" @click="filter"  />
+                        </span>
+                    </template>
+                </Search>
             </div>
         </div>
     </div>

@@ -59,6 +59,7 @@ const filter:any = async () => {
 
 const close:any = async () => {
   searchText.value = ''
+  filter()
 }
 
 onMounted(() => {
@@ -97,7 +98,7 @@ onMounted(() => {
                     <dialog id="addcategory" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
-                                <AddCategory @close="closeModal" />
+                                <AddCategory name="Add" @close="closeModal" />
                             <!-- End of Modal Content-->
                         </div>
                     </dialog>
@@ -125,7 +126,10 @@ onMounted(() => {
             <div class="search">
                     <Search>
                         <template #input>
-                            <input @keyup.esc="close" @keyup="filter" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Search">
+                            <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Search">
+                            <span class="w-auto flex justify-end items-center text-grey p-2">
+                                <SvgIcons name="search" @click="filter"  />
+                            </span>
                         </template>
                     </Search>
             </div>

@@ -11,9 +11,10 @@ import { useStore } from 'vuex'
 import { api_url } from '../../../config'
 import moment from 'moment';
 import SvgIcons from '../../SvgIcons.vue';
+// import Datepicker from '@themesberg/tailwind-datepicker/Datepicker';
 import Filter from '../../Filter.vue';
 import Datepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css'
+import 'vue3-date-time-picker/dist/main.css';
 // import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
@@ -28,7 +29,7 @@ let isDisabled = ref(true);
 let isError:any = ref(false);
 // let isLoading:any = ref(false);
 
-// let formData = new FormData()
+let formData = new FormData()
 
 const props = defineProps({
     name: {
@@ -63,7 +64,7 @@ const checkError:any = () => {
 
     if (!newBatch.value.batchCapacity) {
         errors.batchCapacity = true;
-        errors.batchCapacityText = 'Other name is required'
+        errors.batchCapacityText = 'Batch capacity is required'
     } else if (newBatch.value.batchCapacity <= 0) {
         errors.batchCapacityText = 'Batch capacity name needs to be more than 0'
     } else {
@@ -190,7 +191,7 @@ const trainingoptions:any = ref([
     }
 ]);
 
-const anotherTime:any = ref(moment('03/12/2022').format('MM/DD/YYYY'))
+const anotherTime:any = ref(moment('2022-04-14T13:17:00.000Z').format('MM/DD/YYYY'))
 
 const emits = defineEmits(['close'])
 
@@ -248,14 +249,14 @@ const editbatch:any = async () => {
         courseId: newBatch.value.courseId,
     }
     
-    // formData.append('Title', newBatch.value.title);
-    // formData.append('Id', newBatch.value.id);
-    // formData.append('TrainingType', newBatch.value.trainingType);
+    // formData.append('title', newBatch.value.title);
+    // formData.append('id', newBatch.value.id);
+    // formData.append('trainingType', newBatch.value.trainingType);
     // formData.append('BatchCapacity', newBatch.value.batchCapacity);
-    // formData.append('StartDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
-    // formData.append('EndDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
-    // formData.append('Instructors', newBatch.value.instructors);
-    // formData.append('CourseId', newBatch.value.courseId);
+    // formData.append('startDate', moment(newBatch.value.startDate).format('MM/DD/YYYY'));
+    // formData.append('endDate', moment(newBatch.value.endDate).format('MM/DD/YYYY'));
+    // formData.append('instructors', newBatch.value.instructors);
+    // formData.append('courseId', newBatch.value.courseId);
 
     const newData:any = {
         url: request,
@@ -314,6 +315,7 @@ onMounted(async () => {
     <div class="main w-full mt-[0.5px] px-[45px] bg-white">
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl">{{ props.name }} batch</p>
+            {{ newBatch }}
             <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
@@ -388,6 +390,7 @@ onMounted(async () => {
                         End date*
                     </label>
                     <Datepicker inputClassName="dp-custom-input" @cleared="checkError" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
+                    <!-- <input type="datetime" name="date" id="date" placeholder="End Date" v-model="newBatch.endDate" class="px-4 py-[10px] w-full border rounded-md focus:outline-none" min="newBatch.startDate"> {{ newBatch.endDate }} -->
                     <p class="text-[10px] text-red">
                         {{ errors.endDate ? errors.endDateText : '' }}
                     </p>

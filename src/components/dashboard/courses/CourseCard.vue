@@ -7,24 +7,89 @@ export default {
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import SvgIcons from '../../SvgIcons.vue';
+import { useRoute } from 'vue-router';
+import DeleteModal from '../../DeleteModal.vue';
+import { useStore } from 'vuex'
+import * as actionTypes from '../../../store/module/courses/constants/action'
+import { api_url } from '../../../config'
+
+const store = useStore();
+const route = useRoute();
+
+const courseDetail:any = computed(():any => {
+	return store.getters.getEditCourse.value
+})
+
+let courseitemtodelete:any = ref('')
+
+const showDelete = ref(false);
+
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
+
+
+const deleteCourse:any = async (course:any) => {
+    console.log('course identity', courseitemtodelete.value)
+    const request:any = `${api_url}api/course/delete/${course}`;
+    console.log('request forid', request)
+    await store.dispatch(actionTypes.RemoveCourse, request)
+    closeModal()
+    // const fetchrequest:any = `${api_url}api/course/get-courses`;
+    // console.log('url', fetchrequest)
+    // await store.dispatch(actionTypes.FetchCourseCategories, fetchrequest)
+    // store.dispatch(actionTypes.FetchEditStudent, request)
+    // return coursedetails
+}
+
+const sendId:any = (id:any) => {
+    console.log('course identity', id)
+    courseitemtodelete.value = id
+    console.log('courseitemtodelete', courseitemtodelete.value)
+    return courseitemtodelete
+}
+
+onMounted( async() => {
+	const id:any = route.params.id;
+	const request:any = `${api_url}api/course/${id}`
+	await store.dispatch(actionTypes.FetchEditCourse, request)
+})
 </script>
 
 <template>
     <div class="main grid justify-items-center items-center py-14 bg-white rounded">
+        <!-- {{ courseDetail }} -->
         <div class="flex">
             <span class="border-2 border-dashed p-1 rounded-full  justify-center items-center">
-                <SvgIcons class="text-gray-300" name="pic-avatar" />
+                <img :src="courseDetail.thumbnail" class="rounded-full w-60" alt="course thumbnail">
+                <!-- <SvgIcons class="text-gray-300" name="pic-avatar" /> -->
             </span>
         </div>
-        <!-- <img src="" alt=""> -->
+        <!-- <img :src="courseDetail.thumbnail" alt="course thumbnail"> -->
         <div class="text-center pt-5">
-            <p class="text-2xl font-semibold py-1">Farming</p>
-            <p class="font-medium text-grey">Beginners 6 weeks</p>
+            <p class="text-2xl font-semibold py-1">{{ courseDetail.title }}</p>
+            <p class="font-medium text-grey">{{ courseDetail.levelType }} {{ courseDetail.duration }}</p>
         </div>
         <div class="btns py-9 flex gap-4 text-white">
-            <button class="bg-red rounded px-10 py-4">
+            <button type="button" @click="showDelete = !showDelete" @click.prevent="sendId(courseDetail.id)" class="bg-red rounded px-10 py-4">
                 Delete
             </button>
+            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteCourse(courseitemtodelete)">
+                <template #title>
+                    Delete Course
+                </template>
+                <template #info>
+                    Are you sure you want to remove course?
+                </template>
+                <template #delete>
+                    Yes, Delete Course
+                </template>
+            </DeleteModal>
             <button class="bg-greenish rounded px-10 py-4">
                 Update
             </button>

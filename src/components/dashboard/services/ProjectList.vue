@@ -24,11 +24,11 @@ const route = useRouter();
 const store = useStore();
 
 const project:any = computed(() => {
-    // return store.getters.getProject.value
+    return store.getters.getProject.value.payload
 })
 
 const totalCount:any = computed(() => {
-    // return store.getters.getTotalProjectCount.value
+    return store.getters.getProject.value.totalCount
 })
 
 const setId:any = (id:any) => {
@@ -94,7 +94,7 @@ const deleteProject:any = async (id:any) => {
     console.log('requestData', request)
     store.dispatch(actionTypes.RemoveProject, request)
     // closeModal()
-    const fetchrequest:any = `${api_url}api/project/get-projectes`;
+    const fetchrequest:any = `${api_url}api/project/get-projects`;
     console.log('url', fetchrequest)
     await store.dispatch(actionTypes.FetchProject, fetchrequest)
 }
@@ -104,15 +104,15 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/project/get-projectes/${pageIndex.value}/10`;
-    console.log('url', request)
-    await store.dispatch(actionTypes.FetchProject, request)
+    // const request:any = `${api_url}api/project/get-projectes/${pageIndex.value}/10`;
+    // console.log('url', request)
+    await store.dispatch(actionTypes.FetchProject)
 }
 
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/project/get-projectes`;
+    const request:any = `${api_url}api/project/get-projects/{pageIndex}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchProject, request)
 })
@@ -126,6 +126,7 @@ onMounted(async() => {
             <p class="text-xl font-medium text-primary">Total : {{ totalCount }}</p>
         </div>
         <div class="table">
+            <!-- {{ project }} -->
             <div class="block w-full oveflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
                 <table class="overflow-x-scroll border items-center w-full -mr-16">
                     <thead class="bg-table-head">
@@ -145,14 +146,14 @@ onMounted(async() => {
                         <th class="px-3 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                     </tr>
                     </thead>
-                    <!-- <tbody id="projectlist" class="bg-white">
-                    <tr v-for="(projectitem) in project" :key="projectitem.id"> -->
+                    <tbody id="projectlist" class="bg-white">
+                    <tr v-for="(projectitem) in project" :key="projectitem.id">
                     <!-- {{ projectitem }} -->
-                        <!-- <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                        <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                             {{ project.indexOf(projectitem) + 1 }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ projectitem.projectTitle }}
+                            {{ projectitem.title }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             {{ projectitem.companyName }}
@@ -162,12 +163,12 @@ onMounted(async() => {
                             {{ moment(projectitem.endDate).format('MM/DD/YYYY') }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            {{ projectitem.companyName }}
+                            {{ projectitem.noOfResources }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            {{ projectitem.companyName }}
-                        </td> -->
-                        <!-- <td class="border-t-0 pl-3 pr-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
+                            {{ projectitem.status == '0' ? 'Pending' : projectitem.status == 1 ? 'Ongoing' : 'Ended' }}
+                        </td>
+                        <td class="border-t-0 pl-3 pr-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
                                 <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                     <SvgIcons name="ellipsis" />
@@ -216,7 +217,7 @@ onMounted(async() => {
                                                         Yes, Delete Project
                                                     </template>
                                                 </Delete>
-                                            </DeleteModal> -->
+                                            </DeleteModal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
                                                     <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left">
@@ -279,13 +280,13 @@ onMounted(async() => {
                                                     </div>
                                                 </template>
                                             </Modal> -->
-                                        <!-- </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
                     </tr>
-                    </tbody> -->
+                    </tbody>
                 </table>
                 <!-- <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
                     <div class="">

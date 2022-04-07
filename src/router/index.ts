@@ -71,7 +71,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
-        path: 'course-management/curriculum',
+        path: 'course-management/curriculum/:id',
         name: 'Curriculum',
         component: () => import('../views/dashboard/courses/Curriculum.vue'),
         meta: { requiresAuth: true },

@@ -7,16 +7,14 @@ export default {
 <script setup lang="ts">
 import { ref, toRefs, computed } from 'vue'
 // const status = ref('Disabled')
-
 const props:any = defineProps({
   status: {
     type: Boolean,
   },
-  statusText: {
-    type: String,
-    default: '',
-  },
-})
+  name: {
+    type: String
+  }
+});
 
 const checked:any = computed(() => {
     let answer:any
@@ -26,13 +24,13 @@ const checked:any = computed(() => {
       answer = false
     }
   return answer
-})
+});
 
-const { status, statusText } = toRefs(props)
+const { status, name } = toRefs(props);
 
-const emit = defineEmits(['toggle'])
+const emit = defineEmits(['toggle']);
 
-const studentStatus:any = computed(() => {
+const itemStatus:any = computed(() => {
   let answer:any
   if (checked.value) {
     answer = 'Active'
@@ -40,35 +38,65 @@ const studentStatus:any = computed(() => {
     answer = 'Disabled'
   }
   return answer
-})
+});
 
 // const isActive = ref(false)
 const changeStatus:any = () => {
     // isActive.value = !isActive.value
     // status.value = isActive.value ? 'Active' : 'Disabled'
-    emit('toggle')
+  emit('toggle')
   if (checked.value) {
-    return studentStatus.value = 'Active'
+    return itemStatus.value = 'Active'
   } else {
-    return studentStatus.value = 'Disabled'
+    return itemStatus.value = 'Disabled'
+  }
+}
+
+const changeCourseStatus:any = () => {
+    // isActive.value = !isActive.value
+    // status.value = isActive.value ? 'Active' : 'Disabled'
+  console.log('so I am here')
+  if (checked.value) {
+    emit('toggle', 1)
+    console.log('checked value is ', checked.value)
+    return checked.value = !checked.value
+  } else {
+    emit('toggle', 0)
+    console.log('checked value is ', checked.value)
+    return checked.value = !checked.value
   }
 }
 </script>
 
 <template>
-    <div class="my-2 flex items-center">
-        <label class="relative inline-block h-3 w-8">
-            <input 
-                type="checkbox" 
-                id="checkbox"
-                :checked="checked"
-                @click="changeStatus"
-                >
-            <span class="toggler round"></span>
-        </label>
-        <p class="px-4">
-            {{ props.statusText }}
-        </p>
+    <div v-if="props.name == 'course'" class="my-2 flex items-center">
+      <label class="relative inline-block h-3 w-8">
+        <input 
+          type="checkbox" 
+          id="checkbox"
+          :checked="checked"
+          @click="changeCourseStatus"
+          >
+        <span class="toggler round"></span>
+      </label>
+      <p class="px-4">
+        <slot>
+        </slot>
+      </p> 
+    </div>
+    <div v-else class="my-2 flex items-center">
+      <label class="relative inline-block h-3 w-8">
+        <input 
+          type="checkbox" 
+          id="checkbox"
+          :checked="checked"
+          @click="changeStatus"
+        >
+        <span class="toggler round"></span>
+      </label>
+      <p class="px-4">
+        {{ itemStatus }}
+      </p> 
     </div>
 </template>
 

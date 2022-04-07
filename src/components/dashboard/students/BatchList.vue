@@ -50,16 +50,6 @@ const setId:any = (id:any) => {
 
 const sendId:any = (id:any) => {
     console.log('batchid', id)
-    // route.push(`/dashboard/batch/view-student/${id}`)
-    // route.push({
-    //     name: 'StudentInBatch',
-    //     params: {
-    //         id: id
-    //     }
-    // })
-    // const request:any = `${api_url}api/batch/${id}`;
-    // console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchBatch, request)
     batchitemtodelete.value = id
     console.log('batchitemtodelete', batchitemtodelete.value)
     return batchitemtodelete
@@ -96,20 +86,16 @@ const closeModal:any = async () => {
   }, 500);
 }
 
-const deletesbatch:any = async () => {
-    emits('deletebatch')
-    console.log('i dey oh')
-    del.value = true;
-}
+const editingBatch:any = ref('')
 
-const editBatch:any = async (id:any) => {
-    console.log('studentid', id)
-    const request:any = `${api_url}api/batch/${id}`;
+const editBatch:any = async (batchitem:any) => {
+    console.log('studentbatchitem', batchitem)
+    const editingBatch:any = batchitem;
+    const request:any = `${api_url}api/batch/batchNInstructor/${batchitem}`;
     console.log('request for the', request)
     await store.dispatch(actionTypes.FetchEditBatch, request)
     // console.log('student', student)
     // console.log('student', student.value)
-
 }
 
 const deleteBatch:any = async (id:any) => {
@@ -139,7 +125,7 @@ const onPageChange:any = async (page:any) => {
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/batch/get-batches`;
+    const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchBatch, request)
 })
@@ -182,7 +168,7 @@ onMounted(async() => {
                             {{ batch.indexOf(batchitem) + 1 }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ batchitem.batchName }}
+                            {{ batchitem.title }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             {{ batchitem.courseTitle }}
@@ -195,7 +181,7 @@ onMounted(async() => {
                             {{ moment(batchitem.endDate).format('MM/DD/YYYY') }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            {{ moment().isBefore(batchitem.startDate) ? 'Pending' : moment().isAfter(batchitem.endDate) ? 'Completed' : 'Ongoing' }}
+                            {{ batchitem.status == 0 ? 'Pending' : batchitem.status == 2 ? 'Completed' : 'Ongoing' }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             <!-- <p class="w-28 truncate"> -->
@@ -224,7 +210,7 @@ onMounted(async() => {
                                                 Edit
                                             </button>
                                             <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddBatch name="Edit"  @close="showEdit = !showEdit"  />
+                                                <AddBatch name="Edit" @close="showEdit = !showEdit"  />
                                             </Modal>
 
                                             <button
@@ -325,7 +311,7 @@ onMounted(async() => {
                     </tr>
                     </tbody>
                 </table>
-                <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                <div class="flex items-center pt-6 px-6 mb-40 text-xs text-gray-700 justify-between">
                     <div class="">
                         Page {{ pageIndex }} of {{ totalPages }}
                     </div>

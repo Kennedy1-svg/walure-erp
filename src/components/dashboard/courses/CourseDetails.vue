@@ -27,15 +27,6 @@ const courseDetails:any = computed(() => {
   return store.getters.getEditCourse.value
 })
 
-const props:any = defineProps({
-    courses: {
-        type: Object,
-        default: () => ({}),
-    }
-})
-
-const { courses } = toRefs(props)
-
 const course:any = computed(() => {
     console.log('courses', JSON.parse(JSON.stringify(store.getters.getEditCourse.value)))
     // return JSON.parse(JSON.stringify(store.getters.getEditcourse.value))
@@ -118,7 +109,7 @@ const course:any = computed(() => {
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Categories</p>
-                <!-- <p>{{ courseDetails.categories.map((e) => e).join(', ') }}</p> -->
+                <p>{{ courseDetails.categories.map((e) => e).join(', ') }}</p>
             </div>
         </div>
     </div>

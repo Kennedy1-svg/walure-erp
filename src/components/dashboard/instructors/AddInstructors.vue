@@ -10,9 +10,10 @@ import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import alert from '../../alerts.vue';
 import SvgIcons from '../../SvgIcons.vue';
+import multiselect from '@vueform/multiselect'
 import Modal from '../../Modal.vue'
-import * as courseActionTypes from '../../../store/module/courses/constants/action'
-import * as studentActionTypes from '../../../store/module/students/constants/action'
+import * as actionTypes from '../../../store/module/instructors/constants/action'
+// import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -23,14 +24,14 @@ let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
 
-const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
-const alertText:any = computed(() => store.getters.getBatchAlertText.value)
+const alertState:any = computed(() => store.getters.getInstructorAlertStatus.value)
+const alertText:any = computed(() => store.getters.getInstructorAlertText.value)
 
 let errors = reactive({
-    firstName: false,
-    firstNameText: '',
-    lastName: false,
-    lastNameText: '',
+    FirstName: false,
+    FirstNameText: '',
+    LastName: false,
+    LastNameText: '',
     github: false,
     githubText: '',
     linkedin: false,
@@ -65,7 +66,50 @@ const status:any = computed(() => {
         answer = false
     }
     return answer
-})
+});
+
+const genderoptions:any = [
+  {
+    label: 'Male',
+    value: 0
+  },
+  {
+    label: 'Female',
+    value: 1
+  },
+]
+
+const genderField:any = ref('')
+
+const experience_leveloptions:any = [
+  {
+    label: 'Beginner',
+    value: 0
+  },
+  {
+    label: 'Intermediate',
+    value: 1
+  },
+  {
+    label: 'Experienced',
+    value: 2
+  },
+]
+
+// const filterClicked = ref(false)
+
+const cancan:any = async () => {
+  console.log('i can can')
+}
+
+const deselect:any = async () => {
+    console.log('on deselect')
+    // filterClicked.value = false;
+    // const batchrequest:any = `${api_url}api/batch/get-batches`;
+    // await store.dispatch(batchActionTypes.FetchInstructor)  
+}
+
+const experience_levelField:any = ref('')
 
 const formEl:any = ref(null)
 
@@ -78,110 +122,161 @@ const check:any = ():any => {
 }
 
 const newInstructor:any = computed(() => {
-    // return store.getters.getNewInstructor.value;
-    return {
-        firstName: '',
-        lastName: '',
-        github: '',}
+    return store.getters.getNewInstructor.value;
 })
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 const phone ='^[0]+[0-9]';
 
 const checkError:any = () => {
-    let imageType:String = newInstructor.value.imageFile.type;
+    let imageType:String = newInstructor.value.Image.type;
     console.log('imageType is', imageType)
-    if (!newInstructor.value.firstName) {
-        errors.firstName = true;
-        errors.firstNameText = 'First name is required'
-    } else if (newInstructor.value.firstName.length <= 3) {
-        errors.firstNameText = 'First name needs to be more than 3 characters'
+    if (!newInstructor.value.FirstName) {
+        errors.FirstName = true;
+        errors.FirstNameText = 'First name is required'
+    } else if (newInstructor.value.FirstName.length <= 3) {
+        errors.FirstNameText = 'First name needs to be more than 3 characters'
     } else {
-        errors.firstName = false;
+        errors.FirstName = false;
     }
     
-    if (!newInstructor.value.lastName) {
-        errors.lastName = true;
-        errors.lastNameText = 'Last name is required'
-    } else if (newInstructor.value.lastName.length <= 3) {
-        errors.lastNameText = 'Last name needs to be more than 3 characters'
+    if (!newInstructor.value.LastName) {
+        errors.LastName = true;
+        errors.LastNameText = 'Last name is required'
+    } else if (newInstructor.value.LastName.length <= 3) {
+        errors.LastNameText = 'Last name needs to be more than 3 characters'
     } else {
-        errors.lastName = false;
+        errors.LastName = false;
     }
 
-    if (!newInstructor.value.github) {
+    if (!newInstructor.value.GithubUrl) {
         errors.github = true;
-        errors.githubText = 'Other name is required'
-    } else if (newInstructor.value.github.length <= 3) {
-        errors.githubText = 'Other name needs to be more than 3 characters'
+        errors.githubText = 'Github url is required'
+    } else if (newInstructor.value.GithubUrl.length <= 3) {
+        errors.githubText = 'Github url needs to be more than 3 characters'
     } else {
         errors.github = false;
     }
 
-    if (!newInstructor.value.gender) {
+    if (!newInstructor.value.TwitterUrl) {
+        errors.twitter = true;
+        errors.twitterText = 'Twitter url is required'
+    } else if (newInstructor.value.TwitterUrl.length <= 3) {
+        errors.twitterText = 'Twitter url needs to be more than 3 characters'
+    } else {
+        errors.twitter = false;
+    }
+
+    if (!newInstructor.value.LinkedInUrl) {
+        errors.linkedin = true;
+        errors.linkedinText = 'LinkedIn url is required'
+    } else if (newInstructor.value.LinkedInUrl.length <= 3) {
+        errors.linkedinText = 'LinkedIn url needs to be more than 3 characters'
+    } else {
+        errors.linkedin = false;
+    }
+
+    if (!newInstructor.value.FacebookUrl) {
+        errors.facebook = true;
+        errors.facebookText = 'Facebook url is required'
+    } else if (newInstructor.value.FacebookUrl.length <= 3) {
+        errors.facebookText = 'Facebook url needs to be more than 3 characters'
+    } else {
+        errors.facebook = false;
+    }
+
+    if (!newInstructor.value.Gender && newInstructor.value.Gender != '0') {
         errors.gender = true;
         errors.genderText = 'Gender is required. Please select a gender'
     } else {
         errors.gender = false;
     }
 
-    if (!newInstructor.value.imageFile) {
+    if (!newInstructor.value.ExperienceLevel && newInstructor.value.ExperienceLevel != '0') {
+        errors.experience = true;
+        errors.experienceText = 'Experience Level is required. Please select the best fit'
+    } else {
+        errors.experience = false;
+    }
+
+    if (!newInstructor.value.Image) {
         errors.image = true;
         errors.imageText = 'Image is required. Please upload an image'
-    } else if (newInstructor.value.imageFile.size > 5242880) {
+    } else if (newInstructor.value.Image.size > 5242880) {
         errors.image = true;
         errors.imageText = 'Image size should not be more than 5MB'
     } else {
         errors.image = false;
     }
 
-    // if (!newInstructor.value.bioId) {
-    //     errors.bio = true;
-    //     errors.bioText = 'Course is required. Please select a bio'
-    // } else {
-    //     errors.bio = false;
-    // }
+    if (!newInstructor.value.Resume) {
+        errors.resume = true;
+        errors.resumeText = 'Resume is required. Please upload your resume'
+    } else if (newInstructor.value.Resume.size > 5242880) {
+        errors.resume = true;
+        errors.resumeText = 'Resume size should not be more than 5MB'
+    } else {
+        errors.resume = false;
+    }
 
-    if (!newInstructor.value.email) {
+    if (!newInstructor.value.Bio) {
+        errors.bio = true;
+        errors.bioText = 'Bio is required'
+    } else if (newInstructor.value.Bio.length <= 3) {
+        errors.githubText = 'Biography needs to be more than 3 characters'
+    } else {
+        errors.bio = false;
+    }
+
+    if (!newInstructor.value.Email) {
         errors.email = true;
         errors.emailText = 'email is required'
-    } else if (!newInstructor.value.email.match(email)) {
+    } else if (!newInstructor.value.Email.match(email)) {
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;
     }
 
-    if (!newInstructor.value.phoneNumber) {
+    if (!newInstructor.value.PhoneNumber) {
         errors.phone = true;
         errors.phoneText = 'Phone number is required'
-    } else if (isNaN(newInstructor.value.phoneNumber)) {
+    } else if (isNaN(newInstructor.value.PhoneNumber)) {
         errors.phone = true;
         errors.phoneText = 'Phone number cannot contain letters'
-    } else if (!newInstructor.value.phoneNumber.match(phone)) {
+    } else if (!newInstructor.value.PhoneNumber.match(phone)) {
         errors.phoneText = 'Phone numer must start with 0'
-    } else if (newInstructor.value.phoneNumber.length <= 9) {
+    } else if (newInstructor.value.PhoneNumber.length <= 9) {
         errors.phoneText = 'Phone numer cannot be less than 10 digits'
     } else {
         errors.phone = false;
     }
 
-    if (!newInstructor.value.addresss) {
+    if (!newInstructor.value.Address) {
         errors.address = true;
         errors.addressText = 'Address is required'
-    } else if (newInstructor.value.addresss.length <= 13) {
+    } else if (newInstructor.value.Address.length <= 13) {
         errors.addressText = 'Address needs to be more than 3 words'
     } else {
         errors.address = false;
     }
 
-    if (errors.firstName) {
-        errors.firstName = true;
+    if (errors.FirstName) {
+        errors.FirstName = true;
         isError.value = true;
-    } else if (errors.lastName) {
-        errors.lastName = true;
+    } else if (errors.LastName) {
+        errors.LastName = true;
         isError.value = true;
     } else if (errors.github) {
         errors.github = true;
+        isError.value = true;
+    } else if (errors.linkedin) {
+        errors.linkedin = true;
+        isError.value = true;
+    } else if (errors.facebook) {
+        errors.facebook = true;
+        isError.value = true;
+    } else if (errors.twitter) {
+        errors.twitter = true;
         isError.value = true;
     } else if (errors.email) {
         errors.email = true;
@@ -191,6 +286,12 @@ const checkError:any = () => {
         isError.value = true;
     } else if (errors.image) {
         errors.image = true;
+        isError.value = true;
+    } else if (errors.experience) {
+        errors.experience = true;
+        isError.value = true;
+    } else if (errors.resume) {
+        errors.resume = true;
         isError.value = true;
     } else if (errors.phone) {
         errors.phone = true;
@@ -208,7 +309,7 @@ const checkError:any = () => {
 }
 
 const removeImage:any = async () => {
-    return newInstructor.value.imageFile = ''
+    return newInstructor.value.Image = ''
 }
 
 const bios:any = computed(() => {
@@ -220,13 +321,13 @@ const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
     emits('close')
-    formEl.reset()
+    // formEl.reset()
 }
 
 const showProfilePicture = ref(false);
 
 let isActive:any = computed(() => {
-    if (newInstructor.value.imageFile) {
+    if (newInstructor.value.Image) {
         return true
     } else {
         return false
@@ -235,23 +336,34 @@ let isActive:any = computed(() => {
 
 const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
-    newInstructor.value.imageFile = event.target.files[0]
+    newInstructor.value.Image = event.target.files[0]
     formData.append('file', event.target.files[0])
     let images: any = document.getElementById('output')
     let image:any = document.getElementById('displayoutput')
     images.src = URL.createObjectURL(event.target.files[0])
     image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newInstructor image', newInstructor.value.imageFile.type)
+    console.log('newInstructor image', newInstructor.value.Image.type)
+}
+
+const onChangeResume:any = (event:any):any => {
+    console.log('event', event.target.files[0].name)
+    newInstructor.value.Resume = event.target.files[0]
+    formData.append('file', event.target.files[0])
+    // let images: any = document.getElementById('output')
+    // let image:any = document.getElementById('displayoutput')
+    // images.src = URL.createObjectURL(event.target.files[0])
+    // image.src = URL.createObjectURL(event.target.files[0])
+    console.log('newInstructor resume', newInstructor.value.Resume.type)
 }
 
 const resetForm:any = Object.freeze({
-        firstName: '',
-        lastName: '',
+        FirstName: '',
+        LastName: '',
         github: '',
         email: '',
-        phoneNumber: '',
+        PhoneNumber: '',
         addresss: '',
-        imageFile: '',
+        image: '',
         gender: '',
         bioId: ''
 })
@@ -259,19 +371,25 @@ const resetForm:any = Object.freeze({
 const addInstructor:any = async () => {
     console.log('hi');
     console.log('newstudent', newInstructor.value)
-    console.log('newstudent', newInstructor.value.imageFile)
-    const request:any = `${api_url}api/student/create-student`;
+    console.log('newstudent', newInstructor.value.image)
+    const request:any = `${api_url}api/instructor/create-instructor`;
 
     // const formElem = document.getElementById('formElem')
-    formData.append('firstName', newInstructor.value.firstName)
-    formData.append('lastName', newInstructor.value.lastName)
-    formData.append('github', newInstructor.value.github)
-    formData.append('imageFile', newInstructor.value.imageFile, newInstructor.value.imageFile.name)
-    formData.append('addresss', newInstructor.value.addresss)
-    formData.append('phoneNumber', newInstructor.value.phoneNumber)
-    formData.append('gender', newInstructor.value.gender)
-    // formData.append('bioId', newInstructor.value.bioId)
-    formData.append('email', newInstructor.value.email)
+    formData.append('FirstName', newInstructor.value.FirstName)
+    formData.append('LastName', newInstructor.value.LastName)
+    formData.append('OtherName', newInstructor.value.OtherName)
+    formData.append('GithubUrl', newInstructor.value.GithubUrl)
+    formData.append('TwitterUrl', newInstructor.value.TwitterUrl)
+    formData.append('LinkedInUrl', newInstructor.value.LinkedInUrl)
+    formData.append('FacebookUrl', newInstructor.value.FacebookUrl)
+    formData.append('Image', newInstructor.value.Image, newInstructor.value.Image.name)
+    formData.append('Resume', newInstructor.value.Resume, newInstructor.value.Resume.name)
+    formData.append('Address', newInstructor.value.Address)
+    formData.append('PhoneNumber', newInstructor.value.PhoneNumber)
+    formData.append('Gender', newInstructor.value.Gender)
+    formData.append('Bio', newInstructor.value.Bio)
+    formData.append('Email', newInstructor.value.Email)
+    formData.append('ExperienceLevel', newInstructor.value.ExperienceLevel)
 
     // console.log('formData', JSON.parse(JSON.stringify(formData)))
     
@@ -283,7 +401,7 @@ const addInstructor:any = async () => {
 
     // const submitdata = {
     //     ...formData,
-    //     imageFile: newInstructor.value.imageFile
+    //     image: newInstructor.value.image
     // }
     console.log('formData', formData)
     // console.log('formdata items', [...formData.entries()])
@@ -293,7 +411,7 @@ const addInstructor:any = async () => {
         data: formData
     }
     console.log('newData', newData)
-    // await store.dispatch(studentActionTypes.AddNewInstructor, newData)
+    await store.dispatch(actionTypes.AddNewInstructor, newData)
     const result = await store.getters.getInstructor
     closeModal()
     // formEl.reset()
@@ -310,8 +428,8 @@ const submit:any = () => {
 
 onMounted(async () => {
     console.log('I am now here')
-    const request:any = `${api_url}api/bio/search-bios/{pageIndex}/{pageSize}`;
-    await store.dispatch(courseActionTypes.FetchCourses, request)
+    // const request:any = `${api_url}api/bio/search-bios/{pageIndex}/{pageSize}`;
+    // await store.dispatch(courseActionTypes.FetchCourses, request)
 })
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
@@ -339,7 +457,7 @@ const disabledView:any = 'bg-gray-300';
             <template #button></template>
         </alert>
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl"><slot name="title">Add</slot> Instructor</p>
+            <p class="text-2xl">Add Instructor</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="formElem" ref="formEl" class="text-sm grid">
@@ -351,7 +469,7 @@ const disabledView:any = 'bg-gray-300';
                     <div v-if="!isActive">
                         <SvgIcons v-if="!isActive" :class="[errors.image ? 'border rounded-full text-red border-red' : '']" class="text-gray-300" name="pic-avatar" />
                         <span class="absolute cursor-pointer left-3/5 bottom-0 bg-black rounded-full p-2">                   
-                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .jpeg" />
+                            <input type="file" name="image" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .jpeg" />
                             <SvgIcons class="text-white" name="camera" />
                         </span>
                     </div>
@@ -386,25 +504,25 @@ const disabledView:any = 'bg-gray-300';
                     <label for="firstname" class="font-semibold">
                         First name*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.firstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.FirstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.firstName ? errors.firstNameText : '' }}
+                        {{ errors.FirstName ? errors.FirstNameText : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="lastname" class="font-semibold">
                         Last name*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.lastName" name="lastname" id="lastname" placeholder="Enter last name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.LastName" name="lastname" id="lastname" placeholder="Enter last name" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.lastName ? errors.lastNameText : '' }}
+                        {{ errors.LastName ? errors.LastNameText : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="phone" class="font-semibold">
                         Phone number*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.phoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.PhoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.phone ? errors.phoneText : '' }}
                     </p>
@@ -415,7 +533,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="email" class="font-semibold">
                         Email*
                     </label>
-                    <input type="email" @focus="checkError" @keyup="checkError" v-model="newInstructor.email" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="email" @focus="checkError" @keyup="checkError" v-model="newInstructor.Email" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.email ? errors.emailText : '' }}
                     </p>
@@ -424,12 +542,8 @@ const disabledView:any = 'bg-gray-300';
                     <label for="gender" class="font-semibold">
                         Gender*
                     </label>
-                    
-                    <select @focus="checkError" @keyup="checkError" class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" v-model="newInstructor.gender" name="gender" id="gender">
-                        <option value="">Select option</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
+                       
+                    <multiselect v-model="newInstructor.Gender" @clear="deselect" @select="cancan" valueProp="value" :options="genderoptions" track-by="label" label="label" placeholder="Select gender" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.gender ? errors.genderText : '' }}
                     </p>
@@ -438,7 +552,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="github" class="font-semibold">
                         Github Profile
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.github" name="github" id="github" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.GithubUrl" name="github" id="github" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.github ? errors.githubText : '' }}
                     </p>
@@ -449,7 +563,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="linkedin" class="font-semibold">
                         LinkedIn Profile
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.linkedin" name="linkedin" id="linkedin" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.LinkedInUrl" name="linkedin" id="linkedin" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.linkedin ? errors.linkedinText : '' }}
                     </p>
@@ -458,7 +572,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="facebook" class="font-semibold">
                         Facebook Profile
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.facebook" name="facebook" id="facebook" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.FacebookUrl" name="facebook" id="facebook" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.facebook ? errors.facebookText : '' }}
                     </p>
@@ -467,7 +581,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="twitter" class="font-semibold">
                         Twitter Profile
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.twitter" name="twitter" id="twitter" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.TwitterUrl" name="twitter" id="twitter" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.twitter ? errors.twitterText : '' }}
                     </p>
@@ -493,10 +607,7 @@ const disabledView:any = 'bg-gray-300';
                         Experience Level*
                     </label>
                     <!-- <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.experience" name="experience" id="experience" placeholder="Input experience" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" /> -->
-                    <select @focus="checkError" @keyup="checkError" class="pl-5 pr-52 py-3 bg-transparent rounded border text-grey" v-model="newInstructor.experienceId" name="experience" id="experience">
-                        <option value="">Select option</option>
-                        <!-- <option  v-for="item in experiences" :key="item.id"  :value=item.id>{{ item.title }}</option> -->
-                    </select>
+                    <multiselect v-model="newInstructor.ExperienceLevel" @clear="deselect" @select="cancan" valueProp="value" :options="experience_leveloptions" track-by="label" label="label" placeholder="Select experience level" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.experience ? errors.experienceText : '' }}
                     </p>
@@ -506,7 +617,7 @@ const disabledView:any = 'bg-gray-300';
                         Address
                     </label>
                     <!-- <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.addresss" name="address" id="address" placeholder="Input address" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" /> -->
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.address" name="address" id="address" placeholder="Enter address" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.Address" name="address" id="address" placeholder="Enter address" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.address ? errors.addressText : '' }}
                     </p>
@@ -524,11 +635,11 @@ const disabledView:any = 'bg-gray-300';
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>
-                            <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
+                            <input type="file" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx, .jpeg, .png" />
                         </label>
                     </div>
                     <p class="text-xs font-medium">
-                        Allowed Formats: jpg, png, mp4
+                        Allowed Formats: jpg, png, pdf, docx
                     </p>
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.resume ? errors.resumeText : '' }}
@@ -540,7 +651,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="bio" class="font-semibold">
                         Bio
                     </label>
-                    <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.bio" name="bio" id="bio" placeholder="Input bio" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" />
+                    <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.Bio" name="bio" id="bio" placeholder="Input bio" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" />
                     <!-- <select @focus="checkError" @keyup="checkError" class="pl-5 pr-52 py-3 bg-transparent rounded border text-grey" v-model="newInstructor.bioId" name="bio" id="bio">
                         <option value="">Select option</option>
                         <option  v-for="item in bios" :key="item.id"  :value=item.id>{{ item.title }}</option>
@@ -556,3 +667,28 @@ const disabledView:any = 'bg-gray-300';
         </form>
     </div>
 </template>
+
+<style scoped>
+.multiselect-blue {
+  --ms-option-bg: #DBEAFE;
+  --ms-option-color: #2563EB;
+  --ms-bg: #FFFFFF;
+}
+</style>
+
+<style>
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
+}
+.multiselect-blue {
+  /* --ms-option-bg: #DBEAFE; */
+  --ms-option-color: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-dropdown-bg: #FFFFFF;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-py: 8px;
+  --ms-font-size: 12px;
+}
+</style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

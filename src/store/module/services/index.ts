@@ -99,24 +99,24 @@ export default {
       },
     },
     actions: {
-        async [actionTypes.FetchProject] ({ commit }: any, data: any = `${api_url}api/project/get-projects`) {
+        async [actionTypes.FetchProject] ({ commit }: any, data: any = `${api_url}api/project/get-projects/{page}/{limit}`) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here', token)
-          const project = await fetchData(data, token)
+          const project = await fetchData(data)
         //   console.log('data', data)
         //   console.log('Iprojects', projects.payload)
         //   console.log('Iprojects', projects.value)
         //   console.log('Iprojects', JSON.parse(JSON.stringify(projects)))
         //   console.log('Iprojects', JSON.parse(JSON.stringify(projects.value)))
         //   console.log('Iprojects', projects.value)
-          commit(mutationTypes.SetProject, project.payload)
-          commit(mutationTypes.SetTotalProjectCount, project.totalCount)
+          commit(mutationTypes.SetProject, project)
+          // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
         },
         async [actionTypes.AddStudentToProject] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
             console.log('token here', token)
             console.log('data is', data)
-          const addStudent = await addData(data.url, data.data, token)
+          const addStudent = await addData(data.url, data.data)
           console.log('addStudent', addStudent)
           if (addStudent.payload) {
             commit(mutationTypes.SetProjectAlertText, 'Student added to project successfully')
@@ -142,8 +142,8 @@ export default {
         },
         async [actionTypes.FetchStudentsInProject] ({ commit }: any, data: any) {
           const token:any = localStorage.getItem('token')
-        //   console.log('token here', token)
-          const studentsinproject = await fetchData(data, token)
+        //   console.log('token here')
+          const studentsinproject = await fetchData(data)
         //   console.log('data', data)
           console.log('Iprojects', studentsinproject.payload)
         //   console.log('Iprojects', projects.value)
@@ -155,9 +155,9 @@ export default {
         },
         async [actionTypes.AddProject] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data.url, data.data)
-          const newproject = await addData(data.url, data.data, token)
+          const newproject = await addData(data.url, data.data)
           if (newproject.payload) {
             await commit(mutationTypes.SetProjectAlertText, 'Project added successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -177,9 +177,9 @@ export default {
         },
         async [actionTypes.RemoveProject] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data)
-          const newproject = await removeData(data, token)
+          const newproject = await removeData(data)
           console.log('newproject', newproject)
           if (!newproject.hasErrors) {
             await commit(mutationTypes.SetProjectAlertText, 'Project removed successfully')
@@ -201,9 +201,9 @@ export default {
         async [actionTypes.RemoveStudentFromProject] ({ commit, dispatch }: any, data: any) {
           console.log('i am here')
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data)
-          const newproject = await addData(data.url, data.data, token)
+          const newproject = await addData(data.url, data.data)
           console.log('newproject', newproject)
           if (!newproject.hasErrors) {
             await commit(mutationTypes.SetProjectAlertText, 'Student removed successfully')
@@ -224,9 +224,9 @@ export default {
         },
         async [actionTypes.FetchEditProject] ({ commit }: any, data: any) {
           const token:any = localStorage.getItem('token')
-          console.log('token here', token)
+          console.log('token here')
           console.log('all data is', data)
-          const project = await fetchData(data, token)
+          const project = await fetchData(data)
           console.log('project', project)
           commit(mutationTypes.SetEditProject, project.payload)
         }

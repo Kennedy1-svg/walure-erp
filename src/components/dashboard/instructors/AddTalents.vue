@@ -310,8 +310,8 @@ const submit:any = () => {
 
 onMounted(async () => {
     console.log('I am now here')
-    const request:any = `${api_url}api/bio/search-bios/{pageIndex}/{pageSize}`;
-    await store.dispatch(courseActionTypes.FetchCourses, request)
+    // const request:any = `${api_url}api/bio/search-bios/{pageIndex}/{pageSize}`;
+    // await store.dispatch(courseActionTypes.FetchCourses, request)
 })
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
@@ -453,10 +453,10 @@ const disabledView:any = 'bg-gray-300';
                         Proficiency Level*
                     </label>
                     <!-- <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.proficiency" name="proficiency" id="proficiency" placeholder="Input proficiency" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" /> -->
-                    <select @focus="checkError" @keyup="checkError" class="pl-5 pr-52 py-3 bg-transparent rounded border text-grey" v-model="newTalent.proficiencyId" name="proficiency" id="proficiency">
-                        <option value="">Select option</option>
+                    <!-- <select @focus="checkError" @keyup="checkError" class="pl-5 pr-52 py-3 bg-transparent rounded border text-grey" v-model="newTalent.proficiencyId" name="proficiency" id="proficiency">
+                        <option value="">Select option</option> -->
                         <!-- <option  v-for="item in proficiencys" :key="item.id"  :value=item.id>{{ item.title }}</option> -->
-                    </select>
+                    <!-- </select> -->
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.proficiency ? errors.proficiencyText : '' }}
                     </p>
