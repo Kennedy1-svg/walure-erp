@@ -102,7 +102,7 @@ export default {
         async [actionTypes.FetchProject] ({ commit }: any, data: any = `${api_url}api/project/get-projects/{page}/{limit}`) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here', token)
-          const project = await fetchData(data)
+          const project = await fetchData(data, token)
         //   console.log('data', data)
         //   console.log('Iprojects', projects.payload)
         //   console.log('Iprojects', projects.value)
@@ -143,7 +143,7 @@ export default {
         async [actionTypes.FetchStudentsInProject] ({ commit }: any, data: any) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here')
-          const studentsinproject = await fetchData(data)
+          const studentsinproject = await fetchData(data, token)
         //   console.log('data', data)
           console.log('Iprojects', studentsinproject.payload)
         //   console.log('Iprojects', projects.value)
@@ -226,7 +226,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data)
-          const project = await fetchData(data)
+          const project = await fetchData(data, token)
           console.log('project', project)
           commit(mutationTypes.SetEditProject, project.payload)
         }

@@ -10,11 +10,16 @@ import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import alert from '../../alerts.vue';
 import SvgIcons from '../../SvgIcons.vue';
+import AddSkill from './AddSkill.vue';
 import multiselect from '@vueform/multiselect'
+import Modl from '../../Modals.vue'
 import Modal from '../../Modal.vue'
 import * as actionTypes from '../../../store/module/instructors/constants/action'
 // import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
+// import { VuePdf, createLoadingTask } from 'vue3-pdfjs/esm';
+// import { VuePdfPropsType } from 'vue3-pdfjs/components/vue-pdf/vue-pdf-props'; // Prop type definitions can also be imported
+// import { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 
 const store = useStore();
 
@@ -22,7 +27,18 @@ const route = useRouter();
 
 let isDisabled = ref(true);
 let isError:any = ref(false);
+// let isResumeActive:any = ref(false);
 let isLoading:any = ref(false);
+
+
+// const pdfSrc = ref<VuePdfPropsType['src']>('https://walure.blob.core.windows.net/assets/blobs/instructor/795427139f594572a0b6201ef4de1136.pdf')
+
+const numOfPages = ref(0)
+
+// const loadingTask = createLoadingTask(pdfSrc.value)
+// loadingTask.promise.then((pdf: PDFDocumentProxy) => {
+//     numOfPages.value = pdf.numPages
+// })
 
 const alertState:any = computed(() => store.getters.getInstructorAlertStatus.value)
 const alertText:any = computed(() => store.getters.getInstructorAlertText.value)
@@ -79,6 +95,8 @@ const genderoptions:any = [
   },
 ]
 
+// let loadingTask = pdf.createLoadingTask('https://cdn.mozilla.net/pdfjs/tracemonkey.pdf');
+
 const genderField:any = ref('')
 
 const experience_leveloptions:any = [
@@ -109,13 +127,15 @@ const deselect:any = async () => {
     // await store.dispatch(batchActionTypes.FetchInstructor)  
 }
 
+const pdfSource:any = 'https://mega.nz/file/9IlEAToA#4Owt89Mjjm9ZY42QXpVGqOBiuQIf81wrvpvVRKRilr4';
+
 const experience_levelField:any = ref('')
 
 const formEl:any = ref(null)
 
 let isChecked:any = ref(false);
 
-let formData = new FormData()
+let formData = new FormData();
 
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
@@ -123,7 +143,7 @@ const check:any = ():any => {
 
 const newInstructor:any = computed(() => {
     return store.getters.getNewInstructor.value;
-})
+});
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 const phone ='^[0]+[0-9]';
@@ -312,6 +332,10 @@ const removeImage:any = async () => {
     return newInstructor.value.Image = ''
 }
 
+const removeResume:any = async () => {
+    return newInstructor.value.Resume = ''
+}
+
 const bios:any = computed(() => {
     return store.getters.getCourses.value.payload;
 })
@@ -326,8 +350,23 @@ const closeModal:any =  () => {
 
 const showProfilePicture = ref(false);
 
+const showResume = ref(false)
+
+const testing:any = () => {
+    console.log(showResume.value)
+    console.log(newInstructor.value)
+}
+
 let isActive:any = computed(() => {
     if (newInstructor.value.Image) {
+        return true
+    } else {
+        return false
+    }
+})
+
+let isResumeActive:any = computed(() => {
+    if (newInstructor.value.Resume) {
         return true
     } else {
         return false
@@ -351,9 +390,10 @@ const onChangeResume:any = (event:any):any => {
     formData.append('file', event.target.files[0])
     // let images: any = document.getElementById('output')
     // let image:any = document.getElementById('displayoutput')
-    // images.src = URL.createObjectURL(event.target.files[0])
+    // pdfSource.value = URL.createObjectURL(event.target.files[0])
     // image.src = URL.createObjectURL(event.target.files[0])
     console.log('newInstructor resume', newInstructor.value.Resume.type)
+    // console.log('newInstructor link', pdfSource.value)
 }
 
 const resetForm:any = Object.freeze({
@@ -628,8 +668,8 @@ const disabledView:any = 'bg-gray-300';
                     <label for="resume" class="font-semibold">
                         Resume
                     </label>
-                    <div class="flex items-center justify-start w-full">
-                        <label :class="[errors.resume ? 'rounded-full text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                    <div class="flex items-center justify-between w-full">
+                        <label :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
@@ -637,6 +677,40 @@ const disabledView:any = 'bg-gray-300';
                             </div>
                             <input type="file" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx, .jpeg, .png" />
                         </label>
+                        <div v-if="newInstructor.Resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                            <div class="">
+                                <p class="font-semibold py-1 w-36 truncate">
+                                    {{ newInstructor.Resume.name }}
+                                </p>
+                                <p class="text-xs pb-1 text-gray-500">
+                                    {{ newInstructor.Resume.size > 999999 ? (newInstructor.Resume.size / 1000000).toFixed(2) + 'Mb' : newInstructor.Resume.size > 999 ? (newInstructor.Resume.size / 1000).toFixed(2) + ' kb' : newInstructor.Resume.size + ' bytes' }}
+                                </p>
+                            </div>
+                            <div class="flex justify-around gap-3 items-center">
+                                <Modal id="resume" :show="showResume" @close="showResume = !showResume">
+                                    <template #button>
+                                    <!-- <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
+                                        View Passport
+                                    </button> -->
+                                        <SvgIcons name="eye" />
+                                    </template>
+                                    <template #modalContent>
+                                        <!-- <img id="output" alt="user img"> -->
+                                        <div>
+                                            <!-- <AddSkill name="Add" @close="closeModal" /> -->
+                                            <!-- <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSrc" :page="page" /> -->
+                                            <!-- <embed type="application/pdf" src="https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" frameborder="0"> -->
+                                        </div>
+                                    </template>
+                                </Modal>
+                                <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
+                                <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
+                                    <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
+                                    <!-- <AddSkill name="Add" />
+                                </Modl> -->
+                                <SvgIcons name="delete" @click="removeResume" />
+                            </div>
+                        </div>
                     </div>
                     <p class="text-xs font-medium">
                         Allowed Formats: jpg, png, pdf, docx
@@ -646,6 +720,8 @@ const disabledView:any = 'bg-gray-300';
                     </p>
                 </div>
             </div>
+                                            <!-- <embed type="application/pdf" src="https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" frameborder="0"> -->
+                                            <!-- <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSrc" :page="page" /> -->
             <div class="grid text-left gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="bio" class="font-semibold">

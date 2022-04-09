@@ -161,7 +161,7 @@ export default {
     async [actionTypes.FetchInstructors] ({ commit }: any, data: any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const instructors = await fetchData(data)
+      const instructors = await fetchData(data, token)
       console.log('data fe', data)
       console.log('Iinstructors', instructors.payload)
     //   console.log('Iinstructors', instructors.value)
@@ -174,7 +174,7 @@ export default {
     async [actionTypes.FetchTalents] ({ commit }: any, data: any = `${api_url}api/talentpool/get-talents/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const talents = await fetchData(data)
+      const talents = await fetchData(data, token)
       console.log('data fe', data)
       console.log('Italents', talents.payload)
     //   console.log('Italents', talents.value)
@@ -187,7 +187,7 @@ export default {
     async [actionTypes.FetchSkills] ({ commit }: any, data: any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const skill = await fetchData(data)
+      const skill = await fetchData(data, token)
       console.log('data fe', data)
       console.log('Iskill', skill.payload)
     //   console.log('Iskill', skill.value)
@@ -200,7 +200,7 @@ export default {
     async [actionTypes.FetchEditSkill] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      // const skill = await fetchData(data)
+      // const skill = await fetchData(data, token)
       console.log('data tch', data)
       // console.log('Iskills', skill.payload)
     //   console.log('Iskills', skills.value)
@@ -214,7 +214,7 @@ export default {
     async [actionTypes.FetchEditTalent] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const talent = await fetchData(data)
+      const talent = await fetchData(data, token)
       console.log('data tch', data)
       // console.log('Italents', talent.payload)
     //   console.log('Italents', talents.value)
@@ -228,7 +228,7 @@ export default {
     async [actionTypes.FetchEditInstructor] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const instructor = await fetchData(data)
+      const instructor = await fetchData(data, token)
       console.log('data tch', data)
       // console.log('Iinstructors', instructor.payload)
     //   console.log('Iinstructors', instructors.value)
@@ -328,7 +328,7 @@ export default {
     async [actionTypes.FilterInstructor] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const instructor = await fetchData(data)
+      const instructor = await fetchData(data, token)
       console.log('data', data)
       console.log('Iinstructors', instructor.payload)
     //   console.log('Iinstructors', instructors.value)

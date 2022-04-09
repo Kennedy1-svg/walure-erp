@@ -102,7 +102,7 @@ export default {
         async [actionTypes.FetchBatch] ({ commit }: any, data: any = `${api_url}api/batch/get-batches/{page}/{limit}`) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here', token)
-          const batch = await fetchData(data)
+          const batch = await fetchData(data, token)
         //   console.log('data', data)
         //   console.log('Ibatchs', batchs.payload)
         //   console.log('Ibatchs', batchs.value)
@@ -171,7 +171,7 @@ export default {
         async [actionTypes.FetchStudentsInBatch] ({ commit }: any, data: any) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here')
-          const studentsinbatch = await fetchData(data)
+          const studentsinbatch = await fetchData(data, token)
         //   console.log('data', data)
           console.log('Ibatchs', studentsinbatch.payload)
         //   console.log('Ibatchs', batchs.value)
@@ -251,10 +251,10 @@ export default {
           }, 2000)
         },
         async [actionTypes.FetchEditBatch] ({ commit }: any, data: any) {
-          // const token:any = localStorage.getItem('token')
+          const token:any = localStorage.getItem('token')
           // console.log('token here')
           console.log('all data is', data)
-          const batch = await fetchData(data)
+          const batch = await fetchData(data, token)
           console.log('batch now now', batch)
           commit(mutationTypes.SetEditBatch, batch.payload)
           // commit(mutationTypes.SetNewBatch, batch.payload)

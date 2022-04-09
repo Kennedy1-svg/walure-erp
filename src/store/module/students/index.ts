@@ -98,7 +98,7 @@ export default {
     async [actionTypes.FetchStudents] ({ commit }: any, data: any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
-      const students = await fetchData(data)
+      const students = await fetchData(data, token)
       console.log('data fe', data)
     //   console.log('Istudents', students.payload)
     //   console.log('Istudents', students.value)
@@ -111,7 +111,7 @@ export default {
     async [actionTypes.FetchEditStudent] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const student = await fetchData(data)
+      const student = await fetchData(data, token)
       // console.log('data tch', data)
       // console.log('Istudents', student.payload)
     //   console.log('Istudents', students.value)
@@ -125,7 +125,7 @@ export default {
     async [actionTypes.FilterStudent] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const student = await fetchData(data)
+      const student = await fetchData(data, token)
       console.log('data', data)
       console.log('Istudents', student.payload)
     //   console.log('Istudents', students.value)
@@ -138,7 +138,7 @@ export default {
     async [actionTypes.SearchStudent] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const student = await fetchData(data)
+      const student = await fetchData(data, token)
       console.log('data', data)
       console.log('Istudents', student.payload)
     //   console.log('Istudents', students.value)

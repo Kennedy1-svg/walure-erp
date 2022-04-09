@@ -5,15 +5,16 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, toRefs } from 'vue'
+import { ref, computed, onMounted, defineAsyncComponent, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { api_url } from '../../../config'
 import moment from 'moment';
+import { DatePicker } from'v-calendar'
 import SvgIcons from '../../SvgIcons.vue';
-// import Datepicker from '@themesberg/tailwind-datepicker/Datepicker';
 import Filter from '../../Filter.vue';
 import Datepicker from 'vue3-date-time-picker';
+import 'v-calendar/dist/style.css';
 import 'vue3-date-time-picker/dist/main.css';
 // import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
@@ -191,7 +192,9 @@ const trainingoptions:any = ref([
     }
 ]);
 
-const anotherTime:any = ref(moment('2022-04-14T13:17:00.000Z').format('MM/DD/YYYY'))
+const anotherTime:any = computed(() => {
+    return moment(newBatch.endDate).format('MM-DD-YYYY')
+})
 
 const emits = defineEmits(['close'])
 
@@ -200,6 +203,10 @@ const closeModal:any =  () => {
 }
 
 const batchcourse:any = ref('')
+
+// const MonthYear = defineAsyncComponent(() => import('./MonthYearCustom.vue'));
+
+// const monthYear = computed(() => MonthYear);
 
 const addbatch:any = async () => {
     console.log('hi');
@@ -232,6 +239,13 @@ const addbatch:any = async () => {
     await store.dispatch(batchActionTypes.FetchBatch)
     const result = await store.getters.getBatch
     closeModal()
+}
+
+const enddate:any = ref(null)
+
+const sayhi:any = () => {
+    console.log('say hi')
+    enddate.value.openMenu
 }
 
 const editbatch:any = async () => {
@@ -312,10 +326,10 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="main w-full mt-[0.5px] px-[45px] bg-white">
+    <div class="main w-full pb-12 mt-[0.5px] px-[45px] bg-white">
         <div class="flex justify-between py-[53px] items-center ">
             <p class="text-2xl">{{ props.name }} batch</p>
-            {{ newBatch }}
+            <!-- {{ newBatch }} -->
             <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
@@ -379,7 +393,16 @@ onMounted(async () => {
                     <label for="startdate" class="font-semibold">
                         Start date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
+                    <DatePicker v-if="props.name == 'Edit'" v-model="newBatch.startDate">
+                        <template v-slot="{ inputValue, inputEvents }">
+                            <input
+                            class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
+                            :value="inputValue"
+                            v-on="inputEvents"
+                            />
+                        </template>
+                    </DatePicker>
+                    <Datepicker v-else inputClassName="dp-custom-input" menuClassName="dp-custom-menu" :monthChangeOnScroll="false" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
                     <!-- <datepicker /> -->
                     <p class="text-[10px] text-red">
                         {{ errors.startDate ? errors.startDateText : '' }}
@@ -389,8 +412,18 @@ onMounted(async () => {
                     <label for="enddate" class="font-semibold">
                         End date*
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" @cleared="checkError" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
-                    <!-- <input type="datetime" name="date" id="date" placeholder="End Date" v-model="newBatch.endDate" class="px-4 py-[10px] w-full border rounded-md focus:outline-none" min="newBatch.startDate"> {{ newBatch.endDate }} -->
+                    <!-- <Datepicker :format="format" :value="newBatch.endDate" /> -->
+                    <DatePicker v-if="props.name == 'Edit'" v-model="newBatch.endDate">
+                        <template v-slot="{ inputValue, inputEvents }">
+                            <input
+                            class="px-3 py-4 border w-full rounded focus:outline-none focus:border-primary"
+                            :value="inputValue"
+                            v-on="inputEvents"
+                            />
+                        </template>
+                    </DatePicker>
+                    <Datepicker v-else inputClassName="dp-custom-input" @open="sayhi" @cleared="checkError" ref="enddate" :monthChangeOnScroll="false" menuClassName="dp-custom-menu" v-model="newBatch.endDate" :minDate="newBatch.startDate" :format="format" position="left" placeholder="End Date" teleport="#enddate" />
+                    <!-- <input type="datetime-local" name="date" id="date" placeholder="End Date" v-model="newBatch.endDate" class="px-4 py-[10px] w-full border rounded-md focus:outline-none" min="newBatch.startDate"> {{ newBatch.endDate }} {{ anotherTime }} -->
                     <p class="text-[10px] text-red">
                         {{ errors.endDate ? errors.endDateText : '' }}
                     </p>

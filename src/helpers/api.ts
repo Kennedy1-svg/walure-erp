@@ -4,11 +4,11 @@ import { useStore } from 'vuex';
 const store:any = useStore();
 
 // api helper to fetch data from the backend
-export const fetchData = async (url:any) => {
+export const fetchData = async (url:any, token:any) => {
   try {
     // console.log('token here', token)
     console.log('url here', url)
-    const response = await axios.get(`${url}`);
+    const response = await axios.get(`${url}`, { headers: { Authorization: `Bearer ${token}` } });
     // console.log('response', response)
     return response.data
   } catch (err) {
@@ -17,7 +17,7 @@ export const fetchData = async (url:any) => {
 }
 
 // api helper to fetch data by ID from the backend
-export const fetchDataByParams = async (url: any) => {
+export const fetchDataByParams = async (url: any, token:any) => {
   try {
     const response = await axios.get(`${url}`)
     // console.log('response', response.data)

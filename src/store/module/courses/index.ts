@@ -149,21 +149,21 @@ export default {
   actions: {
     async [actionTypes.FetchCourses] ({ commit }: any, data: any = `${api_url}api/course/get-courses/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
-      const courses:any = await fetchData(data)
+      const courses:any = await fetchData(data, token)
       console.log('courses', courses)
       commit(mutationTypes.SetCourses, courses)
     },
     async [actionTypes.FetchCourseCategories] ({ commit }: any, data: any = `${api_url}api/coursecategory/get-categories`) {
       const token:any = localStorage.getItem('token')
       console.log('data', data)
-      const categories:any = await fetchData(data)
+      const categories:any = await fetchData(data, token)
       console.log('categories', categories)
       commit(mutationTypes.SetCourseCategories, categories)
     },
     async [actionTypes.FetchEditCourse] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course = await fetchData(data)
+      const course = await fetchData(data, token)
       console.log('data tch', data)
       // console.log('Icourses', course.payload)
     //   console.log('Icourses', courses.value)
@@ -223,7 +223,7 @@ export default {
     async [actionTypes.FetchEditCourseApplicant] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const applicant = await fetchData(data)
+      const applicant = await fetchData(data, token)
       console.log('data tch', applicant.payload)
       await commit(mutationTypes.SetEditCourseApplicant, applicant.payload)
     },
@@ -273,13 +273,13 @@ export default {
     },
     async [actionTypes.FetchCourseApplicants] ({ commit }: any, data: any = `${api_url}api/courseapplicant/get-courseapplicant/{pageNumber}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
-      const courseapplicants:any = await fetchData(data)
+      const courseapplicants:any = await fetchData(data, token)
       console.log('course applicants', courseapplicants)
       commit(mutationTypes.SetCourseApplicants, courseapplicants)
     },
     async [actionTypes.FetchCurriculum] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
-      const curriculum:any = await fetchData(data)
+      const curriculum:any = await fetchData(data, token)
       console.log('course curriculum', curriculum)
       commit(mutationTypes.SetCurriculum, curriculum)
     },
