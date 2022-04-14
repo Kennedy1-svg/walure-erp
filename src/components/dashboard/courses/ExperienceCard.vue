@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, toRefs } from 'vue';
 import { api_url } from '../../../config';
 import SvgIcons from '../../SvgIcons.vue';
 import * as studentActionTypes from '../../../store/module/students/constants/action'
@@ -13,6 +13,18 @@ import * as courseActionTypes from '../../../store/module/courses/constants/acti
 import { useStore } from 'vuex'
 
 const store = useStore();
+
+const emits = defineEmits(['delete', 'edit']);
+
+const deleteItem:any = async () => {
+    console.log('delete item');
+    emits('delete')
+}
+
+const editItem:any = async () => {
+    console.log('edit item');
+    emits('edit')
+}
 
 </script>
 
@@ -36,8 +48,8 @@ const store = useStore();
         </p>
         <div class="justify-self-end">
             <span class="icons pt-3 flex gap-3 text-grey">
-                <SvgIcons name="edit" class="cursor-pointer hover:text-green-accent" />
-                <SvgIcons name="delete" class="cursor-pointer hover:text-red" />
+                <SvgIcons name="edit" class="cursor-pointer hover:text-green-accent" @click="editItem" />
+                <SvgIcons name="delete" class="cursor-pointer hover:text-red" @click="deleteItem" />
             </span>
         </div>
     </div>

@@ -18,6 +18,7 @@ import Modal from '../../Modals.vue';
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
 import { api_url } from '../../../config/index'
 import AddCourse from './AddCourse.vue';
+import EditCourse from './EditCourse.vue';
 import { useRouter } from 'vue-router';
 
 
@@ -38,7 +39,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
+    const request:any = `${api_url}api/course/get-courses/${pageIndex.value}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(courseActionTypes.FetchCourses, request)
 }
@@ -140,6 +141,7 @@ onMounted( async () => {
             <p class="text-xl font-medium text-primary">Total : {{ total_count }}</p>
         </div>
         <div class="table mb-28">
+            <!-- {{ courses }} -->
             <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
                 <table class="overflow-x-scroll border items-center w-full">
                     <thead class="bg-table-head">
@@ -244,7 +246,7 @@ onMounted( async () => {
                                                     Edit
                                                 </button>
                                                 <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                                    <AddCourse name="Edit"  @close="showEdit = !showEdit" />
+                                                    <EditCourse name="Edit"  @close="showEdit = !showEdit" />
                                                 </Modal>
 
                                                 <button

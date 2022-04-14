@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: 'AddStudents',
+  name: 'EditStudent',
 }
 </script>
 
@@ -23,8 +23,8 @@ let isDisabled = ref(true);
 let isError:any = ref(false);
 let isImageRemoved:any = ref(false);
 
-const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
-const alertText:any = computed(() => store.getters.getBatchAlertText.value)
+// const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
+// const alertText:any = computed(() => store.getters.getBatchAlertText.value)
 
 const props = defineProps({
     name: {

@@ -230,7 +230,7 @@ export default {
       console.log('token here', token)
       const instructor = await fetchData(data, token)
       console.log('data tch', data)
-      // console.log('Iinstructors', instructor.payload)
+      console.log('Iinstructors', instructor.payload)
     //   console.log('Iinstructors', instructors.value)
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors)))
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors.value)))
@@ -351,6 +351,13 @@ export default {
       console.log('data is', data)
       const instructor = await addData(data.url, data.data)
       await dispatch(actionTypes.FetchSkills)
+    },
+    async [actionTypes.AddNewTalent] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here')
+      console.log('data is', data)
+      const instructor = await addData(data.url, data.data)
+      await dispatch(actionTypes.FetchTalents)
     },
     async [actionTypes.UpdateSkill] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')

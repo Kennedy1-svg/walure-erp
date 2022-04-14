@@ -11,6 +11,7 @@ import { useRouter } from 'vue-router'
 import SvgIcons from '../../SvgIcons.vue';
 import Switch from '../../switch.vue'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
+import * as courseMutationTypes from '../../../store/module/courses/constants/mutation'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
 
@@ -25,8 +26,8 @@ let isLoading:any = ref(false);
 // const alertState:any = computed(() => store.getters.getCourseAlertStatus.value)
 // const alertText:any = computed(() => store.getters.getCourseAlertText.value)
 
-const alertState:any = ref(false)
-const alertText:any = ref(false)
+// const alertState:any = ref(false)
+// const alertText:any = ref(false)
 
 const props = defineProps({
     name: {
@@ -133,6 +134,7 @@ const notes = ref('')
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
+    store.commit(courseMutationTypes.SetNewCourseCategory, {})
     emits('close')
 }
 
@@ -197,6 +199,7 @@ const addCategory:any = async () => {
     await store.dispatch(courseActionTypes.AddNewCourseCategory, newData)
     const result = await store.getters.getCourseCategories
     closeModal()
+    store.commit(courseMutationTypes.SetNewCourseCategory, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
@@ -262,8 +265,8 @@ const submitEdit:any = () => {
 
 onMounted(async () => {
     console.log('I am now here')
-    const request:any = `${api_url}api/coursecategory/get-categories`;
-    await store.dispatch(courseActionTypes.FetchCourseCategories, request)
+    // const request:any = `${api_url}api/coursecategory/get-categories`;
+    // await store.dispatch(courseActionTypes.FetchCourseCategories, request)
 
 })
 

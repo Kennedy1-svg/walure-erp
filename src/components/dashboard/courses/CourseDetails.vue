@@ -11,6 +11,7 @@ import { ref, toRefs, computed, onMounted } from 'vue';
 import { useStore } from 'vuex'
 import Modal from '../../Modal.vue'
 import * as actionTypes from '../../../store/module/courses/constants/action'
+import multiselect from '@vueform/multiselect'
 
 const store = useStore();
 
@@ -105,11 +106,15 @@ const course:any = computed(() => {
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Level Type</p>
-                <p>{{ courseDetails.levelType }}</p>
+                <p>{{ courseDetails.levelType == '0' ? 'Beginner' : courseDetails.levelType == '1' ? 'Intermediate' : 'Advanced' }}</p>
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
+                <!-- {{ categories }} -->
                 <p>Categories</p>
-                <p>{{ courseDetails.categories.map((e) => e).join(', ') }}</p>
+                <!-- <p>{{ courseDetails.categories.map((item:any ):any => item).join(', ') }}</p> -->
+                <!-- {{ category }} -->
+                {{ courseDetails.categories }}
+                <!-- <multiselect v-model="courseDetails.categories" mode="tags" :close-on-select="false" valueProp="id" :options="categories" track-by="name" label="name" class="multiselect-blue" /> -->
             </div>
         </div>
     </div>

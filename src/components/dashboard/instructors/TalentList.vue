@@ -17,6 +17,7 @@ import DeleteModal from '../../DeleteModal.vue';
 import Modal from '../../Modals.vue';
 import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
 import { api_url } from '../../../config/index'
+import EditTalents from './EditTalents.vue';
 
 const store = useStore();
 
@@ -206,8 +207,8 @@ onMounted( async () => {
                                                 <SvgIcons name="edit" />
                                                 Edit
                                             </button>
-                                            <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddStudents />
+                                            <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                <EditTalents @close="showEdit = !showEdit" />
                                             </Modal>
 
                                             <button

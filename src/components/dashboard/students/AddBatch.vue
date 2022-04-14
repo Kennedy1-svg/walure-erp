@@ -20,6 +20,7 @@ import 'vue3-date-time-picker/dist/main.css';
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as batchActionTypes from '../../../store/module/batch/constants/action'
+import * as batchMutationTypes from '../../../store/module/batch/constants/mutation'
 import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
 
 const store = useStore();
@@ -199,6 +200,7 @@ const anotherTime:any = computed(() => {
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
+    store.commit(batchMutationTypes.SetNewBatch, {})
     emits('close')
 }
 
@@ -239,6 +241,7 @@ const addbatch:any = async () => {
     await store.dispatch(batchActionTypes.FetchBatch)
     const result = await store.getters.getBatch
     closeModal()
+    store.commit(batchMutationTypes.SetNewBatch, {})
 }
 
 const enddate:any = ref(null)

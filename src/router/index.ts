@@ -140,7 +140,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-  const token:any = await localStorage.getItem('token') || ''
+  const token:any = await localStorage.getItem('token')
   if (to.meta.requiresAuth) {
     if (!token) {
       router.push({ name: 'Login' })

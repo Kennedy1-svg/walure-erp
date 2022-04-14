@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, toRefs } from 'vue'
+import { ref, watch, computed, onMounted, reactive, toRefs } from 'vue'
 import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import alert from '../../alerts.vue';
@@ -24,12 +24,14 @@ const route = useRouter();
 let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
+let isImageRemoved:any = ref(false);
 
 // const alertState:any = computed(() => store.getters.getCourseAlertStatus.value)
 // const alertText:any = computed(() => store.getters.getCourseAlertText.value)
 
-const alertState:any = ref(false)
-const alertText:any = ref(false)
+// const alertState:any = ref(false)
+// const alertText:any = ref(false)
+
 const isBannerActive:any = computed(() => {
     let answer:any = false
     if (newCourse.value.banner) {
@@ -104,7 +106,7 @@ const status:any = computed(() => {
     return answer
 })
 
-const formEl:any = ref(null)
+// const formEl:any = ref(null)
 
 let isChecked:any = ref(false);
 
@@ -115,7 +117,7 @@ const check:any = ():any => {
 }
 
 const newCourse:any = computed(() => {
-    return store.getters.getNewCourse.value;
+    return store.getters.getEditCourse.value;
 })
 
 // const newCourse:any = {}
@@ -154,7 +156,7 @@ const checkError:any = () => {
         errors.costText = ''
     }
 
-    if (!newCourse.value.CourseLine1) {
+    if (!newCourse.value.courseLine1) {
         errors.CourseLine1 = true;
         errors.CourseLine1Text = 'Course content one is required.'
     } else {
@@ -184,7 +186,7 @@ const checkError:any = () => {
         errors.thumbnailText = ''
     }
 
-    if (!newCourse.value.CourseLine2) {
+    if (!newCourse.value.courseLine2) {
         errors.CourseLine2 = true;
         errors.CourseLine2Text = 'Course content two is required'
     } else {
@@ -192,7 +194,7 @@ const checkError:any = () => {
         errors.CourseLine2Text = ''
     }
 
-    if (!newCourse.value.CourseLine3) {
+    if (!newCourse.value.courseLine3) {
         errors.CourseLine3 = true;
         errors.CourseLine3Text = 'Course content three is required'
     } else {
@@ -200,7 +202,7 @@ const checkError:any = () => {
         errors.CourseLine3Text = ''
     }
 
-    if (!newCourse.value.CourseLine4) {
+    if (!newCourse.value.courseLine4) {
         errors.CourseLine4 = true;
         errors.CourseLine4Text = 'Course content four is required'
     } else {
@@ -208,7 +210,7 @@ const checkError:any = () => {
         errors.CourseLine4Text = ''
     }
 
-    if (!newCourse.value.CourseLine5) {
+    if (!newCourse.value.courseLine5) {
         errors.CourseLine5 = true;
         errors.CourseLine5Text = 'Course content five is required'
     } else {
@@ -282,29 +284,54 @@ const checkError:any = () => {
     } else if (errors.CourseLine2) {
         errors.CourseLine2 = true;
         isError.value = true;
-    } else if (errors.levels) {
-        errors.levels = true;
+    } else if (errors.banner) {
+        errors.banner = true;
         isError.value = true;
     } else if (errors.CourseLine3) {
         errors.CourseLine3 = true;
         isError.value = true;
-    } else if (errors.CourseLine2) {
-        errors.CourseLine2 = true;
+    } else if (errors.CourseLine5) {
+        errors.CourseLine5 = true;
+        isError.value = true;
+    } else if (errors.CourseLine4) {
+        errors.CourseLine4 = true;
         isError.value = true;
     } else if (errors.CourseLine1) {
         errors.CourseLine1 = true;
         isError.value = true;
-    } else if (errors.courseCode) {
-        errors.courseCode = true;
+    } else if (errors.categories) {
+        errors.categories = true;
+        isError.value = true;
+    } else if (errors.duration) {
+        errors.duration = true;
+        isError.value = true;
+    } else if (errors.resource) {
+        errors.resource = true;
+        isError.value = true;
+    } else if (errors.subTitle) {
+        errors.subTitle = true;
+        isError.value = true;
+    } else if (errors.levels) {
+        errors.levels = true;
+        isError.value = true;
+    } else if (errors.courseDescription) {
+        errors.courseDescription = true;
+        isError.value = true;
+    } else if (errors.thumbnail) {
+        errors.thumbnail = true;
         isError.value = true;
     } else {
         isError.value = false;
         isDisabled.value = false;
-    }   
+    }
 }
 
-const removeImage:any = async () => {
-    return newCourse.value.imageFile = ''
+const removeBanner:any = async () => {
+    return newCourse.value.banner = ''
+}
+
+const removeThumbnail:any = async () => {
+    return newCourse.value.thumbnail = ''
 }
 
 const courses:any = computed(() => {
@@ -321,7 +348,18 @@ const newText = () => {
     // console.log('new notes here', newCourse.courseDescription.value)
 }
 
-const notes = ref('')
+// const notes = computed(() => {
+//     return ref(newCourse.value.description);
+// })
+const notes:any = ref(newCourse.value.description)
+// const notes:any = ref('')
+
+// watch(
+//   () => notes,
+//   notes => {
+//     notes.value = ref(newCourse.description);
+//   },
+// );
 
 const emits = defineEmits(['close'])
 
@@ -363,15 +401,15 @@ const toggleActive:any = (status:any) => {
 
 const level_options:any = [
     {
-        value: 'Beginner',
+        value: 0,
         label: 'Beginner'
     },
     {
-        value: 'Intermediate',
+        value: 1,
         label: 'Intermediate'
     },
     {
-        value: 'Advanced',
+        value: 2,
         label: 'Advanced'
     }
 ]
@@ -422,27 +460,27 @@ const onChangeThumbnail:any = (event:any):any => {
 //         courseId: ''
 // })
 
-const addCourse:any = async () => {
+const editCourse:any = async () => {
     console.log('hi');
     console.log('newcourse', newCourse.value)
     console.log('new banner', newCourse.value.banner)
     console.log('new thumbnail', newCourse.value.thumbnail)
-    const request:any = `${api_url}api/course/create-course`;
+    const request:any = `${api_url}api/course/edit-course`;
 
     // const formElem = document.getElementById('formElem')
     formData.append('title', newCourse.value.title)
     formData.append('courseCode', newCourse.value.courseCode)
     formData.append('cost', newCourse.value.cost)
-    formData.append('banner', newCourse.value.banner, newCourse.value.banner.name)
-    formData.append('thumbnail', newCourse.value.thumbnail, newCourse.value.thumbnail.name)
+    // formData.append('banner', newCourse.value.banner, newCourse.value.banner.name)
+    // formData.append('thumbnail', newCourse.value.thumbnail, newCourse.value.thumbnail.name)
     formData.append('resourceUrl', newCourse.value.resourceUrl)
     formData.append('levelType', newCourse.value.levelType)
-    formData.append('CourseLine1', newCourse.value.CourseLine1)
-    // formData.append('courseId', newCourse.value.courseId)
-    formData.append('CourseLine2', newCourse.value.CourseLine2)
-    formData.append('CourseLine3', newCourse.value.CourseLine3)
-    formData.append('CourseLine4', newCourse.value.CourseLine4)
-    formData.append('CourseLine5', newCourse.value.CourseLine5)
+    formData.append('courseLine1', newCourse.value.courseLine1)
+    formData.append('id', newCourse.value.id)
+    formData.append('courseLine2', newCourse.value.courseLine2)
+    formData.append('courseLine3', newCourse.value.courseLine3)
+    formData.append('courseLine4', newCourse.value.courseLine4)
+    formData.append('courseLine5', newCourse.value.courseLine5)
     formData.append('categories', newCourse.value.categories)
     formData.append('duration', newCourse.value.duration)
     formData.append('isFeatured', newCourse.value.isFeatured)
@@ -470,7 +508,7 @@ const addCourse:any = async () => {
         data: formData
     }
     console.log('newData', newData)
-    await store.dispatch(courseActionTypes.AddNewCourse, newData)
+    await store.dispatch(courseActionTypes.EditCourse, newData)
     const result = await store.getters.getCourse
     closeModal()
     // formEl.reset()
@@ -482,7 +520,7 @@ const submit:any = () => {
     console.log('hello');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? addCourse() : '';
+    !isError.value ? editCourse() : '';
 }
 
 onMounted(async () => {
@@ -500,10 +538,11 @@ const disabledView:any = 'bg-gray-300';
 <template>
     <div class="main w-full mt-[0.5px] xl:px-[45px] overflow-hidden px-6 bg-white">
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl">Edit Course</p>
+            <p class="text-2xl">{{ props.name }} Course</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="forrmElem" ref="forrmEl" class="text-sm grid">
+            <!-- {{ newCourse }} -->
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="title" class="font-semibold">
@@ -549,7 +588,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="CourseLine1" class="font-semibold">
                         Course Content (1)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine1" name="CourseLine1" id="CourseLine1" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseLine1" name="CourseLine1" id="CourseLine1" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.CourseLine1 ? errors.CourseLine1Text : '' }}
                     </p>
@@ -558,7 +597,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="CourseLine2" class="font-semibold">
                         Course Content (2)*
                     </label>
-                    <input type="CourseLine2" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine2" name="CourseLine2" id="CourseLine2" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="CourseLine2" @focus="checkError" @keyup="checkError" v-model="newCourse.courseLine2" name="CourseLine2" id="CourseLine2" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.CourseLine2 ? errors.CourseLine2Text : '' }}
                     </p>
@@ -569,7 +608,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="CourseLine3" class="font-semibold">
                         Course Content (3)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine3" name="CourseLine3" id="CourseLine3" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseLine3" name="CourseLine3" id="CourseLine3" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.CourseLine3 ? errors.CourseLine3Text : '' }}
                     </p>
@@ -578,7 +617,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="CourseLine4" class="font-semibold">
                         Course Content (4)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine4" name="CourseLine4" id="CourseLine4" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseLine4" name="CourseLine4" id="CourseLine4" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.CourseLine4 ? errors.CourseLine4Text : '' }}
                     </p>
@@ -589,7 +628,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="CourseLine5" class="font-semibold">
                         Course Content (5)*
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.CourseLine5" name="CourseLine5" id="CourseLine5" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.courseLine5" name="CourseLine5" id="CourseLine5" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.CourseLine5 ? errors.CourseLine5Text : '' }}
                     </p>
@@ -618,7 +657,7 @@ const disabledView:any = 'bg-gray-300';
                         Categories*
                     </label>
                     <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.categories" name="categories" id="categories" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                    <multiselect @clear="deselect" v-model="newCourse.categories" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Select category" :searchable="true" class="multiselect-blue" />
+                    <multiselect @clear="deselect" v-model="newCourse.categories" valueProp="id" mode="tags" :close-on-select="false" :options="categories" track-by="name" label="name" placeholder="Select category" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.categories ? errors.categoriesText : '' }}
                     </p>
@@ -658,7 +697,12 @@ const disabledView:any = 'bg-gray-300';
                             </div>
                             <input type="file" name="imageFile" @change="onChangeBanner" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
                         </label>
-                        <img class="w-36 p-1 " :class="[isBannerActive && props.name == 'Add' && !isBannerRemoved ? '' : 'hidden']" id="bannerimage" alt="course banner image">
+                        <img class="w-36 p-1 " :class="[isBannerActive && props.name == 'Edit' && isBannerRemoved ? '' : 'hidden']" id="bannerimage" alt="course banner image">
+                        <img class="w-36 p-1 " :class="[isBannerActive && props.name == 'Edit' && !isBannerRemoved ? '' : 'hidden']" :src="newCourse.banner" alt="course banner image">
+                        <div v-if="isBannerActive" class="buttons flex items-center gap-3 justify-around">
+                            <SvgIcons name="eye" />
+                            <SvgIcons name="delete" @click="removeBanner" />
+                        </div>
                     </div>
                     <p class="text-xs font-medium">
                         Allowed Formats: jpg, png, mp4
@@ -680,7 +724,12 @@ const disabledView:any = 'bg-gray-300';
                             </div>                            
                             <input type="file" name="imageFile" @change="onChangeThumbnail" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
                         </label>
-                        <img class="w-36 p-1 " :class="[isThumbnailActive && props.name == 'Add' && !isThumbnailRemoved ? '' : 'hidden']" id="thumbnailimage" alt="course thumbnail image">
+                        <img class="w-36 p-1 " :class="[isThumbnailActive && props.name == 'Edit' && isThumbnailRemoved ? '' : 'hidden']" id="thumbnailimage" alt="course thumbnail image">
+                        <img class="w-36 p-1 " :class="[isThumbnailActive && props.name == 'Edit' && !isThumbnailRemoved ? '' : 'hidden']" :src="newCourse.thumbnail" alt="course thumbnail image">
+                        <div v-if="isThumbnailActive" class="buttons flex items-center gap-3 justify-around">
+                            <SvgIcons name="eye" />
+                            <SvgIcons name="delete" @click="removeThumbnail" />
+                        </div>
                     </div>
                     <p class="text-xs font-medium">
                         Allowed Formats: jpg, png, mp4
@@ -709,6 +758,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="courseDescription" class="font-semibold">
                         Course Description
                     </label>
+                    <!-- {{ newCourse.description }} -->
                     <QuillEditor
                         class="border-x border-b shadow-lg rounded"
                         contentType="html"
@@ -725,7 +775,7 @@ const disabledView:any = 'bg-gray-300';
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
+                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save changes</button>
             </div>
         </form>
     </div>

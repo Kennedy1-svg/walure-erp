@@ -35,9 +35,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    // const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
-    // console.log('url', request)
-    // await store.dispatch(courseActionTypes.FetchCourses, request)
+    const request:any = `${api_url}api/coursecategory/get-categories/${pageIndex.value}/{pageSize}`;
+    console.log('url', request)
+    await store.dispatch(courseActionTypes.FetchCourseCategories, request)
 }
 
 const totalPages:any = computed(() => {

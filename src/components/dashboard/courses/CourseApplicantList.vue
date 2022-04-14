@@ -64,7 +64,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/courseapplicant/get-courseapplicant/{pageNumber}/{pageSize}`;
+    const request:any = `${api_url}api/courseapplicant/get-courseapplicant/${pageIndex.value}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(courseActionTypes.FetchCourseApplicants, request)
 }
@@ -168,7 +168,7 @@ onMounted( async () => {
                                     <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                         <SvgIcons name="ellipsis" />
                                     </button>
-                                    <div class="absolute z-40 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-44">
+                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-44">
                                         <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
                                             <div class="py-3 gap-3">
                                                 <button

@@ -22,22 +22,22 @@ const tabs:any = [
 	"Upload Topics",
 ]
 
-const curriculum:any = computed(():any => {
-	return store.getters.getCurriculum.value.payload
-})
+// const curriculum:any = computed(():any => {
+// 	return store.getters.getCurriculum.value.payload
+// })
 
-onMounted( async() => {
-	const id:any = route.params.id;
-	const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
-	await store.dispatch(actionTypes.FetchCurriculum, request)
-})
+// onMounted( async() => {
+// 	const id:any = route.params.id;
+// 	const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
+// 	await store.dispatch(actionTypes.FetchCurriculum, request)
+// })
 
 </script>
 
 <template>
 <div class="flex justify-center">
 	<!--actual component start-->
-	{{ curriculum }}
+	<!-- {{ curriculum }} -->
 	<div class="w-full relative grid justify-items-center bg-white">
 		<ul class="flex w-full justify-evenly items-center my-4">
 			<template v-for="(tab, index) in tabs" :key="index">

@@ -168,7 +168,8 @@ onMounted( async() => {
                     </template>
                 </Filter> -->
                 <!-- {{ categories }} -->
-            <multiselect v-model="categoryId" @clear="deselect" @select="cancan(categoryId)" valueProp="name" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
+                <!-- {{ categoryId }} -->
+            <multiselect v-model="categoryId" @clear="deselect" @select="cancan(categoryId)" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="search">
                 <Search>

@@ -19,6 +19,7 @@ import * as instructorActionTypes from '../../../store/module/instructors/consta
 import { api_url } from '../../../config/index'
 import Delete from '../../delete.vue'
 import DeleteModal from '../../DeleteModal.vue';
+import EditInstructor from './EditInstructor.vue';
 
 const instructors:any = computed(() => {
     return store.getters.getInstructor.value.payload;
@@ -59,15 +60,15 @@ const setId:any = async (id:any) => {
     await store.dispatch(instructorActionTypes.FetchEditInstructor, request)
 }
 
-const editInstructor:any = async (id:any) => {
-    console.log('instructorid', id)
-    const request:any = `${api_url}api/instructor/${id}`;
-    console.log('request for the', request)
-    // await store.dispatch(actionTypes.FetchEditStudent, request)
-    // console.log('instructor', instructor)
-    // console.log('instructor', instructor.value)
+// const editInstructor:any = async (id:any) => {
+//     console.log('instructorid', id)
+//     const request:any = `${api_url}api/instructor/${id}`;
+//     console.log('request for the', request)
+//     // await store.dispatch(actionTypes.FetchEditStudent, request)
+//     // console.log('instructor', instructor)
+//     // console.log('instructor', instructor.value)
 
-}
+// }
 
 let instructoritemtodelete:any = ref('')
 
@@ -221,14 +222,14 @@ onMounted( async () => {
 
                                             <button
                                             type="button"
-                                            @click="showEdit = !showEdit" @click.prevent="editInstructor(instructor.id)"
+                                            @click="showEdit = !showEdit" @click.prevent="setId(instructor.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="edit" />
                                                 Edit
                                             </button>
-                                            <Modal :show="showEdit" @close="showEdit = false">
-                                                <EditStudent name="Edit" @close="showEdit = !showEdit" />
+                                            <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                <EditInstructor @close="showEdit = !showEdit" />
                                             </Modal>
 
                                             <button

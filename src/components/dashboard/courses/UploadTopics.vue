@@ -24,6 +24,7 @@ const check:any = ():any => {
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
+//   statusId.value = ''
     emits('close')
 }
 
@@ -66,11 +67,11 @@ const disabledView:any = 'bg-gray-300';
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>
-                            <input type="file" name="imageFile" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
+                            <input type="file" name="imageFile" class="opacity-0 absolute" accept=".xlsx, .csv" />
                         </label>
                     </div>
                     <p class="text-xs font-medium">
-                        Allowed Formats: pdf, docx, xlsx, csv, text
+                        Allowed Formats: xlsx, csv
                     </p>
                 </div>
             </div>

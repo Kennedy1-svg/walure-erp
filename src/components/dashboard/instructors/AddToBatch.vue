@@ -123,6 +123,7 @@ const close:any = async () => {
 const emits = defineEmits(['close']);
 
 const closeModal:any = async () => {
+  batchId.value = ''
   emits('close')
 }
 

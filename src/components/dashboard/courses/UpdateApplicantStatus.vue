@@ -10,6 +10,7 @@ import { useStore } from 'vuex'
 import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
 import * as actionTypes from '../../../store/module/courses/constants/action'
+import * as mutationTypes from '../../../store/module/courses/constants/mutation'
 import { api_url } from '../../../config'
 import multiselect from '@vueform/multiselect'
 
@@ -58,6 +59,8 @@ const applicantId:any = ref('')
 const statusId:any = ref('')
 
 const filterClicked = ref(false)
+
+const multi:any = ref(null)
 
 const deselect:any = async () => {
     // const request:any = `${api_url}api/courseapplicant/get-courseapplicant/{pageNumber}/{pageSize}`;
@@ -128,6 +131,9 @@ const close:any = async () => {
 const emits = defineEmits(['close']);
 
 const closeModal:any = async () => {
+  // multi.open()
+  statusId.value = ''
+  // store.commit(mutationTypes.SetNewInstructor, {})
   emits('close')
 }
 
@@ -153,7 +159,7 @@ onMounted(async() => {
                 <label for="applicant" class="font-semibold">
                     Select Status*
                 </label>
-                <multiselect @clear="deselect" v-model="statusId" valueProp="value" :options="statusOptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                <multiselect ref="multi" @clear="deselect" v-model="statusId" valueProp="value" :options="statusOptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="flex justify-end pb-10">
                 <button @click.prevent="updateApplicantStatus" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>

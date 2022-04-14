@@ -54,6 +54,7 @@ const check:any = ():any => {
 const emits = defineEmits(['close']);
 
 const closeModal:any = async () => {
+  statusId.value = ''
   emits('close')
 }
 

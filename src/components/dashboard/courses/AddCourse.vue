@@ -15,6 +15,7 @@ import Modal from '../../Modal.vue';
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
+import * as courseMutationTypes from '../../../store/module/courses/constants/mutation'
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -28,8 +29,8 @@ let isLoading:any = ref(false);
 // const alertState:any = computed(() => store.getters.getCourseAlertStatus.value)
 // const alertText:any = computed(() => store.getters.getCourseAlertText.value)
 
-const alertState:any = ref(false)
-const alertText:any = ref(false)
+// const alertState:any = ref(false)
+// const alertText:any = ref(false)
 const isBannerActive:any = computed(() => {
     let answer:any = false
     if (newCourse.value.banner) {
@@ -149,6 +150,9 @@ const checkError:any = () => {
     if (!newCourse.value.cost) {
         errors.cost = true;
         errors.costText = 'Cost is required'
+    } else if (isNaN(newCourse.value.cost)) {
+        errors.cost = true;
+        errors.costText = 'Cost cannot contain letters'
     } else {
         errors.cost = false;
         errors.costText = ''
@@ -282,29 +286,54 @@ const checkError:any = () => {
     } else if (errors.CourseLine2) {
         errors.CourseLine2 = true;
         isError.value = true;
-    } else if (errors.levels) {
-        errors.levels = true;
+    } else if (errors.banner) {
+        errors.banner = true;
         isError.value = true;
     } else if (errors.CourseLine3) {
         errors.CourseLine3 = true;
         isError.value = true;
-    } else if (errors.CourseLine2) {
+    } else if (errors.CourseLine5) {
+        errors.CourseLine5 = true;
+        isError.value = true;
+    } else if (errors.CourseLine4) {
         errors.CourseLine2 = true;
         isError.value = true;
     } else if (errors.CourseLine1) {
         errors.CourseLine1 = true;
         isError.value = true;
-    } else if (errors.courseCode) {
-        errors.courseCode = true;
+    } else if (errors.categories) {
+        errors.categories = true;
+        isError.value = true;
+    } else if (errors.duration) {
+        errors.duration = true;
+        isError.value = true;
+    } else if (errors.resource) {
+        errors.resource = true;
+        isError.value = true;
+    } else if (errors.subTitle) {
+        errors.subTitle = true;
+        isError.value = true;
+    } else if (errors.levels) {
+        errors.levels = true;
+        isError.value = true;
+    } else if (errors.courseDescription) {
+        errors.courseDescription = true;
+        isError.value = true;
+    } else if (errors.thumbnail) {
+        errors.thumbnail = true;
         isError.value = true;
     } else {
         isError.value = false;
         isDisabled.value = false;
-    }   
+    }
 }
 
-const removeImage:any = async () => {
-    return newCourse.value.imageFile = ''
+const removeBanner:any = async () => {
+    return newCourse.value.banner = ''
+}
+
+const removeThumbnail:any = async () => {
+    return newCourse.value.thumbnail = ''
 }
 
 const courses:any = computed(() => {
@@ -326,6 +355,7 @@ const notes = ref('')
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
+    store.commit(courseMutationTypes.SetNewCourse, {})
     emits('close')
 }
 
@@ -363,15 +393,15 @@ const toggleActive:any = (status:any) => {
 
 const level_options:any = [
     {
-        value: 'Beginner',
+        value: 0,
         label: 'Beginner'
     },
     {
-        value: 'Intermediate',
+        value: 1,
         label: 'Intermediate'
     },
     {
-        value: 'Advanced',
+        value: 2,
         label: 'Advanced'
     }
 ]
@@ -473,6 +503,7 @@ const addCourse:any = async () => {
     await store.dispatch(courseActionTypes.AddNewCourse, newData)
     const result = await store.getters.getCourse
     closeModal()
+    store.commit(courseMutationTypes.SetNewCourse, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
@@ -614,11 +645,12 @@ const disabledView:any = 'bg-gray-300';
             <div class="grid text-left grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
                     <!-- {{ categories }} -->
+                    <!-- {{ newCourse.categories }} -->
                     <label for="categories" class="font-semibold">
                         Categories*
                     </label>
                     <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newCourse.categories" name="categories" id="categories" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                    <multiselect @clear="deselect" v-model="newCourse.categories" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Select category" :searchable="true" class="multiselect-blue" />
+                    <multiselect @clear="deselect" v-model="newCourse.categories" valueProp="id" :options="categories" mode="tags" :close-on-select="false" track-by="name" label="name" placeholder="Select category" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.categories ? errors.categoriesText : '' }}
                     </p>
@@ -649,7 +681,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="banner" class="font-semibold">
                         Banner
                     </label>
-                    <div class="flex items-center justify-start w-full">
+                    <div class="flex items-start justify-start gap-3 w-full">
                         <label :class="[errors.banner ? 'text-red border-red' : '', isBannerActive ? 'hidden' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
@@ -659,6 +691,10 @@ const disabledView:any = 'bg-gray-300';
                             <input type="file" name="imageFile" @change="onChangeBanner" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
                         </label>
                         <img class="w-36 p-1 " :class="[isBannerActive && props.name == 'Add' && !isBannerRemoved ? '' : 'hidden']" id="bannerimage" alt="course banner image">
+                        <div v-if="isBannerActive" class="buttons flex items-center gap-3 justify-around">
+                            <SvgIcons name="eye" />
+                            <SvgIcons name="delete" @click="removeBanner" />
+                        </div>
                     </div>
                     <p class="text-xs font-medium">
                         Allowed Formats: jpg, png, mp4
@@ -671,7 +707,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="course" class="font-semibold">
                         Thumbnail
                     </label>
-                    <div class="flex items-center justify-start w-full">
+                    <div class="flex items-start justify-start gap-3 w-full">
                         <label :class="[errors.thumbnail ? 'text-red border-red' : '', isThumbnailActive ? 'hidden' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
@@ -681,6 +717,10 @@ const disabledView:any = 'bg-gray-300';
                             <input type="file" name="imageFile" @change="onChangeThumbnail" class="opacity-0 absolute" accept=".png, .jpg, .mp4" />
                         </label>
                         <img class="w-36 p-1 " :class="[isThumbnailActive && props.name == 'Add' && !isThumbnailRemoved ? '' : 'hidden']" id="thumbnailimage" alt="course thumbnail image">
+                        <div v-if="isThumbnailActive" class="buttons flex items-center gap-3 justify-around">
+                            <SvgIcons name="eye" />
+                            <SvgIcons name="delete" @click="removeThumbnail" />
+                        </div>
                     </div>
                     <p class="text-xs font-medium">
                         Allowed Formats: jpg, png, mp4

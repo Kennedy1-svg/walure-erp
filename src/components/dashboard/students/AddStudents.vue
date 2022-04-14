@@ -14,7 +14,9 @@ import SvgIcons from '../../SvgIcons.vue';
 import Modal from '../../Modal.vue'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
+import * as studentMutationTypes from '../../../store/module/students/constants/mutation'
 import { useStore } from 'vuex';
+import { SetStudent } from '../../../store/module/students/constants/mutation'
 
 const store = useStore();
 
@@ -181,6 +183,7 @@ const courses:any = computed(() => {
 const emits = defineEmits(['close'])
 
 const closeModal:any = () => {
+    store.commit(studentMutationTypes.SetNewStudent, {})
     emits('close')
 }
 
@@ -232,6 +235,7 @@ const addStudent:any = async () => {
     await store.dispatch(studentActionTypes.AddNewStudent, newData)
     const result = await store.getters.getStudent
     closeModal()
+    store.commit(studentMutationTypes.SetNewStudent, {})
 }
 
 const submit:any = () => {
@@ -318,6 +322,9 @@ const disabledView:any = 'bg-gray-300';
                         Other name
                     </label>
                     <input type="text" @focus="checkError" @keyup="checkError" v-model="newStudent.otherName" name="othername" id="othername" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-white">
+                        <!-- {{ errors.phone ? errors.phoneText : '' }} -->
+                    </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="phone" class="font-semibold">

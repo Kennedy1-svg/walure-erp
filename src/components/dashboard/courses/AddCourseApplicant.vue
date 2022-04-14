@@ -15,6 +15,7 @@ import Switch from '../../switch.vue'
 import Modal from '../../Modal.vue'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
+import * as courseMutationTypes from '../../../store/module/courses/constants/mutation'
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -210,6 +211,7 @@ const courses:any = computed(() => {
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
+    store.commit(courseMutationTypes.SetNewCourseApplicant, {})
     emits('close')
 }
 
@@ -253,6 +255,7 @@ const addCourseApplicant:any = async () => {
     await store.dispatch(courseActionTypes.AddNewCourseApplicant, newData)
     const result = await store.getters.getCourseApplicants
     closeModal()
+    store.commit(courseMutationTypes.SetNewCourseApplicant, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')

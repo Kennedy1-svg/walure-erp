@@ -9,6 +9,7 @@ import { ref, computed, onMounted, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from '../../SvgIcons.vue';
 import * as actionTypes from '../../../store/module/instructors/constants/action'
+import * as mutationTypes from '../../../store/module/instructors/constants/mutation'
 import Filter from '../../Filter.vue';
 import { api_url } from '../../../config'
 import { useStore } from 'vuex';
@@ -79,6 +80,7 @@ const checkError:any = () => {
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
+    store.commit(mutationTypes.SetNewSkill, {})
     emits('close')
 }
 

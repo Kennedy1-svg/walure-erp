@@ -3,6 +3,7 @@ import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
 import { api_url } from '../../../config'
 import { addData, addDataFile, fetchData, editData, removeData } from '../../../helpers/api'
+import router from '../../../router'
 
 export default {
   state: () => ({
@@ -100,13 +101,17 @@ export default {
       console.log('token here', token)
       const students = await fetchData(data, token)
       console.log('data fe', data)
-    //   console.log('Istudents', students.payload)
-    //   console.log('Istudents', students.value)
+      console.log('Istudents', students)
+      // console.log('Istudents', students.response.status)
     //   console.log('Istudents', JSON.parse(JSON.stringify(students)))
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
-      await commit(mutationTypes.SetStudent, students.payload)
-      await commit(mutationTypes.SetTotalCount, students.totalCount)
+      if (students.payload) {
+        await commit(mutationTypes.SetStudent, students.payload)
+        await commit(mutationTypes.SetTotalCount, students.totalCount)
+      } else if (students.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
     },
     async [actionTypes.FetchEditStudent] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
@@ -118,8 +123,12 @@ export default {
     //   console.log('Istudents', JSON.parse(JSON.stringify(students)))
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
-      await commit(mutationTypes.SetEditStudent, student.payload)
-      await commit(mutationTypes.SetNewStudent, student.payload)
+      if (student.payload) {
+        await commit(mutationTypes.SetEditStudent, student.payload)
+        await commit(mutationTypes.SetNewStudent, student.payload)
+      } else if (student.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
     async [actionTypes.FilterStudent] ({ commit }: any, data: any) {
@@ -132,7 +141,11 @@ export default {
     //   console.log('Istudents', JSON.parse(JSON.stringify(students)))
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
-      commit(mutationTypes.SetStudent, student.payload)
+      if (student.payload) {
+        commit(mutationTypes.SetStudent, student.payload)
+      } else if (student.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
     async [actionTypes.SearchStudent] ({ commit }: any, data: any) {
@@ -145,7 +158,11 @@ export default {
     //   console.log('Istudents', JSON.parse(JSON.stringify(students)))
     //   console.log('Istudents', JSON.parse(JSON.stringify(students.value)))
     //   console.log('Istudents', students.value)
-      commit(mutationTypes.SetStudent, student.payload)
+      if (student.payload) {
+        commit(mutationTypes.SetStudent, student.payload)
+      } else if (student.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
     async [actionTypes.AddNewStudent] ({ commit, dispatch }: any, data: any) {
@@ -160,6 +177,8 @@ export default {
       } else if (student.message.includes('400')) {
         await commit(mutationTypes.SetStudentAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetStudentAlertStatus, true)
+      } else if (student.response.status === 401) {
+        router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetStudentAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetStudentAlertStatus, true)
@@ -179,6 +198,8 @@ export default {
         await commit(mutationTypes.SetStudentAlertText, 'Student updated successfully')
         await commit(mutationTypes.SetStudentAlertStatus, true)
         await dispatch(actionTypes.FetchStudents)
+      } else if (student.response.status === 401) {
+        router.push({ name: 'Login' });
       } else if (student.message.includes('400')) {
         await commit(mutationTypes.SetStudentAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetStudentAlertStatus, true)

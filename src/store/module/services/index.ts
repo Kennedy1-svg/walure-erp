@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
+import router from '../../../router'
 import { api_url } from '../../../config/index'
 import { addData, fetchData, editData, removeData } from '../../../helpers/api'
 
@@ -109,7 +110,13 @@ export default {
         //   console.log('Iprojects', JSON.parse(JSON.stringify(projects)))
         //   console.log('Iprojects', JSON.parse(JSON.stringify(projects.value)))
         //   console.log('Iprojects', projects.value)
-          commit(mutationTypes.SetProject, project)
+        if (project.payload) {
+          await commit(mutationTypes.SetProject, project)
+
+        } else if (project.response.status === 401) {
+          router.push({ name: 'Login' });
+        }
+          // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
         },
         async [actionTypes.AddStudentToProject] ({ commit, dispatch }: any, data: any) {
