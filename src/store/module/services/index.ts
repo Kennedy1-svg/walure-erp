@@ -3,7 +3,7 @@ import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
 import router from '../../../router'
 import { api_url } from '../../../config/index'
-import { addData, fetchData, editData, removeData } from '../../../helpers/api'
+import { addData, fetchData, editData, addEmptyData, removeData } from '../../../helpers/api'
 
 export default {
     state: () => ({
@@ -23,6 +23,8 @@ export default {
         alert_text: '',
         editing: false,
         isEditing: false,
+        consultancies: '',
+        editconsultancy: '',
         studentsInProject: '',
         title: ''
     }),
@@ -42,16 +44,26 @@ export default {
             return state.total_count
         })
         },
+        getConsultancy: (state: any) => {
+        return computed(() => {
+            return state.consultancies
+        })
+        },
+        getEditConsultancy: (state: any) => {
+        return computed(() => {
+            return state.editconsultancy
+        })
+        },  
         getProjectAlertStatus: (state: any) => {
           return computed(() => {
             return state.alert_status
           })
-        },   
+        },
         getProjectAlertText: (state: any) => {
           return computed(() => {
             return state.alert_text
           })
-        },    
+        },
         getEditProjectStatus: (state: any) => {
         return computed(() => {
             return state.isEditing
@@ -78,6 +90,12 @@ export default {
       },
       [mutationTypes.SetTotalProjectCount] (state: any, data: any) {
         state.total_count = data
+      },
+      [mutationTypes.SetConsultancy] (state: any, data: any) {
+        state.consultancies = data
+      },
+      [mutationTypes.SetEditConsultancy] (state: any, data: any) {
+        state.editconsultancy = data
       },
       [mutationTypes.SetEditStatus] (state: any, data: any) {
         state.isEditing = data
@@ -112,8 +130,25 @@ export default {
         //   console.log('Iprojects', projects.value)
         if (project.payload) {
           await commit(mutationTypes.SetProject, project)
-
         } else if (project.response.status === 401) {
+          router.push({ name: 'Login' });
+        }
+          // commit(mutationTypes.SetProject, project)
+          // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
+        },
+        async [actionTypes.FetchConsultancy] ({ commit }: any, data: any = `${api_url}api/consultancy/get-consultancy/{page}/{limit}`) {
+          const token:any = localStorage.getItem('token')
+        //   console.log('token here', token)
+          const consultancy = await fetchData(data, token)
+        //   console.log('data', data)
+        //   console.log('Iconsultancys', consultancys.payload)
+        //   console.log('Iconsultancys', consultancys.value)
+        //   console.log('Iconsultancys', JSON.parse(JSON.stringify(consultancys)))
+        //   console.log('Iconsultancys', JSON.parse(JSON.stringify(consultancys.value)))
+        //   console.log('Iconsultancys', consultancys.value)
+        if (consultancy.payload) {
+          await commit(mutationTypes.SetConsultancy, consultancy)
+        } else if (consultancy.response.status === 401) {
           router.push({ name: 'Login' });
         }
           // commit(mutationTypes.SetProject, project)
@@ -123,16 +158,18 @@ export default {
           const token:any = localStorage.getItem('token')
             console.log('token here', token)
             console.log('data is', data)
-          const addStudent = await addData(data.url, data.data)
-          console.log('addStudent', addStudent)
-          if (addStudent.payload) {
+          const addToProject = await addData(data.url, data.data)
+          console.log('addToProject', addToProject)
+          if (addToProject.payload) {
             commit(mutationTypes.SetProjectAlertText, 'Student added to project successfully')
             commit(mutationTypes.SetProjectAlertStatus, true)
             dispatch(actionTypes.FetchProject)
-          } else if (addStudent.message.includes('400')) {
+          } else if (addToProject.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (addToProject.message.includes('400')) {
             commit(mutationTypes.SetProjectAlertText, 'Student already added to project')
             commit(mutationTypes.SetProjectAlertStatus, true)
-          } else if (addStudent.message.includes('404')) {
+          } else if (addToProject.message.includes('404')) {
             commit(mutationTypes.SetProjectAlertText, 'Project not found')
             commit(mutationTypes.SetProjectAlertStatus, true)
           } else {
@@ -172,6 +209,32 @@ export default {
           } else if (newproject.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else if (newproject.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
+        async [actionTypes.EditProject] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here')
+          const project = await editData(data.url, data.data)
+          if (!project.hasErrors) {
+            // commit(mutationTypes.SetNewProjectCategory, project.payload)
+            await commit(mutationTypes.SetProjectAlertText, 'Project updated successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchProject)
+          } else if (project.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (project.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
           } else {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -192,6 +255,33 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Project removed successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchProject)
+          } else if (newproject.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (newproject.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
+        async [actionTypes.RemoveConsultancy] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here')
+          console.log('all data is', data)
+          const newproject = await removeData(data)
+          console.log('newproject', newproject)
+          if (!newproject.hasErrors) {
+            await commit(mutationTypes.SetProjectAlertText, 'Consultancy removed successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchProject)
+          } else if (newproject.response.status === 401) {
+            router.push({ name: 'Login' });
           } else if (newproject.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -235,7 +325,79 @@ export default {
           console.log('all data is', data)
           const project = await fetchData(data, token)
           console.log('project', project)
-          commit(mutationTypes.SetEditProject, project.payload)
-        }
+          if (project.payload) {
+            commit(mutationTypes.SetEditProject, project.payload)
+          } else if (project.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
+        },
+        async [actionTypes.FetchEditConsultancy] ({ commit }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here')
+          console.log('all data is', data)
+          const consultancy = await fetchData(data, token)
+          console.log('consultancy', consultancy)
+          if (consultancy.payload) {
+            commit(mutationTypes.SetEditConsultancy, consultancy.payload)
+          } else if (consultancy.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
+        },
+        async [actionTypes.UpdateProjectStatus] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token in update')
+          console.log('update data is', data)
+          const UpdateProjectStatus = await addEmptyData(data)
+          console.log('UpdateProjectStatus', UpdateProjectStatus)
+          if (UpdateProjectStatus.payload) {
+            await commit(mutationTypes.SetProjectAlertText, 'Project status updated successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchConsultancy)
+          } else if (UpdateProjectStatus.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (UpdateProjectStatus.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Bad request received')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else if (UpdateProjectStatus.message.includes('404')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Applicant not found')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Something went wrong')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
+        async [actionTypes.UpdateConsultancyStatus] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token in update')
+          console.log('update data is', data)
+          const UpdateConsultancyStatus = await addEmptyData(data)
+          console.log('UpdateConsultancyStatus', UpdateConsultancyStatus)
+          if (UpdateConsultancyStatus.payload) {
+            await commit(mutationTypes.SetProjectAlertText, 'Consultancy status updated successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchConsultancy)
+          } else if (UpdateConsultancyStatus.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (UpdateConsultancyStatus.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Bad request received')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else if (UpdateConsultancyStatus.message.includes('404')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Applicant not found')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Something went wrong')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
     },
 }

@@ -79,7 +79,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
 									<li class="hover:text-primary"><router-link active-class="active" to="/dashboard/student-management/students">Student</router-link></li>
-									<li class="hover:text-primary pb-3"><router-link active-class="active" to="/dashboard/student-management/batch">Batch</router-link></li>
+									<li class="hover:text-primary pb-3"><router-link active-class="active" to="/dashboard/student-management/cohort">Cohort</router-link></li>
 								</ul>
 							</div>
 						</div>
@@ -139,10 +139,10 @@ import SvgIcons from './SvgIcons.vue'
 										<router-link active-class="active" to="/dashboard/service-management/projects">Project</router-link>
 									</li>
 									<li class="hover:text-primary">
-										<router-link active-class="active" to="/dashboard/talent-management/instructors">Outsourcing</router-link>
+										<router-link active-class="active" to="/dashboard/service-management/outsourcing">Outsourcing</router-link>
 									</li>
 									<li class="hover:text-primary pb-3">
-										<router-link active-class="active" to="/dashboard/batch">Consultancy</router-link>
+										<router-link active-class="active" to="/dashboard/service-management/consultancy">Consultancy</router-link>
 									</li>
 								</ul>
 							</div>

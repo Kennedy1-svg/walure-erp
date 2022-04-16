@@ -45,7 +45,7 @@ const statusoptions:any = [
 
 const deselect:any = async () => {
     // const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-    store.dispatch(actionTypes.FetchTalents)
+    await store.dispatch(actionTypes.FetchTalents)
     // store.getters.getStudents
 }
 

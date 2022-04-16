@@ -107,7 +107,7 @@ const checkError:any = () => {
 
     if (!newStudent.value.email) {
         errors.email = true;
-        errors.emailText = 'email is required'
+        errors.emailText = 'Email is required'
     } else if (!newStudent.value.email.match(email)) {
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {

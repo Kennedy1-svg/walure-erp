@@ -77,7 +77,7 @@ const talent:any = computed(() => {
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Skills</p>
-                <p>{{ talent.skills.map((e) => e).join(', ') }}</p>
+                <!-- <p>{{ talent.skills.map((e) => e).join(', ') }}</p> -->
             </div>
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Proficiency</p>

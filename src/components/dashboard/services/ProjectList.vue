@@ -8,6 +8,8 @@ export default {
 import moment from 'moment'
 import SvgIcons from '../../SvgIcons.vue';
 import AddProject from './AddProject.vue';
+import ProjectDetails from './ProjectDetails.vue';
+import UpdateProjectStatus from './UpdateProjectStatus.vue';
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
 import { computed, ref, onMounted, reactive } from 'vue';
@@ -31,18 +33,11 @@ const totalCount:any = computed(() => {
     return store.getters.getProject.value.totalCount
 })
 
-const setId:any = (id:any) => {
-    console.log('projectid', id)
-    // route.push(`/dashboard/project/view-student/${id}`)
-    route.push({
-        name: 'StudentInProject',
-        params: {
-            id: id
-        }
-    })
-    // const request:any = `${api_url}api/project/${id}`;
-    // console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchProject, request)
+const setId:any = async (id:any) => {
+    console.log('instructorid', id)
+    const request:any = `${api_url}api/project/${id}`;
+    console.log('request forid', request)
+    await store.dispatch(actionTypes.FetchEditProject, request)
 }
 
 // const today:any = '2023-11-15T13:45:30'
@@ -52,6 +47,29 @@ const showEdit = ref(false);
 const showDelete = ref(false);
 
 const showStudents = ref(false);
+
+const projectitemtodelete:any = ref('');
+
+const sendId:any = (id:any) => {
+    console.log('projectid', id)
+    projectitemtodelete.value = id
+    console.log('projectitemtodelete', projectitemtodelete.value)
+    return projectitemtodelete
+}
+
+const deleteProject:any = async (id:any) => {
+    console.log('batch id', id);
+
+    const request:any = `${api_url}api/project/delete/${id}`;
+
+    console.log('requestData', request)
+    await store.dispatch(actionTypes.RemoveProject, request)
+    // const fetchrequest:any = `${api_url}api/project/get-projects/{pageIndex}/{pageSize}`;
+    // console.log('url', fetchrequest)
+    // del.value = false
+    await store.dispatch(actionTypes.FetchProject)
+    closeModal()
+}
 
 const totalPages:any = computed(() => {
     // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
@@ -64,6 +82,11 @@ const totalPages:any = computed(() => {
     }
     return total
 })
+
+const showUpdateStatus = ref(false);
+
+const showDetails = ref(false);
+
 
 let pageIndex: any = ref(1);
 
@@ -86,25 +109,25 @@ const editProject:any = async (id:any) => {
 
 }
 
-const deleteProject:any = async (id:any) => {
-    console.log('project id', id);
+// const deleteProject:any = async (id:any) => {
+//     console.log('project id', id);
 
-    const request:any = `${api_url}api/project/delete/${id}`;
+//     const request:any = `${api_url}api/project/delete/${id}`;
 
-    console.log('requestData', request)
-    store.dispatch(actionTypes.RemoveProject, request)
-    // closeModal()
-    const fetchrequest:any = `${api_url}api/project/get-projects`;
-    console.log('url', fetchrequest)
-    await store.dispatch(actionTypes.FetchProject, fetchrequest)
-}
+//     console.log('requestData', request)
+//     store.dispatch(actionTypes.RemoveProject, request)
+//     // closeModal()
+//     const fetchrequest:any = `${api_url}api/project/get-projects`;
+//     console.log('url', fetchrequest)
+//     await store.dispatch(actionTypes.FetchProject, fetchrequest)
+// }
 
 const onPageChange:any = async (page:any) => {
     console.log('page suppose don change')
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    // const request:any = `${api_url}api/project/get-projectes/${pageIndex.value}/10`;
+    const request:any = `${api_url}api/project/get-projects/${pageIndex.value}/{pageSize}`;
     // console.log('url', request)
     await store.dispatch(actionTypes.FetchProject)
 }
@@ -168,7 +191,8 @@ onMounted(async() => {
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             {{ projectitem.status == '0' ? 'Pending' : projectitem.status == 1 ? 'Ongoing' : 'Ended' }}
                         </td>
-                        <td class="border-t-0 pl-3 pr-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          
                             <div class="relative inline-block dropdown">
                                 <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                     <SvgIcons name="ellipsis" />
@@ -178,35 +202,50 @@ onMounted(async() => {
                                         <div class="py-3 gap-3">
                                             <button
                                             type="button"
-                                            @click="showEdit = !showEdit" @click.prevent="editProject(projectitem.id)"
+                                            @click="showDetails = !showDetails" @click.prevent="setId(projectitem.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="details" />
+                                                Details
+                                            </button>
+                                            <Modal :show="showDetails" @close="showDetails = false">
+                                                <ProjectDetails @close="showDetails = !showDetails" />
+                                            </Modal>
+
+                                            <button
+                                            type="button"
+                                            @click="showUpdateStatus = !showUpdateStatus"
+                                            @click.prevent="setId(projectitem.id)"    
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="update" />
+                                                Update Status
+                                            </button>
+                                            <Modal :show="showUpdateStatus" @close="showUpdateStatus = !showUpdateStatus">
+                                                <UpdateProjectStatus @close="showUpdateStatus = !showUpdateStatus" />
+                                            </Modal>
+
+                                            <button
+                                            type="button"
+                                            @click="showEdit = !showEdit" @click.prevent="setId(projectitem.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="edit" />
                                                 Edit
                                             </button>
-                                            <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddProject name="Edit"  @close="showEdit = !showEdit"  />
+                                            <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                <AddProject name="Edit" @close="showEdit = !showEdit" />
                                             </Modal>
 
                                             <button
                                             type="button"
-                                            @click="showStudents = !showStudents" @click.prevent="setId(projectitem.id)"
-                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            >                                        
-                                                <SvgIcons name="eye" />
-                                                View Student
-                                            </button>
-
-                                            <button
-                                            type="button"
-                                            @click="showDelete = !showDelete"
+                                            @click="showDelete = !showDelete" @click.prevent="sendId(projectitem.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="delete" />
                                                 Delete
                                             </button>
-                                            <DeleteModal :show="showDelete" @close="showDelete = false">
-                                                <Delete @close="showDelete = !showDelete" @delete="deleteProject(projectitem.id)">
+                                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteProject(projectitemtodelete)">
                                                     <template #title>
                                                         Delete project
                                                     </template>
@@ -216,79 +255,16 @@ onMounted(async() => {
                                                     <template #delete>
                                                         Yes, Delete Project
                                                     </template>
-                                                </Delete>
                                             </DeleteModal>
-                                            <!-- <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left">
-                                                        <SvgIcons name="edit-file" />
-                                                        Update Status
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <AddToProject />
-                                                </template>
-                                            </Modal>
-                                            <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="details" />
-                                                        Details
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <StudentDetails />
-                                                </template>
-                                            </Modal>
-                                            <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="edit" />
-                                                        Edit
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <AddStudent />
-                                                </template>
-                                            </Modal>
-                                            <Modal class="flex py-2 hover:bg-gray-100">
-                                                <template #button>
-                                                    <span tabindex="0" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 text-sm text-left"  role="menuitem" >
-                                                        <SvgIcons name="delete" />
-                                                        Delete
-                                                    </span>
-                                                </template>
-                                                <template #content>
-                                                    <div class="bg-white p-7 rounded grid">
-                                                        <div class="flex justify-between mb-6">
-                                                            <h1 class="text-xl mb-4 font-medium">
-                                                                Delete Student
-                                                            </h1>
-                                                            <span>
-                                                                <SvgIcons name="o-cancel" />
-                                                            </span>
-                                                        </div>
-                                                        <p class="text-lg mb-10">Are you sure you want to delete student?</p>
-                                                        <div class="flex justify-between items-center mb-3">
-                                                            <button class="px-10 py-4 rounded text-primary font-bold">
-                                                                Cancel
-                                                            </button>
-                                                            <button class="bg-red px-10 py-4 rounded text-white font-bold">
-                                                                Yes, Delete Student
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </template>
-                                            </Modal> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </td>
+                      </td>
                     </tr>
                     </tbody>
                 </table>
-                <!-- <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">
+                <div class="flex items-center pt-6 px-6 mb-40 text-xs text-gray-700 justify-between">
                     <div class="">
                         Page {{ pageIndex }} of {{ totalPages }}
                     </div>
@@ -298,7 +274,7 @@ onMounted(async() => {
                             @pageChanged="onPageChange"
                         />
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

@@ -172,7 +172,7 @@ let errors = reactive({
     courseText: '',
 })
 
-
+const today:any = moment().format('YYYY-MM-DD');
 
 const Instructors:any = computed(() => {
   return store.getters.getInstructor.value.payload;
@@ -331,7 +331,7 @@ onMounted(async () => {
 <template>
     <div class="main w-full pb-12 mt-[0.5px] px-[45px] bg-white">
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl">{{ props.name }} batch</p>
+            <p class="text-2xl">{{ props.name }} Cohort</p>
             <!-- {{ newBatch }} -->
             <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
@@ -405,7 +405,7 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" menuClassName="dp-custom-menu" :monthChangeOnScroll="false" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
+                    <Datepicker v-else inputClassName="dp-custom-input" menuClassName="dp-custom-menu" :monthChangeOnScroll="false" :minDate="today" v-model="newBatch.startDate" :maxDate="newBatch.endDate" placeholder="Start Date" :format="format" position="left" teleport="#startdate"/>
                     <!-- <datepicker /> -->
                     <p class="text-[10px] text-red">
                         {{ errors.startDate ? errors.startDateText : '' }}

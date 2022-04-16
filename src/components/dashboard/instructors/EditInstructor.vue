@@ -172,7 +172,7 @@ const checkError:any = () => {
     if (!newInstructor.value.githubUrl) {
         errors.github = true;
         errors.githubText = 'Github url is required'
-    } else if (newInstructor.value.GithubUrl.length <= 3) {
+    } else if (newInstructor.value.githubUrl.length <= 3) {
         errors.githubText = 'Github url needs to be more than 3 characters'
     } else {
         errors.github = false;
@@ -232,7 +232,7 @@ const checkError:any = () => {
     if (!newInstructor.value.resume) {
         errors.resume = true;
         errors.resumeText = 'Resume is required. Please upload your resume'
-    } else if (newInstructor.value.resumeUrl.size > 5242880) {
+    } else if (newInstructor.value.resume.size > 5242880) {
         errors.resume = true;
         errors.resumeText = 'Resume size should not be more than 5MB'
     } else {
@@ -423,7 +423,7 @@ const editInstructor:any = async () => {
     formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
     formData.append('facebookUrl', newInstructor.value.facebookUrl)
     formData.append('picture', newInstructor.value.picture, newInstructor.value.picture.name)
-    formData.append('Resume', newInstructor.value.Resume, newInstructor.value.Resume.name)
+    formData.append('resume', newInstructor.value.resume, newInstructor.value.resume.name)
     formData.append('address', newInstructor.value.address)
     formData.append('phoneNumber', newInstructor.value.phoneNumber)
     formData.append('gender', newInstructor.value.gender)
@@ -493,7 +493,7 @@ const disabledView:any = 'bg-gray-300';
         <WebViewer :class="[showResume ? '' : 'hidden']" class="absolute z-20 w-full" :initialDoc="newInstructor.Resume" />        
 
         <form id="formElem" ref="formEl" class="text-sm grid">
-            {{ newInstructor }}
+            <!-- {{ newInstructor }} -->
             <div class="grid justify-items-center gap-1 mb-[88px]">
                     <p class="text-[10px] text-red">
                         {{ errors.image ? errors.imageText : '' }}
@@ -661,7 +661,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="resume" class="font-semibold">
                         Resume
                     </label>
-                    {{ newInstructor.resume }}
+                    <!-- {{ newInstructor.resume }} -->
                     <div class="flex items-center justify-between w-full">
                         <label for="resume_upload" :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">

@@ -78,11 +78,31 @@ const addTopic:any = async () => {
 
 const grand_error = ref(true)
 
+const deleteTopic:any = async (id:any) => {
+    console.log('id', id)
+    await store.dispatch(actionTypes.DeleteCurriculum, id)
+    await store.getters.getCurriculum.value.payload
+    // store.commit(mutationTypes.SetNewCurriculum, {})
+}
+
+const updateTopic:any = async (id:any) => {
+    console.log('id', id)
+    // await store.dispatch(actionTypes.DeleteCurriculum, id)
+    await store.getters.getCurriculum.value.payload
+    // store.commit(mutationTypes.SetNewCurriculum, {})
+}
+
 const removeTopic:any = async (id:any) => {
     console.log('i will delete id ', id)
     await store.dispatch(actionTypes.removeCurriculum, id)
 }
 
+const editTopic:any = async (id:any) => {
+    console.log('id', id)
+    // await store.dispatch(actionTypes.DeleteCurriculum, id)
+    await store.getters.getCurriculum.value.payload
+    // store.commit(mutationTypes.SetNewCurriculum, {})
+}
 // const isDisabled:any = ref(true)
 
 const checkError:any = () => {
@@ -201,7 +221,7 @@ onMounted( async() => {
             {{ curriculum }}
             <h1 class="text-2xl text-left font-semibold pb-3">Experience</h1>
             <div class="experiences" v-for="item in curriculum" :key="item.id" >
-                <ExperienceCard class="my-6">
+                <ExperienceCard @edit="updateTopic(item.id)" @delete="deleteTopic(item.id)" class="my-6">
                     <template #title>
                         {{ item.title }}
                     </template>
@@ -213,9 +233,9 @@ onMounted( async() => {
                     </template>
                 </ExperienceCard>
             </div>
-                {{ newCurriculumBatch }} h
+                {{ newCurriculumBatch }}
             <div class="experiences" v-for="item in newCurriculumBatch" :key="item.id" >
-                <ExperienceCard name="temp" class="my-6" @delete="removeTopic(item.id)">
+                <ExperienceCard name="temp" class="my-6" @edit="editTopic(item.id)" @delete="removeTopic(item.id)">
                     <template #title>
                         {{ item.title }}
                     </template>

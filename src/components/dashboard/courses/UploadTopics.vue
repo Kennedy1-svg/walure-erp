@@ -6,12 +6,16 @@ export default {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import SvgIcons from '../../SvgIcons.vue';
 import Filter from '../../Filter.vue';
+import { api_url } from '../../../config/index'
 import TopicsList from './TopicsList.vue';
+import { useStore } from 'vuex'
+import * as actionTypes from '../../../store/module/courses/constants/action'
 
-const route = useRouter()
+const route = useRoute()
+const store = useStore()
 
 let isChecked:any = ref(false);
 const startDate:any = ref('');
@@ -19,6 +23,38 @@ const endDate:any = ref('');
 
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
+}
+
+let formData = new FormData()
+
+const file:any = ref(null)
+
+const uploadCurriculum:any = async (event:any) => {
+    console.log('event', event.target.files[0].name)
+    file.value.imageFile = await event.target.files[0]
+    formData.append('file', event.target.files[0], event.target.files[0].name)
+
+    const courseId:any = route.params.id
+    console.log('course id', courseId)
+    formData.append('courseId', courseId)
+
+    const request:any = `${api_url}api/curriculum/upload-curriculum`
+
+    const newData:any = {
+        url: request,
+        data: formData
+    }
+
+    await store.dispatch(actionTypes.UploadCurriculum, newData)
+}
+
+const onChange:any = async (event:any) => {
+        // console.log('event', event.target.files[0].name)
+        // file.value.imageFile = await event.target.files[0]
+        // formData.append('file', event.target.files[0])
+        // images.src = URL.createObjectURL(event.target.files[0])
+        // image.src = URL.createObjectURL(event.target.files[0])
+        // console.log('file image', newStudent.value.imageFile.type)
 }
 
 const emits = defineEmits(['close'])
@@ -53,10 +89,10 @@ const disabledView:any = 'bg-gray-300';
     <div class="main w-full mt-[0.5px] rounded-md bg-white">
         <form id="uploadtopics" class="text-sm text-left grid">
             <div class="flex justify-end gap-8 mb-10">
-                <button type="button" class="border border-primary px-5 py-4 text-primary rounded flex justify-center items-center">
+                <a href="../../../../public/curriculumsample.xlsx" class="border border-primary px-5 py-4 text-primary cursor-pointer rounded flex justify-center items-center" download="curriculumsample.xlsx">
                     <SvgIcons name="download" />
                     <p class="pl-3 text-lg">Download Template</p>
-                </button>
+                </a>
             </div>
             <div class="grid gap-8 mb-10">
                 <div class="grid gap-4">
@@ -67,7 +103,7 @@ const disabledView:any = 'bg-gray-300';
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>
-                            <input type="file" name="imageFile" class="opacity-0 absolute" accept=".xlsx, .csv" />
+                            <input type="file" name="imageFile" @change="uploadCurriculum" class="opacity-0 absolute" accept=".xlsx, .csv" />
                         </label>
                     </div>
                     <p class="text-xs font-medium">

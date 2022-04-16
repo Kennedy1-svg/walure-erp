@@ -3,7 +3,7 @@ import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
 import { api_url } from '../../../config'
 import router from '../../../router'
-import { addData, fetchData, editData, removeData, addEmptyData } from '../../../helpers/api'
+import { addData, fetchData, editData, removeData, addEmptyData, addDataFile } from '../../../helpers/api';
 
 export default {
   state: () => ({
@@ -286,6 +286,34 @@ export default {
         await commit(mutationTypes.SetCourseAlertStatus, true)
       } else {
         await commit(mutationTypes.SetCourseAlertText, 'Houston, we have a problem!')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetCourseAlertStatus, false)
+        commit(mutationTypes.SetCourseAlertText, '')
+      }, 2000)
+    },
+    async [actionTypes.UploadCurriculum] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token in update')
+      console.log('update data is', data)
+      const UploadCurriculum = await addDataFile(data.url, data.data)
+      console.log('UploadCurriculum', UploadCurriculum)
+      if (UploadCurriculum.payload) {
+        await commit(mutationTypes.SetCourseAlertText, 'Curriculum uploaded successfully')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+        // await dispatch(actionTypes.FetchCourseApplicants)
+      } else if (UploadCurriculum.response.status === 401) {
+        router.push({ name: 'Login' });
+      } else if (UploadCurriculum.message.includes('400')) {
+        await commit(mutationTypes.SetCourseAlertText, 'Bad request received')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+      } else if (UploadCurriculum.message.includes('404')) {
+        await commit(mutationTypes.SetCourseAlertText, 'Applicant not found')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+      } else {
+        await commit(mutationTypes.SetCourseAlertText, 'Something went wrong')
         await commit(mutationTypes.SetCourseAlertStatus, true)
       }
 

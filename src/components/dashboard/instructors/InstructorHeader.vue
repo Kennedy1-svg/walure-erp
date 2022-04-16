@@ -16,6 +16,7 @@ import Modal from '../../Modal.vue';
 import { api_url } from '../../../config/index'
 import multiselect from '@vueform/multiselect'
 import * as actionTypes from '../../../store/module/instructors/constants/action';
+import * as mutationTypes from '../../../store/module/instructors/constants/mutation';
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
 
 const store = useStore();
@@ -23,6 +24,7 @@ const store = useStore();
 const closeModal:any = () => {
   // document.getElementById('addinstructor').showModal()
   console.log('close student modal')
+    store.commit(mutationTypes.SetNewInstructor, {})
   let doc:any = document.getElementById('addinstructor')
   doc.close()
 }

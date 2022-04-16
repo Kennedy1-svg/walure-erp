@@ -135,7 +135,7 @@ onMounted(async() => {
 <template>
     <div class="main grid">
         <div class="title flex justify-between pr-32 xl:pr-0 items-center mb-10">
-            <h1 class="text-2xl font-semibold text-black">Batch List</h1>
+            <h1 class="text-2xl font-semibold text-black">Cohort List</h1>
             <p class="text-xl font-medium text-primary">Total : {{ totalCount }}</p>
         </div>
         <div class="table">
@@ -147,12 +147,12 @@ onMounted(async() => {
                         S/N
                         </th>
                         <th class="align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                        Batch name
+                        Cohort name
                         </th>
                         <th class="px-4 align-middle py-2 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Course Title
                         </th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Batch no</th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Cohort no</th>
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Start <br /> /End date(s)</th>
                         <th class="px-4 align-middle py-2 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Status</th>
                         <th class="px-4 align-middle py-2 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Instructors</th>
@@ -232,13 +232,13 @@ onMounted(async() => {
                                             </button>
                                             <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteBatch(batchitemtodelete)">
                                                     <template #title>
-                                                        Delete batch
+                                                        Delete cohort
                                                     </template>
                                                     <template #info>
-                                                        Are you sure you want to remove batch?
+                                                        Are you sure you want to remove cohort?
                                                     </template>
                                                     <template #delete>
-                                                        Yes, Delete Batch
+                                                        Yes, Delete Cohort
                                                     </template>
                                             </DeleteModal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">

@@ -33,10 +33,9 @@ const closeModal:any = async () => {
   }, 500);
 }
 
-
 const deleteCourse:any = async (course:any) => {
     console.log('course identity', courseitemtodelete.value)
-    const request:any = `${api_url}api/course/delete/${course}`;
+    const request:any = `${api_url}api/curriculum/delete/${course}`;
     console.log('request forid', request)
     await store.dispatch(actionTypes.RemoveCourse, request)
     closeModal()
@@ -61,6 +60,7 @@ onMounted( async() => {
 	const request:any = `${api_url}api/course/${id}`
 	await store.dispatch(actionTypes.FetchEditCourse, request)
 })
+
 </script>
 
 <template>
@@ -77,6 +77,7 @@ onMounted( async() => {
             <p class="text-2xl font-semibold py-1">{{ courseDetail.title }}</p>
             <p class="font-medium text-grey">{{ courseDetail.levelType == '0' ? 'Beginner' : courseDetail.levelType == '1' ? 'Intermediate' : 'Advanced' }} {{ courseDetail.duration }}</p>
         </div>
+        {{ courseDetail.id }}
         <div class="btns py-9 flex gap-4 text-white">
             <button type="button" @click="showDelete = !showDelete" @click.prevent="deleteCurriculum(courseDetail.id)" class="bg-red rounded px-10 py-4">
                 Delete

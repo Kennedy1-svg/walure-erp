@@ -24,8 +24,8 @@ onMounted(() => {
     // const path = `${process.env.BASE_URL}webviewer`;
     WebViewer({path, initialDoc: props.initialDoc}, viewer.value)
     .then(instance => {
-        // const { Feature } = instance.UI
-        // instance.UI.enableFeatures([Feature.FilePicker])
+        const { Feature } = instance.UI
+        instance.UI.enableFeatures([Feature.FilePicker])
         input.addEventListener('change', () => {
             const file = input.files[0];
             instance.UI.loadDocument(file, { filename: file.name})
@@ -34,7 +34,9 @@ onMounted(() => {
         const { documentViewer } = instance.Core;
         documentViewer.addEventListener('documentLoaded', () => {
             // instance.UI.print();
-            instance.UI.annotationPopup.getItems();
+            setTimeout(() => {
+                instance.UI.annotationPopup.getItems();
+            }, 1000);
         })
     })
 })

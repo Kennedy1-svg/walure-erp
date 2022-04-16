@@ -124,16 +124,16 @@ export default {
           const addStudent = await addData(data.url, data.data)
           console.log('addStudent', addStudent)
           if (addStudent.payload) {
-            commit(mutationTypes.SetBatchAlertText, 'Student added to batch successfully')
+            commit(mutationTypes.SetBatchAlertText, 'Student added to cohort successfully')
             commit(mutationTypes.SetBatchAlertStatus, true)
             dispatch(actionTypes.FetchBatch)
           } else if (addStudent.message.includes('400')) {
-            commit(mutationTypes.SetBatchAlertText, 'Student already added to batch')
+            commit(mutationTypes.SetBatchAlertText, 'Student already added to cohort')
             commit(mutationTypes.SetBatchAlertStatus, true)
           } else if (addStudent.response.status === 401) {
             router.push({ name: 'Login' });
           } else if (addStudent.message.includes('404')) {
-            commit(mutationTypes.SetBatchAlertText, 'Batch not found')
+            commit(mutationTypes.SetBatchAlertText, 'Cohort not found')
             commit(mutationTypes.SetBatchAlertStatus, true)
           } else {
             commit(mutationTypes.SetBatchAlertText, 'Something went wrong')
@@ -154,16 +154,16 @@ export default {
           const addInstructor = await addData(data.url, data.data)
           console.log('addInstructor', addInstructor)
           if (addInstructor.payload) {
-            commit(mutationTypes.SetBatchAlertText, 'Instructor added to batch successfully')
+            commit(mutationTypes.SetBatchAlertText, 'Instructor added to cohort successfully')
             commit(mutationTypes.SetBatchAlertStatus, true)
             dispatch(actionTypes.FetchBatch)
           } else if (addInstructor.message.includes('400')) {
-            commit(mutationTypes.SetBatchAlertText, 'Instructor already added to batch')
+            commit(mutationTypes.SetBatchAlertText, 'Instructor already added to cohort')
             commit(mutationTypes.SetBatchAlertStatus, true)
           } else if (addInstructor.response.status === 401) {
             router.push({ name: 'Login' });
           } else if (addInstructor.message.includes('404')) {
-            commit(mutationTypes.SetBatchAlertText, 'Batch not found')
+            commit(mutationTypes.SetBatchAlertText, 'Cohort not found')
             commit(mutationTypes.SetBatchAlertStatus, true)
           } else {
             commit(mutationTypes.SetBatchAlertText, 'Something went wrong')
@@ -200,7 +200,7 @@ export default {
           console.log('all data is', data.url, data.data)
           const newbatch = await addData(data.url, data.data)
           if (newbatch.payload) {
-            await commit(mutationTypes.SetBatchAlertText, 'Batch added successfully')
+            await commit(mutationTypes.SetBatchAlertText, 'Cohort added successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
             await dispatch(actionTypes.FetchBatch)
           } else if (newbatch.response.status === 401) {
@@ -225,7 +225,7 @@ export default {
           const newbatch = await removeData(data)
           console.log('newbatch', newbatch)
           if (!newbatch.hasErrors) {
-            await commit(mutationTypes.SetBatchAlertText, 'Batch removed successfully')
+            await commit(mutationTypes.SetBatchAlertText, 'Cohort removed successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
             await dispatch(actionTypes.FetchBatch)
           } else if (newbatch.response.status === 401) {
@@ -288,7 +288,7 @@ export default {
           console.log('all data is', data.url, data.data)
           const newbatch = await editData(data.url, data.data)
           if (newbatch.payload) {
-            await commit(mutationTypes.SetBatchAlertText, 'Batch updated successfully')
+            await commit(mutationTypes.SetBatchAlertText, 'Cohort updated successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
             await dispatch(actionTypes.FetchBatch)
           } else if (newbatch.response.status === 401) {

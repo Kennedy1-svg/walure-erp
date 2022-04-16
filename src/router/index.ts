@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
-        path: 'student-management/batch',
+        path: 'student-management/cohort',
         name: 'Batch',
         component: () => import('../views/dashboard/students/Batch.vue'),
         meta: { requiresAuth: true },
@@ -104,6 +104,18 @@ const routes: Array<RouteRecordRaw> = [
         path: 'service-management/projects',
         name: 'Project',
         component: () => import('../views/dashboard/services/Index.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'service-management/outsourcing',
+        name: 'Outsourcing',
+        component: () => import('../views/dashboard/services/Outsourcing.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'service-management/consultancy',
+        name: 'Consultancy',
+        component: () => import('../views/dashboard/services/Consultancy.vue'),
         meta: { requiresAuth: true },
       },
       {

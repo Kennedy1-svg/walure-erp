@@ -150,14 +150,14 @@ onMounted(async() => {
 <template>
     <div class="main relative w-full px-6 lg:px-[45px] h-screen bg-white">
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl">Add to a batch</p>
+            <p class="text-2xl">Add to a cohort</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form class="text-sm text-left grid">
             <div class="grid gap-1 mb-10">
                 <!-- {{ batch }} -->
                 <label for="batch" class="font-semibold">
-                    Select from batch available*
+                    Select from cohort available*
                 </label>
                 <!-- <Filter>
                     <template #info>

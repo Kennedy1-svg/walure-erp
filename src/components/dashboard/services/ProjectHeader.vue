@@ -72,7 +72,7 @@ const statusoptions:any = [
     value: 1
   },
   {
-    label: 'Completed',
+    label: 'Ended',
     value: 2
   }
 ]
@@ -83,27 +83,31 @@ const statusField:any = ref('')
 
 const filter:any = async () => {
   const search:any = searchText.value.toLowerCase();
-  const project:any = document.getElementById('projectlist');
-  const rows:any = project.getElementsByTagName('tr');
+  console.log('search', search)
+  const request:any = `${api_url}api/project/search-projects/{pageIndex}/{pageSize}/${search}`;
+  await store.dispatch(projectActionTypes.FetchProject, request)
+  // const project:any = document.getElementById('projectlist');
+  // const rows:any = project.getElementsByTagName('tr');
 
-  for (let i:any = 0; i < rows.length; i++) {
-    const firstCol:any = rows[i].getElementsByTagName('td')[1];
-    const secondCol:any = rows[i].getElementsByTagName('td')[2];
-    const thirdCol:any = rows[i].getElementsByTagName('td')[3];
-    const fourthCol:any = rows[i].getElementsByTagName('td')[6];
-    const fifthCol:any = rows[i].getElementsByTagName('td')[7];
+  // for (let i:any = 0; i < rows.length; i++) {
+  //   const firstCol:any = rows[i].getElementsByTagName('td')[1];
+  //   const secondCol:any = rows[i].getElementsByTagName('td')[2];
+  //   const thirdCol:any = rows[i].getElementsByTagName('td')[3];
+  //   const fourthCol:any = rows[i].getElementsByTagName('td')[6];
+  //   const fifthCol:any = rows[i].getElementsByTagName('td')[7];
 
-    if (
-      firstCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      secondCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      thirdCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      fourthCol.innerText.toLowerCase().indexOf(search) > -1 || fifthCol.innerText.toLowerCase().indexOf(search) > -1
-    ) {
-      rows[i].style.display = '';
-    } else {
-      rows[i].style.display = 'none';
-    }
-  }
+  //   if (
+  //     firstCol.innerText.toLowerCase().indexOf(search) > -1 ||
+  //     secondCol.innerText.toLowerCase().indexOf(search) > -1 ||
+  //     thirdCol.innerText.toLowerCase().indexOf(search) > -1 ||
+  //     fourthCol.innerText.toLowerCase().indexOf(search) > -1 || fifthCol.innerText.toLowerCase().indexOf(search) > -1
+  //   ) {
+  //     rows[i].style.display = '';
+  //   } else {
+  //     rows[i].style.display = 'none';
+  //   }
+  // }
+
 }
 
 const filterCourse:any = async () => {
@@ -130,18 +134,15 @@ const filterAllProject:any = async () => {
   console.log('let us filter')
   console.log('course id', courseField.value)
   filterClicked.value = true;
-  if (courseField.value) {
-    const request:any = `${api_url}api/project/filter-projectCourse/{pageNumber}/{pageSize}/${courseField.value}`;
-    store.dispatch(projectActionTypes.FetchProject, request)
-  } else if (statusField.value || statusField.value == '0') {
-    const request:any = `${api_url}api/project/filter-project/{pageNumber}/{pageSize}/${statusField.value}`;
+  if (statusField.value || statusField.value == '0') {
+    const request:any = `${api_url}api/project/filter-projects/{pageNumber}/{pageSize}/${statusField.value}`;
     store.dispatch(projectActionTypes.FetchProject, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
     let start:any = moment(startDate.value).format('MM/DD/YYYY');
     let end:any = moment(endDate.value).format('MM/DD/YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${api_url}api/project/get-projectesRange/{pageNumber}/{pageSize}?startDate=${start}&endDate=${end}`;
+    const request:any = `${api_url}api/project/filter-projectbydate/{pageNumber}/{pageSize}?startDate=${start}&endDate=${end}`;
     console.log('request', request)
     store.dispatch(projectActionTypes.FetchProject, request)
   } else {
@@ -156,7 +157,7 @@ const cancan:any = async () => {
 const deselect:any = async () => {
     console.log('on deselect')
     filterClicked.value = false;
-    const projectrequest:any = `${api_url}api/project/get-projectes`;
+    const projectrequest:any = `${api_url}api/project/get-projects`;
     await store.dispatch(projectActionTypes.FetchProject, projectrequest)  
 }
 
@@ -170,6 +171,7 @@ const format:any = (date:any) => {
 
 const close:any = async () => {
   searchText.value = ''
+  await store.dispatch(projectActionTypes.FetchProject)
 }
 
 const closeModal:any = () => {
@@ -260,11 +262,19 @@ onMounted( async() => {
                     </button>
                 </div>
                 <div class="search">
-                    <Search>
+                    <!-- <Search>
                         <template #input>
                             <input @keyup.esc="close" @keyup="filter" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Enter title and Project No..">
                         </template>
-                    </Search>
+                    </Search> -->
+                  <Search>
+                    <template #input>
+                      <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
+                      <span class="w-auto flex justify-end items-center text-grey p-2">
+                          <SvgIcons name="search" @click="filter"  />
+                      </span>
+                    </template>
+                  </Search>
                 </div>
             </div>
         </div>
