@@ -505,7 +505,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="othername" class="font-semibold">
                         Other name
                     </label>
-                    <input type="text" @focus="checkEditError" @keyup="checkEditError" v-model="newStudent.OtherName" name="othername" id="othername" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkEditError" @keyup="checkEditError" v-model="newStudent.otherName" name="othername" id="othername" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.OtherName ? errors.OtherNameText : '' }}
                     </p>
