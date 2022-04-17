@@ -8,6 +8,9 @@ import { addData, fetchData, editData, addEmptyData, removeData } from '../../..
 export default {
     state: () => ({
         projects: '',
+        outsourcingList: '',
+        newOutsourcing: '',
+        outsourcing: '',
         project: {
           name: '',
           courseId: '',
@@ -42,6 +45,21 @@ export default {
         getTotalProjectCount: (state: any) => {
         return computed(() => {
             return state.total_count
+        })
+        },
+        getOutsourcing: (state: any) => {
+        return computed(() => {
+            return state.outsourcing
+        })
+        },
+        getNewOutsourcing: (state: any) => {
+        return computed(() => {
+            return state.newOutsourcing
+        })
+        },
+        getOutsourcingListt: (state: any) => {
+        return computed(() => {
+            return state.outsourcingList
         })
         },
         getConsultancy: (state: any) => {
@@ -91,6 +109,15 @@ export default {
       [mutationTypes.SetTotalProjectCount] (state: any, data: any) {
         state.total_count = data
       },
+      [mutationTypes.SetOutsourcing] (state: any, data: any) {
+        state.outsourcing = data
+      },
+      [mutationTypes.SetNewOutsourcing] (state: any, data: any) {
+        state.newOutsourcing = data
+      },
+      [mutationTypes.SetOutsourcingList] (state: any, data: any) {
+        state.outsourcingList = data
+      },
       [mutationTypes.SetConsultancy] (state: any, data: any) {
         state.consultancies = data
       },
@@ -119,6 +146,24 @@ export default {
     },
     actions: {
         async [actionTypes.FetchProject] ({ commit }: any, data: any = `${api_url}api/project/get-projects/{page}/{limit}`) {
+          const token:any = localStorage.getItem('token')
+        //   console.log('token here', token)
+          const project = await fetchData(data, token)
+        //   console.log('data', data)
+        //   console.log('Iprojects', projects.payload)
+        //   console.log('Iprojects', projects.value)
+        //   console.log('Iprojects', JSON.parse(JSON.stringify(projects)))
+        //   console.log('Iprojects', JSON.parse(JSON.stringify(projects.value)))
+        //   console.log('Iprojects', projects.value)
+        if (project.payload) {
+          await commit(mutationTypes.SetProject, project)
+        } else if (project.response.status === 401) {
+          router.push({ name: 'Login' });
+        }
+          // commit(mutationTypes.SetProject, project)
+          // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
+        },
+        async [actionTypes.FetchOutsourcing] ({ commit }: any, data: any = `${api_url}api/outsourcing/get/{page}/{limit}`) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here', token)
           const project = await fetchData(data, token)

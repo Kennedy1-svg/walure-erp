@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: 'AddTopics',
+  name: 'EditTopic',
 }
 </script>
 
@@ -50,29 +50,29 @@ const closeModal:any =  () => {
 }
 
 const newCurriculum = computed(() => {
-    return store.getters.getNewCurriculum.value
+    return store.getters.getCurriculum.value
 })
 
-const addTopic:any = async () => {
+const editTopic:any = async () => {
     // console.log('hi');
     // route.push('/dashboard/student-management')
-    const ID:any = await store.getters.getCurriculum.value.payload.length;
-    const ID2:any = await store.state.courses.newCurriculumBatch.length;
+    // const ID:any = await store.getters.getCurriculum.value.payload.length;
+    // const ID2:any = await store.state.courses.newCurriculumBatch.length;
 
-    console.log('ID', ID);
-    console.log('ID2', ID2);
+    // console.log('ID', ID);
+    // console.log('ID2', ID2);
 
 
     const data:any = {
-        id: ID + ID2 + 1,
+        id: newCurriculum.value.id,
         title: newCurriculum.value.title,
         duration: newCurriculum.value.duration,
         subTitle: newCurriculum.value.subTitle
     }
     console.log('data for me here is ', data)
-    await store.dispatch(actionTypes.AddToCurriculum, data)
-    await store.getters.getCurriculum.value.payload
-    store.commit(mutationTypes.SetNewCurriculum, {})
+    await store.dispatch(actionTypes.EditTopicInCurriculum, data)
+    // await store.getters.getCurriculum.value.payload
+    closeModal()
 }
 
 const grand_error = ref(true)
@@ -124,7 +124,7 @@ const submit:any = async () => {
     console.log('checking error...beep boop beep', grand_error.value)
     await checkError()
     // console.log('i am here o', grand_error.value)
-    !grand_error.value ? addTopic() : ''
+    !grand_error.value ? editTopic() : ''
 }
 
 const format:any = (date:any) => {
@@ -163,10 +163,15 @@ onMounted( async() => {
 </script>
 
 <template>
+<div class="h-[91vh]">
+    <div class="head mt-5 mb-10 flex justify-between">
+        <h1 class="text-2xl">Edit Topic</h1>
+        <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
+    </div>
     <div class="main w-full mt-[0.5px] bg-white">
         {{ newCurriculum }} 
         <form id="addtopic" class="text-sm text-left grid">
-            <div class="grid grid-cols-2 gap-8 mb-10">
+            <div class="grid gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="title" class="font-semibold">
                         Title
@@ -181,8 +186,6 @@ onMounted( async() => {
                     <input type="text" v-model="newCurriculum.duration"
                     @blur="checkError" @focus="checkError" name="duration" id="duration" class="p-4 border rounded-md text-xs focus:outline-none">
                 </div>
-            </div>
-            <div class="grid gap-8 mb-10">
                 <div class="grid gap-4">
                     <label for="address" class="font-semibold">
                         Sub Title
@@ -193,7 +196,7 @@ onMounted( async() => {
             </div>
             <div class="flex justify-end pb-10">
                 {{ grand_error }}
-                <button type="button" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button type="button" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
             </div>
         </form>
         <!-- <div class="">
@@ -239,6 +242,7 @@ onMounted( async() => {
             </ExperienceCard> -->
         <!-- </div> -->
     </div>
+</div>
 </template>
 
 <style scoped>

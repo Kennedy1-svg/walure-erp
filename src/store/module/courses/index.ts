@@ -227,7 +227,7 @@ export default {
       }
       // await commit(mutationTypes.SetNewCourse, course.payload)
     },
-    async [actionTypes.AddToCurriculum] ({state, commit, getters}:any, data:any) {
+    async [actionTypes.AddToCurriculum] ({state, commit}:any, data:any) {
       const newSet = await JSON.parse(JSON.stringify(state.newCurriculumBatch))
       console.log('state of things', newSet)
       console.log('data is al ', data)
@@ -237,6 +237,26 @@ export default {
       // console.log('curriculum things be', curriculum.value)
       await commit(mutationTypes.setCurriculum, curriculum)
       console.log('curriculum things be', state.newCurriculumBatch)
+    },
+    async [actionTypes.EditTopicInCurriculum] ({state, commit}:any, data:any) {
+      const oldSet = await JSON.parse(JSON.stringify(state.newCurriculumBatch))
+      console.log('state of things', oldSet)
+      console.log('data is al ', data)
+      console.log('data is bali ', JSON.parse(JSON.stringify(state.allCurriculum)).payload)
+
+      const newSet:any = oldSet.map((item:any) => {
+        if (item.id == data.id) {
+          return data
+        }
+        return item;
+      });
+
+      console.log('newdata coming is ', newSet)
+      // const curriculum:any = [...newSet, data]
+      // const curriculum:any = await newSet.value.concat(data)
+      // console.log('curriculum things be', curriculum.value)
+      // await commit(mutationTypes.setCurriculum, curriculum)
+      // console.log('curriculum things be', state.newCurriculumBatch)
     },
     async [actionTypes.removeCurriculum] ({state, commit}:any, data:any) {
       console.log('data is al ', data)
@@ -304,6 +324,34 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Curriculum uploaded successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         // await dispatch(actionTypes.FetchCourseApplicants)
+      } else if (UploadCurriculum.response.status === 401) {
+        router.push({ name: 'Login' });
+      } else if (UploadCurriculum.message.includes('400')) {
+        await commit(mutationTypes.SetCourseAlertText, 'Bad request received')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+      } else if (UploadCurriculum.message.includes('404')) {
+        await commit(mutationTypes.SetCourseAlertText, 'Applicant not found')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+      } else {
+        await commit(mutationTypes.SetCourseAlertText, 'Something went wrong')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetCourseAlertStatus, false)
+        commit(mutationTypes.SetCourseAlertText, '')
+      }, 2000)
+    },
+    async [actionTypes.UpdateCurriculum] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token in update')
+      console.log('update data is', data)
+      const UploadCurriculum = await editData(data.url, data.data)
+      console.log('UploadCurriculum', UploadCurriculum)
+      if (UploadCurriculum.payload) {
+        await commit(mutationTypes.SetCourseAlertText, 'Curriculum updated successfully')
+        await commit(mutationTypes.SetCourseAlertStatus, true)
+        await dispatch(actionTypes.FetchCourseApplicants)
       } else if (UploadCurriculum.response.status === 401) {
         router.push({ name: 'Login' });
       } else if (UploadCurriculum.message.includes('400')) {
@@ -448,7 +496,7 @@ export default {
       const curriculum:any = await fetchData(data, token)
       console.log('course curriculum', curriculum)
       if (curriculum.payload) {
-        await commit(mutationTypes.SetCurriculum, curriculum)
+        await commit(mutationTypes.setCurriculum, curriculum.payload)
       } else if (curriculum.response.status === 401) {
         router.push({ name: 'Login' });
       }

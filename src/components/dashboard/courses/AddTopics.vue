@@ -15,6 +15,8 @@ import 'vue3-date-time-picker/dist/main.css'
 import ExperienceCard from './ExperienceCard.vue';
 import * as actionTypes from '../../../store/module/courses/constants/action'
 import * as mutationTypes from '../../../store/module/courses/constants/mutation'
+import Modal from '../../Modals.vue';
+import EditTopic from './EditTopics.vue';
 import { api_url } from '../../../config'
 
 const store = useStore();
@@ -57,15 +59,15 @@ const newCurriculum = computed(() => {
 const addTopic:any = async () => {
     // console.log('hi');
     // route.push('/dashboard/student-management')
-    const ID:any = await store.getters.getCurriculum.value.payload.length;
+    // const ID:any = await store.getters.getCurriculum.value.payload.length;
     const ID2:any = await store.state.courses.newCurriculumBatch.length;
 
-    console.log('ID', ID);
+    // console.log('ID', ID);
     console.log('ID2', ID2);
 
 
     const data:any = {
-        id: ID + ID2 + 1,
+        id: ID2 + 1,
         title: newCurriculum.value.title,
         duration: newCurriculum.value.duration,
         subTitle: newCurriculum.value.subTitle
@@ -97,10 +99,11 @@ const removeTopic:any = async (id:any) => {
     await store.dispatch(actionTypes.removeCurriculum, id)
 }
 
-const editTopic:any = async (id:any) => {
-    console.log('id', id)
+const editTopic:any = async (topic:any) => {
+    showEdit.value = true;
+    console.log('id', topic)
     // await store.dispatch(actionTypes.DeleteCurriculum, id)
-    await store.getters.getCurriculum.value.payload
+    store.commit(mutationTypes.SetCurriculum, topic)
     // store.commit(mutationTypes.SetNewCurriculum, {})
 }
 // const isDisabled:any = ref(true)
@@ -157,6 +160,8 @@ const format:any = (date:any) => {
 }
 
 let isActive:any = ref(false);
+
+const showEdit:any = ref('false');
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
 const disabledRemove:any = 'border-grey text-grey';
@@ -218,9 +223,9 @@ onMounted( async() => {
             </div>
         </form>
         <div class="">
-            {{ curriculum }}
+            <!-- {{ curriculum }} -->
             <h1 class="text-2xl text-left font-semibold pb-3">Experience</h1>
-            <div class="experiences" v-for="item in curriculum" :key="item.id" >
+            <!-- <div class="experiences" v-for="item in curriculum" :key="item.id" >
                 <ExperienceCard @edit="updateTopic(item.id)" @delete="deleteTopic(item.id)" class="my-6">
                     <template #title>
                         {{ item.title }}
@@ -232,10 +237,10 @@ onMounted( async() => {
                         {{ item.subTitle }}
                     </template>
                 </ExperienceCard>
-            </div>
+            </div> -->
                 {{ newCurriculumBatch }}
             <div class="experiences" v-for="item in newCurriculumBatch" :key="item.id" >
-                <ExperienceCard name="temp" class="my-6" @edit="editTopic(item.id)" @delete="removeTopic(item.id)">
+                <ExperienceCard name="temp" class="my-6" @edit="editTopic(item)" @delete="removeTopic(item.id)">
                     <template #title>
                         {{ item.title }}
                     </template>
@@ -246,6 +251,9 @@ onMounted( async() => {
                         {{ item.subTitle }}
                     </template>
                 </ExperienceCard>
+                <Modal :show="showEdit" @close="showEdit = !showEdit">
+                    <EditTopic @close="showEdit = !showEdit"  />
+                </Modal>
             </div>
             <!-- <ExperienceCard class="my-6">
                 <template #title>

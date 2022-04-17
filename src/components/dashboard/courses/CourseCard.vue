@@ -33,11 +33,34 @@ const closeModal:any = async () => {
   }, 500);
 }
 
+const updateCurriculum:any = async () => {
+    const courseId:any = route.params.id
+
+    const request:any = `${api_url}api/curriculum/edit-curriculum/${courseId}`
+
+    console.log('this is the request url ', request)
+    const data:any = store.state.courses.newCurriculumBatch
+
+    console.log('data should be ', data)
+
+    const newData:any = {
+        url: request,
+        data: data
+    }
+
+    await store.dispatch(actionTypes.UpdateCurriculum, newData)
+
+	const fetchrequest:any = `${api_url}api/curriculum/get-curriculum/${courseId}`
+	await store.dispatch(actionTypes.FetchCurriculum, fetchrequest)
+
+}
+
 const deleteCourse:any = async (course:any) => {
-    console.log('course identity', courseitemtodelete.value)
+    console.log('course identity 1', courseitemtodelete.value)
     const request:any = `${api_url}api/curriculum/delete/${course}`;
     console.log('request forid', request)
-    await store.dispatch(actionTypes.RemoveCourse, request)
+    await store.dispatch(actionTypes.DeleteCurriculum, request)
+    // await store.dispatch(actionTypes.RemoveCourse, request)
     closeModal()
     // const fetchrequest:any = `${api_url}api/course/get-courses`;
     // console.log('url', fetchrequest)
@@ -47,9 +70,9 @@ const deleteCourse:any = async (course:any) => {
 }
 
 const deleteCurriculum:any = async (id:any) => {
-    console.log('course identity', id)
-    const request:any = `${api_url}api/curriculum/delete/${id}`;
-    await store.dispatch(actionTypes.DeleteCurriculum, request)
+    console.log('course identity 2', id)
+    // const request:any = `${api_url}api/curriculum/delete/${id}`;
+    // await store.dispatch(actionTypes.DeleteCurriculum, request)
     courseitemtodelete.value = id
     console.log('courseitemtodelete', courseitemtodelete.value)
     return courseitemtodelete
@@ -84,16 +107,16 @@ onMounted( async() => {
             </button>
             <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteCourse(courseitemtodelete)">
                 <template #title>
-                    Delete Course
+                    Delete Course Curriculum
                 </template>
                 <template #info>
-                    Are you sure you want to remove course?
+                    Are you sure you want to remove course curriculum?
                 </template>
                 <template #delete>
-                    Yes, Delete Course
+                    Yes, Delete Curriculum
                 </template>
             </DeleteModal>
-            <button class="bg-greenish rounded px-10 py-4">
+            <button type="button" @click="updateCurriculum" class="bg-greenish rounded px-10 py-4">
                 Update
             </button>
         </div>
