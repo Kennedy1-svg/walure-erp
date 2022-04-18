@@ -250,7 +250,7 @@ onMounted( async () => {
                         <tr v-for="(category) in categories" :key="category.id">
                             <!-- {{ categories }} -->
                             <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                {{ categories.indexOf(category) + 1 }}
+                                {{ pageIndex == 1 ? (categories.indexOf(category) + 1) : ((pageIndex - 1) * 10) + (categories.indexOf(category) + 1) }}
                                 <!-- {{ category.id }} -->
                             </td>
                             <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">

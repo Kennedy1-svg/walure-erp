@@ -169,7 +169,7 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const student = await addDataFile(data.url, data.data)
+      const student = await addDataFile(data.url, data.data, token)
       if (student.payload) {
         await commit(mutationTypes.SetStudentAlertText, 'Student added successfully')
         await commit(mutationTypes.SetStudentAlertStatus, true)
@@ -193,7 +193,7 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const student = await editData(data.url, data.data)
+      const student = await editData(data.url, data.data, token)
       if (student.payload) {
         await commit(mutationTypes.SetStudentAlertText, 'Student updated successfully')
         await commit(mutationTypes.SetStudentAlertStatus, true)

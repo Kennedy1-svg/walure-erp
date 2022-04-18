@@ -171,7 +171,7 @@ onMounted(async() => {
                     <tr v-for="(consultancyitem) in consultancy" :key="consultancyitem.id">
                     <!-- {{ consultancyitem }} -->
                         <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ consultancy.indexOf(consultancyitem) + 1 }}
+                            {{ pageIndex == 1 ? (consultancy.indexOf(consultancyitem) + 1) : ((pageIndex - 1) * 10) + (consultancy.indexOf(consultancyitem) + 1) }}
                         </td>
                         <td class="border-t-0 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ consultancyitem.firstName }} {{ consultancyitem.lastName }}

@@ -173,7 +173,7 @@ onMounted(async() => {
                     <tr v-for="(projectitem) in project" :key="projectitem.id">
                     <!-- {{ projectitem }} -->
                         <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ project.indexOf(projectitem) + 1 }}
+                            {{ pageIndex == 1 ? (project.indexOf(projectitem) + 1) : ((pageIndex - 1) * 10) + (project.indexOf(projectitem) + 1) }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ projectitem.title }}

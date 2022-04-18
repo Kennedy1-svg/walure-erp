@@ -32,9 +32,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    // const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
-    // console.log('url', request)
-    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    const request:any = `${api_url}api/skill/get-skills/${pageIndex.value}/{pageSize}`;
+    console.log('url', request)
+    await store.dispatch(instructorActionTypes.FetchSkills, request)
 }
 
 const totalPages:any = computed(() => {
@@ -48,21 +48,6 @@ const totalPages:any = computed(() => {
     }
     return total
 })
-
-const setId:any = (id:any) => {
-    console.log('studentid', id)
-    const request:any = `${api_url}api/student/${id}`;
-    console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditStudent, request)
-}
-
-const toggle:any = (status:any) => {
-    if (status == 0) {
-        return status = 1
-    } else {
-        return status = 0
-    }
-}
 
 const editSkill:any = async (skill:any) => {
     console.log('skill', skill)
@@ -145,7 +130,7 @@ onMounted( async () => {
                     <tbody id="students" class="bg-white">
                     <tr v-for="(skill) in skills" :key="skill.id">
                             <td class="border-t-0 pl-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ (skills.indexOf(skill) + 1) }}
+                            {{ pageIndex == 1 ? (skills.indexOf(skill) + 1) : ((pageIndex - 1) * 10) + (skills.indexOf(skill) + 1) }}
                             </td>
                             <td class="border-t-0 pr-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                                 {{ skill.name }}
@@ -209,41 +194,6 @@ onMounted( async () => {
         opacity: 0;
         width: 0;
         height: 0;
-    }
-
-    .toggler {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgb(227, 227, 227);
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
-    }
-
-    .toggler::before {
-        @apply absolute w-5 h-5 -left-[4px] -bottom-[4px] bg-primary;
-        content: '';
-    }
-
-    input:checked + .toggler {
-        @apply bg-primary bg-opacity-[38%];
-    }
-
-    input:checked + .toggler:before {
-        -webkit-transform: translateX(20px);
-        -ms-transform: translateX(20px);
-        transform: translateX(20px);
-    }
-
-    .toggler.round {
-        border-radius: 34px;
-    }
-
-    .toggler.round:before {
-        border-radius: 50%;
     }
 
     .dropdown:focus-within .dropdown-menu {

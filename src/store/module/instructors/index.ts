@@ -241,7 +241,7 @@ export default {
     async [actionTypes.RemoveSkill] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const skill = await removeData(data)
+      const skill = await removeData(data, token)
       console.log('data tch', data)
       if (!skill.hasErrors) {
         await commit(mutationTypes.SetInstructorAlertText, 'Skill removed successfully')
@@ -270,7 +270,7 @@ export default {
     async [actionTypes.RemoveTalent] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const skill = await removeData(data)
+      const skill = await removeData(data, token)
       console.log('data tch', data)
       if (!skill.hasErrors) {
         await commit(mutationTypes.SetInstructorAlertText, 'Talent removed successfully')
@@ -299,7 +299,7 @@ export default {
     async [actionTypes.RemoveInstructor] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const instructor = await removeData(data)
+      const instructor = await removeData(data, token)
       console.log('data tch', data)
       if (!instructor.hasErrors) {
         await commit(mutationTypes.SetInstructorAlertText, 'Instructor removed successfully')
@@ -342,33 +342,34 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const instructor = await addData(data.url, data.data)
+      const instructor = await addData(data.url, data.data, token)
       await dispatch(actionTypes.FetchInstructors)
     },
     async [actionTypes.AddNewSkill] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const instructor = await addData(data.url, data.data)
+      const instructor = await addData(data.url, data.data, token)
       await dispatch(actionTypes.FetchSkills)
     },
     async [actionTypes.AddNewTalent] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const instructor = await addData(data.url, data.data)
+      const instructor = await addData(data.url, data.data, token)
       await dispatch(actionTypes.FetchTalents)
     },
     async [actionTypes.UpdateSkill] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const instructor = await editData(data.url, data.data)
+      const instructor = await editData(data.url, data.data, token)
       await dispatch(actionTypes.FetchSkills)
     },
     async [actionTypes.UpdateInstructorStatus] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
       console.log('update data is', data)
-      const updateInstructorStatus = await addEmptyData(data)
+      const updateInstructorStatus = await addEmptyData(data, token)
       console.log('updateInstructorStatus', updateInstructorStatus)
       if (updateInstructorStatus.payload) {
         await commit(mutationTypes.SetInstructorAlertText, 'Instructor status updated successfully')
@@ -391,8 +392,9 @@ export default {
       }, 2000)
     },
     async [actionTypes.UpdateTalentStatus] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
       console.log('update data is', data)
-      const updateTalentStatus = await addEmptyData(data)
+      const updateTalentStatus = await addEmptyData(data, token)
       console.log('updateTalentStatus', updateTalentStatus)
       if (updateTalentStatus.payload) {
         await commit(mutationTypes.SetInstructorAlertText, 'Talent status updated successfully')

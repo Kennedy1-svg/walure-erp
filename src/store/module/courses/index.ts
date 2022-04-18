@@ -229,6 +229,7 @@ export default {
     },
     async [actionTypes.AddToCurriculum] ({state, commit}:any, data:any) {
       const newSet = await JSON.parse(JSON.stringify(state.newCurriculumBatch))
+      const token:any = localStorage.getItem('token')
       console.log('state of things', newSet)
       console.log('data is al ', data)
       console.log('data is bali ', JSON.parse(JSON.stringify(state.allCurriculum)).payload)
@@ -292,8 +293,9 @@ export default {
       // console.log('curriculum things be', state.newCurriculumBatch)
     },
     async [actionTypes.AddNewCourseApplicant] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_applicant = await addData(data.url, data.data)
+      const course_applicant = await addData(data.url, data.data, token)
       if (!course_applicant.hasErrors) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetCourseAlertText, 'Course Applicant added successfully')
@@ -318,7 +320,7 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token in update')
       console.log('update data is', data)
-      const UploadCurriculum = await addDataFile(data.url, data.data)
+      const UploadCurriculum = await addDataFile(data.url, data.data, token)
       console.log('UploadCurriculum', UploadCurriculum)
       if (UploadCurriculum.payload) {
         await commit(mutationTypes.SetCourseAlertText, 'Curriculum uploaded successfully')
@@ -346,7 +348,7 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token in update')
       console.log('update data is', data)
-      const UploadCurriculum = await editData(data.url, data.data)
+      const UploadCurriculum = await editData(data.url, data.data, token)
       console.log('UploadCurriculum', UploadCurriculum)
       if (UploadCurriculum.payload) {
         await commit(mutationTypes.SetCourseAlertText, 'Curriculum updated successfully')
@@ -374,7 +376,7 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token in update')
       console.log('update data is', data)
-      const updateApplicantStatus = await addEmptyData(data)
+      const updateApplicantStatus = await addEmptyData(data, token)
       console.log('updateApplicantStatus', updateApplicantStatus)
       if (updateApplicantStatus.payload) {
         await commit(mutationTypes.SetCourseAlertText, 'Applicant status updated successfully')
@@ -412,7 +414,7 @@ export default {
     async [actionTypes.AddNewCourseCategory] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_category = await addData(data.url, data.data)
+      const course_category = await addData(data.url, data.data, token)
       if (!course_category.hasErrors) {
         // commit(mutationTypes.SetNewCourseCategory, course_category.payload)
         await commit(mutationTypes.SetCourseAlertText, 'Course Category added successfully')
@@ -436,7 +438,7 @@ export default {
     async [actionTypes.AddNewCourse] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_category = await addData(data.url, data.data)
+      const course_category = await addData(data.url, data.data, token)
       if (!course_category.hasErrors) {
         // commit(mutationTypes.SetNewCourseCategory, course_category.payload)
         await commit(mutationTypes.SetCourseAlertText, 'Course added successfully')
@@ -460,7 +462,7 @@ export default {
     async [actionTypes.EditCourse] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_category = await editData(data.url, data.data)
+      const course_category = await editData(data.url, data.data, token)
       if (!course_category.hasErrors) {
         // commit(mutationTypes.SetNewCourseCategory, course_category.payload)
         await commit(mutationTypes.SetCourseAlertText, 'Course updated successfully')
@@ -507,7 +509,7 @@ export default {
     async [actionTypes.EditCourseCategory] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_category = await editData(data.url, data.data)
+      const course_category = await editData(data.url, data.data, token)
       if (!course_category.hasErrors) {
         // commit(mutationTypes.SetNewCourseCategory, course_category.payload)
         await commit(mutationTypes.SetCourseAlertText, 'Course Category updated successfully')
@@ -532,7 +534,7 @@ export default {
     async [actionTypes.RemoveCourseCategory] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_category = await removeData(data)
+      const course_category = await removeData(data, token)
       if (!course_category.hasErrors) {
         await commit(mutationTypes.SetCourseAlertText, 'Course Category removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -555,7 +557,7 @@ export default {
     async [actionTypes.DeleteCurriculum] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_curriculum = await removeData(data)
+      const course_curriculum = await removeData(data, token)
       if (!course_curriculum.hasErrors) {
         await commit(mutationTypes.SetCourseAlertText, 'Course Curriculum removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -578,7 +580,7 @@ export default {
     async [actionTypes.RemoveCourseApplicant] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course_category = await removeData(data)
+      const course_category = await removeData(data, token)
       if (!course_category.hasErrors) {
         await commit(mutationTypes.SetCourseAlertText, 'Course Applicant removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -601,7 +603,7 @@ export default {
     async [actionTypes.RemoveCourse] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const course = await removeData(data)
+      const course = await removeData(data, token)
       if (!course.hasErrors) {
         await commit(mutationTypes.SetCourseAlertText, 'Course removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)

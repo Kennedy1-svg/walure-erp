@@ -121,7 +121,7 @@ export default {
           const token:any = localStorage.getItem('token')
             console.log('token here')
             console.log('data is', data)
-          const addStudent = await addData(data.url, data.data)
+          const addStudent = await addData(data.url, data.data, token)
           console.log('addStudent', addStudent)
           if (addStudent.payload) {
             commit(mutationTypes.SetBatchAlertText, 'Student added to cohort successfully')
@@ -151,7 +151,7 @@ export default {
           const token:any = localStorage.getItem('token')
             console.log('token here')
             console.log('data is', data)
-          const addInstructor = await addData(data.url, data.data)
+          const addInstructor = await addData(data.url, data.data, token)
           console.log('addInstructor', addInstructor)
           if (addInstructor.payload) {
             commit(mutationTypes.SetBatchAlertText, 'Instructor added to cohort successfully')
@@ -198,7 +198,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data.url, data.data)
-          const newbatch = await addData(data.url, data.data)
+          const newbatch = await addData(data.url, data.data, token)
           if (newbatch.payload) {
             await commit(mutationTypes.SetBatchAlertText, 'Cohort added successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
@@ -222,7 +222,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data)
-          const newbatch = await removeData(data)
+          const newbatch = await removeData(data, token)
           console.log('newbatch', newbatch)
           if (!newbatch.hasErrors) {
             await commit(mutationTypes.SetBatchAlertText, 'Cohort removed successfully')
@@ -248,7 +248,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data)
-          const newbatch = await addData(data.url, data.data)
+          const newbatch = await addData(data.url, data.data, token)
           console.log('newbatch', newbatch)
           if (!newbatch.hasErrors) {
             await commit(mutationTypes.SetBatchAlertText, 'Student removed successfully')
@@ -286,7 +286,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data.url, data.data)
-          const newbatch = await editData(data.url, data.data)
+          const newbatch = await editData(data.url, data.data, token)
           if (newbatch.payload) {
             await commit(mutationTypes.SetBatchAlertText, 'Cohort updated successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)

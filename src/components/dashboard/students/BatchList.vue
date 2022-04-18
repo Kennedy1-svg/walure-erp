@@ -165,7 +165,7 @@ onMounted(async() => {
                     <tr v-for="(batchitem) in batch" :key="batchitem.id">
                     <!-- {{ batchitem }} -->
                         <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ batch.indexOf(batchitem) + 1 }}
+                            {{ pageIndex == 1 ? (batch.indexOf(batchitem) + 1) : ((pageIndex - 1) * 10) + (batch.indexOf(batchitem) + 1) }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ batchitem.title }}

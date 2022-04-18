@@ -127,7 +127,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/project/get-projects/${pageIndex.value}/{pageSize}`;
+    const request:any = `${api_url}api/outsourcing/get/${pageIndex.value}/{pageSize}`;
     // console.log('url', request)
     await store.dispatch(actionTypes.FetchProject)
 }
@@ -173,7 +173,7 @@ onMounted(async() => {
                     <tr v-for="(outsourcingitem) in outsourcing" :key="outsourcingitem.id">
                     <!-- {{ outsourcingitem }} -->
                         <td class="border-t-0 pl-4 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ outsourcing.indexOf(outsourcingitem) + 1 }}
+                            {{ pageIndex == 1 ? (outsourcing.indexOf(outsourcingitem) + 1) : ((pageIndex - 1) * 10) + (outsourcing.indexOf(outsourcingitem) + 1) }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ outsourcingitem.title }}

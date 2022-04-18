@@ -144,7 +144,7 @@ onMounted( async () => {
                     <tbody id="students" class="bg-white">
                         <tr v-for="(applicant) in courseapplicants" :key="applicant.id">
                             <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                {{ (courseapplicants.indexOf(applicant) + 1) }}
+                                {{ pageIndex == 1 ? (courseapplicants.indexOf(applicant) + 1) : ((pageIndex - 1) * 10) + (courseapplicants.indexOf(applicant) + 1) }}
                             </td>
                             <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                                 {{ applicant.fullName }}

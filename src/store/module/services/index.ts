@@ -203,7 +203,7 @@ export default {
           const token:any = localStorage.getItem('token')
             console.log('token here', token)
             console.log('data is', data)
-          const addToProject = await addData(data.url, data.data)
+          const addToProject = await addData(data.url, data.data, token)
           console.log('addToProject', addToProject)
           if (addToProject.payload) {
             commit(mutationTypes.SetProjectAlertText, 'Student added to project successfully')
@@ -246,7 +246,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data.url, data.data)
-          const newproject = await addData(data.url, data.data)
+          const newproject = await addData(data.url, data.data, token)
           if (newproject.payload) {
             await commit(mutationTypes.SetProjectAlertText, 'Project added successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -269,7 +269,7 @@ export default {
         async [actionTypes.EditProject] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
           console.log('token here')
-          const project = await editData(data.url, data.data)
+          const project = await editData(data.url, data.data, token)
           if (!project.hasErrors) {
             // commit(mutationTypes.SetNewProjectCategory, project.payload)
             await commit(mutationTypes.SetProjectAlertText, 'Project updated successfully')
@@ -294,7 +294,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data)
-          const newproject = await removeData(data)
+          const newproject = await removeData(data, token)
           console.log('newproject', newproject)
           if (!newproject.hasErrors) {
             await commit(mutationTypes.SetProjectAlertText, 'Project removed successfully')
@@ -319,7 +319,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data)
-          const newproject = await removeData(data)
+          const newproject = await removeData(data, token)
           console.log('newproject', newproject)
           if (!newproject.hasErrors) {
             await commit(mutationTypes.SetProjectAlertText, 'Consultancy removed successfully')
@@ -345,7 +345,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token here')
           console.log('all data is', data)
-          const newproject = await addData(data.url, data.data)
+          const newproject = await addData(data.url, data.data, token)
           console.log('newproject', newproject)
           if (!newproject.hasErrors) {
             await commit(mutationTypes.SetProjectAlertText, 'Student removed successfully')
@@ -392,7 +392,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token in update')
           console.log('update data is', data)
-          const UpdateProjectStatus = await addEmptyData(data)
+          const UpdateProjectStatus = await addEmptyData(data, token)
           console.log('UpdateProjectStatus', UpdateProjectStatus)
           if (UpdateProjectStatus.payload) {
             await commit(mutationTypes.SetProjectAlertText, 'Project status updated successfully')
@@ -420,7 +420,7 @@ export default {
           const token:any = localStorage.getItem('token')
           console.log('token in update')
           console.log('update data is', data)
-          const UpdateConsultancyStatus = await addEmptyData(data)
+          const UpdateConsultancyStatus = await addEmptyData(data, token)
           console.log('UpdateConsultancyStatus', UpdateConsultancyStatus)
           if (UpdateConsultancyStatus.payload) {
             await commit(mutationTypes.SetProjectAlertText, 'Consultancy status updated successfully')

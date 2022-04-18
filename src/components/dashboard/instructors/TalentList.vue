@@ -59,9 +59,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    // const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
-    // console.log('url', request)
-    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    const request:any = `${api_url}api/talentpool/get-talents/${pageIndex.value}/{pageSize}`;
+    console.log('url', request)
+    await store.dispatch(instructorActionTypes.FetchTalents, request)
 }
 
 const totalPages:any = computed(() => {
@@ -161,7 +161,7 @@ onMounted( async () => {
                     <!-- {{ talents }} -->
                   <tr v-for="(talent) in talents" :key="talent.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ (talents.indexOf(talent) + 1) }}
+                          {{ pageIndex == 1 ? (talents.indexOf(talent) + 1) : ((pageIndex - 1) * 10) + (talents.indexOf(talent) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                           {{ talent.firstName }} {{ talent.lastName }}
