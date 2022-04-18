@@ -37,10 +37,10 @@ const instructor:any = computed(() => {
                 <p class="text-2xl">Instructor Details</p>
                 <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
             </div>
-            <!-- {{ instructor }} -->
+            {{ instructor }}
             <div class="image grid justify-items-center">
                 <span class=" border p-1 rounded-full mb-9">
-                    <img class="w-32 h-32 rounded-full" :src="instructor.picture" alt="user img">
+                    <img class="w-32 h-32 rounded-full" :src="instructor.image" alt="user img">
                 </span>
                 <p class="text-2xl font-semibold">{{ instructor.fullName }}</p>
                 <p class="text-grey font-medium">Instructor</p>
