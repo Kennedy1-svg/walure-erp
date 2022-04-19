@@ -1,6 +1,7 @@
 <script lang="ts">
 import { onMounted, ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router';
 
 export default {
     name: 'TopicsList',
@@ -13,16 +14,18 @@ import CourseDetails from './CourseDetails.vue';
 import Switch from '../../switch.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
-import * as courseActionTypes from '../../../store/module/courses/constants/action';
+import * as actionTypes from '../../../store/module/courses/constants/action';
 import { api_url } from '../../../config/index'
 import AddCourse from './AddCourse.vue';  
+
+const route = useRoute();
 
 const courses:any = computed(() => {
     return store.getters.getCourses.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getCourses.value.totalCount;
+    return store.state.courses.newCurriculumBatch.length;
 })
 
 let pageIndex: any = ref(1);
@@ -74,9 +77,16 @@ const showDetails = ref(false);
 
 const store = useStore();
 
+const newCurriculumBatch:any = computed(():any => {
+    return store.state.courses.newCurriculumBatch
+})
+
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
-    console.log('CourseList mounted');
+    console.log('uploaded topics list mounted');
+	const id:any = route.params.id;
+	const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
+	await store.dispatch(actionTypes.FetchCurriculum, request)
     // const request:any = `${api_url}api/course/search-courses/{pageIndex}/{pageSize}`;
     // await store.dispatch(courseActionTypes.FetchCourses, request)
 });
@@ -84,6 +94,7 @@ onMounted( async () => {
 
 <template>
     <div class="main grid">
+        <!-- {{ newCurriculumBatch }} -->
         <div class="title flex justify-between items-center mb-10">
             <h1 class="text-2xl font-semibold text-black">Course List</h1>
             <p class="text-xl font-medium text-primary">Total : {{ total_count }}</p>
@@ -110,119 +121,24 @@ onMounted( async () => {
                     </thead>
 
                     <tbody id="students" class="bg-white">
-                        <!-- <tr v-for="(course) in courses" :key="course.id">
+                        <tr v-for="curriculum in newCurriculumBatch" :key="curriculum.id">
                             <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                {{ (courses.indexOf(course) + 1) }}
+                                {{ newCurriculumBatch.indexOf(curriculum) + 1 }}
                             </td>
                             <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                {{ course.title }}
+                                {{ curriculum.title }}
                             </td>
                             <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ course.duration }}
+                                {{ curriculum.subTitle }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ course.levelTypeName }}
+                                <!-- {{ curriculum.remarks }} -->
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                <Switch :status="course.isActive" @toggle="toggle(course.isActive)" />
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
-                                <div class="relative inline-block dropdown">
-                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                        <SvgIcons name="ellipsis" />
-                                    </button>
-                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                            <div class="py-3 gap-3">
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails" @click.prevent="setId(course.id)"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <router-link active-class="active" class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left" to='/dashboard/course-management/curriculum'>
-                                                    <SvgIcons name="curriculum" />
-                                                    Curriculum
-                                                </router-link>
-
-                                                <button
-                                                type="button"
-                                                @click="showCurriculum = !showCurriculum" @click.prevent="setId(course.id)"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="curriculum" />
-                                                    Curriculum
-                                                </button>
-                                                <Modal :show="showCurriculum" @close="showCurriculum = false">
-                                                    <AddToBatch />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDetails = !showDetails" @click.prevent="setId(course.id)"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="details" />
-                                                    Details
-                                                </button>
-                                                <Modal :show="showDetails" @close="showDetails = false">
-                                                    <CourseDetails @close="showDetails = !showDetails" />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showEdit = !showEdit" @click.prevent="setId(course.id)"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="edit" />
-                                                    Edit
-                                                </button>
-                                                <Modal :show="showEdit" @close="showEdit = false">
-                                                    <AddStudents />
-                                                </Modal>
-
-                                                <button
-                                                type="button"
-                                                @click="showDelete = !showDelete"
-                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                                >
-                                                    <SvgIcons name="delete" />
-                                                    Delete
-                                                </button>
-                                                <Modal :show="showDelete" @close="showDelete = false">
-                                                <p class="mb-4">No action</p>
-                                                
-                                                </Modal>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr> -->
-                        <tr>
-                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                1
-                            </td>
-                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                title
-                            </td>
-                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                duration
+                                {{ curriculum.duration }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                levelTypeName
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
-                            </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                switch
+                                <!-- {{ curriculum.error }} -->
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                 <SvgIcons name="delete" />

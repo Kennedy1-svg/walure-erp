@@ -50,7 +50,7 @@ const course:any = computed(() => {
             </div>
         </div>
         <div class="bottom">
-            {{ courseDetails }}
+            <!-- {{ courseDetails }} -->
             <!-- {{ courseDetails.title }} -->
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Title</p>
@@ -111,9 +111,11 @@ const course:any = computed(() => {
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <!-- {{ categories }} -->
                 <p>Categories</p>
-                <!-- <p>{{ courseDetails.categories.map((item:any ):any => item).join(', ') }}</p> -->
+                <!-- <p>{{ courseDetails.categoryNames.map((item:any ):any => item).join(', ') }}</p> -->
                 <!-- {{ category }} -->
-                {{ courseDetails.categories }}
+                <!-- {{ courseDetails.categories }}
+                {{ courseDetails.categoryNames }} -->
+                {{ courseDetails.categoryNames.map((e) => e).join(', ') }}
                 <!-- <multiselect v-model="courseDetails.categories" mode="tags" :close-on-select="false" valueProp="id" :options="categories" track-by="name" label="name" class="multiselect-blue" /> -->
             </div>
         </div>

@@ -31,14 +31,14 @@ const file:any = ref(null)
 
 const uploadCurriculum:any = async (event:any) => {
     console.log('event', event.target.files[0].name)
-    file.value.imageFile = await event.target.files[0]
+    // file.value.imageFile = await event.target.files[0]
     formData.append('file', event.target.files[0], event.target.files[0].name)
 
     const courseId:any = route.params.id
     console.log('course id', courseId)
-    formData.append('courseId', courseId)
+    // formData.append('courseId', courseId)
 
-    const request:any = `${api_url}api/curriculum/upload-curriculum`
+    const request:any = `${api_url}api/curriculum/uploadFile/${courseId}`
 
     const newData:any = {
         url: request,
@@ -46,6 +46,7 @@ const uploadCurriculum:any = async (event:any) => {
     }
 
     await store.dispatch(actionTypes.UploadCurriculum, newData)
+    // await store.getters.getCurriculum.value.payload
 }
 
 const onChange:any = async (event:any) => {

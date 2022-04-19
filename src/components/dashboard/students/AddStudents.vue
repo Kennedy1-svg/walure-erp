@@ -205,6 +205,7 @@ const onChange:any = async (event:any) => {
         let image:any = document.getElementById('displayoutput')
         images.src = URL.createObjectURL(event.target.files[0])
         image.src = URL.createObjectURL(event.target.files[0])
+        console.log('image src is', images.src, image.src)
         console.log('newStudent image', newStudent.value.imageFile.type)
 }
 

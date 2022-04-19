@@ -19,7 +19,7 @@ const store = useStore();
 const start:any = ref(
   {
     name: 'Batch',
-    path: '/dashboard/student-management/batch'
+    path: '/dashboard/student-management/cohort'
   },
 )
 
