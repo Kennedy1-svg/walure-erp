@@ -1,6 +1,6 @@
 <script lang="ts">
 import { ref, onMounted, toRefs } from 'vue'
-import WebViewer from '@pdftron/webviewer'
+// import WebViewer from '@pdftron/webviewer'
 
 export default {
   name: 'WebViewer',
@@ -19,27 +19,27 @@ const props = defineProps({
 
 const { initialDoc } = toRefs(props)
 
-onMounted(() => {
-    const path = `http://localhost:3000/webviewer`;
-    // const path = `${process.env.BASE_URL}webviewer`;
-    WebViewer({path, initialDoc: props.initialDoc}, viewer.value)
-    .then(instance => {
-        const { Feature } = instance.UI
-        instance.UI.enableFeatures([Feature.FilePicker])
-        input.addEventListener('change', () => {
-            const file = input.files[0];
-            instance.UI.loadDocument(file, { filename: file.name})
-        });
+// onMounted(() => {
+//     const path = `http://localhost:3000/webviewer`;
+//     // const path = `${process.env.BASE_URL}webviewer`;
+//     WebViewer({path, initialDoc: props.initialDoc}, viewer.value)
+//     .then(instance => {
+//         const { Feature } = instance.UI
+//         instance.UI.enableFeatures([Feature.FilePicker])
+//         input.addEventListener('change', () => {
+//             const file = input.files[0];
+//             instance.UI.loadDocument(file, { filename: file.name})
+//         });
 
-        const { documentViewer } = instance.Core;
-        documentViewer.addEventListener('documentLoaded', () => {
-            // instance.UI.print();
-            setTimeout(() => {
-                instance.UI.annotationPopup.getItems();
-            }, 1000);
-        })
-    })
-})
+//         const { documentViewer } = instance.Core;
+//         documentViewer.addEventListener('documentLoaded', () => {
+//             // instance.UI.print();
+//             setTimeout(() => {
+//                 instance.UI.annotationPopup.getItems();
+//             }, 1000);
+//         })
+//     })
+// })
 
 </script>
 

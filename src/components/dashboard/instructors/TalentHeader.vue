@@ -21,7 +21,7 @@ const store = useStore();
 
 const closeModal:any = () => {
   // document.getElementById('addinstructor').showModal()
-  console.log('close student modal')
+  console.log('close talent modal')
   let doc:any = document.getElementById('addinstructor')
   doc.close()  
 }
@@ -137,26 +137,6 @@ onMounted(() => {
                     </section>
 
                     <dialog id="addinstructor" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                        <div class="w-full h-auto">
-                            <!-- Modal Content-->
-                                <AddTalent @close="closeModal" />
-                            <!-- End of Modal Content-->
-                        </div>
-                    </dialog>
-                </div>
-                </button>
-                <button class="focus:outline-none flex items-center gap-3 text-sm">
-                    <p class="text-grey font-semibold">Add Skill</p>
-                <div class="relative overflow-hdden">
-                    <section class="flex h-full justify-ceter items-start">
-                        <div onclick="document.getElementById('addskill').showModal()" id="btn">
-                            <span class="bg-blue p-1 flex justify-center text-white rounded-md">
-                                <SvgIcons name="plus" /> <!-- plus icon -->
-                            </span>
-                        </div>
-                    </section>
-
-                    <dialog id="addskill" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
                                 <AddTalent @close="closeModal" />

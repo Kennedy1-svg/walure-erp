@@ -135,7 +135,7 @@ const onPageChange:any = async (page:any) => {
 onMounted(async() => {
     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
-    const request:any = `${api_url}api/project/get-projects/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/project/get-projects/${pageIndex.value}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchProject, request)
 })

@@ -45,7 +45,7 @@ const onPageChange:any = async (page:any) => {
     const batchid:any = route.params.id;
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/batch/students-inbatch/${batchid}`;
+    const request:any = `${api_url}api/batch/students-inbatch/${batchid}/{pageIndex}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(batchActionTypes.FetchBatch, request)
 }

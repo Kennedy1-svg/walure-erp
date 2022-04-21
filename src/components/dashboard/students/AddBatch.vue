@@ -48,9 +48,9 @@ const newBatch:any = computed(() => {
 const checkError:any = () => {
     if (!newBatch.value.title) {
         errors.name = true;
-        errors.nameText = 'Batch title is required'
+        errors.nameText = 'Cohort title is required'
     } else if (newBatch.value.title.length <= 3) {
-        errors.nameText = 'Batch title needs to be more than 3 characters'
+        errors.nameText = 'Cohort title needs to be more than 3 characters'
     } else {
         errors.name = false;
         errors.nameText = ''
@@ -66,9 +66,9 @@ const checkError:any = () => {
 
     if (!newBatch.value.batchCapacity) {
         errors.batchCapacity = true;
-        errors.batchCapacityText = 'Batch capacity is required'
+        errors.batchCapacityText = 'Cohort capacity is required'
     } else if (newBatch.value.batchCapacity <= 0) {
-        errors.batchCapacityText = 'Batch capacity name needs to be more than 0'
+        errors.batchCapacityText = 'Cohort capacity name needs to be more than 0'
     } else {
         errors.batchCapacity = false;
         errors.batchCapacityText = '';

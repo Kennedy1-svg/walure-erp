@@ -201,7 +201,7 @@ const onChange:any = async (event:any) => {
         console.log('event', event.target.files[0].name)
         newStudent.value.imageFile = await event.target.files[0]
         formData.append('file', event.target.files[0])
-        let images: any = document.getElementById('output')
+        let images: any = document.getElementById('studentoutput')
         let image:any = document.getElementById('displayoutput')
         images.src = URL.createObjectURL(event.target.files[0])
         image.src = URL.createObjectURL(event.target.files[0])
@@ -292,7 +292,7 @@ const disabledView:any = 'bg-gray-300';
                         </button>
                         </template>
                         <template #modalContent>
-                            <img id="output" alt="user img">
+                            <img id="studentoutput" alt="user img">
                         </template>
                     </Modal>
                 </div>

@@ -22,12 +22,12 @@ const currentPage:any = ref(1)
 
 const isInFirstPage:any = onMounted(() => {
     console.log('first cp',currentPage.value)
-  return currentPage.value === 1;
+  return currentPage.value == 1;
 });
 
 const isInLastPage:any = onMounted(() => {
     console.log('lastcp', currentPage.value)
-  return currentPage.value === props.totalPages;
+  return currentPage.value == props.totalPages;
 });
 
 const emit = defineEmits(['pageChanged']);

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, watch } from 'vue'
 import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import alert from '../../alerts.vue';
@@ -28,6 +28,7 @@ const route = useRouter();
 let isDisabled = ref(true);
 let isError:any = ref(false);
 // let isResumeActive:any = ref(false);
+let isImageRemoved:any = ref(false);
 // let isLoading:any = ref(false);
 
 
@@ -127,7 +128,7 @@ const deselect:any = async () => {
     // await store.dispatch(batchActionTypes.FetchInstructor)  
 }
 
-const pdfSource:any = 'https://mega.nz/file/9IlEAToA#4Owt89Mjjm9ZY42QXpVGqOBiuQIf81wrvpvVRKRilr4';
+const pdfSource:any = ref('');
 
 const experience_levelField:any = ref('')
 
@@ -329,11 +330,13 @@ const checkError:any = () => {
 }
 
 const removeImage:any = async () => {
-    return newInstructor.value.picture = ''
+    isImageRemoved.value = true;
+    URL.revokeObjectURL(newInstructor.value.image);
+    return newInstructor.value.image = ''
 }
 
 const removeResume:any = async () => {
-    return newInstructor.value.resumeUrl = ''
+    return newInstructor.value.resume = ''
 }
 
 // const bios:any = computed(() => {
@@ -357,7 +360,7 @@ const testing:any = () => {
 }
 
 let isActive:any = computed(() => {
-    if (newInstructor.value.picture) {
+    if (newInstructor.value.image) {
         return true
     } else {
         return false
@@ -374,13 +377,13 @@ let isResumeActive:any = computed(() => {
 
 const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
-    newInstructor.value.picture = event.target.files[0]
+    newInstructor.value.image = event.target.files[0]
     formData.append('file', event.target.files[0])
-    let images: any = document.getElementById('output')
-    let image:any = document.getElementById('displayoutput')
+    let images: any = document.getElementById('instructoroutput')
+    let image:any = document.getElementById('displayinstructoroutput')
     images.src = URL.createObjectURL(event.target.files[0])
     image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newInstructor image', newInstructor.value.picture.type)
+    console.log('newInstructor image', newInstructor.value.image.type)
 }
 
 const onChangeResume:any = (event:any):any => {
@@ -388,9 +391,9 @@ const onChangeResume:any = (event:any):any => {
     newInstructor.value.resume = event.target.files[0]
     formData.append('file', event.target.files[0])
     onResumeUpload.value = true
-    // let images: any = document.getElementById('output')
-    // let image:any = document.getElementById('displayoutput')
-    // pdfSource.value = URL.createObjectURL(event.target.files[0])
+    // let images: any = document.getElementById('instructoroutput')
+    // let image:any = document.getElementById('displayinstructoroutput')
+    pdfSource.value = URL.createObjectURL(event.target.files[0])
     // image.src = URL.createObjectURL(event.target.files[0])
     console.log('newInstructor resume', newInstructor.value.resume.type)
     // console.log('newInstructor link', pdfSource.value)
@@ -477,6 +480,14 @@ const activeRemove:any = 'border-primary text-primary hover:opacity-80';
 const disabledRemove:any = 'border-grey text-grey';
 const activeView:any = 'bg-primary hover:opacity-80';
 const disabledView:any = 'bg-gray-300';
+
+watch(
+  () => isResumeActive,
+  pdfSource => {
+    console.log('pdfSource', pdfSource.value)
+    // showModal.value = show;
+  },
+);
 </script>
 
 <template>
@@ -506,7 +517,8 @@ const disabledView:any = 'bg-gray-300';
                             <SvgIcons class="text-white" name="camera" />
                         </span>
                     </div>
-                    <img class="w-20 h-20 border p-1 rounded-full" :class="[ isActive ? '' : 'hidden' ]" id="displayoutput" alt="user img">
+                    <img class="w-20 h-20 border p-1 rounded-full" :class="[ isActive && isImageRemoved ? '' : 'hidden' ]" id="displayinstructoroutput" alt="user img">
+                    <img class="w-20 h-20 border p-1 rounded-full" :class="[ isActive && !isImageRemoved ? '' : 'hidden' ]" :src="newInstructor.image" alt="user img">
                 </div>
                 <div class="buttons text-grey flex gap-[50px]">
                     <button @click.prevent="removeImage" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeRemove : disabledRemove]" :disabled = !isActive>
@@ -520,7 +532,7 @@ const disabledView:any = 'bg-gray-300';
                     </button>
                     </template>
                     <template #modalContent>
-                        <img id="output" alt="user img">
+                        <img id="instructoroutput" alt="user img">
                     </template>
                 </Modal>
 
@@ -528,7 +540,7 @@ const disabledView:any = 'bg-gray-300';
                     View Passport
                 </button>
                 <Modal :show="showProfilePicture" @close="showProfilePicture = false">
-                    <img id="output" alt="user img">
+                    <img id="instructoroutput" alt="user img">
                 </Modal> -->
                 </div>
             </div>
@@ -669,10 +681,10 @@ const disabledView:any = 'bg-gray-300';
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>
-                            {{ isResumeActive }}
+                            <!-- {{ isResumeActive }} -->
                             <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" :disabled="isResumeActive" />
                         </label>
-                        <div v-if="newInstructor.resume" class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
+                        <div v-if="newInstructor.resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
                             <!-- <div class="">
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newInstructor.resume }}
@@ -681,8 +693,10 @@ const disabledView:any = 'bg-gray-300';
                                     {{ newInstructor.resume.size > 999999 ? (newInstructor.resume.size / 1000000).toFixed(2) + 'Mb' : newInstructor.resume.size > 999 ? (newInstructor.resume.size / 1000).toFixed(2) + ' kb' : newInstructor.resume.size + ' bytes' }}
                                 </p>
                             </div> -->
+                            <!-- {{ newInstructor.resume }} -->
                             <div class="flex justify-center gap-3 items-center">
-                                <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" />
+                                <a :href="pdfSource" target="_blank">
+                                <SvgIcons name="eye" /></a>
                                 <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
                                 <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
                                     <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
@@ -694,14 +708,16 @@ const disabledView:any = 'bg-gray-300';
                         <div v-if="newInstructor.resume" class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && onResumeUpload ? '' : 'hidden']">
                             <div class="">
                                 <p class="font-semibold py-1 w-36 truncate">
-                                    {{ newInstructor.resume }}
+                                    {{ newInstructor.resume.name }}
                                 </p>
                                 <p class="text-xs pb-1 text-gray-500">
                                     {{ newInstructor.resume.size > 999999 ? (newInstructor.resume.size / 1000000).toFixed(2) + 'Mb' : newInstructor.resume.size > 999 ? (newInstructor.resume.size / 1000).toFixed(2) + ' kb' : newInstructor.resume.size + ' bytes' }}
                                 </p>
                             </div>
                             <div class="flex justify-center gap-3 items-center">
-                                <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" />
+                                <a :href="pdfSource" target="_blank">
+                                <SvgIcons name="eye" />
+                                </a>
                                 <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
                                 <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
                                     <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->

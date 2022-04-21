@@ -18,7 +18,7 @@ const store = useStore();
 
 const start:any = ref(
   {
-    name: 'Batch',
+    name: 'Cohort',
     path: '/dashboard/student-management/cohort'
   },
 )

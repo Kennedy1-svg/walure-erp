@@ -15,7 +15,8 @@ import Modl from '../../Modals.vue'
 import Modal from '../../Modal.vue'
 import * as actionTypes from '../../../store/module/instructors/constants/action'
 import * as mutationTypes from '../../../store/module/instructors/constants/mutation'
-import WebViewer from '../../WebViewer.vue'
+// import WebViewer from '../../WebViewer.vue'
+// import pdfDisplay from 'vue-pdf'
 // import WebViewer from '@pdftron/webviewer'
 // import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
@@ -133,7 +134,7 @@ const deselect:any = async () => {
     // await store.dispatch(batchActionTypes.FetchInstructor)  
 }
 
-let pdfSource:any = '';
+let pdfSource:any = ref('');
 
 const experience_levelField:any = ref('')
 
@@ -398,7 +399,7 @@ const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newInstructor.value.Image = event.target.files[0]
     formData.append('file', event.target.files[0])
-    let images: any = document.getElementById('output')
+    let images: any = document.getElementById('addinstructoroutput')
     let image:any = document.getElementById('displayoutput')
     images.src = URL.createObjectURL(event.target.files[0])
     image.src = URL.createObjectURL(event.target.files[0])
@@ -409,12 +410,12 @@ const onChangeResume:any = (event:any):any => {
     console.log('event', event.target.files[0])
     newInstructor.value.Resume = event.target.files[0]
     formData.append('Resume', event.target.files[0])
-    // let images: any = document.getElementById('output')
+    // let images: any = document.getElementById('addinstructoroutput')
     // let image:any = document.getElementById('displayoutput')
-    pdfSource = URL.createObjectURL(event.target.files[0])
+    pdfSource.value = URL.createObjectURL(event.target.files[0])
     // image.src = URL.createObjectURL(event.target.files[0])
     console.log('newInstructor resume', newInstructor.value.Resume.type)
-    console.log('newInstructor link', pdfSource)
+    console.log('newInstructor link', pdfSource.value)
 }
 
 const addInstructor:any = async () => {
@@ -503,8 +504,11 @@ const disabledView:any = 'bg-gray-300';
             <p @click="showResume = !showResume" class="text-xl">Close File </p>
             <SvgIcons @click="showResume = !showResume" name="cancel" class="cursor-pointer" />
         </div>
-        <WebViewer :class="[showResume ? '' : 'hidden']" class="absolute z-20 w-full" :initialDoc="newInstructor.Resume" />        
-
+        <!-- <WebViewer :class="[showResume ? '' : 'hidden']" class="absolute z-20 w-full" :initialDoc="newInstructor.Resume" />         -->
+        <!-- <pdfDisplay :src="newInstructor.Resume" /> -->
+        <!-- <a :href="pdfSource" target="_blank">View</a> -->
+        <!-- <iframe class="absolute z-20 w-full h-ful" :src="pdfSource" frameborder="0"></iframe> -->
+        <!-- {{ pdfSource }} -->
         <form id="formElem" ref="formEl" class="text-sm grid">
             <div class="grid justify-items-center gap-1 mb-[88px]">
                     <p class="text-[10px] text-red">
@@ -532,7 +536,7 @@ const disabledView:any = 'bg-gray-300';
                     </button>
                     </template>
                     <template #modalContent>
-                        <img id="output" alt="user img">
+                        <img id="addinstructoroutput" alt="user img">
                     </template>
                 </Modal>
 
@@ -540,7 +544,7 @@ const disabledView:any = 'bg-gray-300';
                     View Passport
                 </button>
                 <Modal :show="showProfilePicture" @close="showProfilePicture = false">
-                    <img id="output" alt="user img">
+                    <img id="addinstructoroutput" alt="user img">
                 </Modal> -->
                 </div>
             </div>
@@ -692,7 +696,8 @@ const disabledView:any = 'bg-gray-300';
                                 </p>
                             </div>
                             <div class="flex justify-around gap-3 items-center">
-                                <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" />
+                                <a :href="pdfSource" target="_blank">
+                                <SvgIcons name="eye" /></a>
                                 <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
                                     <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
                                     <!-- <AddSkill name="Add" />
