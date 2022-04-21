@@ -23,6 +23,8 @@ const closeModal:any = () => {
   emits('close')
 }
 
+let pdfSource:any = ref('');
+
 const talent:any = computed(() => {
     // console.log('students', JSON.parse(JSON.stringify(store.getters.getEditStudent.value)))
     return JSON.parse(JSON.stringify(store.getters.getEditTalent.value))
@@ -99,7 +101,9 @@ const talent:any = computed(() => {
                         </p>
                     </div>
                     <div class="view">
-                        <SvgIcons name="eye" />
+                        <a :href="pdfSource" target="_blank">
+                            <SvgIcons name="eye" />
+                        </a>
                     </div>
                 </div>
             </div>

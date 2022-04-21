@@ -218,19 +218,6 @@ onMounted(async() => {
 
                                             <button
                                             type="button"
-                                            @click="showDelete = !showDelete"
-                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            disabled>
-                                                <SvgIcons name="delete" />
-                                                Delete
-                                            </button>
-                                            <Modal :show="showDelete" @close="showDelete = false">
-                                            <p class="mb-4">No action</p>
-                                            
-                                            </Modal>
-
-                                            <button
-                                            type="button"
                                             @click="showDelete = !showDelete" @click.prevent="sendId(student.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
@@ -239,13 +226,13 @@ onMounted(async() => {
                                             </button>
                                             <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteStudent(studentitemtodelete)">
                                                     <template #title>
-                                                        Delete project
+                                                        Delete student
                                                     </template>
                                                     <template #info>
-                                                        Are you sure you want to remove project?
+                                                        Are you sure you want to remove student?
                                                     </template>
                                                     <template #delete>
-                                                        Yes, Delete Project
+                                                        Yes, Delete Student
                                                     </template>
                                             </DeleteModal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">
