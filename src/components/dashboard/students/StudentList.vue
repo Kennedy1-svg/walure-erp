@@ -10,6 +10,7 @@ import StudentDetails from './StudentDetails.vue';
 import AddToBatch from './AddToBatch.vue';
 import Modal from '../../Modals.vue';
 import EditStudent from './EditStudent.vue';
+import DeleteModal from '../../DeleteModal.vue';
 import Switch from '../../switch.vue';
 import { computed, ref, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex'
@@ -45,6 +46,29 @@ const totalPages:any = computed(() => {
     }
     return total
 })
+
+const studentitemtodelete:any = ref('');
+
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
+}
+
+const sendId:any = (id:any) => {
+    console.log('student', id)
+    studentitemtodelete.value = id
+    console.log('studentitemtodelete', studentitemtodelete.value)
+    return studentitemtodelete
+}
+
+const deleteStudent:any = async (id:any) => {
+    console.log('batch id', id);
+    closeModal()
+}
 
 const setId:any = async (id:any) => {
     console.log('studentid', id)
@@ -204,6 +228,26 @@ onMounted(async() => {
                                             <p class="mb-4">No action</p>
                                             
                                             </Modal>
+
+                                            <button
+                                            type="button"
+                                            @click="showDelete = !showDelete" @click.prevent="sendId(student.id)"
+                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                            >
+                                                <SvgIcons name="delete" />
+                                                Delete
+                                            </button>
+                                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteStudent(studentitemtodelete)">
+                                                    <template #title>
+                                                        Delete project
+                                                    </template>
+                                                    <template #info>
+                                                        Are you sure you want to remove project?
+                                                    </template>
+                                                    <template #delete>
+                                                        Yes, Delete Project
+                                                    </template>
+                                            </DeleteModal>
                                             <!-- <Modal class="flex py-2 hover:bg-gray-100">
                                                 <template #button>
                                                     <span class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left">
