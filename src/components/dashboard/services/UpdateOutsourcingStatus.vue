@@ -20,9 +20,9 @@ const store:any = useStore()
 
 let isChecked:any = ref(false);
 
-const project:any = computed(() => {
+const outsourcing:any = computed(() => {
   // console.log('applicants', JSON.parse(JSON.stringify(store.getters.getEditCourseApplicant.value)))
-  return JSON.parse(JSON.stringify(store.getters.getNewProject.value))
+  return JSON.parse(JSON.stringify(store.getters.getNewOutsourcing.value))
 })
 
 const statusOptions:any = [
@@ -73,28 +73,25 @@ const deselect:any = async () => {
     // await store.dispatch(actionTypes.FetchCourseApplicants, batchrequest)  
 }
 
-const updateProjectStatus:any = async () => {
-    console.log('I will update project status');
-    console.log('project id should be', project.value.id)
-    console.log('status value should be', statusId.value)
-    // route.push('/dashboard/student-management')
-    const data:any = {
-        projectId: project.value,
-    }
-    const request:any = `${api_url}api/project/updateStatus/${project.value.id}/${statusId.value}`;
+const updateOutsourcingStatus:any = async () => {
+  console.log('I will update outsourcing status');
+  console.log('outsourcing id should be', outsourcing.value.id)
+  console.log('status value should be', statusId.value)
+  // route.push('/dashboard/student-management')
+  const data:any = {
+      outsourcingId: outsourcing.value,
+  }
+  const request:any = `${api_url}api/outsourcing/updatestatus/${outsourcing.value.id}/${statusId.value}`;
 
-    // const requestData:any = {
-    //     data: data,
-    //     url: request,
-    // }
+  // const requestData:any = {
+  //     data: data,
+  //     url: request,
+  // }
 
-    console.log('requestData', request)
-    
-    await store.dispatch(actionTypes.UpdateProjectStatus, request)
-    closeModal()
-    setTimeout(() => {
-        statusId.value = ''
-    }, 1000)
+  console.log('requestData', request)
+
+  await store.dispatch(actionTypes.UpdateOutsourcingStatus, request)
+  closeModal()
 }
 
 let searchText:any = ref('');
@@ -141,21 +138,21 @@ const closeModal:any = async () => {
   emits('close')
 }
 
-onMounted(async() => {
-    console.log('I started here');
+// onMounted(async() => {
+//     console.log('I started here');
     // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/student/get-students/{pageIndex}/{pageSize}';
     const request:any = `${api_url}api/project/get-projects/{pageIndex}/{pageSize}`;
     // await store.dispatch(a ctionTypes.FetchBatch, request)
     // await store.getters.getEditStudent
     // console.log('student is', store.getters.getEditStudent.value)
     // console.log('I finished here');
-})
+// })
 </script>
 
 <template>
     <div class="main relative w-full px-6 lg:px-[45px] h-screen bg-white">
         <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl">Update Project Status</p>
+            <p class="text-2xl">Update Outsourcing Status</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form class="text-sm text-left grid">
@@ -166,7 +163,7 @@ onMounted(async() => {
                 <multiselect ref="multi" @clear="deselect" v-model="statusId" valueProp="value" :options="statusOptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="updateProjectStatus" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
+                <button @click.prevent="updateOutsourcingStatus" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
             </div>
         </form>
     </div>

@@ -92,7 +92,7 @@ export default {
   },
   actions: {
     async [actionTypes.FetchData] ({ commit }: any, data: any) {
-      const user = await addData(data.url, data.data)
+      const user = await addData(data.url, data.data, data.token = null)
       if (user.access_token) {
         commit(mutationTypes.SetLoginAlertText, 'Login Successful')
         commit(mutationTypes.SetLoginAlertStatus, true)

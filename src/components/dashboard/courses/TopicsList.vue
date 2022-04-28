@@ -85,8 +85,8 @@ onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('uploaded topics list mounted');
 	const id:any = route.params.id;
-	const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
-	await store.dispatch(actionTypes.FetchCurriculum, request)
+	// const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
+	// await store.dispatch(actionTypes.FetchCurriculum, request)
     // const request:any = `${api_url}api/course/search-courses/{pageIndex}/{pageSize}`;
     // await store.dispatch(courseActionTypes.FetchCourses, request)
 });

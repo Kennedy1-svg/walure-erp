@@ -43,6 +43,7 @@ const updateInstructorStatus:any = async () => {
     // }
 
     console.log('requestData', request)
+    
     await store.dispatch(actionTypes.UpdateInstructorStatus, request)
     closeModal()
 }

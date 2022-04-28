@@ -8,8 +8,25 @@ import { addData, fetchData, editData, addEmptyData, removeData } from '../../..
 export default {
     state: () => ({
         projects: '',
+        // outsourcingTalent: localStorage.getItem('outsourcingTalent'),
+        outsourcingTalent: [],
+        newOutsourcingTalent: {
+          jobEngagementType: '',
+          noOfResource: '',
+          description: '',
+          experienceLevel: '',
+          role: '',
+        },
         outsourcingList: '',
-        newOutsourcing: '',
+        newOutsourcing: {
+          contactName: '',
+          companyName: '',
+          email: '',
+          phoneNumber: '',
+          location: '',
+          companyType: '',
+          jobDetails: [],
+        },
         outsourcing: '',
         project: {
           name: '',
@@ -29,48 +46,64 @@ export default {
         consultancies: '',
         editconsultancy: '',
         studentsInProject: '',
-        title: ''
+        title: '',
+        outsourcingjobdetails: '',
     }),
     getters: {
         getProject: (state: any) => {
-        return computed(() => {
-            return state.projects
-        })
+          return computed(() => {
+              return state.projects
+          })
+        },
+        getOutsourcingTalent: (state: any) => {
+          return computed(() => {
+              return state.outsourcingTalent
+          })
+        },
+        getNewOutsourcingTalent: (state: any) => {
+          return computed(() => {
+              return state.newOutsourcingTalent
+          })
+        },
+        getOutsourcingJobDetails: (state: any) => {
+          return computed(() => {
+              return state.outsourcingjobdetails
+          })
         },
         getNewProject: (state: any) => {
-        return computed(() => {
-            return state.project
-        })
+          return computed(() => {
+              return state.project
+          })
         },
         getTotalProjectCount: (state: any) => {
-        return computed(() => {
-            return state.total_count
-        })
+          return computed(() => {
+              return state.total_count
+          })
         },
         getOutsourcing: (state: any) => {
-        return computed(() => {
-            return state.outsourcing
-        })
+          return computed(() => {
+              return state.outsourcing
+          })
         },
         getNewOutsourcing: (state: any) => {
-        return computed(() => {
-            return state.newOutsourcing
-        })
+          return computed(() => {
+              return state.newOutsourcing
+          })
         },
-        getOutsourcingListt: (state: any) => {
-        return computed(() => {
-            return state.outsourcingList
-        })
+        getOutsourcingList: (state: any) => {
+          return computed(() => {
+              return state.outsourcingList
+          })
         },
         getConsultancy: (state: any) => {
-        return computed(() => {
-            return state.consultancies
-        })
+          return computed(() => {
+              return state.consultancies
+          })
         },
         getEditConsultancy: (state: any) => {
-        return computed(() => {
-            return state.editconsultancy
-        })
+          return computed(() => {
+              return state.editconsultancy
+          })
         },  
         getProjectAlertStatus: (state: any) => {
           return computed(() => {
@@ -83,14 +116,14 @@ export default {
           })
         },
         getEditProjectStatus: (state: any) => {
-        return computed(() => {
-            return state.isEditing
-        })
+          return computed(() => {
+              return state.isEditing
+          })
         },
         getProjectTitle: (state: any) => {
-        return computed(() => {
-            return state.title
-        })
+          return computed(() => {
+              return state.title
+          })
         },
         getStudentsInProject: (state: any) => {
           console.log(state.studentsInProject)
@@ -112,7 +145,13 @@ export default {
       [mutationTypes.SetOutsourcing] (state: any, data: any) {
         state.outsourcing = data
       },
+      [mutationTypes.SetJobDetail] (state: any, data: any) {
+        state.outsourcingjobdetails = data
+      },
       [mutationTypes.SetNewOutsourcing] (state: any, data: any) {
+        state.newOutsourcing = data
+      },
+      [mutationTypes.SetEditOutsourcing] (state: any, data: any) {
         state.newOutsourcing = data
       },
       [mutationTypes.SetOutsourcingList] (state: any, data: any) {
@@ -120,6 +159,15 @@ export default {
       },
       [mutationTypes.SetConsultancy] (state: any, data: any) {
         state.consultancies = data
+      },
+      // [mutationTypes.SetOutsourcingTalent] (state: any, data: any) {
+      //   localStorage.setItem('outsourcingTalent', state.outsourcingTalent = data)
+      // },
+      [mutationTypes.SetOutsourcingTalent] (state: any, data: any) {
+        state.outsourcingTalent = data
+      },
+      [mutationTypes.SetNewOutsourcingTalent] (state: any, data: any) {
+        state.newOutsourcingTalent = data
       },
       [mutationTypes.SetEditConsultancy] (state: any, data: any) {
         state.editconsultancy = data
@@ -155,29 +203,29 @@ export default {
         //   console.log('Iprojects', JSON.parse(JSON.stringify(projects)))
         //   console.log('Iprojects', JSON.parse(JSON.stringify(projects.value)))
         //   console.log('Iprojects', projects.value)
-        if (project.payload) {
-          await commit(mutationTypes.SetProject, project)
-        } else if (project.response.status === 401) {
-          router.push({ name: 'Login' });
-        }
+          if (project.payload) {
+            await commit(mutationTypes.SetProject, project)
+          } else if (project.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
         },
         async [actionTypes.FetchOutsourcing] ({ commit }: any, data: any = `${api_url}api/outsourcing/get/{page}/{limit}`) {
           const token:any = localStorage.getItem('token')
         //   console.log('token here', token)
-          const project = await fetchData(data, token)
+          const outsourcing = await fetchData(data, token)
         //   console.log('data', data)
-        //   console.log('Iprojects', projects.payload)
-        //   console.log('Iprojects', projects.value)
-        //   console.log('Iprojects', JSON.parse(JSON.stringify(projects)))
-        //   console.log('Iprojects', JSON.parse(JSON.stringify(projects.value)))
-        //   console.log('Iprojects', projects.value)
-        if (project.payload) {
-          await commit(mutationTypes.SetProject, project)
-        } else if (project.response.status === 401) {
-          router.push({ name: 'Login' });
-        }
+        //   console.log('Ioutsourcings', outsourcings.payload)
+        //   console.log('Ioutsourcings', outsourcings.value)
+        //   console.log('Ioutsourcings', JSON.parse(JSON.stringify(outsourcings)))
+        //   console.log('Ioutsourcings', JSON.parse(JSON.stringify(outsourcings.value)))
+        //   console.log('Ioutsourcings', outsourcings.value)
+          if (outsourcing.payload) {
+            await commit(mutationTypes.SetOutsourcing, outsourcing)
+          } else if (outsourcing.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
         },
@@ -191,13 +239,104 @@ export default {
         //   console.log('Iconsultancys', JSON.parse(JSON.stringify(consultancys)))
         //   console.log('Iconsultancys', JSON.parse(JSON.stringify(consultancys.value)))
         //   console.log('Iconsultancys', consultancys.value)
-        if (consultancy.payload) {
-          await commit(mutationTypes.SetConsultancy, consultancy)
-        } else if (consultancy.response.status === 401) {
-          router.push({ name: 'Login' });
-        }
+          if (consultancy.payload) {
+            await commit(mutationTypes.SetConsultancy, consultancy)
+          } else if (consultancy.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
+        },
+        async [actionTypes.FetchJobDetails] ({ commit }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+        //   console.log('token here', token)
+          const jobdetail = await fetchData(data, token)
+        //   console.log('data', data)
+        //   console.log('Ijobdetails', jobdetails.payload)
+        //   console.log('Ijobdetails', jobdetails.value)
+        //   console.log('Ijobdetails', JSON.parse(JSON.stringify(jobdetails)))
+        //   console.log('Ijobdetails', JSON.parse(JSON.stringify(jobdetails.value)))
+        //   console.log('Ijobdetails', jobdetails.value)
+          if (jobdetail.payload) {
+            await commit(mutationTypes.SetJobDetail, jobdetail)
+          } else if (jobdetail.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
+          // commit(mutationTypes.SetProject, project)
+          // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
+        },
+        async [actionTypes.FetchOutsourcingTalents] ({ commit }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+        //   console.log('token here', token)
+          const talents = await fetchData(data, token)
+        //   console.log('data', data)
+          // console.log('Italentss', talents.payload)
+          // console.log('Italentss', talents.value)
+        //   console.log('Italentss', JSON.parse(JSON.stringify(talentss)))
+        //   console.log('Italentss', JSON.parse(JSON.stringify(talentss.value)))
+        //   console.log('Italentss', talentss.value)
+          if (talents.payload) {
+            await commit(mutationTypes.SetOutsourcingTalent, talents)
+          } else if (talents.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
+          // commit(mutationTypes.SetProject, project)
+          // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
+        },
+        async [actionTypes.AddOutsourcingTalent] ({ commit, state }:any, data:any) {
+          const outsourcingTalent:any = await JSON.parse(JSON.stringify(state.outsourcingTalent))
+          console.log('outsourcing talent here', outsourcingTalent)
+          console.log('data', data)
+          const newData = [...outsourcingTalent, data]
+          console.log('new added outsourcing talent data', newData)
+          await commit(mutationTypes.SetOutsourcingTalent, newData)
+        },
+        async [actionTypes.EditOutsourcingTalent] ({ commit, state }:any, data:any) {
+          const outsourcingTalent:any = await JSON.parse(JSON.stringify(state.outsourcingTalent))
+          console.log('outsourcing talent here', outsourcingTalent.payload.jobDetails)
+          console.log('data', data)
+          const newData = [...outsourcingTalent.payload.jobDetails, data]
+          console.log('new added outsourcing talent data', newData)
+          await commit(mutationTypes.SetOutsourcingTalent, newData)
+        },
+        async [actionTypes.AddOutsourcing] ({ commit, dispatch }:any, data:any) {
+          // const outsourcingTalent:any = await JSON.parse(JSON.stringify(state.outsourcingTalent))
+          const token:any = localStorage.getItem('token')
+          // console.log('outsourcing talent here', outsourcingTalent)
+          console.log('data', data)
+          // const newData = [...outsourcingTalent, data]
+          // console.log('new added outsourcing talent data', newData)
+          // await commit(mutationTypes.SetOutsourcingTalent, newData)
+          const addOutsourcing = await addData(data.url, data.data, token)
+          if (!addOutsourcing.hasErrors) {
+            // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
+            await commit(mutationTypes.SetProjectAlertText, 'Outsourcing added successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchOutsourcing)
+          } else if (addOutsourcing.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (addOutsourcing.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
+        async [actionTypes.RemoveOutsourcingTalent] ({ state, commit }:any, data:any) {
+          const outsourcingTalent:any = await JSON.parse(JSON.stringify(state.outsourcingTalent))
+          console.log('outsourcing talent here', outsourcingTalent)
+          console.log('data', data)
+          const itemIndex = await outsourcingTalent.findIndex((item:any) => outsourcingTalent.indexOf(item) === data)
+          console.log('item index', itemIndex)
+          outsourcingTalent.splice(itemIndex, 1)
+          console.log('new daleted outsourcing talent data', outsourcingTalent)
+          await commit(mutationTypes.SetOutsourcingTalent, outsourcingTalent)
         },
         async [actionTypes.AddStudentToProject] ({ commit, dispatch }: any, data: any) {
           const token:any = localStorage.getItem('token')
@@ -340,6 +479,31 @@ export default {
             commit(mutationTypes.SetProjectAlertText, '')
           }, 2000)
         },
+        async [actionTypes.RemoveOutsourcing] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here')
+          console.log('all data is', data)
+          const outsourcing = await removeData(data, token)
+          console.log('outsourcing', outsourcing)
+          if (!outsourcing.hasErrors) {
+            await commit(mutationTypes.SetProjectAlertText, 'Outsourcing removed successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchOutsourcing)
+          } else if (outsourcing.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (outsourcing.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
         async [actionTypes.RemoveStudentFromProject] ({ commit, dispatch }: any, data: any) {
           console.log('i am here')
           const token:any = localStorage.getItem('token')
@@ -376,6 +540,18 @@ export default {
             router.push({ name: 'Login' });
           }
         },
+        async [actionTypes.FetchEditOutsourcing] ({ commit }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here')
+          console.log('all data is', data)
+          const outsourcing = await fetchData(data, token)
+          console.log('outsourcing', outsourcing)
+          if (outsourcing.payload) {
+            commit(mutationTypes.SetEditOutsourcing, outsourcing.payload)
+          } else if (outsourcing.response.status === 401) {
+            router.push({ name: 'Login' });
+          }
+        },
         async [actionTypes.FetchEditConsultancy] ({ commit }: any, data: any) {
           const token:any = localStorage.getItem('token')
           console.log('token here')
@@ -405,6 +581,34 @@ export default {
             await commit(mutationTypes.SetProjectAlertStatus, true)
           } else if (UpdateProjectStatus.message.includes('404')) {
             await commit(mutationTypes.SetProjectAlertText, 'Applicant not found')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Something went wrong')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
+        async [actionTypes.UpdateOutsourcingStatus] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token in update', token)
+          console.log('update data is', data)
+          const UpdateOutsourcingStatus = await addEmptyData(data, token)
+          console.log('UpdateOutsourcingStatus', UpdateOutsourcingStatus)
+          if (UpdateOutsourcingStatus.payload) {
+            await commit(mutationTypes.SetProjectAlertText, 'Outsourcing status updated successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchOutsourcing)
+          } else if (UpdateOutsourcingStatus.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (UpdateOutsourcingStatus.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Bad request received')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else if (UpdateOutsourcingStatus.message.includes('404')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Outsourcing not found')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           } else {
             await commit(mutationTypes.SetProjectAlertText, 'Something went wrong')

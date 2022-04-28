@@ -33,9 +33,9 @@ const talent:any = computed(() => {
 </script>
 
 <template>
-    <div class="main grid px-[45px]">
+    <div class="main grid px-[45px] h-[92vh]">
         <div class="grid mb-7">
-            <div class="flex justify-between py-[53px] items-center ">
+            <div class="flex justify-between py-3 items-center ">
                 <p class="text-2xl">Talent Details</p>
                 <!-- {{ talent }} -->
                 <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
@@ -48,6 +48,7 @@ const talent:any = computed(() => {
                 <p class="text-grey font-medium">Talent</p>
             </div> -->
         </div>
+        <!-- {{ talent }} -->
         <div class="bottom">
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>First name</p>
@@ -89,19 +90,20 @@ const talent:any = computed(() => {
                 <p>Status</p>
                 <p>{{ talent.status == 0 ? 'Inactive' : 'Active' }}</p>
             </div>
+            <!-- {{ talent.resumeUrl }} -->
             <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                 <p>Resume</p>
-                <div class="bg-primary-accent p-4 gap-4 justify-between items-center rounded flex">
+                <div v-if="talent.resumeUrl" class="bg-primary-accent p-4 gap-4 justify-between items-center rounded flex">
                     <div class="text">
                         <p class="font-semibold">
-                            Resume, PDF
+                            {{ talent.firstName }}'s Resume
                         </p>
                         <p class="text-grey text-xs">
                             <!-- {{ talent.resumeUrl }} -->
                         </p>
                     </div>
                     <div class="view">
-                        <a :href="pdfSource" target="_blank">
+                        <a :href="talent.resumeUrl" target="_blank">
                             <SvgIcons name="eye" />
                         </a>
                     </div>

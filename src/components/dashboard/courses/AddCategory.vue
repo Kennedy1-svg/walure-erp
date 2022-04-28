@@ -251,6 +251,7 @@ const editCategory:any = async () => {
     await store.dispatch(courseActionTypes.EditCourseCategory, newData)
     const result = await store.getters.getCourseCategories
     closeModal()
+    store.commit(courseMutationTypes.SetNewCourseCategory, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')

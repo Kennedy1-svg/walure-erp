@@ -15,8 +15,13 @@ import Modl from '../../Modals.vue'
 import Modal from '../../Modal.vue'
 import WebViewer from '../../WebViewer.vue'
 import * as actionTypes from '../../../store/module/instructors/constants/action'
+import * as mutationTypes from '../../../store/module/instructors/constants/mutation'
 // import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
+// import { VuePdf, createLoadingTask } from 'vue3-pdfjs/esm';
+// import { VuePdfPropsType } from 'vue3-pdfjs/components/vue-pdf/vue-pdf-props'; // Prop type definitions can also be imported
+// import { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
+
 // import { VuePdf, createLoadingTask } from 'vue3-pdfjs/esm';
 // import { VuePdfPropsType } from 'vue3-pdfjs/components/vue-pdf/vue-pdf-props'; // Prop type definitions can also be imported
 // import { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
@@ -115,6 +120,10 @@ const experience_leveloptions:any = [
   },
 ]
 
+const newInstructor:any = computed(() => {
+    return store.getters.getEditInstructor.value;
+});
+
 let onResumeUpload = ref(false)
 
 const cancan:any = async () => {
@@ -128,7 +137,25 @@ const deselect:any = async () => {
     // await store.dispatch(batchActionTypes.FetchInstructor)  
 }
 
+const pdfSrc = ref('https://walure.blob.core.windows.net/assets/blobs/instructor/368d52792a9f4333950569774210a25f.pdf')
+const numOfPages = ref(0)
+
+// const loadingTask = createLoadingTask(pdfSrc.value)
+// loadingTask.promise.then((pdf: PDFDocumentProxy) => {
+//     numOfPages.value = pdf.numPages
+// })
+
 const pdfSource:any = ref('');
+// const pdfSource:any = computed(async () => {
+//     const url = await fetch(newInstructor.value.resume, { mode: 'no-cors'})
+//         .then(res => res.blob())
+//         .then(blob => {
+//             return URL.createObjectURL(blob)
+//         })
+//     console.log(url)
+//     return url
+// })
+
 
 const experience_levelField:any = ref('')
 
@@ -141,10 +168,6 @@ let formData = new FormData();
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
 }
-
-const newInstructor:any = computed(() => {
-    return store.getters.getEditInstructor.value;
-});
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 const phone ='^[0]+[0-9]';
@@ -220,12 +243,12 @@ const checkError:any = () => {
         errors.experience = false;
     }
 
-    if (!newInstructor.value.picture) {
+    if (!newInstructor.value.image) {
         errors.image = true;
-        errors.imageText = 'picture is required. Please upload an image'
-    } else if (newInstructor.value.picture.size > 5242880) {
+        errors.imageText = 'Image is required. Please upload an image'
+    } else if (newInstructor.value.image.size > 5242880) {
         errors.image = true;
-        errors.imageText = 'picture size should not be more than 5MB'
+        errors.imageText = 'Image size should not be more than 5MB'
     } else {
         errors.image = false;
     }
@@ -378,7 +401,7 @@ let isResumeActive:any = computed(() => {
 const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newInstructor.value.image = event.target.files[0]
-    formData.append('file', event.target.files[0])
+    // formData.append('file', event.target.files[0])
     let images: any = document.getElementById('instructoroutput')
     let image:any = document.getElementById('displayinstructoroutput')
     images.src = URL.createObjectURL(event.target.files[0])
@@ -389,7 +412,7 @@ const onChange:any = (event:any):any => {
 const onChangeResume:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newInstructor.value.resume = event.target.files[0]
-    formData.append('file', event.target.files[0])
+    // formData.append('file', event.target.files[0])
     onResumeUpload.value = true
     // let images: any = document.getElementById('instructoroutput')
     // let image:any = document.getElementById('displayinstructoroutput')
@@ -411,29 +434,85 @@ const resetForm:any = Object.freeze({
         bioId: ''
 })
 
+// const getBase64FromUrl = async (url:any) => {
+//   const data = await fetch(url, { mode: 'no-cors'});
+//   const blob = await data.blob();
+//   return new Promise((resolve) => {
+//     const reader = new FileReader();
+//     reader.readAsDataURL(blob); 
+//     reader.onloadend = () => {
+//       const base64data = reader.result;   
+//       resolve(base64data);
+//     }
+//   });
+// }
+
+// const fetchFile = async () => {
+//     console.log('fetching file with id', newInstructor.value.resumeId)
+//     const request = `${api_url}api/file/${newInstructor.value.resumeId}`
+//     await store.dispatch(actionTypes.FetchFile, request)
+//     return pdfSource.value = store.getters.getFile.value
+// }
+
 const editInstructor:any = async () => {
+    console.log('image has been changed?', isImageRemoved.value)
     console.log('hi');
     console.log('newstudent', newInstructor.value)
     console.log('newstudent', newInstructor.value.picture)
-    const request:any = `${api_url}api/instructor/create-instructor`;
+    const request:any = `${api_url}api/instructor/edit-instructor`;
+
+    if (!isImageRemoved.value) {
+        formData.append('firstName', newInstructor.value.firstName)
+        formData.append('lastName', newInstructor.value.lastName)
+        formData.append('OtherName', newInstructor.value.OtherName)
+        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('twitterUrl', newInstructor.value.twitterUrl)
+        formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
+        formData.append('facebookUrl', newInstructor.value.facebookUrl)
+        formData.append('resume', newInstructor.value.resume, newInstructor.value.resume.name)
+        formData.append('address', newInstructor.value.address)
+        formData.append('phoneNumber', newInstructor.value.phoneNumber)
+        formData.append('gender', newInstructor.value.gender)
+        formData.append('bio', newInstructor.value.bio)
+        formData.append('id', newInstructor.value.id)
+        formData.append('email', newInstructor.value.email)
+        formData.append('experienceLevel', newInstructor.value.experienceLevel)
+    } else {
+        formData.append('firstName', newInstructor.value.firstName)
+        formData.append('lastName', newInstructor.value.lastName)
+        formData.append('OtherName', newInstructor.value.OtherName)
+        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('twitterUrl', newInstructor.value.twitterUrl)
+        formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
+        formData.append('facebookUrl', newInstructor.value.facebookUrl)
+        formData.append('image', newInstructor.value.image, newInstructor.value.image.name)
+        formData.append('resume', newInstructor.value.resume, newInstructor.value.resume.name)
+        formData.append('address', newInstructor.value.address)
+        formData.append('phoneNumber', newInstructor.value.phoneNumber)
+        formData.append('gender', newInstructor.value.gender)
+        formData.append('bio', newInstructor.value.bio)
+        formData.append('id', newInstructor.value.id)
+        formData.append('email', newInstructor.value.email)
+        formData.append('experienceLevel', newInstructor.value.experienceLevel)
+    }
 
     // const formElem = document.getElementById('formElem')
-    formData.append('firstName', newInstructor.value.firstName)
-    formData.append('lastName', newInstructor.value.lastName)
-    formData.append('OtherName', newInstructor.value.OtherName)
-    formData.append('GithubUrl', newInstructor.value.GithubUrl)
-    formData.append('twitterUrl', newInstructor.value.twitterUrl)
-    formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
-    formData.append('facebookUrl', newInstructor.value.facebookUrl)
-    formData.append('picture', newInstructor.value.picture, newInstructor.value.picture.name)
-    formData.append('resume', newInstructor.value.resume, newInstructor.value.resume.name)
-    formData.append('address', newInstructor.value.address)
-    formData.append('phoneNumber', newInstructor.value.phoneNumber)
-    formData.append('gender', newInstructor.value.gender)
-    formData.append('bio', newInstructor.value.bio)
-    formData.append('id', newInstructor.value.id)
-    formData.append('email', newInstructor.value.email)
-    formData.append('experienceLevel', newInstructor.value.experienceLevel)
+    // formData.append('firstName', newInstructor.value.firstName)
+    // formData.append('lastName', newInstructor.value.lastName)
+    // formData.append('OtherName', newInstructor.value.OtherName)
+    // formData.append('GithubUrl', newInstructor.value.GithubUrl)
+    // formData.append('twitterUrl', newInstructor.value.twitterUrl)
+    // formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
+    // formData.append('facebookUrl', newInstructor.value.facebookUrl)
+    // formData.append('image', newInstructor.value.image, newInstructor.value.image.name)
+    // formData.append('resume', newInstructor.value.resume, newInstructor.value.resume.name)
+    // formData.append('address', newInstructor.value.address)
+    // formData.append('phoneNumber', newInstructor.value.phoneNumber)
+    // formData.append('gender', newInstructor.value.gender)
+    // formData.append('bio', newInstructor.value.bio)
+    // formData.append('id', newInstructor.value.id)
+    // formData.append('email', newInstructor.value.email)
+    // formData.append('experienceLevel', newInstructor.value.experienceLevel)
 
     // console.log('formData', JSON.parse(JSON.stringify(formData)))
     
@@ -455,9 +534,10 @@ const editInstructor:any = async () => {
         data: formData
     }
     console.log('newData', newData)
-    await store.dispatch(actionTypes.AddNewInstructor, newData)
+    await store.dispatch(actionTypes.EditInstructor, newData)
     const result = await store.getters.getInstructor
     closeModal()
+    store.commit(mutationTypes.SetNewInstructor, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
@@ -481,13 +561,13 @@ const disabledRemove:any = 'border-grey text-grey';
 const activeView:any = 'bg-primary hover:opacity-80';
 const disabledView:any = 'bg-gray-300';
 
-watch(
-  () => isResumeActive,
-  pdfSource => {
-    console.log('pdfSource', pdfSource.value)
-    // showModal.value = show;
-  },
-);
+// watch(
+//   () => isResumeActive,
+//   pdfSource => {
+//     console.log('pdfSource', pdfSource.value)
+//     // showModal.value = show;
+//   },
+// );
 </script>
 
 <template>
@@ -501,7 +581,9 @@ watch(
             <p @click="showResume = !showResume" class="text-xl">Close File </p>
             <SvgIcons @click="showResume = !showResume" name="cancel" class="cursor-pointer" />
         </div>
-        <WebViewer :class="[showResume ? '' : 'hidden']" class="absolute z-20 w-full" :initialDoc="newInstructor.Resume" />        
+        <!-- <WebViewer :class="[showResume ? '' : 'hidden']" class="absolute z-20 w-full" :initialDoc="newInstructor.Resume" />    -->
+
+        <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSource" :page="page" />     
 
         <form id="formElem" ref="formEl" class="text-sm grid">
             <!-- {{ newInstructor }} -->
@@ -673,8 +755,9 @@ watch(
                     <label for="resume" class="font-semibold">
                         Resume
                     </label>
+                    <!-- {{ pdfSource }} -->
                     <!-- {{ newInstructor.resume }} -->
-                    <div class="flex items-center justify-between w-full">
+                    <div class="flex items-center gap-4 justify-between w-full">
                         <label for="resume_upload" :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
@@ -695,7 +778,8 @@ watch(
                             </div> -->
                             <!-- {{ newInstructor.resume }} -->
                             <div class="flex justify-center gap-3 items-center">
-                                <a :href="pdfSource" target="_blank">
+                                <a :href="newInstructor.resume" target="_blank">
+                                    <!-- <a href="data:text/pdf;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KICA8aGVhZD4KICAgIDxzY3JpcHQgdHlwZT0ibW9kdWxlIiBzcmM9Ii9Adml0ZS9jbGllbnQiPjwvc2NyaXB0PgoKICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04IiAvPgogICAgPGxpbmsgcmVsPSJpY29uIiBocmVmPSIvZmF2aWNvbi5pY28iIC8+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCIgLz4KICAgIDxtZXRhIG5hbWU9ImRlc2NyaXB0aW9uIiBjb250ZW50PSJXYWx1cmUgQ2FwaXRhbCBiYWNrIG9mZmljZSBmb3IgbWFpbnRhaW5pbmcgZnJvbnQgZW5kIHdlYiBhcHBsaWNhdGlvbiI+CiAgICA8bWV0YSBuYW1lPSJrZXl3b3JkcyIgY29udGVudD0iV2FsdXJlIENhcGl0YWwsIFdhbHVyZSwgQ2FwaXRhbCwgV2FsdXJlIENhcGl0YWwgYmFjayBvZmZpY2UsIFdhbHVyZSBDYXBpdGFsIGJhY2sgb2ZmaWNlIGZvciBtYWludGFpbmluZyBmcm9udCBlbmQgd2ViIGFwcGxpY2F0aW9uIj4KICAgIDxtZXRhIG5hbWU9InJvYm90cyIgY29udGVudD0iaW5kZXgsIGZvbGxvdyI+CiAgICA8bWV0YSBuYW1lPSJnb29nbGVib3QiIGNvbnRlbnQ9ImluZGV4LCBmb2xsb3ciPgogICAgPG1ldGEgbmFtZT0ibGFuZ3VhZ2UiIGNvbnRlbnQ9IkVuZ2xpc2giPgogICAgPG1ldGEgbmFtZT0iZGlzdHJpYnV0aW9uIiBjb250ZW50PSJnbG9iYWwiPgogICAgPG1ldGEgbmFtZT0iZG9jLXR5cGUiIGNvbnRlbnQ9IldlYiBQYWdlIj4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzMj9mYW1pbHk9TW9udHNlcnJhdDppdGFsLHdnaHRAMCwxMDA7MCwyMDA7MCwzMDA7MCw0MDA7MCw1MDA7MCw2MDA7MCw3MDA7MCw4MDA7MCw5MDA7MSwxMDA7MSwyMDA7MSwzMDA7MSw0MDA7MSw1MDA7MSw2MDA7MSw3MDA7MSw4MDA7MSw5MDAmZGlzcGxheT1zd2FwIiByZWw9InN0eWxlc2hlZXQiIG1lZGlhPSJhbGwiPgogICAgPCEtLSA8c3R5bGUgc3JjPSJ2dWUtbXVsdGlzZWxlY3QvZGlzdC92dWUtbXVsdGlzZWxlY3QubWluLmNzcyI+PC9zdHlsZT4gLS0+CiAgICA8IS0tIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly91bnBrZy5jb20vdnVlLW11bHRpc2VsZWN0QDIuMS42L2Rpc3QvdnVlLW11bHRpc2VsZWN0Lm1pbi5jc3MiPiAtLT4KICAgIDx0aXRsZT5XYWx1cmUgQ2FwaXRhbCB8IEJhY2sgT2ZmaWNlPC90aXRsZT4KICA8L2hlYWQ+CiAgPGJvZHk+CiAgICA8ZGl2IGlkPSJhcHAiPjwvZGl2PgogICAgPHNjcmlwdCB0eXBlPSJtb2R1bGUiIHNyYz0iL3NyYy9tYWluLnRzP3Q9MTY1MDYxMjg5MzEzNSI+PC9zY3JpcHQ+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==" target="_blank"> -->
                                 <SvgIcons name="eye" /></a>
                                 <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
                                 <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
@@ -711,7 +795,7 @@ watch(
                                     {{ newInstructor.resume.name }}
                                 </p>
                                 <p class="text-xs pb-1 text-gray-500">
-                                    {{ newInstructor.resume.size > 999999 ? (newInstructor.resume.size / 1000000).toFixed(2) + 'Mb' : newInstructor.resume.size > 999 ? (newInstructor.resume.size / 1000).toFixed(2) + ' kb' : newInstructor.resume.size + ' bytes' }}
+                                    {{ newInstructor.resume.size > 999999 ? (newInstructor.resume.size / 1000000).toFixed(2) + ' Mb' : newInstructor.resume.size > 999 ? (newInstructor.resume.size / 1000).toFixed(2) + ' kb' : newInstructor.resume.size + ' bytes' }}
                                 </p>
                             </div>
                             <div class="flex justify-center gap-3 items-center">

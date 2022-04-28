@@ -23,6 +23,8 @@ let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
 
+let pdfSource:any = ref('');
+
 // const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
 // const alertText:any = computed(() => store.getters.getBatchAlertText.value)
 
@@ -109,21 +111,21 @@ const checkError:any = () => {
     }
 
     
-    if (!newTalent.value.GitHubUrl) {
+    if (!newTalent.value.gitHubUrl) {
         errors.github = true;
         errors.githubText = 'Github url is required'
-    } else if (newTalent.value.GitHubUrl.length <= 3) {
+    } else if (newTalent.value.gitHubUrl.length <= 3) {
         errors.githubText = 'Github url needs to be more than 3 characters'
     } else {
         errors.github = false;
         errors.githubText = ''
     }
     
-    if (!newTalent.value.LinkedInUrl) {
+    if (!newTalent.value.linkedInUrl) {
         errors.linkedin = true;
-        errors.linkedinText = 'Last name is required'
-    } else if (newTalent.value.LinkedInUrl.length <= 3) {
-        errors.linkedinText = 'Last name needs to be more than 3 characters'
+        errors.linkedinText = 'Linkedin url is required'
+    } else if (newTalent.value.linkedInUrl.length <= 3) {
+        errors.linkedinText = 'Linkedin url needs to be more than 3 characters'
     } else {
         errors.linkedin = false;
         errors.linkedinText = ''
@@ -183,7 +185,7 @@ const checkError:any = () => {
         errors.phoneText = ''
     }
 
-    if (!newTalent.value.Skills) {
+    if (!newTalent.value.skills) {
         errors.skills = true;
         errors.skillsText = 'Skill is required'
     } else {
@@ -224,6 +226,8 @@ const checkError:any = () => {
     }   
 }
 
+let onResumeUpload = ref(false)
+
 let isResumeActive:any = computed(() => {
     if (newTalent.value.resumeUrl) {
         return true
@@ -237,6 +241,7 @@ let isResumeActive:any = computed(() => {
 // }
 
 const removeResume:any = async () => {
+    onResumeUpload.value = false
     return newTalent.value.resumeUrl = ''
 }
 
@@ -461,23 +466,14 @@ const onChange:any = (event:any):any => {
     newTalent.value.resumeUrl = event.target.files[0]
     formData.append('file', event.target.files[0])
     // let images: any = document.getElementById('output')
+    pdfSource.value = URL.createObjectURL(event.target.files[0])
+    onResumeUpload.value = true
+    console.log('newInstructor link', pdfSource.value)
     // let image:any = document.getElementById('displayoutput')
     // images.src = URL.createObjectURL(event.target.files[0])
     // image.src = URL.createObjectURL(event.target.files[0])
     console.log('newTalent image', newTalent.value.resumeUrl.type)
 }
-
-const resetForm:any = Object.freeze({
-        firstName: '',
-        lastName: '',
-        role: '',
-        otherName: '',
-        phoneNumber: '',
-        skillss: '',
-        imageFile: '',
-        gender: '',
-        bioId: ''
-})
 
 const editTalent:any = async () => {
     console.log('hi');
@@ -485,20 +481,36 @@ const editTalent:any = async () => {
     // console.log('newstudent', newTalent.value.imageFile)
     const request:any = `${api_url}api/talentpool/edit-talentPool`;
 
-    // const formElem = document.getElementById('formElem')
-    formData.append('firstName', newTalent.value.firstName)
-    formData.append('lastName', newTalent.value.lastName)
-    formData.append('id', newTalent.value.id)
-    formData.append('role', newTalent.value.role)
-    // formData.append('imageFile', newTalent.value.imageFile, newTalent.value.imageFile.name)
-    formData.append('email', newTalent.value.email)
-    formData.append('gender', newTalent.value.gender)
-    formData.append('Skills', newTalent.value.Skills)
-    formData.append('phoneNumber', newTalent.value.phoneNumber)
-    formData.append('resumeUrl', newTalent.value.resumeUrl, newTalent.value.resumeUrl.name)
-    formData.append('proficiencyLevel', newTalent.value.proficiencyLevel)
-    formData.append('GitHubUrl', newTalent.value.GitHubUrl)
-    formData.append('LinkedInUrl', newTalent.value.LinkedInUrl)
+    console.log('on resume upload', onResumeUpload)
+    if (onResumeUpload.value) {
+        formData.append('FirstName', newTalent.value.firstName)
+        formData.append('LastName', newTalent.value.lastName)
+        formData.append('id', newTalent.value.id)
+        formData.append('Role', newTalent.value.role)
+        // formData.append('imageFile', newTalent.value.imageFile, newTalent.value.imageFile.name)
+        formData.append('Email', newTalent.value.email)
+        formData.append('Gender', newTalent.value.gender)
+        formData.append('Skills', newTalent.value.skills)
+        formData.append('PhoneNumber', newTalent.value.phoneNumber)
+        formData.append('ResumeUrl', newTalent.value.resumeUrl, newTalent.value.resumeUrl.name)
+        formData.append('ProficiencyLevel', newTalent.value.proficiencyLevel)
+        formData.append('GitHubUrl', newTalent.value.gitHubUrl)
+        formData.append('LinkedInUrl', newTalent.value.linkedInUrl)
+    } else {
+        formData.append('FirstName', newTalent.value.firstName)
+        formData.append('LastName', newTalent.value.lastName)
+        formData.append('id', newTalent.value.id)
+        formData.append('Role', newTalent.value.role)
+        // formData.append('imageFile', newTalent.value.imageFile, newTalent.value.imageFile.name)
+        formData.append('Email', newTalent.value.email)
+        formData.append('Gender', newTalent.value.gender)
+        formData.append('Skills', newTalent.value.skills)
+        formData.append('PhoneNumber', newTalent.value.phoneNumber)
+        // formData.append('ResumeUrl', newTalent.value.resumeUrl, newTalent.value.resumeUrl.name)
+        formData.append('ProficiencyLevel', newTalent.value.proficiencyLevel)
+        formData.append('GitHubUrl', newTalent.value.gitHubUrl)
+        formData.append('LinkedInUrl', newTalent.value.linkedInUrl)
+    }
 
     // console.log('formData', JSON.parse(JSON.stringify(formData)))
     
@@ -520,7 +532,7 @@ const editTalent:any = async () => {
         data: formData
     }
     console.log('newData', newData)
-    await store.dispatch(actionTypes.AddNewTalent, newData)
+    await store.dispatch(actionTypes.EditTalent, newData)
     const result = await store.getters.getTalents
     closeModal()
     // formEl.reset()
@@ -554,7 +566,7 @@ const disabledView:any = 'bg-gray-300';
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="formElem" ref="formEl" class="text-sm grid">
-            <!-- {{ newTalent }} -->
+            {{ newTalent }}
             <div class="grid text-left grid-cols-2 gap-12 mb-10">
                 <div class="grid gap-4">
                     <label for="firstname" class="font-semibold">
@@ -632,7 +644,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="github" class="font-semibold">
                         Github Profile
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.GitHubUrl" name="github" id="github" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.gitHubUrl" name="github" id="github" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.github ? errors.githubText : '' }}
                     </p>
@@ -641,7 +653,7 @@ const disabledView:any = 'bg-gray-300';
                     <label for="linkedin" class="font-semibold">
                         LinkedIn Profile
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.LinkedInUrl" name="linkedin" id="linkedin" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.linkedInUrl" name="linkedin" id="linkedin" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.linkedin ? errors.linkedinText : '' }}
                     </p>
@@ -686,7 +698,7 @@ const disabledView:any = 'bg-gray-300';
                         <option value="">Select option</option> -->
                         <!-- <option  v-for="item in proficiencys" :key="item.id"  :value=item.id>{{ item.title }}</option> -->
                     <!-- </select> -->
-                    <multiselect @clear="deselect" v-model="newTalent.Skills" valueProp="id" :options="skills" mode="tags" :close-on-select="false" track-by="name" label="name" placeholder="Select skills" :searchable="true" class="multiselect-blue" />
+                    <multiselect @clear="deselect" v-model="newTalent.skills" valueProp="id" :options="skills" mode="tags" :close-on-select="false" track-by="name" label="name" placeholder="Select skills" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.skills ? errors.skillsText : '' }}
                     </p>
@@ -706,32 +718,55 @@ const disabledView:any = 'bg-gray-300';
                             </div>
                             <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".pdf, .docx" />
                         </label>
-                        <div v-if="newTalent.resumeUrl" class="flex justify-between w-2/5 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                        <div v-if="newTalent.resumeUrl" class="flex justify-between w-2/5 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
+                            <div class="">
+                                <p class="font-semibold py-1 w-36 truncate">
+                                    {{ newTalent.firstName }}'s resume
+                                </p>
+                                <!-- <p class="text-xs pb-1 text-gray-500">
+                                    {{ newTalent.resumeUrl.size > 999999 ? (newTalent.resumeUrl.size / 1000000).toFixed(2) + 'Mb' : newTalent.resumeUrl.size > 999 ? (newTalent.resumeUrl.size / 1000).toFixed(2) + ' kb' : newTalent.resumeUrl.size + ' bytes' }}
+                                </p> -->
+                            </div>
+                            <div class="flex justify-around gap-3 items-center">
+                                <!-- <Modal id="resume" :show="showResume" @close="showResume = !showResume">
+                                    <template #button> -->
+                                    <!-- <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
+                                        View Passport
+                                    </button> -->
+                                        <!-- <SvgIcons name="eye" />
+                                    </template>
+                                    <template #modalContent> -->
+                                        <!-- <img id="output" alt="user img"> -->
+                                        <!-- <div> -->
+                                            <!-- <AddSkill name="Add" @close="closeModal" /> -->
+                                            <!-- <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSrc" :page="page" /> -->
+                                            <!-- <embed type="application/pdf" src="https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" frameborder="0"> -->
+                                        <!-- </div>
+                                    </template>
+                                </Modal> -->
+                                <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
+                                <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
+                                    <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
+                                    <!-- <AddSkill name="Add" />
+                                </Modl> -->
+                                <a :href="newTalent.resumeUrl" target="_blank">
+                                <SvgIcons name="eye" /></a>
+                                <SvgIcons name="delete" @click="removeResume" />
+                            </div>
+                        </div>
+                        <div v-if="newTalent.resumeUrl" class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && onResumeUpload ? '' : 'hidden']">
                             <div class="">
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newTalent.resumeUrl.name }}
                                 </p>
                                 <p class="text-xs pb-1 text-gray-500">
-                                    {{ newTalent.resumeUrl.size > 999999 ? (newTalent.resumeUrl.size / 1000000).toFixed(2) + 'Mb' : newTalent.resumeUrl.size > 999 ? (newTalent.resumeUrl.size / 1000).toFixed(2) + ' kb' : newTalent.resumeUrl.size + ' bytes' }}
+                                    {{ newTalent.resumeUrl.size > 999999 ? (newTalent.resumeUrl.size / 1000000).toFixed(2) + ' Mb' : newTalent.resumeUrl.size > 999 ? (newTalent.resumeUrl.size / 1000).toFixed(2) + ' kb' : newTalent.resumeUrl.size + ' bytes' }}
                                 </p>
                             </div>
-                            <div class="flex justify-around gap-3 items-center">
-                                <Modal id="resume" :show="showResume" @close="showResume = !showResume">
-                                    <template #button>
-                                    <!-- <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
-                                        View Passport
-                                    </button> -->
-                                        <SvgIcons name="eye" />
-                                    </template>
-                                    <template #modalContent>
-                                        <!-- <img id="output" alt="user img"> -->
-                                        <div>
-                                            <!-- <AddSkill name="Add" @close="closeModal" /> -->
-                                            <!-- <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSrc" :page="page" /> -->
-                                            <!-- <embed type="application/pdf" src="https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" frameborder="0"> -->
-                                        </div>
-                                    </template>
-                                </Modal>
+                            <div class="flex justify-center gap-3 items-center">
+                                <a :href="pdfSource" target="_blank">
+                                <SvgIcons name="eye" />
+                                </a>
                                 <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
                                 <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
                                     <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
@@ -750,7 +785,7 @@ const disabledView:any = 'bg-gray-300';
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save changes</button>
             </div>
         </form>
     </div>

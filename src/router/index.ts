@@ -77,6 +77,24 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
+        path: 'service-management/outsourcing-details/:id',
+        name: 'OutsourcingDetails',
+        component: () => import('../views/dashboard/services/OutsourcingJobDetails.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'service-management/add-outsourcing',
+        name: 'AddOutsourcing',
+        component: () => import('../views/dashboard/services/AddOutsourcing.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'service-management/edit-outsourcing/:id',
+        name: 'EditOutsourcing',
+        component: () => import('../views/dashboard/services/EditOutsourcing.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: 'talent-management/instructors',
         name: 'Instructors',
         component: () => import('../views/dashboard/instructors/Index.vue'),

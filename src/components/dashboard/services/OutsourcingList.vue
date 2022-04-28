@@ -1,14 +1,14 @@
 <script lang="ts">
 export default {
-  name: 'ProjectList',
+  name: 'OutsourcingList',
 }
 </script>
 
 <script setup lang="ts">
 import moment from 'moment'
 import SvgIcons from '../../SvgIcons.vue';
-import AddProject from './AddProject.vue';
-import ProjectDetails from './ProjectDetails.vue';
+import EditOutsourcing from './EditOutsourcingForm.vue';
+// import ProjectDetails from './ProjectDetails.vue';
 import UpdateOutsourcingStatus from './UpdateOutsourcingStatus.vue';
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
@@ -26,18 +26,18 @@ const route = useRouter();
 const store = useStore();
 
 const outsourcing:any = computed(() => {
-    return store.getters.getProject.value.payload
+    return store.getters.getOutsourcing.value.payload
 })
 
 const totalCount:any = computed(() => {
-    return store.getters.getProject.value.totalCount
+    return store.getters.getOutsourcing.value.totalCount
 })
 
 const setId:any = async (id:any) => {
-    console.log('instructorid', id)
-    const request:any = `${api_url}api/outsourcing/${id}`;
+    console.log('outsourcingid', id)
+    const request:any = `${api_url}api/outsourcing/get/${id}`;
     console.log('request forid', request)
-    await store.dispatch(actionTypes.FetchEditProject, request)
+    await store.dispatch(actionTypes.FetchEditOutsourcing, request)
 }
 
 // const today:any = '2023-11-15T13:45:30'
@@ -50,6 +50,26 @@ const showStudents = ref(false);
 
 const outsourcingitemtodelete:any = ref('');
 
+const setDetailId:any = async (id:any) => {
+    console.log('outsourcingid', id)
+    route.push({
+        name: 'OutsourcingDetails',
+        params: {
+            id: id
+        }
+    })
+}
+
+const setEditId:any = async (id:any) => {
+    console.log('outsourcingid', id)
+    route.push({
+        name: 'EditOutsourcing',
+        params: {
+            id: id
+        }
+    })    
+}
+
 const sendId:any = (id:any) => {
     console.log('outsourcingid', id)
     outsourcingitemtodelete.value = id
@@ -57,17 +77,17 @@ const sendId:any = (id:any) => {
     return outsourcingitemtodelete
 }
 
-const deleteProject:any = async (id:any) => {
+const deleteOutsourcing:any = async (id:any) => {
     console.log('batch id', id);
 
     const request:any = `${api_url}api/outsourcing/delete/${id}`;
 
     console.log('requestData', request)
-    await store.dispatch(actionTypes.RemoveProject, request)
+    await store.dispatch(actionTypes.RemoveOutsourcing, request)
     // const fetchrequest:any = `${api_url}api/project/get-projects/{pageIndex}/{pageSize}`;
     // console.log('url', fetchrequest)
     // del.value = false
-    await store.dispatch(actionTypes.FetchProject)
+    await store.dispatch(actionTypes.FetchOutsourcing)
     closeModal()
 }
 
@@ -109,7 +129,7 @@ const editProject:any = async (id:any) => {
 
 }
 
-// const deleteProject:any = async (id:any) => {
+// const deleteOutsourcing:any = async (id:any) => {
 //     console.log('project id', id);
 
 //     const request:any = `${api_url}api/project/delete/${id}`;
@@ -129,7 +149,7 @@ const onPageChange:any = async (page:any) => {
     console.log('pageIndex is', pageIndex.value)
     const request:any = `${api_url}api/outsourcing/get/${pageIndex.value}/{pageSize}`;
     // console.log('url', request)
-    await store.dispatch(actionTypes.FetchProject)
+    await store.dispatch(actionTypes.FetchOutsourcing, request)
 }
 
 onMounted(async() => {
@@ -176,20 +196,19 @@ onMounted(async() => {
                             {{ pageIndex == 1 ? (outsourcing.indexOf(outsourcingitem) + 1) : ((pageIndex - 1) * 10) + (outsourcing.indexOf(outsourcingitem) + 1) }}
                         </td>
                         <td class="border-t-0 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ outsourcingitem.title }}
+                            {{ outsourcingitem.contactName }}
+                        </td>
+                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                            {{ outsourcingitem.email }}
+                        </td>
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            {{ outsourcingitem.phoneNumber }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             {{ outsourcingitem.companyName }}
                         </td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ moment(outsourcingitem.startDate).format('MM/DD/YYYY') }} - <br /> 
-                            {{ moment(outsourcingitem.endDate).format('MM/DD/YYYY') }}
-                        </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            {{ outsourcingitem.noOfResources }}
-                        </td>
-                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            {{ outsourcingitem.status == '0' ? 'Pending' : outsourcingitem.status == 1 ? 'Ongoing' : 'Ended' }}
+                            {{ outsourcingitem.status == '0' ? 'Pending' : outsourcingitem.status == 1 ? 'Rejected' : 'Approved' }}
                         </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                           
@@ -202,15 +221,15 @@ onMounted(async() => {
                                         <div class="py-3 gap-3">
                                             <button
                                             type="button"
-                                            @click="showDetails = !showDetails" @click.prevent="setId(outsourcingitem.id)"
+                                            @click="showDetails = !showDetails" @click.prevent="setDetailId(outsourcingitem.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="details" />
                                                 Details
                                             </button>
-                                            <Modal :show="showDetails" @close="showDetails = false">
+                                            <!-- <Modal :show="showDetails" @close="showDetails = false">
                                                 <ProjectDetails @close="showDetails = !showDetails" />
-                                            </Modal>
+                                            </Modal> -->
 
                                             <button
                                             type="button"
@@ -222,20 +241,20 @@ onMounted(async() => {
                                                 Update Status
                                             </button>
                                             <Modal :show="showUpdateStatus" @close="showUpdateStatus = !showUpdateStatus">
-                                                <UpdateProjectStatus @close="showUpdateStatus = !showUpdateStatus" />
+                                                <UpdateOutsourcingStatus @close="showUpdateStatus = !showUpdateStatus" />
                                             </Modal>
 
                                             <button
                                             type="button"
-                                            @click="showEdit = !showEdit" @click.prevent="setId(outsourcingitem.id)"
+                                            @click="showEdit = !showEdit" @click.prevent="setEditId(outsourcingitem.id)"
                                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                             >
                                                 <SvgIcons name="edit" />
                                                 Edit
                                             </button>
-                                            <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                                <AddProject name="Edit" @close="showEdit = !showEdit" />
-                                            </Modal>
+                                            <!-- <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                <EditOutsourcing name="Edit" @close="showEdit = !showEdit" />
+                                            </Modal> -->
 
                                             <button
                                             type="button"
@@ -245,7 +264,7 @@ onMounted(async() => {
                                                 <SvgIcons name="delete" />
                                                 Delete
                                             </button>
-                                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteProject(outsourcingitemtodelete)">
+                                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteOutsourcing(outsourcingitemtodelete)">
                                                     <template #title>
                                                         Delete outsourcing
                                                     </template>
@@ -253,7 +272,7 @@ onMounted(async() => {
                                                         Are you sure you want to remove outsourcing?
                                                     </template>
                                                     <template #delete>
-                                                        Yes, Delete Project
+                                                        Yes, Delete Outsourcing
                                                     </template>
                                             </DeleteModal>
                                         </div>

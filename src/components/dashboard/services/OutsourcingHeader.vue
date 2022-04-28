@@ -15,8 +15,13 @@ import * as actionTypes from '../../../store/module/services/constants/action'
 import { ref } from 'vue';
 import { api_url } from '../../../config'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router';
+
+const route = useRouter();
 
 const store:any = useStore()
+
+let isSearching:any = ref(false)
 
 let info:any = ref('Status')
 
@@ -24,8 +29,15 @@ const batchId:any = ref('')
 
 const deselect:any = async () => {
     // const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-    await store.dispatch(actionTypes.FetchConsultancy)
+    await store.dispatch(actionTypes.FetchOutsourcing)
     // await store.getters.getStudents
+}
+
+const addOutsourcing:any = async () => {
+  // console.log('outsourcingid', id)
+  route.push({
+      name: 'AddOutsourcing'
+  })
 }
 
 const cancan:any = async (name:any) => {
@@ -38,8 +50,8 @@ const cancan:any = async (name:any) => {
   //   // console.log('all url', url) 
   //   return info.value = 'Status'
   // } else if (name == 'Active') {
-    const request:any = `${api_url}api/consultancy/filter-consulting/{pageIndex}/{pageSize}/${name}`;
-    await store.dispatch(actionTypes.FetchConsultancy, request)
+    const request:any = `${api_url}api/outsourcing/filter/{pageIndex}/{pageSize}/${name}`;
+    await store.dispatch(actionTypes.FetchOutsourcing, request)
   //   // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
   //   store.getters.getStudents
   //   // console.log('active url', url)
@@ -59,11 +71,11 @@ const statusoptions:any = [
     value: 0
   },
   {
-    label: 'Ongoing',
+    label: 'Rejected',
     value: 1
   },
   {
-    label: 'Ended',
+    label: 'Approved',
     value: 2
   }
 ]
@@ -110,10 +122,11 @@ const filterItems:any = ['Active', 'Disabled', 'All']
 let searchText:any = ref('');
 
 const filter:any = async () => {
+  isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
-  const request:any = `${api_url}api/consultancy/search/{pageIndex}/{pageSize}/${search}`;
-  await store.dispatch(actionTypes.FetchConsultancy, request)
+  const request:any = `${api_url}api/outsourcing/search/{pageIndex}/{pageSize}/${search}`;
+  await store.dispatch(actionTypes.FetchOutsourcing, request)
   // store.getters.getStudents
 
   // const status:any = document.getElementById('status');
@@ -141,9 +154,10 @@ const filter:any = async () => {
 }
 
 const close:any = async () => {
+  isSearching.value = false
   searchText.value = ''
   // const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-  await store.dispatch(actionTypes.FetchConsultancy)
+  await store.dispatch(actionTypes.FetchOutsourcing)
 }
 
 </script>
@@ -155,21 +169,13 @@ const close:any = async () => {
           <button class="focus:outline-none flex items-center gap-3 text-sm">
                 <p class="text-grey font-semibold">Add Outsourcing</p>
                 <div class="relative overflow-hdden">
-                    <section class="flex h-full justify-ceter items-start">
-                        <div onclick="document.getElementById('addProject').showModal()" id="btn">
+                    <section class="flex h-full items-start">
+                        <div @click="addOutsourcing">
                             <span class="bg-blue p-1 flex justify-center text-white rounded-md">
                               <SvgIcons name="plus" /> <!-- plus icon -->
                             </span>
                         </div>
                     </section>
-
-                    <dialog id="addProject" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                        <div class="w-full h-auto">
-                            <!-- Modal Content-->
-                                <AddProject name="Add" @close="closeModal" />
-                            <!-- End of Modal Content-->
-                        </div>
-                    </dialog>
                 </div>
           </button>
       </div>
@@ -191,6 +197,7 @@ const close:any = async () => {
             </template>
           </Filter> -->
           <div class="w-1/3">
+          <!-- {{ statusField }} -->
             <multiselect v-model="statusField" @clear="deselect" @select="cancan(statusField)" valueProp="value" :options="statusoptions" track-by="label" label="label" placeholder="Status" :searchable="true" class="multiselect-blue" />
           </div>
         <!-- </div> -->
@@ -199,7 +206,8 @@ const close:any = async () => {
               <template #input>
                 <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
                 <span class="w-auto flex justify-end items-center text-grey p-2">
-                    <SvgIcons name="search" @click="filter"  />
+                    <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                    <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                 </span>
               </template>
             </Search>

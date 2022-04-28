@@ -2,10 +2,12 @@ import { computed } from 'vue'
 import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
 import { api_url } from '../../../config/index'
+import router from '../../../router'
 import { addData, addEmptyData, fetchData, editData, removeData } from '../../../helpers/api'
 
 export default {
   state: () => ({
+    file: '',
     instructors: [],
     instructor: {
       FirstName: '',
@@ -49,6 +51,11 @@ export default {
     getSkills: (state: any) => {
       return computed(() => {
         return state.skills
+      })
+    },
+    getFile: (state: any) => {
+      return computed(() => {
+        return state.file
       })
     },
     getTalents: (state: any) => {
@@ -123,6 +130,9 @@ export default {
     [mutationTypes.SetNewInstructor] (state: any, data: any) {
       state.instructor = data
     },
+    [mutationTypes.SetFile] (state: any, data: any) {
+      state.file = data
+    },
     [mutationTypes.SetSkill] (state: any, data: any) {
       state.skills = data
     },
@@ -168,8 +178,26 @@ export default {
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors)))
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors.value)))
     //   console.log('Iinstructors', instructors.value)
-      await commit(mutationTypes.SetInstructor, instructors)
-      await commit(mutationTypes.SetTotalCount, instructors.totalCount)
+      if (instructors.payload) {
+        await commit(mutationTypes.SetInstructor, instructors)
+        await commit(mutationTypes.SetTotalCount, instructors.totalCount)
+      } else if (instructors.message.includes('400')) {
+        await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+        await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (instructors.message.includes('404')) {
+        await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
+        await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (instructors.response.status === 401) {
+        router.push({ name: 'Login' });
+      } else {
+        await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+        await commit(mutationTypes.SetInstructorAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetInstructorAlertStatus, false)
+        commit(mutationTypes.SetInstructorAlertText, '')
+      }, 2000)
     },
     async [actionTypes.FetchTalents] ({ commit }: any, data: any = `${api_url}api/talentpool/get-talents/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
@@ -181,8 +209,26 @@ export default {
     //   console.log('Italents', JSON.parse(JSON.stringify(talents)))
     //   console.log('Italents', JSON.parse(JSON.stringify(talents.value)))
     //   console.log('Italents', talents.value)
-      await commit(mutationTypes.SetTalent, talents)
       // await commit(mutationTypes.SetTotalCount, talents.totalCount)
+      if (talents.payload) {
+      await commit(mutationTypes.SetTalent, talents)
+      } else if (talents.message.includes('400')) {
+        await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+        await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (talents.message.includes('404')) {
+        await commit(mutationTypes.SetInstructorAlertText, 'Talents not found')
+        await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (talents.response.status === 401) {
+        router.push({ name: 'Login' });
+      } else {
+        await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+        await commit(mutationTypes.SetInstructorAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetInstructorAlertStatus, false)
+        commit(mutationTypes.SetInstructorAlertText, '')
+      }, 2000)
     },
     async [actionTypes.FetchSkills] ({ commit }: any, data: any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
@@ -194,8 +240,50 @@ export default {
     //   console.log('Iskill', JSON.parse(JSON.stringify(skill)))
     //   console.log('Iskill', JSON.parse(JSON.stringify(skill.value)))
     //   console.log('Iskill', skill.value)
-      await commit(mutationTypes.SetSkill, skill)
+      // await commit(mutationTypes.SetSkill, skill)
       // await commit(mutationTypes.SetTotalCount, skill.totalCount)
+      if (skill.payload) {
+          await commit(mutationTypes.SetSkill, skill)
+        } else if (skill.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (skill.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Skills not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (skill.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
+    },
+    async [actionTypes.FetchFile] ({ commit }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here', token)
+      const file = await fetchData(data, token)
+      console.log('data fe', data)
+      console.log('Ifile', file.response.status)
+    //   console.log('Ifile', file.value)
+    //   console.log('Ifile', JSON.parse(JSON.stringify(file)))
+    //   console.log('Ifile', JSON.parse(JSON.stringify(file.value)))
+    //   console.log('Ifile', file.value)
+      // await commit(mutationTypes.SetSkill, file)
+      // await commit(mutationTypes.SetTotalCount, file.totalCount)
+      if (file.payload) {
+          await commit(mutationTypes.SetFile, file)
+        } else if (file.response.status === 401) {
+          router.push({ name: 'Login' });
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
     },
     async [actionTypes.FetchEditSkill] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
@@ -247,9 +335,11 @@ export default {
         await commit(mutationTypes.SetInstructorAlertText, 'Skill removed successfully')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
         await dispatch(actionTypes.FetchSkills)
-      } else if (skill.message.includes('400')) {
+      } else if (skill.response.status === 400) {
         await commit(mutationTypes.SetInstructorAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (skill.response.status === 401) {
+        router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -279,6 +369,8 @@ export default {
       } else if (skill.message.includes('400')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (skill.response.status === 401) {
+        router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -308,6 +400,8 @@ export default {
       } else if (instructor.message.includes('400')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (instructor.response.status === 401) {
+        router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -335,36 +429,182 @@ export default {
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors)))
     //   console.log('Iinstructors', JSON.parse(JSON.stringify(instructors.value)))
     //   console.log('Iinstructors', instructors.value)
-      commit(mutationTypes.SetInstructor, instructor.payload)
       // commit(mutationTypes.SetTotalCount, instructors.totalCount)
+      if (instructor.payload) {
+        await commit(mutationTypes.SetInstructor, instructor.payload)
+        } else if (instructor.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (instructor.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (instructor.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
     },
     async [actionTypes.AddNewInstructor] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
       const instructor = await addData(data.url, data.data, token)
-      await dispatch(actionTypes.FetchInstructors)
+      if (instructor.payload) {
+          await dispatch(actionTypes.FetchInstructors)
+        } else if (instructor.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (instructor.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (instructor.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
     },
     async [actionTypes.AddNewSkill] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const instructor = await addData(data.url, data.data, token)
-      await dispatch(actionTypes.FetchSkills)
+      const skill = await addData(data.url, data.data, token)
+      if (skill.payload) {
+          await dispatch(actionTypes.FetchSkills)
+        } else if (skill.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (skill.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (skill.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
     },
     async [actionTypes.AddNewTalent] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
-      const instructor = await addData(data.url, data.data, token)
-      await dispatch(actionTypes.FetchTalents)
+      const talent = await addData(data.url, data.data, token)
+      if (talent.payload) {
+          await dispatch(actionTypes.FetchTalents)
+        } else if (talent.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (talent.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Talent not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (talent.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
     },
     async [actionTypes.UpdateSkill] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('data is', data)
+      const skill = await editData(data.url, data.data, token)
+      if (skill.payload) {
+          await dispatch(actionTypes.FetchSkills)
+          await commit(mutationTypes.SetInstructorAlertText, 'Skill updated successfully')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (skill.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (skill.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Skill not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (skill.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
+    },
+    async [actionTypes.EditInstructor] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here')
+      console.log('data is', data)
       const instructor = await editData(data.url, data.data, token)
-      await dispatch(actionTypes.FetchSkills)
+      if (instructor.payload) {
+          await dispatch(actionTypes.FetchInstructors)
+          await commit(mutationTypes.SetInstructorAlertText, 'Instructor updated successfully')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (instructor.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (instructor.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (instructor.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
+    },
+    async [actionTypes.EditTalent] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here')
+      console.log('data is', data)
+      const talent = await editData(data.url, data.data, token)
+      if (talent.payload) {
+          await dispatch(actionTypes.FetchTalents)
+          await commit(mutationTypes.SetInstructorAlertText, 'Talent updated successfully')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (talent.message.includes('400')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (talent.message.includes('404')) {
+          await commit(mutationTypes.SetInstructorAlertText, 'Talent not found')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        } else if (talent.response.status === 401) {
+          router.push({ name: 'Login' });
+        } else {
+          await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
+          await commit(mutationTypes.SetInstructorAlertStatus, true)
+        }
+  
+        setTimeout(() => {
+          commit(mutationTypes.SetInstructorAlertStatus, false)
+          commit(mutationTypes.SetInstructorAlertText, '')
+        }, 2000)
     },
     async [actionTypes.UpdateInstructorStatus] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
@@ -381,6 +621,8 @@ export default {
       } else if (updateInstructorStatus.message.includes('404')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (updateInstructorStatus.response.status === 401) {
+        router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -404,8 +646,10 @@ export default {
         await commit(mutationTypes.SetInstructorAlertText, 'Bad request received')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
       } else if (updateTalentStatus.message.includes('404')) {
-        await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
+        await commit(mutationTypes.SetInstructorAlertText, 'Talent not found')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
+      } else if (updateTalentStatus.response.status === 401) {
+        router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
         await commit(mutationTypes.SetInstructorAlertStatus, true)

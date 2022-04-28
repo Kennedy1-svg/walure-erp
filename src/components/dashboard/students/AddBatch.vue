@@ -284,6 +284,7 @@ const editbatch:any = async () => {
     await store.dispatch(batchActionTypes.FetchBatch)
     const result = await store.getters.getBatch
     closeModal()
+    store.commit(batchMutationTypes.SetNewBatch, {})
 }
 
 const format:any = (date:any) => {

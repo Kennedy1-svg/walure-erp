@@ -67,13 +67,15 @@ const addTopic:any = async () => {
 
 
     const data:any = {
-        id: ID2 + 1,
-        title: newCurriculum.value.title,
         duration: newCurriculum.value.duration,
-        subTitle: newCurriculum.value.subTitle
+        title: newCurriculum.value.title,
+        subTitle: newCurriculum.value.subTitle,
+        // id: ID2 + 1,
+        // course_Id: route.params.id,
     }
     console.log('data for me here is ', data)
     await store.dispatch(actionTypes.AddToCurriculum, data)
+    await store.getters.getNewCurriculumBatch.value
     await store.getters.getCurriculum.value.payload
     store.commit(mutationTypes.SetNewCurriculum, {})
 }
@@ -104,7 +106,7 @@ const editTopic:any = async (topic:any) => {
     console.log('id', topic)
     // await store.dispatch(actionTypes.DeleteCurriculum, id)
     store.commit(mutationTypes.SetCurriculum, topic)
-    // store.commit(mutationTypes.SetNewCurriculum, {})
+    store.commit(mutationTypes.SetNewCurriculum, {})
 }
 // const isDisabled:any = ref(true)
 
@@ -151,13 +153,13 @@ const submit:any = async () => {
     !grand_error.value ? addTopic() : ''
 }
 
-const format:any = (date:any) => {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
+// const format:any = (date:any) => {
+//     const day = date.getDate();
+//     const month = date.getMonth() + 1;
+//     const year = date.getFullYear();
 
-    return `${month}/${day}/${year}`;
-}
+//     return `${month}/${day}/${year}`;
+// }
 
 let isActive:any = ref(false);
 
@@ -173,12 +175,12 @@ const disabledView:any = 'bg-gray-300';
 // 	return store.getters.getCurriculum.value.payload
 // })
 
-const curriculum: any = computed(():any => {
-    return store.getters.getCurriculum.value.payload
-})
+// const curriculum: any = computed(():any => {
+//     return store.getters.getCurriculum.value.payload
+// })
 
 const newCurriculumBatch:any = computed(():any => {
-    return store.state.courses.newCurriculumBatch
+    return store.getters.getNewCurriculumBatch.value
 })
 
 onMounted( async() => {
@@ -190,7 +192,7 @@ onMounted( async() => {
 
 <template>
     <div class="main w-full mt-[0.5px] bg-white">
-        {{ newCurriculum }} 
+        <!-- {{ newCurriculum }} -->
         <form id="addtopic" class="text-sm text-left grid">
             <div class="grid grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4">
@@ -218,7 +220,7 @@ onMounted( async() => {
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                {{ grand_error }}
+                <!-- {{ grand_error }} -->
                 <button type="button" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
             </div>
         </form>
@@ -238,9 +240,9 @@ onMounted( async() => {
                     </template>
                 </ExperienceCard>
             </div> -->
-                {{ newCurriculumBatch }}
+                <!-- {{ newCurriculumBatch }} -->
             <div class="experiences" v-for="item in newCurriculumBatch" :key="item.id" >
-                <ExperienceCard name="temp" class="my-6" @edit="editTopic(item)" @delete="removeTopic(item.id)">
+                <ExperienceCard name="temp" class="my-6" @edit="editTopic(item)" @delete="removeTopic(newCurriculumBatch.indexOf(item))">
                     <template #title>
                         {{ item.title }}
                     </template>

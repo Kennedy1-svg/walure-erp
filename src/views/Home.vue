@@ -13,6 +13,8 @@ import AddStudents from '../components/dashboard/students/AddStudents.vue';
 import StudentDetails from '../components/dashboard/students/StudentDetails.vue';
 import StudentList from '../components/dashboard/students/StudentList.vue';
 import StudentHeader from '../components/dashboard/students/StudentHeader.vue';
+import CompanyDetail from '../components/dashboard/services/CompanyDetailCard.vue';
+import JobDetail from '../components/dashboard/services/JobDetails.vue';
 
 const icons:any = ["camera", "doc-add", "o-cancel", "cancel", "chevron-down", "chevron-left", "chevron-right", "logo-white", "logo", "contact", "course-management", "curriculum", "delete", "details", "edit", "download", "education", "eye", "ellipsis", "search", "ipos", "logout", "menu", "next", "previous", "pic-avatar", "user-avatar", "user-management", "plus", "service-management", "talent-management", "update", "upload", "tick", "enumeration"];
 </script>
@@ -54,6 +56,14 @@ const icons:any = ["camera", "doc-add", "o-cancel", "cancel", "chevron-down", "c
         <div class="search">
             <h1 class="text-4xl mb-4">Search</h1>
             <Search />
+        </div>
+        <div class="filter">
+            <h1 class="text-4xl mb-4">Company</h1>
+            <CompanyDetail />
+        </div>
+        <div class="filter">
+            <h1 class="text-4xl mb-4">Job</h1>
+            <JobDetail />
         </div>
         <div class="filter">
             <h1 class="text-4xl mb-4">Filter</h1>

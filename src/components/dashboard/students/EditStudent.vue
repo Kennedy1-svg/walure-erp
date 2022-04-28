@@ -13,6 +13,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import Modal from '../../Modal.vue'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
+import * as studentMutationTypes from '../../../store/module/students/constants/mutation'
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -374,6 +375,7 @@ const editStudent:any = async () => {
     await store.dispatch(studentActionTypes.EditStudent, newData)
     const result = await store.getters.getStudent
     closeModal()
+    store.commit(studentMutationTypes.SetNewStudent, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')

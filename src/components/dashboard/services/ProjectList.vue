@@ -129,7 +129,7 @@ const onPageChange:any = async (page:any) => {
     console.log('pageIndex is', pageIndex.value)
     const request:any = `${api_url}api/project/get-projects/${pageIndex.value}/{pageSize}`;
     // console.log('url', request)
-    await store.dispatch(actionTypes.FetchProject)
+    await store.dispatch(actionTypes.FetchProject, request)
 }
 
 onMounted(async() => {

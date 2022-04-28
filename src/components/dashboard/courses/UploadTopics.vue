@@ -90,7 +90,7 @@ const disabledView:any = 'bg-gray-300';
     <div class="main w-full mt-[0.5px] rounded-md bg-white">
         <form id="uploadtopics" class="text-sm text-left grid">
             <div class="flex justify-end gap-8 mb-10">
-                <a href="../../../../public/curriculumsample.xlsx" class="border border-primary px-5 py-4 text-primary cursor-pointer rounded flex justify-center items-center" download="curriculumsample.xlsx">
+                <a href="../../../../public/Curriculum_sample.xlsx" class="border border-primary px-5 py-4 text-primary cursor-pointer rounded flex justify-center items-center" download="curriculumsample.xlsx">
                     <SvgIcons name="download" />
                     <p class="pl-3 text-lg">Download Template</p>
                 </a>

@@ -72,6 +72,7 @@ const editTopic:any = async () => {
     console.log('data for me here is ', data)
     await store.dispatch(actionTypes.EditTopicInCurriculum, data)
     // await store.getters.getCurriculum.value.payload
+    store.commit(mutationTypes.SetNewCurriculum, {})
     closeModal()
 }
 
@@ -156,9 +157,9 @@ const newCurriculumBatch:any = computed(():any => {
 })
 
 onMounted( async() => {
-	const id:any = route.params.id;
-	const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
-	await store.dispatch(actionTypes.FetchCurriculum, request)
+	// const id:any = route.params.id;
+	// const request:any = `${api_url}api/curriculum/get-curriculum/${id}`
+	// await store.dispatch(actionTypes.FetchCurriculum, request)
 })
 </script>
 

@@ -230,7 +230,7 @@ const addproject:any = async () => {
     console.log('newData', newData)
     await store.dispatch(projectActionTypes.AddProject, newData)
     await store.dispatch(projectActionTypes.FetchProject)
-    await store.commit(projectMutationTypes.SetNewProject, {})
+    store.commit(projectMutationTypes.SetNewProject, {})
     const result = await store.getters.getProject
     closeModal()
 }
@@ -275,8 +275,9 @@ const editproject:any = async () => {
     console.log('newData', newData)
     await store.dispatch(projectActionTypes.EditProject, newData)
     await store.dispatch(projectActionTypes.FetchProject)
-    const result = await store.getters.getProject
+    await store.getters.getProject
     closeModal()
+    store.commit(projectMutationTypes.SetNewProject, {})
 }
 
 const format:any = (date:any) => {

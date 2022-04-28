@@ -46,7 +46,7 @@ export default {
         subTitle: '',
         duration: ''
       },
-      newCurriculumBatch: [],
+      newCurriculumBatch: localStorage.getItem('newCurriculumBatch'),
       editcourseapplicant: '',
       allCurriculum: [],
       course_categories: '',
@@ -149,7 +149,7 @@ export default {
       state.course_categories = data
     },
     [mutationTypes.setCurriculum] (state: any, data: any) {
-      state.newCurriculumBatch = data
+      localStorage.setItem('newCurriculumBatch', state.newCurriculumBatch = data)
     },
     [mutationTypes.removeCurriculum] (state: any, data: any) {
       state.newCurriculumBatch = data
@@ -232,10 +232,10 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('state of things', newSet)
       console.log('data is al ', data)
-      console.log('data is bali ', JSON.parse(JSON.stringify(state.allCurriculum)).payload)
+      // console.log('data is bali ', JSON.parse(JSON.stringify(state.allCurriculum)).payload)
       const curriculum:any = [...newSet, data]
       // const curriculum:any = await newSet.value.concat(data)
-      // console.log('curriculum things be', curriculum.value)
+      console.log('curriculum things e be something', curriculum)
       await commit(mutationTypes.setCurriculum, curriculum)
       console.log('curriculum things be', state.newCurriculumBatch)
     },
@@ -263,7 +263,7 @@ export default {
       console.log('data is al ', data)
       const newSet = await JSON.parse(JSON.stringify(state.newCurriculumBatch))
       console.log('state of things', newSet)
-      const itemIndex = await newSet.findIndex((item: any) => item.id === data)
+      const itemIndex = await newSet.findIndex((item: any) => newSet.indexOf(item) === data)
       console.log('item index', itemIndex)
       newSet.splice(itemIndex, 1)
       console.log('new thing', newSet)
@@ -347,8 +347,8 @@ export default {
     async [actionTypes.UpdateCurriculum] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token in update')
-      console.log('update data is', data)
-      const UploadCurriculum = await editData(data.url, data.data, token)
+      console.log('updated data is', data)
+      const UploadCurriculum = await addData(data.url, data.data, token)
       console.log('UploadCurriculum', UploadCurriculum)
       if (UploadCurriculum.payload) {
         await commit(mutationTypes.SetCourseAlertText, 'Curriculum updated successfully')

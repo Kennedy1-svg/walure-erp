@@ -14,6 +14,7 @@ import Switch from '../../switch.vue'
 import Modal from '../../Modal.vue';
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action'
+import * as courseMutationTypes from '../../../store/module/courses/constants/mutation'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
 
@@ -511,6 +512,7 @@ const editCourse:any = async () => {
     await store.dispatch(courseActionTypes.EditCourse, newData)
     const result = await store.getters.getCourse
     closeModal()
+    store.commit(courseMutationTypes.SetNewCourse, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')

@@ -24,6 +24,8 @@ let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
 
+let pdfSource:any = ref('');
+
 // const alertState:any = computed(() => store.getters.getBatchAlertStatus.value)
 // const alertText:any = computed(() => store.getters.getBatchAlertText.value)
 
@@ -79,7 +81,7 @@ const phone ='^[0]+[0-9]';
 
 const checkError:any = () => {
     // let imageType:String = newTalent.value.imageFile.type;
-    // console.log('imageType is', imageType)
+    // console.log('imageType is', imageType) 
     if (!newTalent.value.FirstName) {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
@@ -138,7 +140,7 @@ const checkError:any = () => {
         errors.resumeText = ''
     }
 
-    if (!newTalent.value.Role) {
+    if (!newTalent.value.Role && newTalent.value.Role != '0') {
         errors.role = true;
         errors.roleText = 'Please select a role'
     } else {
@@ -433,6 +435,7 @@ const emits = defineEmits(['close'])
 const closeModal:any =  () => {
     store.commit(mutationTypes.SetNewTalent, {})
     emits('close')
+    isDisabled.value = false;
     // formEl.reset()
 }
 
@@ -463,26 +466,17 @@ const onChange:any = (event:any):any => {
     newTalent.value.ResumeFile = event.target.files[0]
     formData.append('file', event.target.files[0])
     // let images: any = document.getElementById('output')
+    pdfSource.value = URL.createObjectURL(event.target.files[0])
+    console.log('newInstructor link', pdfSource.value)
     // let image:any = document.getElementById('displayoutput')
     // images.src = URL.createObjectURL(event.target.files[0])
     // image.src = URL.createObjectURL(event.target.files[0])
     console.log('newTalent image', newTalent.value.ResumeFile.type)
 }
 
-const resetForm:any = Object.freeze({
-        firstName: '',
-        lastName: '',
-        role: '',
-        otherName: '',
-        phoneNumber: '',
-        skillss: '',
-        imageFile: '',
-        gender: '',
-        bioId: ''
-})
-
 const addTalent:any = async () => {
     console.log('hi');
+    isDisabled.value = true;
     // console.log('newstudent', newTalent.value)
     // console.log('newstudent', newTalent.value.imageFile)
     const request:any = `${api_url}api/talentpool/create-talentpool`;
@@ -525,6 +519,7 @@ const addTalent:any = async () => {
     await store.dispatch(actionTypes.AddNewTalent, newData)
     const result = await store.getters.getTalents
     closeModal()
+    store.commit(mutationTypes.SetNewTalent, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
@@ -717,27 +712,29 @@ const disabledView:any = 'bg-gray-300';
                                 </p>
                             </div>
                             <div class="flex justify-around gap-3 items-center">
-                                <Modal id="resume" :show="showResume" @close="showResume = !showResume">
-                                    <template #button>
+                                <!-- <Modal id="resume" :show="showResume" @close="showResume = !showResume">
+                                    <template #button> -->
                                     <!-- <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
                                         View Passport
                                     </button> -->
-                                        <SvgIcons name="eye" />
+                                        <!-- <SvgIcons name="eye" />
                                     </template>
-                                    <template #modalContent>
+                                    <template #modalContent> -->
                                         <!-- <img id="output" alt="user img"> -->
-                                        <div>
+                                        <!-- <div> -->
                                             <!-- <AddSkill name="Add" @close="closeModal" /> -->
                                             <!-- <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSrc" :page="page" /> -->
                                             <!-- <embed type="application/pdf" src="https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" frameborder="0"> -->
-                                        </div>
+                                        <!-- </div>
                                     </template>
-                                </Modal>
+                                </Modal> -->
                                 <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
                                 <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
                                     <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
                                     <!-- <AddSkill name="Add" />
                                 </Modl> -->
+                                <a :href="pdfSource" target="_blank">
+                                <SvgIcons name="eye" /></a>
                                 <SvgIcons name="delete" @click="removeResume" />
                             </div>
                         </div>
