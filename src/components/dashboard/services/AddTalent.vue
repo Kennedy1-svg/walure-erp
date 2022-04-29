@@ -352,9 +352,9 @@ const editoutsourcingtalent:any = async () => {
     console.log('newData', newData)
     await store.dispatch(projectActionTypes.EditOutsourcingTalent, projectdata)
     // await store.dispatch(projectActionTypes.FetchProject)
-    // store.commit(projectMutationTypes.SetNewOutsourcingTalent, {})
+    store.commit(projectMutationTypes.SetNewOutsourcingTalent, {})
     // const result = await store.getters.getProject
-    // closeModal()
+    closeModal()
 }
 
 // const editproject:any = async () => {

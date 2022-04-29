@@ -270,13 +270,13 @@ export default {
         //   console.log('token here', token)
           const talents = await fetchData(data, token)
         //   console.log('data', data)
-          // console.log('Italentss', talents.payload)
+          console.log('Italentss', talents.payload)
           // console.log('Italentss', talents.value)
         //   console.log('Italentss', JSON.parse(JSON.stringify(talentss)))
         //   console.log('Italentss', JSON.parse(JSON.stringify(talentss.value)))
         //   console.log('Italentss', talentss.value)
           if (talents.payload) {
-            await commit(mutationTypes.SetOutsourcingTalent, talents)
+            await commit(mutationTypes.SetOutsourcingTalent, talents.payload.jobDetails)
           } else if (talents.response.status === 401) {
             router.push({ name: 'Login' });
           }
@@ -293,9 +293,9 @@ export default {
         },
         async [actionTypes.EditOutsourcingTalent] ({ commit, state }:any, data:any) {
           const outsourcingTalent:any = await JSON.parse(JSON.stringify(state.outsourcingTalent))
-          console.log('outsourcing talent here', outsourcingTalent.payload.jobDetails)
+          console.log('outsourcing talent here', outsourcingTalent)
           console.log('data', data)
-          const newData = [...outsourcingTalent.payload.jobDetails, data]
+          const newData = [...outsourcingTalent, data]
           console.log('new added outsourcing talent data', newData)
           await commit(mutationTypes.SetOutsourcingTalent, newData)
         },

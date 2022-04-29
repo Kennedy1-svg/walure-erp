@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, onBeforeUnmount } from 'vue'
 import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
 import SvgIcons from '../../SvgIcons.vue';
