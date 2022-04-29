@@ -139,7 +139,7 @@ const checkError:any = () => {
         errors.resumeText = ''
     }
 
-    if (!newTalent.value.role) {
+    if (!newTalent.value.role && newTalent.value.role != '0') {
         errors.role = true;
         errors.roleText = 'Please select a role'
     } else {
@@ -566,7 +566,7 @@ const disabledView:any = 'bg-gray-300';
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
         <form id="formElem" ref="formEl" class="text-sm grid">
-            {{ newTalent }}
+            <!-- {{ newTalent }} -->
             <div class="grid text-left grid-cols-2 gap-12 mb-10">
                 <div class="grid gap-4">
                     <label for="firstname" class="font-semibold">
