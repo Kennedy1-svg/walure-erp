@@ -31,11 +31,11 @@ const statusOptions:any = [
     value: 0
   },
   {
-    label: 'Ongoing',
+    label: 'Rejected',
     value: 1
   },
   {
-    label: 'Ended',
+    label: 'Approved',
     value: 2
   }]
 
