@@ -625,7 +625,7 @@ onBeforeUnmount(() => {
             <!-- <h1 v-if="outsourcingTalents.length !== 0" class="pt-10 text-xl font-bold pb-5">Job Details</h1> -->
             <div v-if="1" class="table mb-28">
                 <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
-                            {{ outsourcingTalents }}
+                            <!-- {{ outsourcingTalents }} -->
                     <table class="overflow-x-scroll border items-center w-full">
                         <thead class="bg-table-head">
                             <tr class="justify-items-center">

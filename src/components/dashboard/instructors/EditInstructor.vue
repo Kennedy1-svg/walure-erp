@@ -8,6 +8,7 @@ export default {
 import { ref, computed, onMounted, reactive, watch } from 'vue'
 import { api_url } from '../../../config'
 import { useRouter } from 'vue-router'
+// import { startCase, toLower } from 'lodash'
 import alert from '../../alerts.vue';
 import SvgIcons from '../../SvgIcons.vue';
 import multiselect from '@vueform/multiselect'
@@ -359,6 +360,7 @@ const removeImage:any = async () => {
 }
 
 const removeResume:any = async () => {
+    onResumeUpload.value = false
     return newInstructor.value.resume = ''
 }
 
@@ -461,7 +463,7 @@ const editInstructor:any = async () => {
     console.log('newstudent', newInstructor.value.picture)
     const request:any = `${api_url}api/instructor/edit-instructor`;
 
-    if (!isImageRemoved.value) {
+    if (!isImageRemoved.value && !onResumeUpload.value) {
         formData.append('firstName', newInstructor.value.firstName)
         formData.append('lastName', newInstructor.value.lastName)
         formData.append('OtherName', newInstructor.value.OtherName)
@@ -469,7 +471,38 @@ const editInstructor:any = async () => {
         formData.append('twitterUrl', newInstructor.value.twitterUrl)
         formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
         formData.append('facebookUrl', newInstructor.value.facebookUrl)
+        formData.append('address', newInstructor.value.address)
+        formData.append('phoneNumber', newInstructor.value.phoneNumber)
+        formData.append('gender', newInstructor.value.gender)
+        formData.append('bio', newInstructor.value.bio)
+        formData.append('id', newInstructor.value.id)
+        formData.append('email', newInstructor.value.email)
+        formData.append('experienceLevel', newInstructor.value.experienceLevel)
+    } else if (!isImageRemoved.value && onResumeUpload.value) {
+        formData.append('firstName', newInstructor.value.firstName)
+        formData.append('lastName', newInstructor.value.lastName)
+        formData.append('OtherName', newInstructor.value.OtherName)
+        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('twitterUrl', newInstructor.value.twitterUrl)
         formData.append('resume', newInstructor.value.resume, newInstructor.value.resume.name)
+        formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
+        formData.append('facebookUrl', newInstructor.value.facebookUrl)
+        formData.append('address', newInstructor.value.address)
+        formData.append('phoneNumber', newInstructor.value.phoneNumber)
+        formData.append('gender', newInstructor.value.gender)
+        formData.append('bio', newInstructor.value.bio)
+        formData.append('id', newInstructor.value.id)
+        formData.append('email', newInstructor.value.email)
+        formData.append('experienceLevel', newInstructor.value.experienceLevel)
+    } else if (!onResumeUpload.value && isImageRemoved.value) {
+        formData.append('firstName', newInstructor.value.firstName)
+        formData.append('lastName', newInstructor.value.lastName)
+        formData.append('OtherName', newInstructor.value.OtherName)
+        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('image', newInstructor.value.image, newInstructor.value.image.name)
+        formData.append('twitterUrl', newInstructor.value.twitterUrl)
+        formData.append('linkedInUrl', newInstructor.value.linkedInUrl)
+        formData.append('facebookUrl', newInstructor.value.facebookUrl)
         formData.append('address', newInstructor.value.address)
         formData.append('phoneNumber', newInstructor.value.phoneNumber)
         formData.append('gender', newInstructor.value.gender)
@@ -765,7 +798,7 @@ const disabledView:any = 'bg-gray-300';
                                     Upload Document</p>
                             </div>
                             <!-- {{ isResumeActive }} -->
-                            <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" :disabled="isResumeActive" />
+                            <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" :disabled="onResumeUpload" />
                         </label>
                         <div v-if="newInstructor.resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
                             <!-- <div class="">
