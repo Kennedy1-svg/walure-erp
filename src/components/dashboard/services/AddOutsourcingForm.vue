@@ -66,6 +66,7 @@ const checkError:any = () => {
         errors.email = true;
         errors.emailText = 'Email is required'
     } else if (!newOutsourcing.value.email.match(email)) {
+        errors.email = true;
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;

@@ -151,7 +151,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'contact-us',
         name: 'ContactUs',
-        component: () => import('../views/dashboard/Contact.vue'),
+        component: () => import('../views/dashboard/contact/Index.vue'),
         meta: { requiresAuth: true },
       },
       {
