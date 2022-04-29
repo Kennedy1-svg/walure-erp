@@ -170,7 +170,7 @@ onMounted( async() => {
         <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
     </div>
     <div class="main w-full mt-[0.5px] bg-white">
-        {{ newCurriculum }} 
+        <!-- {{ newCurriculum }}  -->
         <form id="addtopic" class="text-sm text-left grid">
             <div class="grid gap-8 mb-10">
                 <div class="grid gap-4">
@@ -196,7 +196,7 @@ onMounted( async() => {
                 </div>
             </div>
             <div class="flex justify-end pb-10">
-                {{ grand_error }}
+                <!-- {{ grand_error }} -->
                 <button type="button" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
             </div>
         </form>

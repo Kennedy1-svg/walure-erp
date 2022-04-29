@@ -45,8 +45,12 @@ const uploadCurriculum:any = async (event:any) => {
         data: formData
     }
 
+    console.log('new data is', newData)
     await store.dispatch(actionTypes.UploadCurriculum, newData)
-    // await store.getters.getCurriculum.value.payload
+
+    const newrequest:any = `${api_url}api/curriculum/get-curriculum/${courseId}`
+    await store.dispatch(actionTypes.FetchCurriculum, newrequest)
+    await store.getters.getCurriculum.value.payload
 }
 
 const onChange:any = async (event:any) => {

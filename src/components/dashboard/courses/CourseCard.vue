@@ -51,20 +51,23 @@ const updateCurriculum:any = async () => {
     await store.dispatch(actionTypes.UpdateCurriculum, newData)
 
 	const fetchrequest:any = `${api_url}api/curriculum/get-curriculum/${courseId}`
-	// await store.dispatch(actionTypes.FetchCurriculum, fetchrequest)
+	await store.dispatch(actionTypes.FetchCurriculum, fetchrequest)
 
 }
 
 const deleteCourse:any = async (course:any) => {
+    const courseId:any = route.params.id
     console.log('course identity 1', courseitemtodelete.value)
     const request:any = `${api_url}api/curriculum/delete/${course}`;
     console.log('request forid', request)
     await store.dispatch(actionTypes.DeleteCurriculum, request)
     // await store.dispatch(actionTypes.RemoveCourse, request)
     closeModal()
+
+    const newrequest:any = `${api_url}api/curriculum/get-curriculum/${courseId}`
+    await store.dispatch(actionTypes.FetchCurriculum, newrequest)
     // const fetchrequest:any = `${api_url}api/course/get-courses`;
     // console.log('url', fetchrequest)
-    // await store.dispatch(actionTypes.FetchCourseCategories, fetchrequest)
     // store.dispatch(actionTypes.FetchEditStudent, request)
     // return coursedetails
 }

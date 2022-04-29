@@ -320,18 +320,18 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token in update')
       console.log('update data is', data)
-      const UploadCurriculum = await addDataFile(data.url, data.data, token)
-      console.log('UploadCurriculum', UploadCurriculum)
-      if (UploadCurriculum.payload) {
+      const uploadCurriculum = await addDataFile(data.url, data.data, token)
+      console.log('uploadCurriculum', uploadCurriculum)
+      if (uploadCurriculum.payload) {
         await commit(mutationTypes.SetCourseAlertText, 'Curriculum uploaded successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
-        // await dispatch(actionTypes.FetchCourseApplicants)
-      } else if (UploadCurriculum.response.status === 401) {
+        await dispatch(actionTypes.FetchCurriculum)
+      } else if (uploadCurriculum.response.status === 401) {
         router.push({ name: 'Login' });
-      } else if (UploadCurriculum.message.includes('400')) {
+      } else if (uploadCurriculum.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Bad request received')
         await commit(mutationTypes.SetCourseAlertStatus, true)
-      } else if (UploadCurriculum.message.includes('404')) {
+      } else if (uploadCurriculum.message.includes('404')) {
         await commit(mutationTypes.SetCourseAlertText, 'Applicant not found')
         await commit(mutationTypes.SetCourseAlertStatus, true)
       } else {
