@@ -221,13 +221,13 @@ import SvgIcons from './SvgIcons.vue'
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
 									<li class="hover:text-primary">
-										<router-link active-class="active" to="/dashboard/talent-management/instructors">Contact Us</router-link>
+										<router-link active-class="active" to="/dashboard/ipos/contact-us">Contact Us</router-link>
 									</li>
 									<li class="hover:text-primary">
-										<router-link active-class="active" to="/dashboard/talent-management/instructors">Demo Requests</router-link>
+										<router-link active-class="active" to="/dashboard/ipos/demo-request">Demo Requests</router-link>
 									</li>
 									<li class="hover:text-primary pb-3">
-										<router-link active-class="active" to="/dashboard/batch">Quote Requests</router-link>
+										<router-link active-class="active" to="/dashboard/ipos/quote-request">Quote Requests</router-link>
 									</li>
 								</ul>
 							</div>

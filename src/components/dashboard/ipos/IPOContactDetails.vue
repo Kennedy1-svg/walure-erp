@@ -41,7 +41,7 @@ const contact:any = computed(() => {
         <div class="main grid px-[45px]">
             <div class="grid">
                 <div class="flex justify-between py-10 items-center ">
-                    <p class="text-2xl">IPO Details</p>
+                    <p class="text-2xl">Details</p>
                     <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
                 </div>
             </div>
@@ -49,7 +49,7 @@ const contact:any = computed(() => {
             <div class="bottom">
                 <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                     <p>Name</p>
-                    <p>{{ contact.firstName }} {{ contact.lastName }}</p>
+                    <p>{{ contact.contactName }}</p>
                 </div>
                 <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                     <p>Mobile</p>
@@ -62,6 +62,10 @@ const contact:any = computed(() => {
                 <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                     <p>Date</p>
                     <p>{{ moment(contact.requestDate).format('MM/DD/YYYY') }}</p>
+                </div>
+                <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
+                    <p>Store name</p>
+                    <p>{{ contact.storeName }}</p>
                 </div>
                 <div class="flex gap-5 py-3 text-xl font-medium justify-between items-start">
                     <p>Message</p>

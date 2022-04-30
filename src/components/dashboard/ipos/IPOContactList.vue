@@ -9,11 +9,11 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-import IPODetails from './IPODetails.vue';
+import IPODetails from './IPOContactDetails.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
-import * as actionTypes from '../../../store/module/contact/constants/action';
+import * as actionTypes from '../../../store/module/ipos/constants/action';
 import { api_url } from '../../../config/index'
 
 const contacts:any = computed(() => {
@@ -31,9 +31,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/contactus/get-contacts/${pageIndex.value}/{pageSize}`;
-    // console.log('url', request)
-    // await store.dispatch(actionTypes.FetchIPOs, request)
+    const request:any = `${api_url}api/iposcontactus/get-iposcontact/${pageIndex.value}/{pageSize}`;
+    console.log('url', request)
+    await store.dispatch(actionTypes.FetchIPOs, request)
 }
 
 let contactitemtodelete:any = ref('')
@@ -46,16 +46,16 @@ const sendId:any = (id:any) => {
 }
 
 const deleteIPO:any = async (id:any) => {
-    console.log('category category', id);
+    console.log('contact contact', id);
 
-    const request:any = `${api_url}api/contactus/delete/${id}`;
+    const request:any = `${api_url}api/iposcontactus/delete/${id}`;
 
     console.log('requestData', request)
-    // await store.dispatch(actionTypes.RemoveIPO, request)
+    await store.dispatch(actionTypes.RemoveIPO, request)
     closeModal()
-    // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
+    // const fetchrequest:any = `${api_url}api/coursecontact/get-contacts/{pageNumber}/{pageSize}`;
     // console.log('url', fetchrequest)
-    // await store.dispatch(actionTypes.FetchIPOs)
+    await store.dispatch(actionTypes.FetchIPOs)
 }
 
 const emits = defineEmits(['close']);
@@ -81,9 +81,9 @@ const totalPages:any = computed(() => {
 
 const setId:any = (id:any) => {
     console.log('contact', id)
-    const request:any = `${api_url}api/contactus/${id}`;
+    const request:any = `${api_url}api/iposcontactus/${id}`;
     console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditIPO, request)
+    store.dispatch(actionTypes.FetchEditIPO, request)
 }
 
 const toggle:any = (status:any) => {
@@ -107,15 +107,15 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('TalentList mounted');
-    const request:any = `${api_url}api/contactus/get-contacts/{pageIndex}/{pageSize}`;
-    // await store.dispatch(actionTypes.FetchIPOs, request)
+    // const request:any = `${api_url}api/iposcontactus/get-iposcontact/{pageIndex}/{pageSize}`;
+    await store.dispatch(actionTypes.FetchIPOs)
 });
 </script>
 
 <template>
     <div class="main grid">
         <div class="title flex justify-between items-center mb-10">
-            <h1 class="text-2xl font-semibold text-black">IPO Request List</h1>
+            <h1 class="text-2xl font-semibold text-black">Contact Request List</h1>
             <p class="text-xl font-medium text-primary">Total : {{ total_count }}</p>
         </div>
         <div class="table">
@@ -141,10 +141,10 @@ onMounted( async () => {
                 <tbody id="students" class="bg-white">
                   <tr v-for="(contact) in contacts" :key="contact.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ (contacts.indexOf(contact) + 1) }}
+                          {{ pageIndex == 1 ? (contacts.indexOf(contact) + 1) : ((pageIndex - 1) * 10) + (contacts.indexOf(contact) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ contact.firstName }} {{ contact.lastName }}
+                          {{ contact.contactName }}
                       </td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                           {{ contact.email }}
@@ -162,7 +162,7 @@ onMounted( async () => {
                                 <SvgIcons name="eye" />
                             </button>
                             <Modal :show="showDetails" @close="showDetails = !showDetails">
-                                <IPODetails :contact="contact" @close="showDetails = !showDetails"  />
+                                <IPODetails @close="showDetails = !showDetails"  />
                             </Modal>
 
                             <button

@@ -141,7 +141,7 @@ onMounted( async () => {
                 <tbody id="students" class="bg-white">
                   <tr v-for="(contact) in contacts" :key="contact.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ (contacts.indexOf(contact) + 1) }}
+                          {{ pageIndex == 1 ? (contacts.indexOf(contact) + 1) : ((pageIndex - 1) * 10) + (contacts.indexOf(contact) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                           {{ contact.firstName }} {{ contact.lastName }}
@@ -162,7 +162,7 @@ onMounted( async () => {
                                 <SvgIcons name="eye" />
                             </button>
                             <Modal :show="showDetails" @close="showDetails = !showDetails">
-                                <ContactDetails :contact="contact" @close="showDetails = !showDetails"  />
+                                <ContactDetails @close="showDetails = !showDetails"  />
                             </Modal>
 
                             <button

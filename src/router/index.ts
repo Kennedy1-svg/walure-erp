@@ -155,6 +155,24 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
+        path: 'ipos/contact-us',
+        name: 'IPOsContactUs',
+        component: () => import('../views/dashboard/ipos/Index.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'ipos/quote-request',
+        name: 'IPOsQuoteRequest',
+        component: () => import('../views/dashboard/ipos/QuoteRequest.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'ipos/demo-request',
+        name: 'IPOsDemoRequest',
+        component: () => import('../views/dashboard/ipos/DemoRequest.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: '/:pathMatch(.*)*',
         name: 'Error',
         component: () => import('../components/NotFound.vue'),

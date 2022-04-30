@@ -14,7 +14,7 @@ import Search from '../../Search.vue';
 // import AddIPO from './AddIPOs.vue'
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
-import * as actionTypes from '../../../store/module/contact/constants/action';
+import * as actionTypes from '../../../store/module/ipos/constants/action';
 
 const store = useStore();
 
@@ -33,14 +33,14 @@ const filter:any = async () => {
     isSearching.value = true
     const search:any = searchText.value.toLowerCase();
     console.log('search', search)
-    const request:any = `${api_url}api/contactus/search-contacts/{pageIndex}/{pageSize}/${search}`;
-    // await store.dispatch(actionTypes.FetchIPOs, request)
+    const request:any = `${api_url}api/iposcontactus/search-iposcontact/{pageIndex}/{pageSize}/${search}`;
+    await store.dispatch(actionTypes.FetchIPOs, request)
 }
 
 const close:any = async () => {
     isSearching.value = false
     searchText.value = ''
-    // await store.dispatch(actionTypes.FetchIPOs)
+    await store.dispatch(actionTypes.FetchIPOs)
 }
 
 onMounted(() => {
@@ -53,7 +53,7 @@ onMounted(() => {
 <template>
     <div class="main pt-[50px] grid gap-5 pb-[90px]">
         <div class="top flex justify-between items-center">
-            <h1 class="font-semibold text-2xl">IPO Us</h1>
+            <h1 class="font-semibold text-2xl">Contact Us</h1>
             <!-- <div class="buttons flex gap-10">
                 <button class="focus:outline-none flex items-center gap-3 text-sm">
                     <p class="text-grey font-semibold">Add IPO</p>

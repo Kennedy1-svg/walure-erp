@@ -60,7 +60,7 @@ export default {
   actions: {
     async [actionTypes.FetchContacts] ({ commit }: any, data: any = `${api_url}api/contactus/get-contacts/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
-      const contacts:any = await fetchData(data, token)
+    const contacts:any = await fetchData(data, token)
       console.log('contacts', contacts)
       if (contacts.payload) {
         await commit(mutationTypes.SetContacts, contacts)
