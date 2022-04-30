@@ -9,7 +9,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import { api_url } from '../../../config'
 import { ref, toRefs, computed, onMounted } from 'vue';
 import { useStore } from 'vuex'
-import Modal from '../../Modal.vue'
+import moment from 'moment';
 import * as actionTypes from '../../../store/module/courses/constants/action'
 
 const store = useStore();
@@ -23,9 +23,9 @@ const closeModal:any = () => {
   emits('close')
 }
 
-const course:any = computed(() => {
+const contact:any = computed(() => {
     // console.log('courses', JSON.parse(JSON.stringify(store.getters.getEditcourse.value)))
-    // return JSON.parse(JSON.stringify(store.getters.getEditcourse.value))
+    return store.getters.getEditContact.value
 })
 
 // onMounted(async () => {
@@ -37,37 +37,41 @@ const course:any = computed(() => {
 </script>
 
 <template>
-    <div class="main grid px-[45px]">
-        <div class="grid">
-            <div class="flex justify-between py-[53px] items-center ">
-                <p class="text-2xl">Contact Details</p>
-                <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
+    <div class="h-[92vh]">
+        <div class="main grid px-[45px]">
+            <div class="grid">
+                <div class="flex justify-between py-10 items-center ">
+                    <p class="text-2xl">Contact Details</p>
+                    <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
+                </div>
+            </div>
+            <!-- {{ contact }} hi -->
+            <div class="bottom">
+                <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
+                    <p>Name</p>
+                    <p>{{ contact.firstName }} {{ contact.lastName }}</p>
+                </div>
+                <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
+                    <p>Mobile</p>
+                    <p>{{ contact.phoneNumber }}</p>
+                </div>
+                <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
+                    <p>Email</p>
+                    <p>{{ contact.email }}</p>
+                </div>
+                <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
+                    <p>Date</p>
+                    <p>{{ moment(contact.requestDate).format('MM/DD/YYYY') }}</p>
+                </div>
+                <div class="flex gap-5 py-3 text-xl font-medium justify-between items-start">
+                    <p>Message</p>
+                    <!-- <p>{{ contact.message }}</p> -->
+                    <p class="min-w-2/3 text-base">
+                    {{ contact.message }}
+                    </p>
+                </div>
             </div>
         </div>
-        <div class="bottom">
-            <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
-                <p>Name</p>
-                <!-- <p>{{ course.title }}</p> -->
-            </div>
-            <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
-                <p>Mobile</p>
-                <!-- <p>{{ course.sourcecode }}</p> -->
-            </div>
-            <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
-                <p>Email</p>
-                <p>othername</p>
-            </div>
-            <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
-                <p>Date</p>
-                <!-- <p>{{ course.description }}</p> -->
-            </div>
-            <div class="flex py-3 text-xl font-medium justify-between items-start">
-                <p>Message</p>
-                <!-- <p>{{ course.resources }}</p> -->
-                <p class="w-2/3 text-base">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique faucibus massa eu tortor gravida nisl ornare etiam. Pulvinar pellentesque ultrices eget fringilla neque, vel. Sit fames elementum, mi gravida placerat.
-                </p>
-            </div>
-        </div>
+
     </div>
 </template>

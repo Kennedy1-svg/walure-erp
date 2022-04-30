@@ -7,7 +7,7 @@ import batch from './module/batch'
 import instructors from './module/instructors'
 import services from './module/services'
 import contact from './module/contact'
-// import dashboard from './module/dashboard'
+import ipos from './module/ipos'
 
 const store = createStore({
     modules: {
@@ -19,7 +19,7 @@ const store = createStore({
         instructors,
         services,
         contact,
-        // dashboard,
+        ipos,
     }
 })
 

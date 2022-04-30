@@ -25,41 +25,22 @@ const closeModal:any = () => {
   doc.close()  
 }
 
+let isSearching:any = ref(false)
+
 let searchText:any = ref('');
 
 const filter:any = async () => {
-  const search:any = searchText.value.toLowerCase();
-  const students:any = document.getElementById('students');
-  const rows:any = students.getElementsByTagName('tr');
-
-  for (let i:any = 0; i < rows.length; i++) {
-    const firstCol:any = rows[i].getElementsByTagName('td')[1];
-    const secondCol:any = rows[i].getElementsByTagName('td')[2];
-    const thirdCol:any = rows[i].getElementsByTagName('td')[3];
-
-    if (
-      firstCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      secondCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      thirdCol.innerText.toLowerCase().indexOf(search) > -1
-    ) {
-      rows[i].style.display = '';
-    } else {
-      rows[i].style.display = 'none';
-    }
-
-    // if (firstCol) {
-    //   const lang = firstCol.innerText
-    //   const sLang = secondCol.innerText
-    //   const tLang = thirdCol.innerText
-    //   const fLang = fourthCol.innerText
-    //   rows[i].style.display = ((lang.toUpperCase().indexOf(search) > -1) || (sLang.toUpperCase().indexOf(search) > -1) || (tLang.indexOf(search) > -1) || (fLang.toUpperCase().indexOf(search) > -1)) ? '' : 'none'
-    // }
-  }
+    isSearching.value = true
+    const search:any = searchText.value.toLowerCase();
+    console.log('search', search)
+    const request:any = `${api_url}api/coursecategory/filter-categories/${search}`;
+    await store.dispatch(courseActionTypes.FetchCourseCategories, request)
 }
 
 const close:any = async () => {
-  searchText.value = ''
-  filter()
+    isSearching.value = false
+    searchText.value = ''
+    await store.dispatch(courseActionTypes.FetchCourseCategories)
 }
 
 onMounted(() => {
@@ -124,14 +105,15 @@ onMounted(() => {
                 </Filter>
             </div> -->
             <div class="search">
-                    <Search>
-                        <template #input>
-                            <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Search">
-                            <span class="w-auto flex justify-end items-center text-grey p-2">
-                                <SvgIcons name="search" @click="filter"  />
-                            </span>
-                        </template>
-                    </Search>
+                <Search>
+                    <template #input>
+                        <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Search">
+                        <span class="w-auto flex justify-end items-center text-grey p-2">
+                            <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                            <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
+                        </span>
+                    </template>
+                </Search>
             </div>
         </div>
     </div>

@@ -9,19 +9,19 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import CourseDetails from './InstructorDetails.vue';
-import Switch from '../../switch.vue';
+import ContactDetails from './ContactDetails.vue';
 import pagination from '../../pagination.vue'
-import Modal from '../../Modal.vue';
-import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
+import Modal from '../../Modals.vue';
+import DeleteModal from '../../DeleteModal.vue';
+import * as actionTypes from '../../../store/module/contact/constants/action';
 import { api_url } from '../../../config/index'
 
-const instructors:any = computed(() => {
-    return store.getters.getInstructors;
+const contacts:any = computed(() => {
+    return store.getters.getContacts.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getInstructors;
+    return store.getters.getContacts.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
@@ -31,9 +31,40 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    // const request:any = `${api_url}api/course/search-courses/${pageIndex.value}/{pageSize}`;
+    const request:any = `${api_url}api/contactus/get-contacts/${pageIndex.value}/{pageSize}`;
     // console.log('url', request)
-    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    await store.dispatch(actionTypes.FetchContacts, request)
+}
+
+let contactitemtodelete:any = ref('')
+
+const sendId:any = (id:any) => {
+    console.log('batchid', id)
+    contactitemtodelete.value = id
+    console.log('contactitemtodelete', contactitemtodelete.value)
+    return contactitemtodelete
+}
+
+const deleteContact:any = async (id:any) => {
+    console.log('category category', id);
+
+    const request:any = `${api_url}api/contactus/delete/${id}`;
+
+    console.log('requestData', request)
+    await store.dispatch(actionTypes.RemoveContact, request)
+    closeModal()
+    // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
+    // console.log('url', fetchrequest)
+    await store.dispatch(actionTypes.FetchContacts)
+}
+
+const emits = defineEmits(['close']);
+
+const closeModal:any = async () => {
+  emits('close')
+  setTimeout(() => {
+    showDelete.value = false;
+  }, 500);
 }
 
 const totalPages:any = computed(() => {
@@ -49,10 +80,10 @@ const totalPages:any = computed(() => {
 })
 
 const setId:any = (id:any) => {
-    console.log('studentid', id)
-    const request:any = `${api_url}api/student/${id}`;
+    console.log('contact', id)
+    const request:any = `${api_url}api/contactus/${id}`;
     console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditStudent, request)
+    store.dispatch(actionTypes.FetchEditContact, request)
 }
 
 const toggle:any = (status:any) => {
@@ -76,8 +107,8 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('TalentList mounted');
-    // const request:any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`;
-    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    const request:any = `${api_url}api/contactus/get-contacts/{pageIndex}/{pageSize}`;
+    await store.dispatch(actionTypes.FetchContacts, request)
 });
 </script>
 
@@ -88,6 +119,7 @@ onMounted( async () => {
             <p class="text-xl font-medium text-primary">Total : {{ total_count }}</p>
         </div>
         <div class="table">
+            <!-- {{ contacts }} -->
         <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
             <table class="overflow-x-scroll border items-center w-full">
                 <thead class="bg-table-head">
@@ -96,95 +128,62 @@ onMounted( async () => {
                     S/N
                     </th>
                     <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Course title
+                    Name
                     </th>
                     <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Duration
+                    Contact Email
                     </th>
-                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Level</th>
-                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">isActive</th>
+                    <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Contact Phone</th>
                     <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                 </tr>
                 </thead>
 
-                <tbody id="students" class="bg-white">{{ instructors }}
-                  <tr v-for="(instructor) in instructors" :key="instructor.id">
+                <tbody id="students" class="bg-white">
+                  <tr v-for="(contact) in contacts" :key="contact.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ (instructors.indexOf(instructor) + 1) }}
+                          {{ (contacts.indexOf(contact) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ instructor.title }}
+                          {{ contact.firstName }} {{ contact.lastName }}
                       </td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ instructor.duration }}
+                          {{ contact.email }}
                       </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ instructor.levelTypeName }}
+                          {{ contact.phoneNumber }}
                       </td>
                       <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <Switch :status="instructor.isActive" @toggle="toggle(instructor.isActive)" />
-                      </td>
-                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          
-                            <div class="relative inline-block dropdown">
-                                <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                    <SvgIcons name="ellipsis" />
-                                </button>
-                                <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                    <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                        <div class="py-3 gap-3">
-                                            <button
-                                            type="button"
-                                            @click="showAddToBatch = !showAddToBatch" @click.prevent="setId(instructor.id)"
-                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            >
-                                                <SvgIcons name="doc-add" />
-                                                Add to batch
-                                            </button>
-                                            <Modal :show="showAddToBatch" @close="showAddToBatch = false">
-                                                <AddToBatch />
-                                            </Modal>
+                        <div class="flex w-2/5 items-center">
+                            <button
+                            type="button"
+                            @click="showDetails = !showDetails" @click.prevent="setId(contact.id)"
+                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
+                            >
+                                <SvgIcons name="eye" />
+                            </button>
+                            <Modal :show="showDetails" @close="showDetails = !showDetails">
+                                <ContactDetails :contact="contact" @close="showDetails = !showDetails"  />
+                            </Modal>
 
-                                            <button
-                                            type="button"
-                                            @click="showDetails = !showDetails" @click.prevent="setId(instructor.id)"
-                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            >
-                                                <SvgIcons name="details" />
-                                                Details
-                                            </button>
-                                            <Modal :show="showDetails" @close="showDetails = false">
-                                                <StudentDetails />
-                                            </Modal>
-
-                                            <button
-                                            type="button"
-                                            @click="showEdit = !showEdit" @click.prevent="setId(instructor.id)"
-                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            >
-                                                <SvgIcons name="edit" />
-                                                Edit
-                                            </button>
-                                            <Modal :show="showEdit" @close="showEdit = false">
-                                                <AddStudents />
-                                            </Modal>
-
-                                            <button
-                                            type="button"
-                                            @click="showDelete = !showDelete"
-                                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                            >
-                                                <SvgIcons name="delete" />
-                                                Delete
-                                            </button>
-                                            <Modal :show="showDelete" @close="showDelete = false">
-                                            <p class="mb-4">No action</p>
-                                            
-                                            </Modal>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <button
+                            type="button"
+                            @click="showDelete = !showDelete" @click.prevent="sendId(contact.id)" 
+                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                            >
+                                <SvgIcons name="delete" />
+                            </button>
+                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteContact(contactitemtodelete)">
+                                    <template #title>
+                                        Delete Contact
+                                    </template>
+                                    <template #info>
+                                        Are you sure you want to remove contact?
+                                    </template>
+                                    <template #delete>
+                                        Yes, Delete Contact
+                                    </template>
+                            </DeleteModal>
+                        </div>
                       </td>
                   </tr>
                     </tbody>
