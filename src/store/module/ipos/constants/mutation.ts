@@ -1,0 +1,5 @@
+export const SetIPOs = 'SetIPOs'
+export const DeleteIPO = 'DeleteIPO'
+export const SetEditIPO = 'SetEditIPO'
+export const SetIPOAlertStatus = 'SetIPOAlertStatus'
+export const SetIPOAlertText = 'SetIPOAlertText'
