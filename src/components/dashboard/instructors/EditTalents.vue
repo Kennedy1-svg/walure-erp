@@ -230,6 +230,7 @@ let onResumeUpload = ref(false)
 
 let isResumeActive:any = computed(() => {
     if (newTalent.value.resumeUrl) {
+        checkError();
         return true
     } else {
         return false

@@ -394,6 +394,7 @@ let isActive:any = computed(() => {
 
 let isResumeActive:any = computed(() => {
     if (newInstructor.value.resume) {
+        checkError();
         return true
     } else {
         return false
@@ -797,7 +798,7 @@ const disabledView:any = 'bg-gray-300';
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>
-                            {{ isResumeActive && !onResumeUpload }}
+                            <!-- {{ isResumeActive && !onResumeUpload }} -->
                             <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" :disabled="isResumeActive && !onResumeUpload" />
                         </label>
                         <div v-if="newInstructor.resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">

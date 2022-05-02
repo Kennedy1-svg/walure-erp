@@ -81,7 +81,7 @@ const phone ='^[0]+[0-9]';
 
 const checkError:any = () => {
     // let imageType:String = newTalent.value.imageFile.type;
-    // console.log('imageType is', imageType) 
+    console.log('newTalent skill is', JSON.stringify(newTalent.value.Skills)) 
     if (!newTalent.value.FirstName) {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
@@ -124,9 +124,9 @@ const checkError:any = () => {
     
     if (!newTalent.value.LinkedInUrl) {
         errors.linkedin = true;
-        errors.linkedinText = 'Last name is required'
+        errors.linkedinText = 'LinkedIn url is required'
     } else if (newTalent.value.LinkedInUrl.length <= 3) {
-        errors.linkedinText = 'Last name needs to be more than 3 characters'
+        errors.linkedinText = 'LinkedIn url needs to be more than 3 characters'
     } else {
         errors.linkedin = false;
         errors.linkedinText = ''
@@ -164,12 +164,12 @@ const checkError:any = () => {
         errors.proficiencyText = ''
     }
 
-    // if (!newTalent.value.bioId) {
-    //     errors.bio = true;
-    //     errors.bioText = 'Course is required. Please select a bio'
-    // } else {
-    //     errors.bio = false;
-    // }
+    if (newTalent.value.Skills.length == 0) {
+        errors.skills = true;
+        errors.skillsText = 'Please select at least a skill'
+    } else {
+        errors.skills = false;
+    }
 
     if (!newTalent.value.PhoneNumber) {
         errors.phone = true;
@@ -186,13 +186,13 @@ const checkError:any = () => {
         errors.phoneText = ''
     }
 
-    if (!newTalent.value.Skills) {
-        errors.skills = true;
-        errors.skillsText = 'Skill is required'
-    } else {
-        errors.skills = false;
-        errors.skillsText = ''
-    }
+    // if (newTalent.value.Skills.value <= 0) {
+    //     errors.skills = true;
+    //     errors.skillsText = 'Skill is required'
+    // } else {
+    //     errors.skills = false;
+    //     errors.skillsText = ''
+    // }
 
     if (errors.firstName) {
         errors.firstName = true;
@@ -229,6 +229,7 @@ const checkError:any = () => {
 
 let isResumeActive:any = computed(() => {
     if (newTalent.value.ResumeFile) {
+        checkError();
         return true
     } else {
         return false
@@ -489,7 +490,7 @@ const addTalent:any = async () => {
     // formData.append('imageFile', newTalent.value.imageFile, newTalent.value.imageFile.name)
     formData.append('Email', newTalent.value.Email)
     formData.append('Gender', newTalent.value.Gender)
-    formData.append('Skills', newTalent.value.Skills)
+    formData.append('Skills', JSON.stringify(newTalent.value.Skills))
     formData.append('PhoneNumber', newTalent.value.PhoneNumber)
     formData.append('ResumeFile', newTalent.value.ResumeFile, newTalent.value.ResumeFile.name)
     formData.append('ProficiencyLevel', newTalent.value.ProficiencyLevel)
@@ -602,7 +603,7 @@ const disabledView:any = 'bg-gray-300';
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select> -->
-                    <multiselect v-model="newTalent.Gender" valueProp="value" :options="gender_options" track-by="label" label="label" placeholder="Select gender" :searchable="true" class="multiselect-blue" />
+                    <multiselect v-model="newTalent.Gender" @select="checkError" valueProp="value" :options="gender_options" track-by="label" label="label" placeholder="Select gender" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.gender ? errors.genderText : '' }}
                     </p>
@@ -617,7 +618,7 @@ const disabledView:any = 'bg-gray-300';
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select> -->
-                    <multiselect v-model="newTalent.Role" valueProp="value" :options="role_options" track-by="label" label="label" placeholder="Select role" :searchable="true" class="multiselect-blue" />
+                    <multiselect v-model="newTalent.Role" @select="checkError" valueProp="value" :options="role_options" track-by="label" label="label" placeholder="Select role" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.role ? errors.roleText : '' }}
                     </p>
@@ -667,7 +668,7 @@ const disabledView:any = 'bg-gray-300';
                         <option value="">Select option</option> -->
                         <!-- <option  v-for="item in proficiencys" :key="item.id"  :value=item.id>{{ item.title }}</option> -->
                     <!-- </select> -->
-                    <multiselect v-model="newTalent.ProficiencyLevel" valueProp="value" :options="proficiency_options" track-by="label" label="label" placeholder="Select proficiency level" :searchable="true" class="multiselect-blue" />
+                    <multiselect v-model="newTalent.ProficiencyLevel" @select="checkError" valueProp="value" @clear="checkError" :options="proficiency_options" track-by="label" label="label" placeholder="Select proficiency level" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.proficiency ? errors.proficiencyText : '' }}
                     </p>
@@ -682,7 +683,7 @@ const disabledView:any = 'bg-gray-300';
                         <option value="">Select option</option> -->
                         <!-- <option  v-for="item in proficiencys" :key="item.id"  :value=item.id>{{ item.title }}</option> -->
                     <!-- </select> -->
-                    <multiselect @clear="deselect" v-model="newTalent.Skills" valueProp="id" :options="skills" mode="tags" :close-on-select="false" track-by="name" label="name" placeholder="Select skills" :searchable="true" class="multiselect-blue" />
+                    <multiselect @clear="deselect" v-model="newTalent.Skills" valueProp="id" :options="skills" mode="tags" @select="checkError" :close-on-select="false" track-by="name" label="name" placeholder="Select skills" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.skills ? errors.skillsText : '' }}
                     </p>

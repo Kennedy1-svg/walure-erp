@@ -389,6 +389,7 @@ let isActive:any = computed(() => {
 
 let isResumeActive:any = computed(() => {
     if (newInstructor.value.Resume) {
+        checkError();
         return true
     } else {
         return false
