@@ -467,8 +467,7 @@ const editInstructor:any = async () => {
     if (!isImageRemoved.value && !onResumeUpload.value) {
         formData.append('FirstName', newInstructor.value.firstName)
         formData.append('LastName', newInstructor.value.lastName)
-        formData.append('OtherName', newInstructor.value.OtherName)
-        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('GithubUrl', newInstructor.value.githubUrl)
         formData.append('TwitterUrl', newInstructor.value.twitterUrl)
         formData.append('LinkedInUrl', newInstructor.value.linkedInUrl)
         formData.append('FacebookUrl', newInstructor.value.facebookUrl)
@@ -482,8 +481,7 @@ const editInstructor:any = async () => {
     } else if (!isImageRemoved.value && onResumeUpload.value) {
         formData.append('FirstName', newInstructor.value.firstName)
         formData.append('LastName', newInstructor.value.lastName)
-        formData.append('OtherName', newInstructor.value.OtherName)
-        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('GithubUrl', newInstructor.value.githubUrl)
         formData.append('twitterUrl', newInstructor.value.twitterUrl)
         formData.append('Resume', newInstructor.value.resume, newInstructor.value.resume.name)
         formData.append('LinkedInUrl', newInstructor.value.linkedInUrl)
@@ -498,8 +496,7 @@ const editInstructor:any = async () => {
     } else if (!onResumeUpload.value && isImageRemoved.value) {
         formData.append('FirstName', newInstructor.value.firstName)
         formData.append('LastName', newInstructor.value.lastName)
-        formData.append('OtherName', newInstructor.value.OtherName)
-        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('GithubUrl', newInstructor.value.githubUrl)
         formData.append('Image', newInstructor.value.image, newInstructor.value.image.name)
         formData.append('TwitterUrl', newInstructor.value.twitterUrl)
         formData.append('LinkedInUrl', newInstructor.value.linkedInUrl)
@@ -514,8 +511,7 @@ const editInstructor:any = async () => {
     } else {
         formData.append('FirstName', newInstructor.value.firstName)
         formData.append('LastName', newInstructor.value.lastName)
-        formData.append('OtherName', newInstructor.value.OtherName)
-        formData.append('GithubUrl', newInstructor.value.GithubUrl)
+        formData.append('GithubUrl', newInstructor.value.githubUrl)
         formData.append('TwitterUrl', newInstructor.value.twitterUrl)
         formData.append('LinkedInUrl', newInstructor.value.linkedInUrl)
         formData.append('FacebookUrl', newInstructor.value.facebookUrl)
