@@ -361,6 +361,7 @@ const removeImage:any = async () => {
 
 const removeResume:any = async () => {
     onResumeUpload.value = false
+    URL.revokeObjectURL(newInstructor.value.resume);
     return newInstructor.value.resume = ''
 }
 
@@ -788,7 +789,7 @@ const disabledView:any = 'bg-gray-300';
                     <!-- {{ pdfSource }} -->
                     <!-- {{ newInstructor.resume }} -->
                     <div class="flex items-center gap-4 justify-between w-full">
-                        <label for="resume_upload" :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                        <label v-if="!newInstructor.resume" for="resume_upload" :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
@@ -797,7 +798,12 @@ const disabledView:any = 'bg-gray-300';
                             <!-- {{ isResumeActive && !onResumeUpload }} -->
                             <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" />
                         </label>
-                        <div v-if="!onResumeUpload" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                        <div v-if="newInstructor.resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
+                            <div class="">
+                                <p class="font-semibold py-1 w-36 truncate">
+                                    {{ newInstructor.firstName }}'s resume
+                                </p>
+                            </div>
                             <div class="flex justify-center gap-3 items-center">
                                 <a :href="newInstructor.resume" target="_blank">
                                     <SvgIcons name="eye" />
@@ -805,7 +811,7 @@ const disabledView:any = 'bg-gray-300';
                                 <SvgIcons name="delete" @click="removeResume" />
                             </div>
                         </div>
-                        <div v-else class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                        <div v-if="newInstructor.resume" class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && onResumeUpload ? '' : 'hidden']">
                             <div class="">
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newInstructor.resume.name }}

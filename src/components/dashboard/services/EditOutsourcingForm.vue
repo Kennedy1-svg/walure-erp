@@ -516,6 +516,11 @@ const submitEdit:any = () => {
     checkError();
     console.log('iserror value', isError.value)
     !isError.value ? editproject() : '';
+    setTimeout(() => {
+        router.push({
+            name: 'Outsourcing'
+        })
+    }, 1000);
 }
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
@@ -713,7 +718,7 @@ onBeforeUnmount(() => {
                 <Modal :show="showAddTalent" @close="showAddTalent = !showAddTalent">
                     <AddTalent name="Edit" @close="showAddTalent = !showAddTalent" />
                 </Modal>
-                <button @click.prevent="submit" :class="[outsourcingTalents.length !== 0 ? activeView : disabledView]" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md" :disabled="outsourcingTalents.length === 0">Save</button>
+                <button @click.prevent="submitEdit" :class="[outsourcingTalents.length !== 0 ? activeView : disabledView]" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md" :disabled="outsourcingTalents.length === 0">Save</button>
             </div>
         </form>
     </div>

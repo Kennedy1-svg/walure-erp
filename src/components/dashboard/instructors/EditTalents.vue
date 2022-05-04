@@ -724,32 +724,8 @@ const disabledView:any = 'bg-gray-300';
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newTalent.firstName }}'s resume
                                 </p>
-                                <!-- <p class="text-xs pb-1 text-gray-500">
-                                    {{ newTalent.resumeUrl.size > 999999 ? (newTalent.resumeUrl.size / 1000000).toFixed(2) + 'Mb' : newTalent.resumeUrl.size > 999 ? (newTalent.resumeUrl.size / 1000).toFixed(2) + ' kb' : newTalent.resumeUrl.size + ' bytes' }}
-                                </p> -->
                             </div>
                             <div class="flex justify-around gap-3 items-center">
-                                <!-- <Modal id="resume" :show="showResume" @close="showResume = !showResume">
-                                    <template #button> -->
-                                    <!-- <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
-                                        View Passport
-                                    </button> -->
-                                        <!-- <SvgIcons name="eye" />
-                                    </template>
-                                    <template #modalContent> -->
-                                        <!-- <img id="output" alt="user img"> -->
-                                        <!-- <div> -->
-                                            <!-- <AddSkill name="Add" @close="closeModal" /> -->
-                                            <!-- <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSrc" :page="page" /> -->
-                                            <!-- <embed type="application/pdf" src="https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" frameborder="0"> -->
-                                        <!-- </div>
-                                    </template>
-                                </Modal> -->
-                                <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
-                                <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
-                                    <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
-                                    <!-- <AddSkill name="Add" />
-                                </Modl> -->
                                 <a :href="newTalent.resumeUrl" target="_blank">
                                 <SvgIcons name="eye" /></a>
                                 <SvgIcons name="delete" @click="removeResume" />
@@ -768,11 +744,6 @@ const disabledView:any = 'bg-gray-300';
                                 <a :href="pdfSource" target="_blank">
                                 <SvgIcons name="eye" />
                                 </a>
-                                <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
-                                <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
-                                    <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
-                                    <!-- <AddSkill name="Add" />
-                                </Modl> -->
                                 <SvgIcons name="delete" @click="removeResume" />
                             </div>
                         </div>
