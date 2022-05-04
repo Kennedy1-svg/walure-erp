@@ -821,7 +821,7 @@ const disabledView:any = 'bg-gray-300';
                             </div>
                         </div>
                         <div v-if="newInstructor.resume" class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && onResumeUpload ? '' : 'hidden']">
-                            <div class="">
+                            <div v-if="onResumeUpload" class="">
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newInstructor.resume.name }}
                                 </p>
@@ -829,7 +829,7 @@ const disabledView:any = 'bg-gray-300';
                                     {{ newInstructor.resume.size > 999999 ? (newInstructor.resume.size / 1000000).toFixed(2) + ' Mb' : newInstructor.resume.size > 999 ? (newInstructor.resume.size / 1000).toFixed(2) + ' kb' : newInstructor.resume.size + ' bytes' }}
                                 </p>
                             </div>
-                            <div class="flex justify-center gap-3 items-center">
+                            <div v-else class="flex justify-center gap-3 items-center">
                                 <a :href="pdfSource" target="_blank">
                                 <SvgIcons name="eye" />
                                 </a>
