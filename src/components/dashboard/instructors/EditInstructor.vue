@@ -797,31 +797,16 @@ const disabledView:any = 'bg-gray-300';
                             <!-- {{ isResumeActive && !onResumeUpload }} -->
                             <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" />
                         </label>
-                        <div v-if="newInstructor.resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
-                            <!-- <div class="">
-                                <p class="font-semibold py-1 w-36 truncate">
-                                    {{ newInstructor.resume }}
-                                </p>
-                                <p class="text-xs pb-1 text-gray-500">
-                                    {{ newInstructor.resume.size > 999999 ? (newInstructor.resume.size / 1000000).toFixed(2) + 'Mb' : newInstructor.resume.size > 999 ? (newInstructor.resume.size / 1000).toFixed(2) + ' kb' : newInstructor.resume.size + ' bytes' }}
-                                </p>
-                            </div> -->
-                            <!-- {{ newInstructor.resume }} -->
+                        <div v-if="!onResumeUpload" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
                             <div class="flex justify-center gap-3 items-center">
                                 <a :href="newInstructor.resume" target="_blank">
-                                    <!-- <a href="data:text/pdf;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KICA8aGVhZD4KICAgIDxzY3JpcHQgdHlwZT0ibW9kdWxlIiBzcmM9Ii9Adml0ZS9jbGllbnQiPjwvc2NyaXB0PgoKICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04IiAvPgogICAgPGxpbmsgcmVsPSJpY29uIiBocmVmPSIvZmF2aWNvbi5pY28iIC8+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCIgLz4KICAgIDxtZXRhIG5hbWU9ImRlc2NyaXB0aW9uIiBjb250ZW50PSJXYWx1cmUgQ2FwaXRhbCBiYWNrIG9mZmljZSBmb3IgbWFpbnRhaW5pbmcgZnJvbnQgZW5kIHdlYiBhcHBsaWNhdGlvbiI+CiAgICA8bWV0YSBuYW1lPSJrZXl3b3JkcyIgY29udGVudD0iV2FsdXJlIENhcGl0YWwsIFdhbHVyZSwgQ2FwaXRhbCwgV2FsdXJlIENhcGl0YWwgYmFjayBvZmZpY2UsIFdhbHVyZSBDYXBpdGFsIGJhY2sgb2ZmaWNlIGZvciBtYWludGFpbmluZyBmcm9udCBlbmQgd2ViIGFwcGxpY2F0aW9uIj4KICAgIDxtZXRhIG5hbWU9InJvYm90cyIgY29udGVudD0iaW5kZXgsIGZvbGxvdyI+CiAgICA8bWV0YSBuYW1lPSJnb29nbGVib3QiIGNvbnRlbnQ9ImluZGV4LCBmb2xsb3ciPgogICAgPG1ldGEgbmFtZT0ibGFuZ3VhZ2UiIGNvbnRlbnQ9IkVuZ2xpc2giPgogICAgPG1ldGEgbmFtZT0iZGlzdHJpYnV0aW9uIiBjb250ZW50PSJnbG9iYWwiPgogICAgPG1ldGEgbmFtZT0iZG9jLXR5cGUiIGNvbnRlbnQ9IldlYiBQYWdlIj4KICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzMj9mYW1pbHk9TW9udHNlcnJhdDppdGFsLHdnaHRAMCwxMDA7MCwyMDA7MCwzMDA7MCw0MDA7MCw1MDA7MCw2MDA7MCw3MDA7MCw4MDA7MCw5MDA7MSwxMDA7MSwyMDA7MSwzMDA7MSw0MDA7MSw1MDA7MSw2MDA7MSw3MDA7MSw4MDA7MSw5MDAmZGlzcGxheT1zd2FwIiByZWw9InN0eWxlc2hlZXQiIG1lZGlhPSJhbGwiPgogICAgPCEtLSA8c3R5bGUgc3JjPSJ2dWUtbXVsdGlzZWxlY3QvZGlzdC92dWUtbXVsdGlzZWxlY3QubWluLmNzcyI+PC9zdHlsZT4gLS0+CiAgICA8IS0tIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly91bnBrZy5jb20vdnVlLW11bHRpc2VsZWN0QDIuMS42L2Rpc3QvdnVlLW11bHRpc2VsZWN0Lm1pbi5jc3MiPiAtLT4KICAgIDx0aXRsZT5XYWx1cmUgQ2FwaXRhbCB8IEJhY2sgT2ZmaWNlPC90aXRsZT4KICA8L2hlYWQ+CiAgPGJvZHk+CiAgICA8ZGl2IGlkPSJhcHAiPjwvZGl2PgogICAgPHNjcmlwdCB0eXBlPSJtb2R1bGUiIHNyYz0iL3NyYy9tYWluLnRzP3Q9MTY1MDYxMjg5MzEzNSI+PC9zY3JpcHQ+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==" target="_blank"> -->
                                     <SvgIcons name="eye" />
                                 </a>
-                                <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
-                                <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
-                                    <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
-                                    <!-- <AddSkill name="Add" />
-                                </Modl> -->
                                 <SvgIcons name="delete" @click="removeResume" />
                             </div>
                         </div>
-                        <div v-if="newInstructor.resume" class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && onResumeUpload ? '' : 'hidden']">
-                            <div v-if="onResumeUpload" class="">
+                        <div v-else class="flex justify-between rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                            <div class="">
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newInstructor.resume.name }}
                                 </p>
@@ -829,15 +814,10 @@ const disabledView:any = 'bg-gray-300';
                                     {{ newInstructor.resume.size > 999999 ? (newInstructor.resume.size / 1000000).toFixed(2) + ' Mb' : newInstructor.resume.size > 999 ? (newInstructor.resume.size / 1000).toFixed(2) + ' kb' : newInstructor.resume.size + ' bytes' }}
                                 </p>
                             </div>
-                            <div v-else class="flex justify-center gap-3 items-center">
+                            <div class="flex justify-center gap-3 items-center">
                                 <a :href="pdfSource" target="_blank">
-                                <SvgIcons name="eye" />
+                                    <SvgIcons name="eye" />
                                 </a>
-                                <!-- <SvgIcons name="eye" @click="showResume = !showResume" @click.prevent="testing" /> -->
-                                <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
-                                    <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
-                                    <!-- <AddSkill name="Add" />
-                                </Modl> -->
                                 <SvgIcons name="delete" @click="removeResume" />
                             </div>
                         </div>
