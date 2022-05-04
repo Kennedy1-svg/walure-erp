@@ -291,6 +291,30 @@ export default {
           console.log('new added outsourcing talent data', newData)
           await commit(mutationTypes.SetOutsourcingTalent, newData)
         },
+        async [actionTypes.EditOutsourcing] ({ commit, dispatch }: any, data: any) {
+          const token:any = localStorage.getItem('token')
+          console.log('token here')
+          const outsourcing = await editData(data.url, data.data, token)
+          if (outsourcing.payload) {
+            // commit(mutationTypes.SetNewProjectCategory, outsourcing.payload)
+            await commit(mutationTypes.SetProjectAlertText, 'Outsourcing updated successfully')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+            await dispatch(actionTypes.FetchOutsourcing)
+          } else if (outsourcing.response.status === 401) {
+            router.push({ name: 'Login' });
+          } else if (outsourcing.message.includes('400')) {
+            await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          } else {
+            await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
+            await commit(mutationTypes.SetProjectAlertStatus, true)
+          }
+    
+          setTimeout(() => {
+            commit(mutationTypes.SetProjectAlertStatus, false)
+            commit(mutationTypes.SetProjectAlertText, '')
+          }, 2000)
+        },
         async [actionTypes.EditOutsourcingTalent] ({ commit, state }:any, data:any) {
           const outsourcingTalent:any = await JSON.parse(JSON.stringify(state.outsourcingTalent))
           console.log('outsourcing talent here', outsourcingTalent)

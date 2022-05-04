@@ -443,17 +443,17 @@ const addproject:any = async () => {
 
 const editproject:any = async () => {
     console.log('hi');
-    const request:any = `${api_url}api/project/edit-project`;
+    const request:any = `${api_url}api/outsourcing/edit-request`;
 
     const projectdata:any = {
-        companyName: newOutsourcing.value.companyName,
+        contactName: newOutsourcing.value.contactName,
         email: newOutsourcing.value.email,
         companyType: newOutsourcing.value.companyType,
-        startDate: moment(newOutsourcing.value.startDate).format('MM/DD/YYYY'),
-        phone: moment(newOutsourcing.value.phone).format('MM/DD/YYYY'),
-        brief: newOutsourcing.value.brief,
-        contactName: newOutsourcing.value.contactName,
-        id: newOutsourcing.value.id
+        location: newOutsourcing.value.location,
+        phoneNumber: newOutsourcing.value.phoneNumber,
+    //     // brief: newOutsourcing.value.brief,
+        companyName: newOutsourcing.value.companyName,
+        jobDetails: JSON.parse(JSON.stringify(outsourcingTalents.value)),
     //     Title: newOutsourcing.value.name,
     //     TrainingType: newOutsourcing.value.email,
     //     ProjectCapacity: newOutsourcing.value.companyType,
@@ -479,11 +479,11 @@ const editproject:any = async () => {
         data: projectdata,
     }
     console.log('newData', newData)
-    await store.dispatch(projectActionTypes.EditProject, newData)
-    await store.dispatch(projectActionTypes.FetchProject)
-    await store.getters.getProject
-    closeModal()
-    store.commit(projectMutationTypes.SetNewProject, {})
+    await store.dispatch(projectActionTypes.EditOutsourcing, newData)
+    // await store.dispatch(projectActionTypes.FetchProject)
+    // await store.getters.getProject
+    // closeModal()
+    // store.commit(projectMutationTypes.SetNewProject, {})
 }
 
 const deleteTalent:any = async (id:any) => {
