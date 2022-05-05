@@ -45,7 +45,7 @@ const contact:any = computed(() => {
                     <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
                 </div>
             </div>
-            <!-- {{ contact }} hi -->
+            {{ contact }} hi
             <div class="bottom">
                 <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                     <p>Name</p>
@@ -61,7 +61,7 @@ const contact:any = computed(() => {
                 </div>
                 <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                     <p>Demo Day</p>
-                    <p>{{ moment(contact.requestDate).format('MMM DD, YYYY hh:mm:ss A') }}</p>
+                    <p>{{ moment(contact.createdOn).format('MMM DD, YYYY hh:mm:ss A') }}</p>
                 </div>
                 <div class="flex border-b gap-5 py-3 text-xl font-medium justify-between items-start">
                     <p>Business name</p>

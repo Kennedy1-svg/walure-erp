@@ -33,7 +33,7 @@ const filter:any = async () => {
     isSearching.value = true
     const search:any = searchText.value.toLowerCase();
     console.log('search', search)
-    const request:any = `${api_url}api/iposrequestdemo/get-iposquote/{pageIndex}/{pageSize}/${search}`;
+    const request:any = `${api_url}api/iposquoterequest/search-iposquote/{pageIndex}/{pageSize}/${search}`;
     await store.dispatch(actionTypes.FetchIPOQuotes, request)
 }
 
