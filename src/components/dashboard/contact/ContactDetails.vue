@@ -61,7 +61,7 @@ const contact:any = computed(() => {
                 </div>
                 <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                     <p>Date</p>
-                    <p>{{ moment(contact.requestDate).format('MM/DD/YYYY') }}</p>
+                    <p>{{ moment(contact.requestDate).format('MMM DD, YYYY hh:mm:ss A') }}</p>
                 </div>
                 <div class="flex gap-5 py-3 text-xl font-medium justify-between items-start">
                     <p>Message</p>
