@@ -74,7 +74,7 @@ onMounted( async () => {
                         Talent Request
                     </template>
                     <template #button>
-                        <router-link to="/dashboard/talent-management/talent-pool">
+                        <router-link to="/dashboard/service-management/outsourcing">
                             View All
                         </router-link>
                     </template>
@@ -138,7 +138,7 @@ onMounted( async () => {
                         Freelancers
                     </template>
                     <template #button>
-                        <router-link to="/dashboard/service-management/talent-pool">
+                        <router-link to="/dashboard/talent-management/talent-pool">
                             View All
                         </router-link>
                     </template>
