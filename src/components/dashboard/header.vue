@@ -13,9 +13,16 @@ import { api_url } from '../../config';
 import Cards from '../Card.vue';
 const store = useStore();
 
-const stats:any = computed(() => {
-    console.log('stats', JSON.parse(JSON.stringify(store.getters.getStats.value)))
-    return store.getters.getStats.value
+const courseStat:any = computed(() => {
+    return store.getters.getStats.value.courseApplicantCount
+})
+
+const talentStat:any = computed(() => {
+    return store.getters.getStats.value.talentPoolCount
+})
+
+const outsourcingStat:any = computed(() => {
+    return store.getters.getStats.value.outsourcingCount
 })
 
 const courseChartOptions:any = {
@@ -33,7 +40,8 @@ const courseChartOptions:any = {
     labels: [''],
     colors: ['#3853ff'],
 }
-const courseSeries:any = ref([`${stats.value.courseApplicantCount}`])
+const courseSeries:any = [courseStat.value]
+// let courseSeries:any = ['32']
 
 const talentChartOptions:any = {
     chart: {
@@ -50,7 +58,8 @@ const talentChartOptions:any = {
     labels: [''],
     colors: ['#91278e'],
 }
-const talentSeries:any = [`${stats.value.outsourcingCount}`]
+const talentSeries:any = [outsourcingStat.value]
+// const talentSeries:any = ['51']
 
 const talentpoolChartOptions:any = {
     chart: {
@@ -67,7 +76,8 @@ const talentpoolChartOptions:any = {
     labels: [''],
     colors: ['#ffc400'],
 }
-const talentpoolSeries:any = [`${stats.value.talentPoolCount}`]
+const talentpoolSeries:any = [talentStat.value]
+// const talentpoolSeries:any = ['51']
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
@@ -87,7 +97,7 @@ onMounted( async () => {
                     <VueApexCharts width="200" type="radialBar" :options="courseChartOptions" :series="courseSeries"></VueApexCharts>
                 </template>
                 <template #stat>
-                    {{ stats.courseApplicantCount }}/100
+                    {{ courseStat }}/100
                 </template>
             </Cards>
             <Cards>
@@ -98,7 +108,7 @@ onMounted( async () => {
                     Talent Request
                 </template>
                 <template #stat>
-                    {{ stats.outsourcingCount }}/100
+                    {{ outsourcingStat }}/100
                 </template>
             </Cards>
             <Cards>
@@ -109,7 +119,7 @@ onMounted( async () => {
                     Talent Pool
                 </template>
                 <template #stat>
-                    {{ stats.talentPoolCount }}/100
+                    {{ talentStat }}/100
                 </template>
             </Cards>
         </div>
