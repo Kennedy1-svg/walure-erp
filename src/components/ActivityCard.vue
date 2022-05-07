@@ -23,7 +23,7 @@ export default {
                 </slot>
             </p>
         </div>
-        <div class="">
+        <div class="overflow-auto">
             <slot name="activity">
                 <table>
                     <thead>

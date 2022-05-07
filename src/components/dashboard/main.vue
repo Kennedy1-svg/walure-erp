@@ -175,3 +175,9 @@ onMounted( async () => {
         </div>
     </div>
 </template>
+
+<style scoped>
+* {
+    overflow: hidden;
+}
+</style>

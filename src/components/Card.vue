@@ -8,7 +8,10 @@ export default {
 </script>
 
 <template>
-    <div class="main bg-white border px-2 py-4 grid xl:grid-cols-3 place-content-center rounded-md">
+    <div class="relative main bg-white border px-2 py-4 grid xl:grid-cols-3 place-content-center rounded-md">
+        <div class="absolute top-[58px] xl:left-[70px] left-[124px]">
+            <p class="">%</p>
+        </div>
         <div class="chart p-5">
             <slot name="chart">
             </slot>
