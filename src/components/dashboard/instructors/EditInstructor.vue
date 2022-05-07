@@ -14,7 +14,7 @@ import SvgIcons from '../../SvgIcons.vue';
 import multiselect from '@vueform/multiselect'
 import Modl from '../../Modals.vue'
 import Modal from '../../Modal.vue'
-import WebViewer from '../../WebViewer.vue'
+// import WebViewer from '../../WebViewer.vue'
 import * as actionTypes from '../../../store/module/instructors/constants/action'
 import * as mutationTypes from '../../../store/module/instructors/constants/mutation'
 // import * as studentActionTypes from '../../../store/module/students/constants/action'
@@ -617,7 +617,7 @@ const disabledView:any = 'bg-gray-300';
         <VuePdf v-for="page in numOfPages" :key="page" :src="pdfSource" :page="page" />     
 
         <form id="formElem" ref="formEl" class="text-sm grid">
-            {{ newInstructor }}
+            <!-- {{ newInstructor }} -->
             <div class="grid justify-items-center gap-1 mb-[88px]">
                     <p class="text-[10px] text-red">
                         {{ errors.image ? errors.imageText : '' }}

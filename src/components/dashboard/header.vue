@@ -18,8 +18,6 @@ const stats:any = computed(() => {
     return store.getters.getStats.value
 })
 
-const courseApplicantCount = ref(stats.courseApplicantCount)
-
 const courseChartOptions:any = {
     chart: {
         height: 200,
@@ -35,7 +33,7 @@ const courseChartOptions:any = {
     labels: [''],
     colors: ['#3853ff'],
 }
-const courseSeries:any = [`${stats.courseApplicantCount}`]
+const courseSeries:any = ref([`${stats.value.courseApplicantCount}`])
 
 const talentChartOptions:any = {
     chart: {
@@ -52,7 +50,7 @@ const talentChartOptions:any = {
     labels: [''],
     colors: ['#91278e'],
 }
-const talentSeries:any = [`${stats.outsourcingCount}`]
+const talentSeries:any = [`${stats.value.outsourcingCount}`]
 
 const talentpoolChartOptions:any = {
     chart: {
@@ -69,7 +67,7 @@ const talentpoolChartOptions:any = {
     labels: [''],
     colors: ['#ffc400'],
 }
-const talentpoolSeries:any = [`${stats.talentPoolCount}`]
+const talentpoolSeries:any = [`${stats.value.talentPoolCount}`]
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
