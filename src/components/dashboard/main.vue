@@ -20,6 +20,11 @@ import ActivityCard from '../ActivityCard.vue';
                     <template #title>
                         Talent Request
                     </template>
+                    <template #button>
+                        <router-link to="/dashboard/talent-management/talent-pool">
+                            View All
+                        </router-link>
+                    </template>
                     <template #activity>
                         <table>
                             <thead>
@@ -45,6 +50,11 @@ import ActivityCard from '../ActivityCard.vue';
                     <template #title>
                         Consultancy Request
                     </template>
+                    <template #button>
+                        <router-link to="/dashboard/service-management/consultancy">
+                            View All
+                        </router-link>
+                    </template>
                     <template #activity>
                         <table>
                             <thead>
@@ -69,6 +79,11 @@ import ActivityCard from '../ActivityCard.vue';
                 <ActivityCard>
                     <template #title>
                         Freelancers
+                    </template>
+                    <template #button>
+                        <router-link to="/dashboard/talent-management/talent-pool">
+                            View All
+                        </router-link>
                     </template>
                     <template #activity>
                         <table>

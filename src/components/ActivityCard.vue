@@ -17,7 +17,9 @@ export default {
             </p>
             <p class="text-sm text-purple-600">
                 <slot name="button">
-                    View All
+                    <router-link to="/dashboard/course-management/course-applicants">
+                        View All
+                    </router-link>
                 </slot>
             </p>
         </div>

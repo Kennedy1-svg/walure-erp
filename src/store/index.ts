@@ -8,6 +8,7 @@ import instructors from './module/instructors'
 import services from './module/services'
 import contact from './module/contact'
 import ipos from './module/ipos'
+import dashboard from './module/dashboard'
 
 const store = createStore({
     modules: {
@@ -20,6 +21,7 @@ const store = createStore({
         services,
         contact,
         ipos,
+        dashboard,
     }
 })
 

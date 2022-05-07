@@ -5,16 +5,35 @@ export default {
 </script>
 
 <script setup lang="ts">
+const chartOptions:any = {
+    chart: {
+        height: 200,
+        type: 'radialBar',
+    },
+    plotOptions: {
+        radialBar: {
+            hollow: {
+                size: '70%',
+            }
+        },
+    },
+    labels: [''],
+    colors: ['#3853ff'],
+}
+const series:any = [40]
 </script>
 
 <template>
-    <div class="main border flex justify-around rounded">
-        <div class="chart">
+    <div class="main border grid grid-cols-2 place-content-center rounded">
+        <div class="chart -ml-10">
             <slot name="chart">
-                80%
+                <VueApexCharts width="200" type="radialBar" :options="chartOptions" :series="series"></VueApexCharts>
             </slot>
+            <!-- 91278e -->
+            <!-- 3853ff -->
+            <!-- ffc400 -->
         </div>
-        <div class="info">
+        <div class="info grid place-content-center">
             <p class="text-gray-400">
                 <slot name="title">
                     Course Applicant
