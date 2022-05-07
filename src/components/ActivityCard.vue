@@ -8,9 +8,9 @@ export default {
 </script>
 
 <template>
-    <div class="main border rounded">
+    <div class="main border p-10 rounded-md bg-white">
         <div class="top flex justify-between items-center">
-            <p class="font-bold text-[19px]">
+            <p class="font-bold pb-5 text-[19px]">
                 <slot name="title">
                     Course Applicant
                 </slot>

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { onMounted, ref, reactive, computed } from 'vue'
+import { useStore } from 'vuex'
+import * as actionTypes from '../../store/module/dashboard/constants/action'
 export default {
   name: 'MainDashboard',
 }
@@ -6,16 +9,66 @@ export default {
 
 <script setup lang="ts">
 import ActivityCard from '../ActivityCard.vue';
+const store = useStore();
+
+const consultancy:any = computed(() => {
+    return store.getters.getActivity.value.consultancy
+})
+
+const courseapplicants:any = computed(() => {
+    return store.getters.getActivity.value.courseApplicants
+})
+
+const outsourcing:any = computed(() => {
+    return store.getters.getActivity.value.outsourcingRequests
+})
+
+const talent:any = computed(() => {
+    return store.getters.getActivity.value.talentPools
+})
+
+onMounted( async () => {
+    // store.commit('setPageTitle', 'Course List');
+    console.log('dashboard stats mounted');
+    // const request:any = `${api_url}api/dashboard`;
+    await store.dispatch(actionTypes.FetchActivity)
+});
 </script>
 
 <template>
     <div class="grid py-8">
-        <div class="title">
+        <div class="title pb-8">
             <h1 class="text-xl font-semibold">Recent Activity</h1>
         </div>
+        <!-- {{ courseapplicants }} -->
         <div class="main">
             <div class="grid grid-cols-2 gap-5">
-                <ActivityCard />
+                <ActivityCard>
+                    <template #activity>
+                        <table class="w-full">
+                            <thead class="border-b">
+                                <th class="p-5 text-left">Contact Name</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b" v-for="item in courseapplicants" :key="item.id">
+                                    <td class="p-5">
+                                        {{ item.fullName }}
+                                    </td>
+                                    <td class="p-5 pl-10">
+                                        {{ item.phoneNumber }}
+                                    </td>
+                                    <td class="p-5 flex justify-end">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                            {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </template>
+                </ActivityCard>
                 <ActivityCard>
                     <template #title>
                         Talent Request
@@ -26,19 +79,19 @@ import ActivityCard from '../ActivityCard.vue';
                         </router-link>
                     </template>
                     <template #activity>
-                        <table>
-                            <thead>
-                                <th>Company Name</th>
-                                <th>Status</th>
+                        <table class="w-full">
+                            <thead class="border-b">
+                                <th class="p-5 text-left">Company Name</th>
+                                <th class="p-5 flex justify-end">Status</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        Femi Farewa
+                                <tr class="border-b" v-for="item in talent" :key="item.id">
+                                    <td class="p-5">
+                                        {{ item.fullName }}
                                     </td>
-                                    <td>
-                                        <span class="text-yellow-500 py-2 px-3">
-                                            Pending
+                                    <td class="p-5 flex justify-end">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                            {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
                                         </span>
                                     </td>
                                 </tr>
@@ -56,19 +109,23 @@ import ActivityCard from '../ActivityCard.vue';
                         </router-link>
                     </template>
                     <template #activity>
-                        <table>
-                            <thead>
-                                <th>Company Name</th>
+                        <table class="w-full">
+                            <thead class="border-b">
+                                <th class="p-5 text-left">Contact Name</th>
+                                <th>Phone Number</th>
                                 <th>Status</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        Femi Farewa
+                                <tr class="border-b" v-for="item in consultancy" :key="item.id">
+                                    <td class="p-5">
+                                        {{ item.contactPerson }}
                                     </td>
-                                    <td>
-                                        <span class="bg-green-500 text-white py-2 px-3">
-                                            Approved
+                                    <td class="p-5 pl-10">
+                                        {{ item.phoneNumber }}
+                                    </td>
+                                    <td class="p-5 flex justify-end">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                            {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
                                         </span>
                                     </td>
                                 </tr>
@@ -81,28 +138,32 @@ import ActivityCard from '../ActivityCard.vue';
                         Freelancers
                     </template>
                     <template #button>
-                        <router-link to="/dashboard/talent-management/talent-pool">
+                        <router-link to="/dashboard/service-management/talent-pool">
                             View All
                         </router-link>
                     </template>
                     <template #activity>
-                        <table>
-                            <thead>
-                                <th>Contact Name</th>
-                                <th>Phone Number</th>
-                                <th>Status</th>
+                        <table class="w-full">
+                            <thead class="border-b">
+                                <th class="py-5 text-left">Name</th>
+                                <th class="py-5">Role</th>
+                                <th class="py-5">Proficiency</th>
+                                <th class="py-5 flex justify-end">Status</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        Femi Farewa
+                                <tr class="border-b" v-for="item in outsourcing" :key="item.id">
+                                    <td class="py-5">
+                                        {{ item.contactName }}
                                     </td>
-                                    <td>
-                                        React js Algorithm
+                                    <td class="py-5 pl-10">
+                                        {{ item.phoneNumber }}
                                     </td>
-                                    <td>
-                                        <span class="bg-yellow-500 text-white py-2 px-3">
-                                            Pending
+                                    <td class="py-5 pl-10">
+                                        {{ item.phoneNumber }}
+                                    </td>
+                                    <td class="py-5 flex justify-end">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                            {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
                                         </span>
                                     </td>
                                 </tr>

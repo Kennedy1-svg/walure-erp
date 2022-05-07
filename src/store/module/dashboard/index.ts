@@ -47,7 +47,7 @@ export default {
       const activities:any = await fetchData(data, token)
       console.log('activities', activities)
       if (activities.payload) {
-        await commit(mutationTypes.SetActivity, activities)
+        await commit(mutationTypes.SetActivity, activities.payload)
       } else if (activities.response.status === 401) {
         router.push({ name: 'Login' });
       }

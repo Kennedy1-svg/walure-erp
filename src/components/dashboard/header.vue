@@ -1,6 +1,8 @@
 <script lang="ts">
 import { onMounted, ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
+import circleprogress from 'vue3-circle-progress'
+import "vue3-circle-progress/dist/circle-progress.css";
 import * as actionTypes from '../../store/module/dashboard/constants/action'
 
 export default {
@@ -25,60 +27,6 @@ const outsourcingStat:any = computed(() => {
     return store.getters.getStats.value.outsourcingCount
 })
 
-const courseChartOptions:any = {
-    chart: {
-        height: 200,
-        type: 'radialBar',
-    },
-    plotOptions: {
-        radialBar: {
-            hollow: {
-                size: '70%',
-            }
-        },
-    },
-    labels: [''],
-    colors: ['#3853ff'],
-}
-const courseSeries:any = [courseStat.value]
-// let courseSeries:any = ['32']
-
-const talentChartOptions:any = {
-    chart: {
-        height: 200,
-        type: 'radialBar',
-    },
-    plotOptions: {
-        radialBar: {
-            hollow: {
-                size: '70%',
-            }
-        },
-    },
-    labels: [''],
-    colors: ['#91278e'],
-}
-const talentSeries:any = [outsourcingStat.value]
-// const talentSeries:any = ['51']
-
-const talentpoolChartOptions:any = {
-    chart: {
-        height: 200,
-        type: 'radialBar',
-    },
-    plotOptions: {
-        radialBar: {
-            hollow: {
-                size: '70%',
-            }
-        },
-    },
-    labels: [''],
-    colors: ['#ffc400'],
-}
-const talentpoolSeries:any = [talentStat.value]
-// const talentpoolSeries:any = ['51']
-
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('dashboard stats mounted');
@@ -89,12 +37,24 @@ onMounted( async () => {
 
 <template>
     <div class="main grid py-8">
-        <h1 class="text-xl font-semibold">Dashboard</h1>
+        <h1 class="text-xl pt-5 font-semibold">Dashboard</h1>
             <!-- {{ stats }} -->
-        <div class="grid grid-cols-3 gap-8">
+        <div class="grid grid-cols-3 py-7 gap-8">
             <Cards>
                 <template #chart>
-                    <VueApexCharts width="200" type="radialBar" :options="courseChartOptions" :series="courseSeries"></VueApexCharts>
+                    <!-- <VueApexCharts width="200" type="radialBar" :options="courseChartOptions" :series="courseSeries"></VueApexCharts> -->
+                    <circleprogress 
+                    :percent="courseStat"
+                    :show-percent="true"
+                    :viewport="true"
+                    :size="80"
+                    :border-width="5"
+                    :border-bg-width="2"
+                    :is-gradient="true"
+                    :gradient="{                        
+                        startColor: '#0779bf',
+                        stopColor: '#0779bf'
+                    }"></circleprogress>
                 </template>
                 <template #stat>
                     {{ courseStat }}/100
@@ -102,7 +62,20 @@ onMounted( async () => {
             </Cards>
             <Cards>
                 <template #chart>
-                    <VueApexCharts width="200" type="radialBar" :options="talentChartOptions" :series="talentSeries"></VueApexCharts>
+                    <!-- <VueApexCharts width="200" type="radialBar" :options="talentChartOptions" :series="talentSeries"></VueApexCharts> -->
+
+                    <circleprogress 
+                    :percent="outsourcingStat"
+                    :show-percent="true"
+                    :viewport="true"
+                    :size="80"
+                    :border-width="5"
+                    :border-bg-width="2"
+                    :is-gradient="true"
+                    :gradient="{                        
+                        startColor: '#91278e',
+                        stopColor: '#91278e'
+                    }"></circleprogress>
                 </template>
                 <template #title>
                     Talent Request
@@ -113,7 +86,19 @@ onMounted( async () => {
             </Cards>
             <Cards>
                 <template #chart>
-                    <VueApexCharts width="200" type="radialBar" :options="talentpoolChartOptions" :series="talentpoolSeries"></VueApexCharts>
+                    <!-- <VueApexCharts width="200" type="radialBar" :options="talentpoolChartOptions" :series="talentpoolSeries"></VueApexCharts> -->
+                    <circleprogress 
+                    :percent="talentStat"
+                    :show-percent="true"
+                    :viewport="true"
+                    :size="80"
+                    :border-width="5"
+                    :border-bg-width="2"
+                    :is-gradient="true"
+                    :gradient="{                        
+                        startColor: '#ffc400',
+                        stopColor: '#ffc400'
+                    }"></circleprogress>
                 </template>
                 <template #title>
                     Talent Pool
