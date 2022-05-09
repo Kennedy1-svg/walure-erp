@@ -6,7 +6,7 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import UserDetails from './UserDetails.vue';
+import UserDetails from './UserDetails.vue';
 import Modal from '../../Modals.vue';
 // import EditUser from './EditUser.vue';
 import DeleteModal from '../../DeleteModal.vue';
@@ -66,6 +66,12 @@ const sendId:any = (id:any) => {
 
 const deleteUser:any = async (id:any) => {
     console.log('batch id', id);
+
+    const request:any = `${api_url}api/user/delete/${id}`;
+
+    console.log('requestData', request)
+    await store.dispatch(actionTypes.RemoveUser, request)
+    await store.dispatch(actionTypes.FetchUsers)
     closeModal()
 }
 

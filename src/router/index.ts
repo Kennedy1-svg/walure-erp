@@ -181,7 +181,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'user-management/roles',
         name: 'Roles',
-        component: () => import('../views/dashboard/ipos/QuoteRequest.vue'),
+        component: () => import('../views/dashboard/users/Role.vue'),
         meta: { requiresAuth: true },
       },
       {

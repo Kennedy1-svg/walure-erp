@@ -14,7 +14,7 @@ import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
 import multiselect from '@vueform/multiselect'
-// import AddUser from './AddUser.vue';
+import AddUser from './AddUser.vue';
 import * as actionTypes from '../../../store/module/users/constants/action';
 
 const store = useStore();
@@ -122,7 +122,7 @@ onMounted( async() => {
                         </div>
                     </section>
 
-                    <dialog id="adduser" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
+                    <dialog id="adduser" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
                                 <AddUser @close="closeModal" />
@@ -171,7 +171,7 @@ onMounted( async() => {
 
   dialog[open] {
     position: absolute !important;
-    right: -48%;
+    right: -19%;
     animation: appear .25s cubic-bezier(0.0, 0.0, 0.58, 1.0);
 }
 
@@ -184,7 +184,7 @@ onMounted( async() => {
 @keyframes appear {
   from {
     opacity: 0;
-    transform: translateX(-10rem);
+    transform: translateX(-40rem);
   }
 
   to {
