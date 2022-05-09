@@ -20,6 +20,7 @@ const store:any = useStore()
 
 let info:any = ref('Status')
 
+let isSearching:any = ref(false)
 const batchId:any = ref('')
 
 const deselect:any = async () => {
@@ -66,32 +67,6 @@ const statusoptions:any = [
 
 const statusField:any = ref('')
 
-const setFilterStatus:any = async (name:any) => {
-  // let status:any = ref(1)
-  // let url:any = `${api_url}api/students/`
-  // console.log('base url', url)
-  if (name == 'All') {
-    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-    await store.dispatch(actionTypes.FetchStudents, request)
-    await store.getters.getStudents
-    // console.log('all url', url) 
-    return info.value = 'Status'
-  } else if (name == 'Active') {
-    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/1`;
-    await store.dispatch(actionTypes.FilterStudent, request)
-    // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
-    await store.getters.getStudents
-    // console.log('active url', url)
-    return info.value = name
-  } else if (name == 'Disabled') {
-    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/0`;
-    await store.dispatch(actionTypes.FilterStudent, request)
-    await store.getters.getStudents
-    // console.log('disabled url', url)
-    return info.value = name
-  }
-}
-
 const closeModal:any = () => {
   // document.getElementById('addstudent').showModal()
   console.log('close student modal')
@@ -106,6 +81,7 @@ const filterItems:any = ['Active', 'Disabled', 'All']
 let searchText:any = ref('');
 
 const filter:any = async () => {
+    isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
   const request:any = `${api_url}api/student/search-student/{pageIndex}/{pageSize}/${search}`;
@@ -137,6 +113,7 @@ const filter:any = async () => {
 }
 
 const close:any = async () => {
+    isSearching.value = false
   searchText.value = ''
   // const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
   await store.dispatch(actionTypes.FetchStudents)
@@ -194,8 +171,9 @@ const close:any = async () => {
             <Search>
               <template #input>
                 <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
-                <span class="w-auto flex justify-end items-center text-grey p-2">
-                    <SvgIcons name="search" @click="filter"  />
+                <span class="w-auto flex justify-end items-center text-grey p-2">                         
+                  <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                  <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                 </span>
               </template>
             </Search>

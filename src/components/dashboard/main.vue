@@ -60,7 +60,7 @@ onMounted( async () => {
                                         {{ item.phoneNumber }}
                                     </td>
                                     <td class="p-5 flex justify-end">
-                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow px-4' : item.status == 1 ? 'bg-red px-4' : 'bg-green-accent']">
                                             {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
                                         </span>
                                     </td>
@@ -85,12 +85,12 @@ onMounted( async () => {
                                 <th class="p-5 flex justify-end">Status</th>
                             </thead>
                             <tbody>
-                                <tr class="border-b" v-for="item in talent" :key="item.id">
+                                <tr class="border-b" v-for="item in outsourcing" :key="item.id">
                                     <td class="p-5">
                                         {{ item.fullName }}
                                     </td>
                                     <td class="p-5 flex justify-end">
-                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow px-4' : item.status == 1 ? 'bg-red px-4' : 'bg-green-accent']">
                                             {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
                                         </span>
                                     </td>
@@ -124,7 +124,7 @@ onMounted( async () => {
                                         {{ item.phoneNumber }}
                                     </td>
                                     <td class="p-5 flex justify-end">
-                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow px-4' : item.status == 1 ? 'bg-red px-4' : 'bg-green-accent']">
                                             {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
                                         </span>
                                     </td>
@@ -151,7 +151,7 @@ onMounted( async () => {
                                 <th class="py-5 flex justify-end">Status</th>
                             </thead>
                             <tbody>
-                                <tr class="border-b" v-for="item in outsourcing" :key="item.id">
+                                <tr class="border-b" v-for="item in talent" :key="item.id">
                                     <td class="py-5">
                                         {{ item.contactName }}
                                     </td>
@@ -162,7 +162,7 @@ onMounted( async () => {
                                         {{ item.phoneNumber }}
                                     </td>
                                     <td class="py-5 flex justify-end">
-                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow' : item.status == 1 ? 'bg-red' : 'bg-green-accent']">
+                                        <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow px-4' : item.status == 1 ? 'bg-red px-4' : 'bg-green-accent']">
                                             {{ item.status == 0 ? 'Pending' : item.status == 1 ? 'Rejected' : 'Approved' }}
                                         </span>
                                     </td>

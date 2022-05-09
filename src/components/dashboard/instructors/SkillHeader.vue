@@ -18,9 +18,11 @@ import * as actionTypes from '../../../store/module/instructors/constants/action
 
 const store = useStore();
 
+let isSearching:any = ref(false)
 let searchText:any = ref('');
 
 const filter:any = async () => {
+    isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
   const request:any = `${api_url}api/skill/search-skill/{pageIndex}/{pageSize}/${search}`;
@@ -52,6 +54,7 @@ const filter:any = async () => {
 }
 
 const close:any = async () => {
+    isSearching.value = false
   searchText.value = ''
   const request:any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`;
   await store.dispatch(actionTypes.FetchSkills, request)
@@ -104,7 +107,8 @@ onMounted(() => {
                     <template #input>
                         <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
                         <span class="w-auto flex justify-end items-center text-grey p-2">
-                            <SvgIcons name="search" @click="filter"  />
+                            <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                            <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                         </span>
                     </template>
                 </Search>

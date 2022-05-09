@@ -31,36 +31,11 @@ let courseInfo:any = ref('Course')
 
 const filterClicked = ref(false)
 
+let isSearching:any = ref(false)
 
 const courses:any = computed(() => {
   return store.getters.getCourses.value.payload;
 });
-
-const setFilterStatus:any = (name:any, id:any = null) => {
-  // let status:any = ref(1)
-  // let url:any = `${api_url}api/students/`
-  // console.log('base url', url)
-  if (name == 'All') {
-    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-    // store.dispatch(actionTypes.FetchStudents, request)
-    // store.getters.getStudents
-    // // console.log('all url', url) 
-    return courseInfo.value = 'Course'
-  } else if (name == 'Ongoing') {
-    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/1`;
-    // store.dispatch(actionTypes.FilterStudent, request)
-    // // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
-    // store.getters.getStudents
-    // // console.log('active url', url)
-    // return info.value = name
-  } else if (name == 'Disabled') {
-    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/0`;
-    // store.dispatch(actionTypes.FilterStudent, request)
-    // store.getters.getStudents
-    // // console.log('disabled url', url)
-    // return info.value = name
-  }
-}
 
 const statusoptions:any = [
   {
@@ -82,32 +57,8 @@ const courseField:any = ref('');
 const statusField:any = ref('')
 
 const filter:any = async () => {
-  const search:any = searchText.value.toLowerCase();
-  const batch:any = document.getElementById('batchlist');
-  const rows:any = batch.getElementsByTagName('tr');
-
-  for (let i:any = 0; i < rows.length; i++) {
-    const firstCol:any = rows[i].getElementsByTagName('td')[1];
-    const secondCol:any = rows[i].getElementsByTagName('td')[2];
-    const thirdCol:any = rows[i].getElementsByTagName('td')[3];
-    const fourthCol:any = rows[i].getElementsByTagName('td')[6];
-    const fifthCol:any = rows[i].getElementsByTagName('td')[7];
-
-    if (
-      firstCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      secondCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      thirdCol.innerText.toLowerCase().indexOf(search) > -1 ||
-      fourthCol.innerText.toLowerCase().indexOf(search) > -1 || fifthCol.innerText.toLowerCase().indexOf(search) > -1
-    ) {
-      rows[i].style.display = '';
-    } else {
-      rows[i].style.display = 'none';
-    }
-  }
-}
-
-const filterCourse:any = async () => {
-  const search:any = searchText.value.toLowerCase();
+    isSearching.value = true
+    const search:any = searchText.value.toLowerCase();
   // const batch:any = document.getElementById('course');
   // const rows:any = batch.getElementsByTagName('ul');
 
@@ -171,9 +122,10 @@ const format:any = (date:any) => {
 }
 
 const close:any = async () => {
-  searchText.value = ''
+    isSearching.value = false
+    searchText.value = ''
   // const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
-  await store.dispatch(batchActionTypes.FetchBatch)
+    await store.dispatch(batchActionTypes.FetchBatch)
 }
 
 const closeModal:any = () => {
@@ -239,7 +191,7 @@ onMounted( async() => {
               <multiselect v-model="statusField" @clear="deselect" @select="cancan" valueProp="value" :options="statusoptions" track-by="label" label="label" placeholder="Status" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="courses">
-              <multiselect @click="filtercourse" @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" />
+              <multiselect @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" />
               <!-- <multiselect v-model="courseField" deselect-label="Can't remove this value" track-by="name" label="name" placeholder="Select one" :options="options" :searchable="false" :allow-empty="false">
                 <template #singleLabel slot-scope="{ options }"><strong>{{ options.name }}</strong> is written in<strong>  {{ options.id }}</strong></template>
               </multiselect> -->
@@ -259,7 +211,9 @@ onMounted( async() => {
                 <template #input>
                   <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Enter title and Cohort No..">
                   <span class="w-auto flex justify-end items-center text-grey p-2">
-                      <SvgIcons name="search" @click="filterCourse"  />
+                      <!-- <SvgIcons name="search" @click="filter"  /> -->
+                      <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                      <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                   </span>
                 </template>
               </Search>

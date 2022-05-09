@@ -29,38 +29,13 @@ let searchText:any = ref('');
 
 let courseInfo:any = ref('Course')
 
+let isSearching:any = ref(false)
 const filterClicked = ref(false)
 
 
 const courses:any = computed(() => {
   return store.getters.getCourses.value.payload;
 });
-
-const setFilterStatus:any = (name:any, id:any = null) => {
-  // let status:any = ref(1)
-  // let url:any = `${api_url}api/students/`
-  // console.log('base url', url)
-  if (name == 'All') {
-    const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
-    // store.dispatch(actionTypes.FetchStudents, request)
-    // store.getters.getStudents
-    // // console.log('all url', url) 
-    return courseInfo.value = 'Course'
-  } else if (name == 'Ongoing') {
-    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/1`;
-    // store.dispatch(actionTypes.FilterStudent, request)
-    // // store.dispatch(actionTypes.FilterStudent, `${url}filter-students/1/10/1`)
-    // store.getters.getStudents
-    // // console.log('active url', url)
-    // return info.value = name
-  } else if (name == 'Disabled') {
-    const request:any = `${api_url}api/student/filter-students/{pageIndex}/{pageSize}/0`;
-    // store.dispatch(actionTypes.FilterStudent, request)
-    // store.getters.getStudents
-    // // console.log('disabled url', url)
-    // return info.value = name
-  }
-}
 
 const statusoptions:any = [
   {
@@ -82,6 +57,7 @@ const courseField:any = ref('');
 const statusField:any = ref('')
 
 const filter:any = async () => {
+    isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
   const request:any = `${api_url}api/project/search-projects/{pageIndex}/{pageSize}/${search}`;
@@ -170,6 +146,7 @@ const format:any = (date:any) => {
 }
 
 const close:any = async () => {
+    isSearching.value = false
   searchText.value = ''
   await store.dispatch(projectActionTypes.FetchProject)
 }
@@ -271,7 +248,8 @@ onMounted( async() => {
                     <template #input>
                       <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
                       <span class="w-auto flex justify-end items-center text-grey p-2">
-                          <SvgIcons name="search" @click="filter"  />
+                          <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                          <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                       </span>
                     </template>
                   </Search>

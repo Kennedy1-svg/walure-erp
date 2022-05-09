@@ -26,6 +26,8 @@ const closeModal:any = () => {
   doc.close()  
 }
 
+let isSearching:any = ref(false)
+
 const deselect:any = async () => {
     // const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
     await store.dispatch(courseActionTypes.FetchCourseApplicants)
@@ -35,6 +37,7 @@ const deselect:any = async () => {
 let searchText:any = ref('');
 
 const filter:any = async () => {
+    isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
   const request:any = `${api_url}api/courseapplicant/search-applicants/{pageIndex}/{pageSize}/${search}`;
@@ -108,6 +111,7 @@ const statusoptions:any = [
 const statusField:any = ref('')
 
 const close:any = async () => {
+    isSearching.value = false
   searchText.value = ''
   // const request:any = `${api_url}api/courseapplicant/get-courseapplicant/{pageIndex}/{pageSize}`;
   await store.dispatch(courseActionTypes.FetchCourseApplicants)
@@ -179,8 +183,9 @@ onMounted(() => {
                 <Search>
                     <template #input>
                         <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
-                        <span class="w-auto flex justify-end items-center text-grey p-2">
-                            <SvgIcons name="search" @click="filter"  />
+                        <span class="w-auto flex justify-end items-center text-grey p-2">                           
+                            <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                            <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                         </span>
                     </template>
                 </Search>

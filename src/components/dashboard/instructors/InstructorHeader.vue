@@ -29,6 +29,7 @@ const closeModal:any = () => {
   doc.close()
 }
 
+let isSearching:any = ref(false)
 const statusField:any = ref('')
 
 const statusoptions:any = [
@@ -55,6 +56,7 @@ const deselect:any = async () => {
 let searchText:any = ref('');
 
 const filter:any = async () => {
+    isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
   const request:any = `${api_url}api/instructor/search-instructor/{pageIndex}/{pageSize}/${search}`;
@@ -86,6 +88,7 @@ const filter:any = async () => {
 }
 
 const close:any = async () => {
+    isSearching.value = false
   searchText.value = ''
   // const request:any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`;
   await store.dispatch(actionTypes.FetchInstructors)
@@ -175,7 +178,8 @@ onMounted( async () => {
                   <template #input>
                     <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
                     <span class="w-auto flex justify-end items-center text-grey p-2">
-                        <SvgIcons name="search" @click="filter"  />
+                      <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                      <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                     </span>
                   </template>
                 </Search>
