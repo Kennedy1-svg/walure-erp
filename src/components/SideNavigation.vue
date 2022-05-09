@@ -168,10 +168,10 @@ import SvgIcons from './SvgIcons.vue'
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
 									<li class="hover:text-primary">
-										<router-link active-class="active" to="/dashboard/talent-management/instructors">Users</router-link>
+										<router-link active-class="active" to="/dashboard/user-management/users">Users</router-link>
 									</li>
 									<li class="hover:text-primary pb-3">
-										<router-link active-class="active" to="/dashboard/batch">Roles (Permission)</router-link>
+										<router-link active-class="active" to="/dashboard/user-management/roles">Roles (Permission)</router-link>
 									</li>
 								</ul>
 							</div>

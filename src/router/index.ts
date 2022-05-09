@@ -173,6 +173,18 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
+        path: 'user-management/users',
+        name: 'User',
+        component: () => import('../views/dashboard/users/Index.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'user-management/roles',
+        name: 'Roles',
+        component: () => import('../views/dashboard/ipos/QuoteRequest.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: '/:pathMatch(.*)*',
         name: 'Error',
         component: () => import('../components/NotFound.vue'),
