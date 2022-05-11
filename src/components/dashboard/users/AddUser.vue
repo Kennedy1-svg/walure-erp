@@ -29,6 +29,7 @@ const route = useRouter();
 
 let isDisabled = ref(true);
 let isError:any = ref(false);
+let showTooltip = ref(false)
 // let isResumeFile:any = ref(false);
 // let isLoading:any = ref(false);
 
@@ -360,7 +361,6 @@ const bios:any = computed(() => {
     return store.getters.getCourses.value.payload;
 })
 
-
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
@@ -495,63 +495,73 @@ const disabledView:any = 'bg-gray-300';
 
 <template>
     <div class="main relative w-full mt-[0.5px] xl:px-[45px] overflow-hidden px-6 bg-white">
-        <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl">Add Instructor</p>
+        <!-- <div class="flex justify-between py-[53px] items-center ">
+            <p class="text-2xl">Add Role</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
-        </div>
-        
-        <div :class="[showResume ? '' : 'hidden']" class="close-resume flex items-center justify-nd mb-3">
-            <p @click="showResume = !showResume" class="text-xl">Close File </p>
-            <SvgIcons @click="showResume = !showResume" name="cancel" class="cursor-pointer" />
-        </div>
-        <!-- <WebViewer :class="[showResume ? '' : 'hidden']" class="absolute z-20 w-full" :initialDoc="newInstructor.Resume" />         -->
-        <!-- <pdfDisplay :src="newInstructor.Resume" /> -->
-        <!-- <a :href="pdfSource" target="_blank">View</a> -->
-        <!-- <iframe class="absolute z-20 w-full h-ful" :src="pdfSource" frameborder="0"></iframe> -->
-        <!-- {{ pdfSource }} -->
+        </div> -->
         <form id="formElem" ref="formEl" class="text-sm grid">
-            <div class="grid justify-items-center gap-1 mb-[88px]">
-                    <p class="text-[10px] text-red">
-                        {{ errors.image ? errors.imageText : '' }}
+            <div class="grid text-left grid-cols-3 gap-12 mb-10">
+                <div class="grid gap-4">
+                    <label for="firstname" class="font-semibold">
+                        Username
+                    </label>
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.FirstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.FirstName ? errors.FirstNameText : '' }}
                     </p>
-                <div class="relative mb-8">
-                    <div v-if="!isActive">
-                        <SvgIcons v-if="!isActive" :class="[errors.image ? 'border rounded-full text-red border-red' : '']" class="text-gray-300" name="pic-avatar" />
-                        <span class="absolute cursor-pointer left-3/5 bottom-0 bg-black rounded-full p-2">                   
-                            <input type="file" name="image" @change="onChange" class="opacity-0 absolute" accept=".png, .jpg, .jpeg" />
-                            <SvgIcons class="text-white" name="camera" />
-                        </span>
-                    </div>
-                    <img class="w-20 h-20 border p-1 rounded-full" :class="[ isActive ? '' : 'hidden' ]" id="displayoutput" alt="user img">
                 </div>
-                <div class="buttons text-grey flex gap-[50px]">
-                    <button @click.prevent="removeImage" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeRemove : disabledRemove]" :disabled = !isActive>
-                        Remove
-                    </button>
-
-                <Modal id="profile" :show="showProfilePicture" @close="showProfilePicture = false">
-                    <template #button>
-                    <button type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
-                        View Passport
-                    </button>
-                    </template>
-                    <template #modalContent>
-                        <img id="addinstructoroutput" alt="user img">
-                    </template>
-                </Modal>
-
-                <!-- <button @click="showProfilePicture = !showProfilePicture" type="button" class="py-4 px-10 text-white rounded hover:shadow" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
-                    View Passport
-                </button>
-                <Modal :show="showProfilePicture" @close="showProfilePicture = false">
-                    <img id="addinstructoroutput" alt="user img">
-                </Modal> -->
+                <div class="grid gap-4">
+                    <label for="lastname" class="flex items-center gap-2 font-semibold">
+                        Password
+                        <div class="relative mt-20 md:mt-0" @mouseover="showTooltip = !showTooltip" @mouseout="showTooltip = !showTooltip">
+                            <div class="mr-2 cursor-pointer">
+                                <SvgIcons name="info" />
+                            </div>
+                            <div id="tooltip1" v-if="showTooltip" role="tooltip" class="z-20 -mt-10 w-64 absolute transition duration-150 ease-in-out left-0 ml-8 shadow-lg bg-white p-4 rounded">
+                                <svg class="absolute left-0 -ml-2 bottom-0 top-0 h-full" width="9px" height="16px" viewBox="0 0 9 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g id="Tooltips-" transform="translate(-874.000000, -1029.000000)" fill="#FFFFFF">
+                                            <g id="Group-3-Copy-16" transform="translate(850.000000, 975.000000)">
+                                                <g id="Group-2" transform="translate(24.000000, 0.000000)">
+                                                    <polygon id="Triangle" transform="translate(4.500000, 62.000000) rotate(-90.000000) translate(-4.500000, -62.000000) " points="4.5 57.5 12.5 66.5 -3.5 66.5"></polygon>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <!-- <p class="text-sm font-bold text-gray-800 pb-1">Keep track of follow ups</p> -->
+                                <p class="text-xs leading-4 text-gray-600 pb-3">For account security you will be required to change your password from the default password to a stronger password.</p>
+                                <!-- <div class="flex justify-between">
+                                    <div class="flex items-center">
+                                        <span class="text-xs font-bold text-indigo-700">Step 1 of 4</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-xs text-gray-600 underline mr-2 cursor-pointer">Skip Tour</span>
+                                        <button class="focus:outline-none bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-5 py-1 text-xs">Next</button>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </label>
+                    <input type="password" @focus="checkError" @keyup="checkError" v-model="newInstructor.LastName" name="lastname" id="lastname" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.LastName ? errors.LastNameText : '' }}
+                    </p>
+                </div>
+                <div class="grid gap-4">
+                    <label for="email" class="font-semibold">
+                        Confirm Password
+                    </label>
+                    <input type="email" @focus="checkError" @keyup="checkError" v-model="newInstructor.Email" name="email" id="email" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.email ? errors.emailText : '' }}
+                    </p>
                 </div>
             </div>
             <div class="grid text-left grid-cols-3 gap-12 mb-10">
                 <div class="grid gap-4">
                     <label for="firstname" class="font-semibold">
-                        First name*
+                        First name
                     </label>
                     <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.FirstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
@@ -560,7 +570,7 @@ const disabledView:any = 'bg-gray-300';
                 </div>
                 <div class="grid gap-4">
                     <label for="lastname" class="font-semibold">
-                        Last name*
+                        Last name
                     </label>
                     <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.LastName" name="lastname" id="lastname" placeholder="Enter last name" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
@@ -568,28 +578,28 @@ const disabledView:any = 'bg-gray-300';
                     </p>
                 </div>
                 <div class="grid gap-4">
-                    <label for="phone" class="font-semibold">
-                        Phone number*
-                    </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.PhoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.phone ? errors.phoneText : '' }}
-                    </p>
-                </div>
-            </div>
-            <div class="grid text-left grid-cols-3 gap-12 mb-10">
-                <div class="grid gap-4">
                     <label for="email" class="font-semibold">
-                        Email*
+                        Email
                     </label>
                     <input type="email" @focus="checkError" @keyup="checkError" v-model="newInstructor.Email" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.email ? errors.emailText : '' }}
                     </p>
                 </div>
+            </div>
+            <div class="grid text-left grid-cols-3 gap-12 mb-10">
+                <div class="grid gap-4">
+                    <label for="phone" class="font-semibold">
+                        Phone number
+                    </label>
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.PhoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
+                    <p class="text-[10px] -mt-2 text-red">
+                        {{ errors.phone ? errors.phoneText : '' }}
+                    </p>
+                </div>
                 <div class="grid gap-4">
                     <label for="gender" class="font-semibold">
-                        Gender*
+                        Role
                     </label>
                        
                     <multiselect v-model="newInstructor.Gender" @clear="deselect" @select="cancan" valueProp="value" :options="genderoptions" track-by="label" label="label" placeholder="Select gender" :searchable="true" class="multiselect-blue" />
@@ -599,134 +609,11 @@ const disabledView:any = 'bg-gray-300';
                 </div>
                 <div class="grid gap-4">
                     <label for="github" class="font-semibold">
-                        Github Profile
+                        Department
                     </label>
                     <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.GithubUrl" name="github" id="github" class="p-4 border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.github ? errors.githubText : '' }}
-                    </p>
-                </div>
-            </div>
-            <div class="grid text-left grid-cols-3 gap-8 mb-10">
-                <div class="grid gap-4">
-                    <label for="linkedin" class="font-semibold">
-                        LinkedIn Profile
-                    </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.LinkedInUrl" name="linkedin" id="linkedin" class="p-4 border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.linkedin ? errors.linkedinText : '' }}
-                    </p>
-                </div>
-                <div class="grid gap-4">
-                    <label for="facebook" class="font-semibold">
-                        Facebook Profile
-                    </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.FacebookUrl" name="facebook" id="facebook" class="p-4 border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.facebook ? errors.facebookText : '' }}
-                    </p>
-                </div>
-                <div class="grid gap-4">
-                    <label for="twitter" class="font-semibold">
-                        Twitter Profile
-                    </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.TwitterUrl" name="twitter" id="twitter" class="p-4 border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.twitter ? errors.twitterText : '' }}
-                    </p>
-                </div>
-                <!-- <div class="grid gap-4">
-                    <label for="gender" class="font-semibold">
-                        Gender*
-                    </label>
-                    
-                    <select @focus="checkError" @keyup="checkError" class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" v-model="newInstructor.gender" name="gender" id="gender">
-                        <option value="">Select option</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.gender ? errors.genderText : '' }}
-                    </p>
-                </div> -->
-            </div>
-            <div class="grid text-left grid-cols-3 gap-8 mb-10">
-                <div class="grid gap-4">
-                    <label for="experience" class="font-semibold">
-                        Experience Level*
-                    </label>
-                    <!-- <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.experience" name="experience" id="experience" placeholder="Input experience" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" /> -->
-                    <multiselect v-model="newInstructor.ExperienceLevel" @clear="deselect" @select="cancan" valueProp="value" :options="experience_leveloptions" track-by="label" label="label" placeholder="Select experience" :searchable="true" class="multiselect-blue" />
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.experience ? errors.experienceText : '' }}
-                    </p>
-                </div>
-                <div class="grid col-span-2 gap-4">
-                    <label for="address" class="font-semibold">
-                        Address
-                    </label>
-                    <!-- <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.addresss" name="address" id="address" placeholder="Input address" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" /> -->
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.Address" name="address" id="address" placeholder="Enter address" class="p-4 border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.address ? errors.addressText : '' }}
-                    </p>
-                </div>
-            </div>
-            <div class="grid text-left gap-8 mb-10">
-                <div class="grid gap-4">
-                    <label for="resume" class="font-semibold">
-                        Resume
-                    </label>
-                    <div class="flex items-center justify-between w-full">
-                        <label for="resume_upload" :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
-                            <div class="flex flex-col items-center pt-8">
-                                <SvgIcons name="upload" />
-                                <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
-                                    Upload Document</p>
-                            </div>
-                            <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" :disabled="isResumeActive" />
-                        </label>
-                        <div v-if="newInstructor.Resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
-                            <div class="">
-                                <p class="font-semibold py-1 w-36 truncate">
-                                    {{ newInstructor.Resume.name }}
-                                </p>
-                                <p class="text-xs pb-1 text-gray-500">
-                                    {{ newInstructor.Resume.size > 999999 ? (newInstructor.Resume.size / 1000000).toFixed(2) + 'Mb' : newInstructor.Resume.size > 999 ? (newInstructor.Resume.size / 1000).toFixed(2) + ' kb' : newInstructor.Resume.size + ' bytes' }}
-                                </p>
-                            </div>
-                            <div class="flex justify-around gap-3 items-center">
-                                <a :href="pdfSource" target="_blank">
-                                <SvgIcons name="eye" /></a>
-                                <!-- <Modl :show="showResume" @close="showResume = !showResume"> -->
-                                    <!-- <vue-pdf src="https://drive.google.com/file/d/0BwO1glerFQloUmxabTBEWUxvMFk/view?usp=sharing&resourcekey=0-cjnce0_aI2EE5MrdUTRJsA"></vue-pdf> -->
-                                    <!-- <AddSkill name="Add" />
-                                </Modl> -->
-                                <SvgIcons name="delete" @click="removeResume" />
-                            </div>
-                        </div>
-                        <!-- <div id="viewer" style="width: 1024px; height: 600px;"></div> -->
-                    </div>
-                    <p class="text-xs font-medium">
-                        Allowed Formats: pdf, docx
-                    </p>
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.resume ? errors.resumeText : '' }}
-                    </p>
-                </div>
-            </div>
-            <div class="grid text-left gap-8 mb-10">
-                <div class="grid gap-4">
-                    <label for="bio" class="font-semibold">
-                        Bio
-                    </label>
-                    <textarea type="text" @focus="checkError" @keyup="checkError" v-model="newInstructor.Bio" name="bio" id="bio" placeholder="Input bio" rows="4" class="p-4 border rounded-md text-xs focus:outline-none" />
-                    <!-- <select @focus="checkError" @keyup="checkError" class="pl-5 pr-52 py-3 bg-transparent rounded border text-grey" v-model="newInstructor.bioId" name="bio" id="bio">
-                        <option value="">Select option</option>
-                        <option  v-for="item in bios" :key="item.id"  :value=item.id>{{ item.title }}</option>
-                    </select> -->
-                    <p class="text-[10px] -mt-2 text-red">
-                        {{ errors.bio ? errors.bioText : '' }}
                     </p>
                 </div>
             </div>

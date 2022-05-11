@@ -14,7 +14,7 @@ import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
 import multiselect from '@vueform/multiselect'
-import AddUser from './AddUser.vue';
+import AddUserTabs from './AddUserTabs.vue';
 import * as actionTypes from '../../../store/module/users/constants/action';
 
 const store = useStore();
@@ -109,7 +109,7 @@ onMounted( async() => {
                         <!-- </span>
                     </template>
                     <template #content>
-                        <AddUser />
+                        <AddUserTabs />
                     </template>
                 </Modal> -->
 
@@ -125,7 +125,7 @@ onMounted( async() => {
                     <dialog id="adduser" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">            
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
-                                <AddUser @close="closeModal" />
+                                <AddUserTabs @close="closeModal" />
                             <!-- End of Modal Content-->
                         </div>
                     </dialog>

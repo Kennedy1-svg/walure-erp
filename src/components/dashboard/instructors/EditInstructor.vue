@@ -355,13 +355,14 @@ const checkError:any = () => {
 
 const removeImage:any = async () => {
     isImageRemoved.value = true;
-    URL.revokeObjectURL(newInstructor.value.image);
+    // URL.revokeObjectURL(newInstructor.value.image);
     return newInstructor.value.image = ''
 }
 
 const removeResume:any = async () => {
+    isResumeActive.value = false
     onResumeUpload.value = false
-    URL.revokeObjectURL(newInstructor.value.resume);
+    // URL.revokeObjectURL(newInstructor.value.resume);
     return newInstructor.value.resume = ''
 }
 
@@ -417,6 +418,7 @@ const onChangeResume:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newInstructor.value.resume = event.target.files[0]
     // formData.append('file', event.target.files[0])
+    isResumeActive.value = false
     onResumeUpload.value = true
     // let images: any = document.getElementById('instructoroutput')
     // let image:any = document.getElementById('displayinstructoroutput')
@@ -425,38 +427,6 @@ const onChangeResume:any = (event:any):any => {
     console.log('newInstructor resume', newInstructor.value.resume.type)
     // console.log('newInstructor link', pdfSource.value)
 }
-
-const resetForm:any = Object.freeze({
-        firstName: '',
-        lastName: '',
-        github: '',
-        email: '',
-        phoneNumber: '',
-        addresss: '',
-        image: '',
-        gender: '',
-        bioId: ''
-})
-
-// const getBase64FromUrl = async (url:any) => {
-//   const data = await fetch(url, { mode: 'no-cors'});
-//   const blob = await data.blob();
-//   return new Promise((resolve) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(blob); 
-//     reader.onloadend = () => {
-//       const base64data = reader.result;   
-//       resolve(base64data);
-//     }
-//   });
-// }
-
-// const fetchFile = async () => {
-//     console.log('fetching file with id', newInstructor.value.resumeId)
-//     const request = `${api_url}api/file/${newInstructor.value.resumeId}`
-//     await store.dispatch(actionTypes.FetchFile, request)
-//     return pdfSource.value = store.getters.getFile.value
-// }
 
 const editInstructor:any = async () => {
     console.log('image has been changed?', isImageRemoved.value)
@@ -568,8 +538,23 @@ const editInstructor:any = async () => {
     await store.dispatch(actionTypes.EditInstructor, newData)
     const result = await store.getters.getInstructor
     closeModal()
-    store.commit(mutationTypes.SetNewInstructor, {})
+    store.commit(mutationTypes.SetEditInstructor, {})
     // formEl.reset()
+    formData.delete('FirstName')
+    formData.delete('LastName')
+    formData.delete('GithubUrl')
+    formData.delete('TwitterUrl')
+    formData.delete('LinkedInUrl')
+    formData.delete('FacebookUrl')
+    formData.delete('Image')
+    formData.delete('Resume')
+    formData.delete('Address')
+    formData.delete('PhoneNumber')
+    formData.delete('Gender')
+    formData.delete('Bio')
+    formData.delete('id')
+    formData.delete('Email')
+    formData.delete('ExperienceLevel')
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
 }
@@ -798,7 +783,7 @@ const disabledView:any = 'bg-gray-300';
                             <!-- {{ isResumeActive && !onResumeUpload }} -->
                             <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" />
                         </label>
-                        <div v-if="newInstructor.resume" class="flex justify-between w-1/4 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
+                        <div v-if="newInstructor.resume" class="flex justify-between w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
                             <div class="">
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newInstructor.firstName }}'s resume
