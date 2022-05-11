@@ -155,11 +155,11 @@ onMounted( async () => {
                                     <td class="py-5">
                                         {{ item.fullName }}
                                     </td>
-                                    <td class="py-5 pl-10">
-                                        {{ item.phoneNumber }}
+                                    <td class="py-5 px-2">
+                                        {{ item.roleName }}
                                     </td>
-                                    <td class="py-5 pl-10">
-                                        {{ item.phoneNumber }}
+                                    <td class="py-5 px-2">
+                                        {{ item.proficiencyLevel == 0 ? 'Beginner' : item.proficiencyLevel == 1 ? 'Intermediate' : item.proficiencyLevel == 2 ? 'Advanced' : 'Senior' }}
                                     </td>
                                     <td class="py-5 flex justify-end">
                                         <span class="text-white text-xs font-semibold rounded-md py-2 px-3" :class="[item.status == 0 ? 'bg-yellow px-4' : item.status == 1 ? 'bg-red px-4' : 'bg-green-accent']">

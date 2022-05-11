@@ -179,7 +179,7 @@ import SvgIcons from './SvgIcons.vue'
 					</div>
 				</li>
 				<li>
-					<a class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" href="/dashboard/enumeration">
+					<a class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" href="/dashboard/#enumeration">
 						<div class="flex items-center gap-3 py-4">
 							<div>
 								<SvgIcons name="enumeration" /> <!-- enumeration icon -->
