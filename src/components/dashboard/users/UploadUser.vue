@@ -94,7 +94,7 @@ const disabledView:any = 'bg-gray-300';
     <div class="main w-full mt-[0.5px] rounded-md bg-white">
         <form id="uploadtopics" class="text-sm text-left grid">
             <div class="flex justify-end gap-8 mb-10">
-                <a href="https://mega.nz/file/VFEXkQSY#shI1ufj3HYCrPJgMZOtDo4lyplpUfmJa-n-EZHDD8u4" class="border border-primary px-5 py-4 text-primary cursor-pointer rounded flex justify-center items-center" target="_blank">
+                <a href="https://mega.nz/file/EFUHWDAK#PGvEdnyWI82JtCbAM1q7N-KVdKEim9ruhdaHFwa05nI" class="border border-primary px-5 py-4 text-primary cursor-pointer rounded flex justify-center items-center" target="_blank">
                     <SvgIcons name="download" />
                     <p class="pl-3 text-lg">Download Template</p>
                 </a>

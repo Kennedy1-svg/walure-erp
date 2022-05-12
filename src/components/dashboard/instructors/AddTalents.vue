@@ -497,7 +497,7 @@ const addTalent:any = async () => {
     // formData.append('imageFile', newTalent.value.imageFile, newTalent.value.imageFile.name)
     formData.append('Email', newTalent.value.Email)
     formData.append('Gender', newTalent.value.Gender)
-    formData.append('Skills', JSON.stringify(newTalent.value.Skills))
+    formData.append('Skills', newTalent.value.Skills)
     formData.append('PhoneNumber', newTalent.value.PhoneNumber)
     formData.append('ResumeFile', newTalent.value.ResumeFile, newTalent.value.ResumeFile.name)
     formData.append('ProficiencyLevel', newTalent.value.ProficiencyLevel)
