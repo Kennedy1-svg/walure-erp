@@ -49,7 +49,7 @@ const closeModal:any =  () => {
 	<!--actual component start-->
 	<!-- {{ curriculum }} -->
 	<div class="w-full relative grid bg-white">
-        <div class="flex justify-between px-10 py-[53px] items-center ">
+        <div class="flex justify-between px-10 py-8 items-center ">
             <p class="text-2xl">Add User</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>

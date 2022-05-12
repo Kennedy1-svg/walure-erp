@@ -45,7 +45,7 @@ const contact:any = computed(() => {
                     <SvgIcons name="cancel" @click="closeModal" class="cursor-pointer" />
                 </div>
             </div>
-            {{ contact }} hi
+            <!-- {{ contact }} hi -->
             <div class="bottom">
                 <div class="flex border-b py-3 text-xl font-medium justify-between items-center">
                     <p>Name</p>
