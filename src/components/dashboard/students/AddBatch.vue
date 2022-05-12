@@ -50,6 +50,7 @@ const checkError:any = () => {
         errors.name = true;
         errors.nameText = 'Cohort title is required'
     } else if (newBatch.value.title.length <= 3) {
+        errors.name = true;
         errors.nameText = 'Cohort title needs to be more than 3 characters'
     } else {
         errors.name = false;
@@ -68,6 +69,7 @@ const checkError:any = () => {
         errors.batchCapacity = true;
         errors.batchCapacityText = 'Cohort capacity is required'
     } else if (newBatch.value.batchCapacity <= 0) {
+        errors.batchCapacity = true;
         errors.batchCapacityText = 'Cohort capacity name needs to be more than 0'
     } else {
         errors.batchCapacity = false;

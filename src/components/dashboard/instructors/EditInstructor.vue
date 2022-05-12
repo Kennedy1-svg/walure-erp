@@ -180,6 +180,7 @@ const checkError:any = () => {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
     } else if (newInstructor.value.firstName.length <= 3) {
+        errors.firstName = true;
         errors.firstNameText = 'First name needs to be more than 3 characters'
     } else {
         errors.firstName = false;
@@ -189,6 +190,7 @@ const checkError:any = () => {
         errors.lastName = true;
         errors.lastNameText = 'Last name is required'
     } else if (newInstructor.value.lastName.length <= 3) {
+        errors.lastName = true;
         errors.lastNameText = 'Last name needs to be more than 3 characters'
     } else {
         errors.lastName = false;
@@ -198,6 +200,7 @@ const checkError:any = () => {
         errors.github = true;
         errors.githubText = 'Github url is required'
     } else if (newInstructor.value.githubUrl.length <= 3) {
+        errors.github = true;
         errors.githubText = 'Github url needs to be more than 3 characters'
     } else {
         errors.github = false;
@@ -207,6 +210,7 @@ const checkError:any = () => {
         errors.twitter = true;
         errors.twitterText = 'Twitter url is required'
     } else if (newInstructor.value.twitterUrl.length <= 3) {
+        errors.twitter = true;
         errors.twitterText = 'Twitter url needs to be more than 3 characters'
     } else {
         errors.twitter = false;
@@ -216,6 +220,7 @@ const checkError:any = () => {
         errors.linkedin = true;
         errors.linkedinText = 'LinkedIn url is required'
     } else if (newInstructor.value.linkedInUrl.length <= 3) {
+        errors.linkedin = true;
         errors.linkedinText = 'LinkedIn url needs to be more than 3 characters'
     } else {
         errors.linkedin = false;
@@ -225,6 +230,7 @@ const checkError:any = () => {
         errors.facebook = true;
         errors.facebookText = 'Facebook url is required'
     } else if (newInstructor.value.facebookUrl.length <= 3) {
+        errors.facebook = true;
         errors.facebookText = 'Facebook url needs to be more than 3 characters'
     } else {
         errors.facebook = false;
@@ -268,6 +274,7 @@ const checkError:any = () => {
         errors.bio = true;
         errors.bioText = 'bio is required'
     } else if (newInstructor.value.bio.length <= 3) {
+        errors.bio = true;
         errors.githubText = 'biography needs to be more than 3 characters'
     } else {
         errors.bio = false;
@@ -277,6 +284,7 @@ const checkError:any = () => {
         errors.email = true;
         errors.emailText = 'email is required'
     } else if (!newInstructor.value.email.match(email)) {
+        errors.email = true;
         errors.emailText = `email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;
@@ -289,8 +297,10 @@ const checkError:any = () => {
         errors.phone = true;
         errors.phoneText = 'Phone number cannot contain letters'
     } else if (!newInstructor.value.phoneNumber.match(phone)) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer must start with 0'
     } else if (newInstructor.value.phoneNumber.length <= 9) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer cannot be less than 10 digits'
     } else {
         errors.phone = false;
@@ -300,6 +310,7 @@ const checkError:any = () => {
         errors.address = true;
         errors.addressText = 'address is required'
     } else if (newInstructor.value.address.length <= 13) {
+        errors.address = true;
         errors.addressText = 'address needs to be more than 3 words'
     } else {
         errors.address = false;

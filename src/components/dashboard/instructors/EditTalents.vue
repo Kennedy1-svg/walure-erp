@@ -85,6 +85,7 @@ const checkError:any = () => {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
     } else if (newTalent.value.firstName.length <= 3) {
+        errors.firstName = true;
         errors.firstNameText = 'First name needs to be more than 3 characters'
     } else {
         errors.firstName = false;
@@ -95,6 +96,7 @@ const checkError:any = () => {
         errors.lastName = true;
         errors.lastNameText = 'Last name is required'
     } else if (newTalent.value.lastName.length <= 3) {
+        errors.lastName = true;
         errors.lastNameText = 'Last name needs to be more than 3 characters'
     } else {
         errors.lastName = false;
@@ -105,6 +107,7 @@ const checkError:any = () => {
         errors.email = true;
         errors.emailText = 'Email is required'
     } else if (!newTalent.value.email.match(email)) {
+        errors.email = true;
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;
@@ -115,6 +118,7 @@ const checkError:any = () => {
         errors.github = true;
         errors.githubText = 'Github url is required'
     } else if (newTalent.value.gitHubUrl.length <= 3) {
+        errors.github = true;
         errors.githubText = 'Github url needs to be more than 3 characters'
     } else {
         errors.github = false;
@@ -125,6 +129,7 @@ const checkError:any = () => {
         errors.linkedin = true;
         errors.linkedinText = 'Linkedin url is required'
     } else if (newTalent.value.linkedInUrl.length <= 3) {
+        errors.linkedin = true;
         errors.linkedinText = 'Linkedin url needs to be more than 3 characters'
     } else {
         errors.linkedin = false;
@@ -177,8 +182,10 @@ const checkError:any = () => {
         errors.phone = true;
         errors.phoneText = 'Phone number cannot contain letters'
     } else if (!newTalent.value.phoneNumber.match(phone)) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer must start with 0'
     } else if (newTalent.value.phoneNumber.length <= 9) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer cannot be less than 10 digits'
     } else {
         errors.phone = false;

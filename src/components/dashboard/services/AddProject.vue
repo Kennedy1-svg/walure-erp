@@ -51,6 +51,7 @@ const checkError:any = () => {
         errors.companyName = true;
         errors.companyNameText = 'Company name is required'
     } else if (newProject.value.companyName.length <= 3) {
+        errors.companyName = true;
         errors.companyNameText = 'Company name needs to be more than 3 characters'
     } else {
         errors.companyName = false;
@@ -61,6 +62,7 @@ const checkError:any = () => {
         errors.email = true;
         errors.emailText = 'Email is required'
     } else if (!newProject.value.email.match(email)) {
+        errors.email = true;
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;

@@ -58,6 +58,7 @@ const checkError:any = () => {
         errors.companyName = true;
         errors.companyNameText = 'Company name is required'
     } else if (newOutsourcing.value.companyName.length <= 3) {
+        errors.companyName = true;
         errors.companyNameText = 'Company name needs to be more than 3 characters'
     } else {
         errors.companyName = false;
@@ -68,6 +69,7 @@ const checkError:any = () => {
         errors.email = true;
         errors.emailText = 'Email is required'
     } else if (!newOutsourcing.value.email.match(email)) {
+        errors.email = true;
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;
@@ -256,7 +258,7 @@ const location:any = [
 	},
 	{
 		label: "Adamawa",
-        value: "Ada"
+        value: "Adamawa"
 	},
 	{
 		label: "Akwa Ibom",
@@ -484,6 +486,11 @@ const editproject:any = async () => {
     // await store.getters.getProject
     // closeModal()
     // store.commit(projectMutationTypes.SetNewProject, {})
+    setTimeout(() => {
+        router.push({
+            name: 'Outsourcing'
+        })
+    }, 1000);
 }
 
 const deleteTalent:any = async (id:any) => {
@@ -514,13 +521,8 @@ const submit:any = () => {
 const submitEdit:any = () => {
     console.log('hello project');
     checkError();
-    console.log('iserror value', isError.value)
+    console.log('iserror value here', isError.value)
     !isError.value ? editproject() : '';
-    setTimeout(() => {
-        router.push({
-            name: 'Outsourcing'
-        })
-    }, 1000);
 }
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';

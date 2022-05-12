@@ -82,6 +82,7 @@ const checkError:any = () => {
         errors.name = true;
         errors.nameText = 'Name is required'
     } else if (newCategory.value.name.length <= 3) {
+        errors.name = true;
         errors.nameText = 'Name needs to be more than 3 characters'
     } else {
         errors.name = false;
@@ -92,6 +93,7 @@ const checkError:any = () => {
         errors.description = true;
         errors.descriptionText = 'Description is required'
     } else if (newCategory.value.description.length <= 10) {
+        errors.description = true;
         errors.descriptionText = 'Description needs to be more than 10 characters'
     } else {
         errors.description = false;

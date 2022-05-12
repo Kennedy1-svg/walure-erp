@@ -65,13 +65,12 @@ const contact:any = computed(() => {
                 </div>
                 <div class="flex gap-5 py-3 text-xl font-medium justify-between items-start">
                     <p>Company Type</p>
-                    <p>{{ contact.businessType }}</p>
+                    <p>{{ contact.companyType == 0 ? 'Telecommunications' : contact.companyType == 1 ? 'IT' : contact.companyType == 2 ? 'Fast Moving Consumer Goods' : contact.companyType == 3 ? 'Finance' : contact.companyType == 4 ? 'Banking' : contact.companyType == 5 ? 'Health' : contact.companyType == 6 ? 'Insurance' : contact.companyType == 7 ? 'Transportation' : contact.companyType == 8 ? 'Logistics' : contact.companyType == 9 ? 'Oil and Gas' : contact.companyType == 10 ? 'HMO' : contact.companyType == 11 ? 'Real Estate' : contact.companyType == 12 ? 'Education' : contact.companyType == 13 ? 'Construction' : contact.companyType == 14 ? 'Pharmaceutical' : 'Others' }}</p>
                     <!-- <p class="min-w-2/3 text-base">
                     {{ contact.message }}
                     </p> -->
                 </div>
             </div>
         </div>
-
     </div>
 </template>

@@ -62,6 +62,7 @@ const checkError:any = () => {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
     } else if (newStudent.value.firstName.length <= 3) {
+        errors.firstName = true;
         errors.firstNameText = 'First name needs to be more than 3 characters'
     } else {
         errors.firstName = false;
@@ -72,6 +73,7 @@ const checkError:any = () => {
         errors.lastName = true;
         errors.lastNameText = 'Last name is required'
     } else if (newStudent.value.lastName.length <= 3) {
+        errors.lastName = true;
         errors.lastNameText = 'Last name needs to be more than 3 characters'
     } else {
         errors.lastName = false;
@@ -109,6 +111,7 @@ const checkError:any = () => {
         errors.email = true;
         errors.emailText = 'Email is required'
     } else if (!newStudent.value.email.match(email)) {
+        errors.email = true;
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;
@@ -122,8 +125,10 @@ const checkError:any = () => {
         errors.phone = true;
         errors.phoneText = 'Phone number cannot contain letters'
     } else if (!newStudent.value.phoneNumber.match(phone)) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer must start with 0'
     } else if (newStudent.value.phoneNumber.length <= 10) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer cannot be less than 11 digits'
     } else {
         errors.phone = false;
@@ -134,6 +139,7 @@ const checkError:any = () => {
         errors.address = true;
         errors.addressText = 'Address is required'
     } else if (newStudent.value.addresss.length <= 13) {
+        errors.address = true;
         errors.addressText = 'Address needs to be more than 3 words'
     } else {
         errors.address = false;

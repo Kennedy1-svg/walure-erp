@@ -84,6 +84,7 @@ const checkError:any = () => {
         errors.username = true;
         errors.usertext = 'Username is required'
     } else if (!data.username.match(username_pattern)) {
+        errors.username = true;
         errors.usertext = `Username must match pattern 'brainadams@gmail.com'`
     } else {
         errors.username = false;
@@ -93,6 +94,7 @@ const checkError:any = () => {
         errors.password = true;
         errors.passwordtext = 'Password is required'
     } else if (!data.password.match(password_pattern)) {
+        errors.password = true;
         errors.passwordtext = 'Password must be at least 8 characters, contain at least one number, one symbol, one uppercase and one lowercase letter'
     } else {
         errors.password = false;

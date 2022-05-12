@@ -86,6 +86,7 @@ const checkError:any = () => {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
     } else if (newTalent.value.FirstName.length <= 3) {
+        errors.firstName = true;
         errors.firstNameText = 'First name needs to be more than 3 characters'
     } else {
         errors.firstName = false;
@@ -96,6 +97,7 @@ const checkError:any = () => {
         errors.lastName = true;
         errors.lastNameText = 'Last name is required'
     } else if (newTalent.value.LastName.length <= 3) {
+        errors.lastName = true;
         errors.lastNameText = 'Last name needs to be more than 3 characters'
     } else {
         errors.lastName = false;
@@ -106,6 +108,7 @@ const checkError:any = () => {
         errors.email = true;
         errors.emailText = 'Email is required'
     } else if (!newTalent.value.Email.match(email)) {
+        errors.email = true;
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.email = false;
@@ -116,6 +119,7 @@ const checkError:any = () => {
         errors.github = true;
         errors.githubText = 'Github url is required'
     } else if (newTalent.value.GitHubUrl.length <= 3) {
+        errors.github = true;
         errors.githubText = 'Github url needs to be more than 3 characters'
     } else {
         errors.github = false;
@@ -126,6 +130,7 @@ const checkError:any = () => {
         errors.linkedin = true;
         errors.linkedinText = 'LinkedIn url is required'
     } else if (newTalent.value.LinkedInUrl.length <= 3) {
+        errors.linkedin = true;
         errors.linkedinText = 'LinkedIn url needs to be more than 3 characters'
     } else {
         errors.linkedin = false;
@@ -178,8 +183,10 @@ const checkError:any = () => {
         errors.phone = true;
         errors.phoneText = 'Phone number cannot contain letters'
     } else if (!newTalent.value.PhoneNumber.match(phone)) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer must start with 0'
     } else if (newTalent.value.PhoneNumber.length <= 9) {
+        errors.phone = true;
         errors.phoneText = 'Phone numer cannot be less than 10 digits'
     } else {
         errors.phone = false;
@@ -703,7 +710,7 @@ const disabledView:any = 'bg-gray-300';
                             </div>
                             <input type="file" name="imageFile" @change="onChange" class="opacity-0 absolute" accept=".pdf, .docx" />
                         </label>
-                        <div v-if="newTalent.ResumeFile" class="flex justify-between w-2/5 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                        <div v-if="newTalent.ResumeFile" class="flex justify-between w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
                             <div class="">
                                 <p class="font-semibold py-1 w-36 truncate">
                                     {{ newTalent.ResumeFile.name }}

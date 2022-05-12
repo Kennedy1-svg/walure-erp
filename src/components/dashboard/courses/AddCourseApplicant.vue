@@ -99,6 +99,7 @@ const checkError:any = () => {
         errors.FirstName = true;
         errors.FirstNameText = 'First name is required'
     } else if (newApplicant.value.FirstName.length <= 3) {
+        errors.FirstName = true;
         errors.FirstNameText = 'First name needs to be more than 3 characters'
     } else {
         errors.FirstName = false;
@@ -109,6 +110,7 @@ const checkError:any = () => {
         errors.LastName = true;
         errors.LastNameText = 'Last name is required'
     } else if (newApplicant.value.LastName.length <= 3) {
+        errors.LastName = true;
         errors.LastNameText = 'Last name needs to be more than 3 characters'
     } else {
         errors.LastName = false;
@@ -146,6 +148,7 @@ const checkError:any = () => {
         errors.Email = true;
         errors.EmailText = 'Email is required. Please select a Email'
     } else if (!newApplicant.value.Email.match(email)) {
+        errors.Email = true;
         errors.EmailText = `Email must should have the format 'brianadams@walure.com`
     } else {
         errors.Email = false;
@@ -159,8 +162,10 @@ const checkError:any = () => {
         errors.PhoneNumber = true;
         errors.PhoneNumberText = 'Phone number cannot contain letters'
     } else if (!newApplicant.value.PhoneNumber.match(phone)) {
+        errors.PhoneNumber = true;
         errors.PhoneNumberText = 'Phone numer must start with 0'
     } else if (newApplicant.value.PhoneNumber.length <= 10) {
+        errors.PhoneNumber = true;
         errors.PhoneNumberText = 'Phone numer cannot be less than 11 digits'
     } else {
         errors.PhoneNumber = false;
@@ -171,6 +176,7 @@ const checkError:any = () => {
         errors.address = true;
         errors.addressText = 'Address is required'
     } else if (newApplicant.value.Addresss.length <= 13) {
+        errors.address = true;
         errors.addressText = 'Address needs to be more than 13 characters'
     } else {
         errors.address = false;

@@ -131,6 +131,7 @@ const checkError:any = () => {
         errors.title = true;
         errors.titleText = 'Course title is required'
     } else if (newCourse.value.title.length <= 3) {
+        errors.title = true;
         errors.titleText = 'Course title needs to be more than 3 characters'
     } else {
         errors.title = false;
@@ -141,6 +142,7 @@ const checkError:any = () => {
         errors.courseCode = true;
         errors.courseCodeText = 'Course code is required'
     } else if (newCourse.value.courseCode.length <= 3) {
+        errors.courseCode = true;
         errors.courseCodeText = 'Course code needs to be more than 3 characters'
     } else {
         errors.courseCode = false;
@@ -248,6 +250,7 @@ const checkError:any = () => {
         errors.resource = true;
         errors.resourceText = 'Add a resource url'
     } else if (newCourse.value.resourceUrl.length <= 5) {
+        errors.resource = true;
         errors.resourceText = 'Url needs to be more than 5 characters'
     } else {
         errors.resource = false;
@@ -258,6 +261,7 @@ const checkError:any = () => {
         errors.subTitle = true;
         errors.subTitleText = 'Add a sub text'
     } else if (newCourse.value.subTitle.length <= 5) {
+        errors.subTitle = true;
         errors.subTitleText = 'Sub text needs to be more than 5 characters'
     } else {
         errors.subTitle = false;
@@ -268,6 +272,7 @@ const checkError:any = () => {
         errors.courseDescription = true;
         errors.courseDescriptionText = 'Add a course description'
     } else if (notes.value.length <= 10) {
+        errors.courseDescription = true;
         errors.courseDescriptionText = 'Description needs to be more than 10 characters'
     } else {
         errors.courseDescription = false;

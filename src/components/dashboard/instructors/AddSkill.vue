@@ -62,6 +62,7 @@ const checkError:any = () => {
         errors.name = true;
         errors.nameText = 'Name is required'
     } else if (newSkill.value.name.length <= 3) {
+        errors.name = true;
         errors.nameText = 'Name needs to be more than 3 characters'
     } else {
         errors.name = false;

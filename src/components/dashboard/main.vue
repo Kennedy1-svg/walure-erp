@@ -42,7 +42,7 @@ onMounted( async () => {
         </div>
         <!-- {{ talent }} -->
         <div class="main">
-            <div class="grid grid-cols-2 gap-5">
+            <div class="grid lg:grid-cols-2 gap-5">
                 <ActivityCard>
                     <template #activity>
                         <table class="w-full">
