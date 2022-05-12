@@ -14,14 +14,7 @@ import Modl from '../../Modals.vue'
 import Modal from '../../Modal.vue'
 import * as actionTypes from '../../../store/module/users/constants/action'
 import * as mutationTypes from '../../../store/module/users/constants/mutation'
-// import WebViewer from '../../WebViewer.vue'
-// import pdfDisplay from 'vue-pdf'
-// import WebViewer from '@pdftron/webviewer'
-// import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
-// import { VuePdf, createLoadingTask } from 'vue3-pdfjs/esm';
-// import { VuePdfPropsType } from 'vue3-pdfjs/components/vue-pdf/vue-pdf-props'; // Prop type definitions can also be imported
-// import { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 
 const store = useStore();
 
@@ -30,21 +23,6 @@ const route = useRouter();
 let isDisabled = ref(true);
 let isError:any = ref(false);
 let showTooltip = ref(false)
-// let isResumeFile:any = ref(false);
-// let isLoading:any = ref(false);
-
-
-// const pdfSrc = ref<VuePdfPropsType['src']>('https://walure.blob.core.windows.net/assets/blobs/instructor/795427139f594572a0b6201ef4de1136.pdf')
-
-// const numOfPages = ref(0)
-
-// const loadingTask = createLoadingTask(pdfSrc.value)
-// loadingTask.promise.then((pdf: PDFDocumentProxy) => {
-    // numOfPages.value = pdf.numPages
-// })
-
-// const alertState:any = computed(() => store.getters.getInstructorAlertStatus.value)
-// const alertText:any = computed(() => store.getters.getInstructorAlertText.value)
 
 let errors = reactive({
     FirstName: false,
@@ -53,10 +31,6 @@ let errors = reactive({
     LastNameText: '',
     username: false,
     usernameText: '',
-    linkedin: false,
-    linkedinText: '',
-    facebook: false,
-    facebookText: '',
     department: false,
     departmentText: '',
     role: false,
@@ -65,27 +39,7 @@ let errors = reactive({
     emailText: '',
     phone: false,
     phoneText: '',
-    resume: false,
-    resumeText: '',
-    bio: false,
-    bioText: '',
-    image: false,
-    imageText: '',
-    address: false,
-    addressText: '',
-    experience: false,
-    experienceText: '',
 })
-
-// const status:any = computed(() => {
-//     let answer:any
-//     if (alertText.value.includes('successfully')) {
-//         answer = true
-//     } else {
-//         answer = false
-//     }
-//     return answer
-// });
 
 const roleoptions:any = [
     {
@@ -286,20 +240,6 @@ const checkError:any = () => {
     }   
 }
 
-// const viewer:any = ref(null)
-// const input:any = document.getElementById('resume_upload');
-// const path = `http://localhost:3000/webviewer`;
-
-// WebViewer({path, initialDoc: newUser.value.Resume}, input)
-//     .then(instance => {
-//         // const { Feature } = instance.UI
-//         // instance.UI.enableFeatures([Feature.FilePicker])
-//         input.addEventListner('change', () => {
-//             const file = input.files[0];
-//             instance.UI.loadDocument(file, { filename: file.name})
-//         })
-//     })
-
 const removeImage:any = async () => {
     return newUser.value.Image = ''
 }
@@ -317,7 +257,6 @@ const emits = defineEmits(['close'])
 const closeModal:any =  () => {
     store.commit(mutationTypes.SetNewUser, {})
     emits('close')
-    // formEl.reset()
 }
 
 const showProfilePicture = ref(false);
@@ -446,10 +385,6 @@ const disabledView:any = 'bg-gray-300';
 
 <template>
     <div class="main relative w-full mt-[0.5px] xl:px-[45px] overflow-hidden px-6 bg-white">
-        <!-- <div class="flex justify-between py-[53px] items-center ">
-            <p class="text-2xl">Add Role</p>
-            <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
-        </div> -->
         <form id="formElem" ref="formEl" class="text-sm grid">
             <div class="grid text-left grid-cols-3 gap-12 mb-10">
                 <div class="grid gap-4">
