@@ -428,8 +428,8 @@ const onChange:any = (event:any):any => {
 const onChangeResume:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
     newInstructor.value.resume = event.target.files[0]
-    // formData.append('file', event.target.files[0])
-    isResumeActive.value = false
+    formData.append('file', event.target.files[0])
+    // isResumeActive.value = false
     onResumeUpload.value = true
     // let images: any = document.getElementById('instructoroutput')
     // let image:any = document.getElementById('displayinstructoroutput')
@@ -547,7 +547,7 @@ const editInstructor:any = async () => {
     }
     console.log('newData', newData)
     await store.dispatch(actionTypes.EditInstructor, newData)
-    const result = await store.getters.getInstructor
+    const result = await store.dispatch(actionTypes.FetchInstructors)
     closeModal()
     store.commit(mutationTypes.SetEditInstructor, {})
     // formEl.reset()
@@ -785,14 +785,14 @@ const disabledView:any = 'bg-gray-300';
                     <!-- {{ pdfSource }} -->
                     <!-- {{ newInstructor.resume }} -->
                     <div class="flex items-center gap-4 justify-between w-full">
-                        <label v-if="!newInstructor.resume" for="resume_upload" :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                        <label v-if="!newInstructor.resume" :class="[errors.resume ? 'text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-2/3 h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
                                     Upload Document</p>
                             </div>
                             <!-- {{ isResumeActive && !onResumeUpload }} -->
-                            <input type="file" id="resume_upload" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" />
+                            <input type="file" name="resume" @change="onChangeResume" class="opacity-0 absolute" accept=".pdf, .docx" />
                         </label>
                         <div v-if="newInstructor.resume" class="flex justify-between w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive && !onResumeUpload ? '' : 'hidden']">
                             <div class="">

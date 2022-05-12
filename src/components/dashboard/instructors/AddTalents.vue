@@ -702,7 +702,7 @@ const disabledView:any = 'bg-gray-300';
                         Resume
                     </label>
                     <div class="flex items-center justify-start w-full">
-                        <label v-if="!newTalent.ResumeFile" :class="[errors.resume ? 'rounded-full text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-full h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                        <label v-if="!newTalent.ResumeFile" :class="[errors.resume ? ' text-red border-red' : '']" class="flex bg-primary-accent rounded flex-col w-full h-32 border-2 border-dashed hover:bg-gray-100 hover:border-gray-300">
                             <div class="flex flex-col items-center pt-8">
                                 <SvgIcons name="upload" />
                                 <p class="pt-2 text-sm tracking-wider font-semibold group-hover:text-gray-600">
