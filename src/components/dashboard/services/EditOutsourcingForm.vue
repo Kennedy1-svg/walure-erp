@@ -450,6 +450,7 @@ const editproject:any = async () => {
     const projectdata:any = {
         contactName: newOutsourcing.value.contactName,
         email: newOutsourcing.value.email,
+        id: newOutsourcing.value.id,
         companyType: newOutsourcing.value.companyType,
         location: newOutsourcing.value.location,
         phoneNumber: newOutsourcing.value.phoneNumber,
@@ -466,15 +467,6 @@ const editproject:any = async () => {
     //     Instructors: JSON.parse(JSON.stringify(newOutsourcing.value.brief)),
     //     CourseId: newOutsourcing.value.courseId,
     }
-    
-    // formData.append('Title', newOutsourcing.value.companyName);
-    // formData.append('Id', newOutsourcing.value.id);
-    // formData.append('TrainingType', newOutsourcing.value.email);
-    // formData.append('ProjectCapacity', newOutsourcing.value.companyType);
-    // formData.append('StartDate', moment(newOutsourcing.value.startDate).format('MM/DD/YYYY'));
-    // formData.append('EndDate', moment(newOutsourcing.value.phone).format('MM/DD/YYYY'));
-    // formData.append('Instructors', newOutsourcing.value.brief);
-    // formData.append('CourseId', newOutsourcing.value.title);
 
     const newData:any = {
         url: request,
