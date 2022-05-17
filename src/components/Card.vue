@@ -9,9 +9,9 @@ export default {
 
 <template>
     <div class="relative main bg-white border px-2 py-4 grid xl:grid-cols-3 place-content-center rounded-md">
-        <div class="absolute top-[58px] xl:left-[70px] left-[124px]">
+        <!-- <div class="absolute top-[64px] xl:left-[80px] left-[114px]">
             <p class="">%</p>
-        </div>
+        </div> -->
         <div class="chart p-5">
             <slot name="chart">
             </slot>

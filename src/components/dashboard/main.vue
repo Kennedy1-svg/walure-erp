@@ -12,7 +12,7 @@ import ActivityCard from '../ActivityCard.vue';
 const store = useStore();
 
 const consultancy:any = computed(() => {
-    return store.getters.getActivity.value.consultancy
+    return store.getters.getActivity.value.consultancyRequest
 })
 
 const courseapplicants:any = computed(() => {
@@ -20,11 +20,11 @@ const courseapplicants:any = computed(() => {
 })
 
 const outsourcing:any = computed(() => {
-    return store.getters.getActivity.value.outsourcingRequests
+    return store.getters.getActivity.value.talentRequest
 })
 
 const talent:any = computed(() => {
-    return store.getters.getActivity.value.talentPools
+    return store.getters.getActivity.value.freelancers
 })
 
 onMounted( async () => {

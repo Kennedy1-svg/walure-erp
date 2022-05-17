@@ -63,13 +63,6 @@ const contact:any = computed(() => {
                     <p>Demo Day</p>
                     <p>{{ moment(contact.createdOn).format('MMM DD, YYYY hh:mm:ss A') }}</p>
                 </div>
-                <div class="flex border-b gap-5 py-3 text-xl font-medium justify-between items-start">
-                    <p>Business name</p>
-                    <p>{{ contact.companyName }}</p>
-                    <!-- <p class="min-w-2/3 text-base">
-                    {{ contact.message }}
-                    </p> -->
-                </div>
                 <div class="flex py-3 text-xl font-medium justify-between items-center">
                     <p>Business Type</p>
                      <p>{{ contact.companyType == 0 ? 'Telecommunications' : contact.companyType == 1 ? 'IT' : contact.companyType == 2 ? 'Fast Moving Consumer Goods' : contact.companyType == 3 ? 'Finance' : contact.companyType == 4 ? 'Banking' : contact.companyType == 5 ? 'Health' : contact.companyType == 6 ? 'Insurance' : contact.companyType == 7 ? 'Transportation' : contact.companyType == 8 ? 'Logistics' : contact.companyType == 9 ? 'Oil and Gas' : contact.companyType == 10 ? 'HMO' : contact.companyType == 11 ? 'Real Estate' : contact.companyType == 12 ? 'Education' : contact.companyType == 13 ? 'Construction' : contact.companyType == 14 ? 'Pharmaceutical' : 'Others' }}</p>

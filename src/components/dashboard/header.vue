@@ -42,7 +42,6 @@ onMounted( async () => {
         <div class="grid grid-cols-3 py-7 gap-8">
             <Cards>
                 <template #chart>
-                    <!-- <VueApexCharts width="200" type="radialBar" :options="courseChartOptions" :series="courseSeries"></VueApexCharts> -->
                     <circleprogress 
                     :percent="courseStat"
                     :show-percent="true"
