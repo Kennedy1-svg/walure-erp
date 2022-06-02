@@ -15,6 +15,9 @@ import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
 import * as actionTypes from '../../../store/module/users/constants/action';
+import { useRouter } from 'vue-router';
+
+const route = useRouter();
 
 const store = useStore();
 
@@ -23,6 +26,12 @@ const closeModal:any = () => {
   console.log('close student modal')
   let doc:any = document.getElementById('addinstructor')
   doc.close()  
+}
+
+const addRole:any = async () => {
+  route.push({
+      name: 'AddRole'
+  })
 }
 
 let isSearching:any = ref(false)
@@ -59,7 +68,7 @@ onMounted(() => {
                     <p class="text-grey font-semibold">Add Role</p>
                 <div class="relative overflow-hdden">
                     <section class="flex h-full justify-ceter items-start">
-                        <div onclick="document.getElementById('addrole').showModal()" id="btn">
+                        <div @click="addRole" id="btn">
                             <span class="bg-blue p-1 flex justify-center text-white rounded-md">
                                 <SvgIcons name="plus" /> 
                             </span>
