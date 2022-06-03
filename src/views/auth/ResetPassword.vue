@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PasswordReset from '../components/PasswordResetForm.vue';
+import PasswordReset from '../../components/auth/PasswordResetForm.vue';
 import SvgIcons from '../../components/SvgIcons.vue';
 import alert from '../../components/alerts.vue';
 import { ref, computed, onMounted } from 'vue'
