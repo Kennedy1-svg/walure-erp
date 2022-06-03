@@ -5,7 +5,7 @@ import SvgIcons from '../components/SvgIcons.vue';
 import ActivityCard from '../components/ActivityCard.vue';
 import Navigation from '../components/SideNavigation.vue';
 import TopNav from '../components/TopNavigation.vue';
-import LoginForm from '../components/LoginForm.vue';
+import LoginForm from '../components/auth/LoginForm.vue';
 import Search from '../components/Search.vue';
 import Filter from '../components/Filter.vue';
 import AddStudent from '../components/dashboard/students/AddToBatch.vue';
