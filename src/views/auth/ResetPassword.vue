@@ -43,7 +43,8 @@ const status:any = computed(() => {
             <!-- Walure capital logo -->
             <!-- <SvgIcons class="flex justify-center mt-6 mb-[60px]" name="logo" /> -->
             <div class="flex justify-center mt-6 lg:mb-[60px] mb-7">                
-                <img src="../assets/Walure-logo-black.png"  class="w-2/5" alt="walure-logo">
+                <!-- <img src="../assets/Walure-logo-black.png"  class="w-2/5" alt="walure-logo"> -->
+                <h1 class="text-3xl py-2 font-semibold">Enter Password</h1>
             </div>
             <!-- login form -->
             <PasswordReset class="grid px-10 md:px-16 mb-12 lg:mb-[92px] xl:px-36" />

@@ -25,17 +25,17 @@ let isLoading:any = ref(false);
 
 
 let errors = reactive({
-    username: false,
+    defaultPwd: false,
     usertext: '',
     password: false,
     passwordtext: '',
 })
 
 const password_pattern = '^(?=.*\\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$';
-const username_pattern ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+const defaultPwd_pattern ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 
 let data = reactive({
-    username: '',
+    defaultPwd: '',
     password: ''
 })
 
@@ -52,7 +52,7 @@ const login:any = async () => {
     isDisabled.value = true;
     const params = new URLSearchParams();
 
-    params.append('username', data.username);
+    params.append('defaultPwd', data.defaultPwd);
     params.append('password', data.password);
     params.append('grant_type', `${grant_type}`);
     params.append('client_id', `${client_id}`);
@@ -80,17 +80,17 @@ const login:any = async () => {
 }
 
 const checkError:any = () => {
-    if (!data.username) {
-        errors.username = true;
+    if (!data.defaultPwd) {
+        errors.defaultPwd = true;
         isDisabled.value = true;
         errors.usertext = 'Username is required'
-    } else if (!data.username.match(username_pattern)) {
-        errors.username = true;
+    } else if (!data.defaultPwd.match(defaultPwd_pattern)) {
+        errors.defaultPwd = true;
         isDisabled.value = true;
         errors.usertext = `Username must match pattern 'brainadams@gmail.com'`
     } else {
         isDisabled.value = false;
-        errors.username = false;
+        errors.defaultPwd = false;
     }
 
     if (!data.password) {
@@ -106,8 +106,8 @@ const checkError:any = () => {
         errors.password = false;
     }
 
-    if (errors.username) {
-        errors.username = true;
+    if (errors.defaultPwd) {
+        errors.defaultPwd = true;
         isError.value = true;
     } else if (errors.password) {
         errors.password = true;
@@ -116,6 +116,10 @@ const checkError:any = () => {
         isError.value = false;
         isDisabled.value = false;
     }   
+}
+
+const goback:any = ():any => {
+    route.push('/')
 }
 
 const submit:any = () => {
@@ -129,47 +133,41 @@ const submit:any = () => {
     <div class="relative main w-full bg-white">
         <form class=" text-sm grid my10">
             <div class="grid gap-1 mb-4">
-                <label for="username" class="font-semibold">
-                    Username
+                <label for="defaultPassword" class="font-semibold">
+                    Enter default password
                 </label>
-                <input type="text" name="username" v-model="data.username" id="username" @focus="checkError" @keyup="checkError" @blur="checkError()" placeholder="Enter username" :class="[errors.username ? 'border text-red border-red' : '']" class="p-4 rounded-md bg-gray-50 text-xs focus:outline-none">
+                <input type="text" name="defaultPwd" v-model="data.defaultPwd" id="defaultPwd" @focus="checkError" @keyup="checkError" @blur="checkError()" placeholder="Enter password" :class="[errors.defaultPwd ? 'border text-red border-red' : '']" class="p-4 rounded-md bg-gray-50 text-xs focus:outline-none">
                 <p class="text-[10px] text-red">
-                    {{ errors.username ? errors.usertext : '' }}
+                    {{ errors.defaultPwd ? errors.usertext : '' }}
                 </p>
             </div>
             <div class="grid gap-1 mt-4 mb-2">
                 <label for="password" class="font-semibold">
-                    Password
+                    New Password
                 </label>
                 <input type="password" @focus="checkError" @keyup="checkError" name="password" id="password" placeholder="Enter password" v-model="data.password" :class="[errors.password ? 'border text-red border-red' : '']" class="p-4 rounded-md bg-gray-50 text-xs focus:outline-none">
                 <p class="text-[10px] text-red">
                     {{ errors.password ? errors.passwordtext : '' }}
                 </p>
             </div>
-            <div class="extras flex justify-between items-center text-[10px] text-blue-600 mt-2 mb-8">
-                <div class="forgot">
-                    <button @click.prevent="forgotPassword">
-                        Forgot password?
-                    </button>
-                </div>
-                <div class="remember flex">
-                    <div class="flex items-center">
-                        <input id="list-check" @click.prevent="check" type="checkbox" class="opacity-0 absolute h-5 w-5" />
-                        <div class="bg-primary text-primary border-2 w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-primary">
-                        <SvgIcons v-if="rememberChecked" class="text-white" name="tick" />
-                        </div>
-                    </div>
-                    <label for="remember">
-                        Remember me
-                    </label>
-                </div>
+            <div class="grid gap-1 mt-4 mb-2">
+                <label for="confirmpassword" class="font-semibold">
+                    Confirm Password
+                </label>
+                <input type="password" @focus="checkError" @keyup="checkError" name="password" id="password" placeholder="Confirm password" v-model="data.password" :class="[errors.password ? 'border text-red border-red' : '']" class="p-4 rounded-md bg-gray-50 text-xs focus:outline-none">
+                <p class="text-[10px] text-red">
+                    {{ errors.password ? errors.passwordtext : '' }}
+                </p>
             </div>
-            <div class="grid">
+            <div class="grid gap-3">
                 <button @click.prevent="submit" :disabled="isDisabled" :class="[isDisabled ? 'bg-grey' : 'bg-primary']" class="p-4 font-bold flex justify-center border text-white rounded-md">
                     <span class="px-4 flex" :class="[isLoading ? '' : 'hidden']">
                         <spinner />
                     </span>
                     Login
+                </button>
+                <button @click.prevent="goback" class="p-4 font-bold flex justify-center rounded-md text-primary">
+                    Cancel
                 </button>
             </div>
         </form>
