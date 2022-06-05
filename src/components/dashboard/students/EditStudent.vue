@@ -215,6 +215,7 @@ const emits = defineEmits(['close'])
 
 const closeModal:any = () => {
     emits('close')
+    store.commit(studentMutationTypes.SetNewStudent, {})
 }
 
 const showProfilePicture = ref(false);

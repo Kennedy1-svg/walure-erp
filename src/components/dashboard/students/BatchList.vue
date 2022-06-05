@@ -184,14 +184,14 @@ onMounted(async() => {
                             {{ batchitem.status == 0 ? 'Pending' : batchitem.status == 2 ? 'Completed' : 'Ongoing' }}
                         </td>
                         <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            <!-- <p class="w-28 truncate"> -->
+                            <p class="w-28 truncate">
                                 {{ batchitem.instructors.map((e:any) => e.fullName).join(', ') }}
-                            <!-- </p>                             -->
+                            </p>                            
                         </td>
                         <td class="border-t-0 px-2 text-left align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            <!-- <p class="w-28 truncate"> -->
+                            <p class="w-28 truncate">
                                 {{ batchitem.instructors.map((e:any) => e.experienceLevel == 1 ? 'Beginner' : e.experienceLevel == 2 ? 'Intermediate' : e.experienceLevel == 3 ? 'Experienced' : null ).join(', ') }}
-                            <!-- </p>     -->
+                            </p>    
                         </td>
                         <td class="border-t-0 pl-3 pr-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-right">
                             <div class="relative inline-block dropdown">
