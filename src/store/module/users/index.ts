@@ -3,31 +3,27 @@ import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
 import { api_url } from '../../../config'
 import router from '../../../router'
-import { addData, fetchData, editData, removeData, addEmptyData, addDataFile } from '../../../helpers/api';
+import { addData, fetchData, editDataPut, deleteData, addEmptyData, addDataFile } from '../../../helpers/api';
 
 export default {
   state: () => ({
       users: '',
+      permission: [],
+      permissions: [],
       roles: '',
       role: {
-        code: '',
-        totalCount: '',
-        Email: '',
-        PhoneNumber: '',
-        UserId: '',
-        Sex: '',
-        Addresss: '',
-        OtherNames: '',
+        role: '',
+        permissions: []
       },
       user: {
-        email: '',
-        userName: '',
-        lastName: '',
-        firstName: '',
-        phoneNumber: '',
-        password: '',
-        department: '',
-        roleId: '',
+        Email: '',
+        UserName: '',
+        LastName: '',
+        FirstName: '',
+        PhoneNumber: '',
+        Password: '',
+        Department: '',
+        Role: '',
       },
       edituser: '',
       editrole: '',
@@ -40,6 +36,11 @@ export default {
         return state.users
       })
     },
+    getPermissions: (state: any) => {
+      return computed(() => {
+        return state.permissions
+      })
+    },
     getRole: (state: any) => {
       return computed(() => {
         return state.roles
@@ -48,6 +49,11 @@ export default {
     getEditUser: (state: any) => {
       return computed(() => {
         return state.edituser
+      })
+    },
+    getEditRole: (state: any) => {
+      return computed(() => {
+        return state.editrole
       })
     },
     getNewRole: (state: any) => {
@@ -60,11 +66,16 @@ export default {
         return state.user
       })
     },
+    getNewPermission: (state: any) => {
+      return computed(() => {
+        return state.permission
+      })
+    },
     getUserAlertStatus: (state: any) => {
       return computed(() => {
         return state.alert_status
       })
-    },   
+    },
     getUserAlertText: (state: any) => {
       return computed(() => {
         return state.alert_text
@@ -84,6 +95,12 @@ export default {
     [mutationTypes.SetRole] (state: any, data: any) {
       state.roles = data
     },
+    [mutationTypes.SetNewPermission] (state: any, data: any) {
+      state.permission = data
+    },
+    [mutationTypes.SetPermission] (state: any, data: any) {
+      state.permissions = data
+    },
     [mutationTypes.SetEditUser] (state: any, data: any) {
       console.log('i don reach to update')
       state.edituser = data
@@ -100,7 +117,17 @@ export default {
     },
   },
   actions: {
-    async [actionTypes.FetchUsers] ({ commit }: any, data: any = `${api_url}api/user/get-users/{pageIndex}/{pageSize}`) {
+    async [actionTypes.FetchPermissions] ({ commit }: any, data: any = `${api_url}api/role-management/get-permission`) {
+      const token:any = localStorage.getItem('token')
+      const permissions:any = await fetchData(data, token)
+      console.log('permissions', permissions)
+      if (permissions.payload) {
+        await commit(mutationTypes.SetPermission, permissions)
+      } else if (permissions.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
+    },
+    async [actionTypes.FetchUsers] ({ commit }: any, data: any = `${api_url}api/user-management/users/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
       const users:any = await fetchData(data, token)
       console.log('users', users)
@@ -110,7 +137,7 @@ export default {
         router.push({ name: 'Login' });
       }
     },
-    async [actionTypes.FetchRole] ({ commit }: any, data: any = `${api_url}api/role/get-roles/{pageNumber}/{pageSize}`) {
+    async [actionTypes.FetchRole] ({ commit }: any, data: any = `${api_url}api/role-management/get-roles/{pageIndex}/{pageSize}`) {
       const token:any = localStorage.getItem('token')
       console.log('data', data)
       const roles:any = await fetchData(data, token)
@@ -126,7 +153,7 @@ export default {
       console.log('token here')
       const user = await fetchData(data, token)
       console.log('data tch', data)
-      // console.log('Iusers', user.payload)
+      console.log('Iusers', user.payload)
     //   console.log('Iusers', users.value)
     //   console.log('Iusers', JSON.parse(JSON.stringify(users)))
     //   console.log('Iusers', JSON.parse(JSON.stringify(users.value)))
@@ -144,7 +171,7 @@ export default {
       const role = await addData(data.url, data.data, token)
       if (!role.hasErrors) {
         // commit(mutationTypes.SetNewRole, role.payload)
-        await commit(mutationTypes.SetUserAlertText, 'User Category added successfully')
+        await commit(mutationTypes.SetUserAlertText, 'Role added successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchRole)
       } else if (role.response.status === 401) {
@@ -165,15 +192,15 @@ export default {
     async [actionTypes.AddNewUser] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const role = await addData(data.url, data.data, token)
-      if (!role.hasErrors) {
-        // commit(mutationTypes.SetNewRole, role.payload)
+      const user = await addData(data.url, data.data, token)
+      if (!user.hasErrors) {
+        // commit(mutationTypes.SetNewRole, user.payload)
         await commit(mutationTypes.SetUserAlertText, 'User added successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchUsers)
-      } else if (role.response.status === 401) {
+      } else if (user.response.status === 401) {
         router.push({ name: 'Login' });
-      } else if (role.message.includes('400')) {
+      } else if (user.message.includes('400')) {
         await commit(mutationTypes.SetUserAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetUserAlertStatus, true)
       } else {
@@ -189,7 +216,7 @@ export default {
     async [actionTypes.EditUser] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const role = await editData(data.url, data.data, token)
+      const role = await editDataPut(data.url, data.data, token)
       if (!role.hasErrors) {
         // commit(mutationTypes.SetNewRole, role.payload)
         await commit(mutationTypes.SetUserAlertText, 'User updated successfully')
@@ -216,10 +243,10 @@ export default {
     async [actionTypes.EditRole] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const role = await editData(data.url, data.data, token)
+      const role = await editDataPut(data.url, data.data, token)
       if (!role.hasErrors) {
         // commit(mutationTypes.SetNewRole, role.payload)
-        await commit(mutationTypes.SetUserAlertText, 'User Category updated successfully')
+        await commit(mutationTypes.SetUserAlertText, 'Role updated successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchRole)
       } else if (role.response.status === 401) {
@@ -241,9 +268,9 @@ export default {
     async [actionTypes.RemoveRole] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const role = await removeData(data, token)
+      const role = await deleteData(data, token)
       if (!role.hasErrors) {
-        await commit(mutationTypes.SetUserAlertText, 'User Category removed successfully')
+        await commit(mutationTypes.SetUserAlertText, 'Role removed successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchRole)
       } else if (role.response.status === 401) {
@@ -264,7 +291,7 @@ export default {
     async [actionTypes.RemoveUser] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const user = await removeData(data, token)
+      const user = await deleteData(data, token)
       if (!user.hasErrors) {
         await commit(mutationTypes.SetUserAlertText, 'User removed successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)

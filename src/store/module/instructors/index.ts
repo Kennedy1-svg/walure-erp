@@ -125,7 +125,7 @@ export default {
       return computed(() => {
         return state.alert_status
       })
-    },   
+    },
     getInstructorAlertText: (state: any) => {
       return computed(() => {
         return state.alert_text
@@ -268,7 +268,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -291,7 +291,7 @@ export default {
         } else if (file.response.status === 401) {
           router.push({ name: 'Login' });
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -456,7 +456,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -481,7 +481,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -506,7 +506,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -531,7 +531,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -558,7 +558,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -585,7 +585,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')
@@ -612,7 +612,7 @@ export default {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
         }
-  
+
         setTimeout(() => {
           commit(mutationTypes.SetInstructorAlertStatus, false)
           commit(mutationTypes.SetInstructorAlertText, '')

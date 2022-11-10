@@ -13,19 +13,11 @@ const props:any = defineProps({
   }
 });
 
-const checked:any = computed(() => {
-    let answer:any
-    if (props.status == 1) {
-      answer = true
-    } else {
-      answer = false
-    }
-  return answer
-});
+const checked:any = ref(false)
 
 const { status, name } = toRefs(props);
 
-const emit = defineEmits(['toggle']);
+const emit = defineEmits(['toggle', 'remove', 'click']);
 
 const itemStatus:any = computed(() => {
   let answer:any
@@ -39,13 +31,14 @@ const itemStatus:any = computed(() => {
 
 // const isActive = ref(false)
 const changeStatus:any = () => {
+  emit('click')
     // isActive.value = !isActive.value
     // status.value = isActive.value ? 'Active' : 'Disabled'
-  emit('toggle')
+  checked.value = !checked.value
   if (checked.value) {
-    return itemStatus.value = 'Active'
+    emit('toggle')
   } else {
-    return itemStatus.value = 'Disabled'
+    emit('remove')
   }
 }
 
@@ -68,13 +61,13 @@ const changeCourseStatus:any = () => {
 <template>
     <div class="my-2 flex items-center">
       <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
-        <input 
-          type="checkbox" 
+        <input
+          type="checkbox"
           id="checkbox"
           :checked="checked"
-          @click="changeStatus"
+          @click="changeStatus()"
         >
-        <span class="toggler round"></span>
+        <span class="toggler round">{{ checked }}</span>
       </label>
     </div>
 </template>
@@ -104,9 +97,9 @@ const changeCourseStatus:any = () => {
         @apply bg-green-accent bg-opacity-[48%];
     }
     input:checked + .toggler:before {
-        -webkit-transform: translateX(18px);
-        -ms-transform: translateX(18px);
-        transform: translateX(18px);
+        -webkit-transform: translateX(22px);
+        -ms-transform: translateX(22px);
+        transform: translateX(22px);
     }
     .toggler.round {
         border-radius: 34px;

@@ -41,7 +41,21 @@ let errors = reactive({
     phoneText: '',
 })
 
-const roleoptions:any = [
+const deselectCategory:any = async () => {
+    console.log('on deselect')
+    await store.dispatch(actionTypes.FetchRole)
+}
+
+const deselect:any = async () => {
+    console.log('on deselect')
+    await store.dispatch(actionTypes.FetchRole)
+}
+
+const roleoptions:any = computed(() => {
+    return store.getters.getRole.value.payload;
+})
+
+const anotherrole:any = [
     {
         label: 'DevOps',
         value: 0,
@@ -120,18 +134,8 @@ const roleoptions:any = [
     },
 ]
 
-let pdfSource:any = ref('');
-
-let isChecked:any = ref(false);
-
-let formData = new FormData();
-
-const check:any = ():any => {
-    isChecked.value = !isChecked.value;
-}
-
 const newUser:any = computed(() => {
-    return store.getters.getNewInstructor.value;
+    return store.getters.getNewUser.value;
 });
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
@@ -149,7 +153,7 @@ const checkError:any = () => {
     } else {
         errors.FirstName = false;
     }
-    
+
     if (!newUser.value.LastName) {
         errors.LastName = true;
         errors.LastNameText = 'Last name is required'
@@ -173,9 +177,9 @@ const checkError:any = () => {
     if (!newUser.value.Department) {
         errors.department = true;
         errors.departmentText = 'Department is required'
-    } else if (newUser.value.Department.length <= 3) {
+    } else if (newUser.value.Department.length <= 1) {
         errors.department = true;
-        errors.departmentText = 'Department needs to be more than 3 characters'
+        errors.departmentText = 'Department needs to be more than a character'
     } else {
         errors.department = false;
     }
@@ -237,138 +241,78 @@ const checkError:any = () => {
     } else {
         isError.value = false;
         isDisabled.value = false;
-    }   
+    }
 }
-
-const removeImage:any = async () => {
-    return newUser.value.Image = ''
-}
-
-const removeResume:any = async () => {
-    return newUser.value.Resume = ''
-}
-
-const bios:any = computed(() => {
-    return store.getters.getCourses.value.payload;
-})
 
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
-    store.commit(mutationTypes.SetNewUser, {})
+    console.log(`But I entered here sha`)
+    let user:any = {}
+    store.commit(mutationTypes.SetNewUser, user)
+    console.log(`Waited here small sha`)
     emits('close')
+    console.log(`I now jumped here sha`)
 }
 
-const showProfilePicture = ref(false);
+const chars = ["A", "B", "C", "D", "E", "F", 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
-const showResume = ref(false)
-
-const testing:any = () => {
-    console.log(showResume.value)
-    console.log(newUser.value)
-}
-
-let isActive:any = computed(() => {
-    if (newUser.value.Image) {
-        return true
-    } else {
-        return false
+const randomChars = computed(() => {
+    let quote:any;
+    for (let i = 0; i < 10; i++) {
+        const randomNumber = getRandomNumber();
+        quote += chars[randomNumber];
     }
+    return quote;
 })
 
-let isResumeActive:any = computed(() => {
-    if (newUser.value.Resume) {
-        checkError();
-        return true
-    } else {
-        return false
-    }
-})
+// const testPwd:any = '02jsdh0aw'
 
-const onChange:any = (event:any):any => {
-    console.log('event', event.target.files[0].name)
-    newUser.value.Image = event.target.files[0]
-    formData.append('file', event.target.files[0])
-    let images: any = document.getElementById('addinstructoroutput')
-    let image:any = document.getElementById('displayoutput')
-    images.src = URL.createObjectURL(event.target.files[0])
-    image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newUser image', newUser.value.Image.type)
+const getRandomNumber = () => {
+    return Math.floor(Math.random() * chars.length)
 }
 
-const onChangeResume:any = (event:any):any => {
-    console.log('event', event.target.files[0])
-    newUser.value.Resume = event.target.files[0]
-    formData.append('Resume', event.target.files[0])
-    // let images: any = document.getElementById('addinstructoroutput')
-    // let image:any = document.getElementById('displayoutput')
-    pdfSource.value = URL.createObjectURL(event.target.files[0])
-    // image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newUser resume', newUser.value.Resume.type)
-    console.log('newUser link', pdfSource.value)
-}
-
-const addInstructor:any = async () => {
+const addUser:any = async () => {
     console.log('hi');
-    console.log('newstudent', newUser.value)
-    console.log('newstudent', newUser.value.image)
-    const request:any = `${api_url}api/instructor/create-instructor`;
+    // console.log('newstudent', newUser.value)
+    // console.log('newstudent', newUser.value.image)
+    const request:any = `${api_url}api/user-management/new-userapp`;
 
-    // const formElem = document.getElementById('formElem')
-    formData.append('FirstName', newUser.value.FirstName)
-    formData.append('LastName', newUser.value.LastName)
-    formData.append('OtherName', newUser.value.OtherName)
-    formData.append('UserName', newUser.value.UserName)
-    formData.append('Department', newUser.value.Department)
-    formData.append('LinkedInUrl', newUser.value.LinkedInUrl)
-    formData.append('FacebookUrl', newUser.value.FacebookUrl)
-    formData.append('Image', newUser.value.Image, newUser.value.Image.name)
-    // formData.append('Resume', newUser.value.Resume, newUser.value.Resume.name)
-    formData.append('Address', newUser.value.Address)
-    formData.append('PhoneNumber', newUser.value.PhoneNumber)
-    formData.append('Role', newUser.value.Role)
-    formData.append('Bio', newUser.value.Bio)
-    formData.append('Email', newUser.value.Email)
-    formData.append('ExperienceLevel', newUser.value.ExperienceLevel)
-
-    // console.log('formData', JSON.parse(JSON.stringify(formData)))
-    
-    // Display the values
-// for (var value of formData.entries()) {
-//    console.log(value);
-// }
-    // const formData = JSON.parse(JSON.stringify(newUser.value))
-
-    // const submitdata = {
-    //     ...formData,
-    //     image: newUser.value.image
-    // }
-    console.log('formData', formData)
-    // console.log('formdata items', [...formData.entries()])
+    let requestData:any = {
+        username: newUser.value.UserName,
+        firstName: newUser.value.FirstName,
+        lastName: newUser.value.LastName,
+        email: newUser.value.Email,
+        phoneNumber: newUser.value.PhoneNumber,
+        role: newUser.value.Role,
+        department: newUser.value.Department,
+        password: randomChars.value,
+    }
 
     const newData:any = {
         url: request,
-        data: formData
+        data: requestData
     }
     console.log('newData', newData)
+    console.log(`I am here sha`)
     await store.dispatch(actionTypes.AddNewUser, newData)
+    console.log(`I am now here sha`)
     const result = await store.getters.getUsers
+    console.log(`I then came here sha`)
     store.commit(mutationTypes.SetNewUser, {})
+    console.log(`So I am now here sha`)
     closeModal()
+    console.log(`Till I came here sha`)
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
 }
 
-const newFile:any = computed(() => {
-    return pdfSource
-})
-
 const submit:any = () => {
     console.log('hello');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? addInstructor() : '';
+    !isError.value ? addUser() : '';
 }
 
 onMounted(async () => {
@@ -438,8 +382,8 @@ const disabledView:any = 'bg-gray-300';
                     <label for="role" class="font-semibold">
                         Role
                     </label>
-                       
-                    <multiselect v-model="newUser.Role" @clear="checkError" @select="checkError" valueProp="value" :options="roleoptions" track-by="label" label="label" placeholder="Select role" :searchable="true" class="multiselect-blue" />
+
+                    <multiselect v-model="newUser.Role" @clear="checkError" @select="checkError" valueProp="role" :options="roleoptions" track-by="role" label="role" placeholder="Select role" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] -mt-2 text-red">
                         {{ errors.role ? errors.roleText : '' }}
                     </p>

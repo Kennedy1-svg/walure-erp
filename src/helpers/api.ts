@@ -57,12 +57,12 @@ export const addEmptyData = async (url: any, token:any) => {
   }
 }
 
-// const response = await axios.post(url, data, { headers: { 'Content-Type': 'multipart/form-data'} 
+// const response = await axios.post(url, data, { headers: { 'Content-Type': 'multipart/form-data'}
 //     })
 
 export const addDataFile = async (url: any, data: any, token:any) => {
   try {
-    const response = await axios.post(url, data, { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}`} 
+    const response = await axios.post(url, data, { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}`}
   })
     console.log('response', response.data)
     // setTimeout(() => {
@@ -86,9 +86,9 @@ export const editData = async (url: any, payload: any, token:any) => {
 }
 
 // api helper to edit data in the backend
-export const editDataFile = async (url: any, payload: any, token:any) => {
+export const editDataPut = async (url: any, payload: any, token:any) => {
   try {
-    const response = await axios.patch(url, payload, { headers: { Authorization: `Bearer ${token}` } })
+    const response = await axios.put(url, payload, { headers: { Authorization: `Bearer ${token}` } })
     return response.data
   } catch (err) {
     return err
@@ -103,6 +103,20 @@ export const removeData = async (url: any, token:any) => {
 
   try {
     const response = await axios.delete(url, { headers: { Authorization: `Bearer ${token}` } })
+    return response.data
+  } catch (err) {
+    return err
+  }
+}
+
+// api helper to delete data from the backend
+export const deleteData = async (url: any, token:any) => {
+  // console.log('token here', token)
+  console.log('url here', url)
+  console.log('i am here')
+
+  try {
+    const response = await axios.post(url, { headers: { Authorization: `Bearer ${token}` } })
     return response.data
   } catch (err) {
     return err

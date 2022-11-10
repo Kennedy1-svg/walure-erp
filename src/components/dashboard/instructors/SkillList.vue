@@ -101,8 +101,8 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('SkillList mounted');
-    const request:any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`;
-    await store.dispatch(instructorActionTypes.FetchSkills, request)
+    // const request:any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`;
+    await store.dispatch(instructorActionTypes.FetchSkills)
 });
 </script>
 
@@ -150,7 +150,7 @@ onMounted( async () => {
 
                                     <button
                                     type="button"
-                                    @click="showDelete = !showDelete" @click.prevent="sendId(skill.id)" 
+                                    @click="showDelete = !showDelete" @click.prevent="sendId(skill.id)"
                                     class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                     >
                                         <SvgIcons name="delete" />

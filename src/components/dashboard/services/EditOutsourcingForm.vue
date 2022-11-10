@@ -17,7 +17,7 @@ import Datepicker from 'vue3-date-time-picker';
 import Modal from '../../Modals.vue';
 import 'v-calendar/dist/style.css';
 import 'vue3-date-time-picker/dist/main.css'
-import datepicker from '../../datepicker.vue'
+// import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
 import * as projectActionTypes from '../../../store/module/services/constants/action'
 import * as projectMutationTypes from '../../../store/module/services/constants/mutation'
@@ -141,7 +141,7 @@ const checkError:any = () => {
     } else {
         isError.value = false;
         isDisabled.value = false;
-    }   
+    }
 }
 
 let isChecked:any = ref(false);
@@ -250,7 +250,7 @@ const company_type:any = [
 const location:any = [
 	{
 		label: "Abuja",
-        value: "Abuja" 
+        value: "Abuja"
 	},
 	{
 		label: "Abia",
@@ -422,7 +422,7 @@ const addproject:any = async () => {
     //     Instructors: JSON.parse(JSON.stringify(newOutsourcing.value.brief)),
     //     CourseId: newOutsourcing.value.courseId,
     }
-    
+
     // formData.append('companyName', newOutsourcing.value.companyName);
     // formData.append('email', newOutsourcing.value.email);
     // formData.append('companyType', newOutsourcing.value.companyType);
@@ -565,12 +565,12 @@ onBeforeUnmount(() => {
                     <p class="text-[10px] text-red">
                         {{ errors.companyName ? errors.companyNameText : '' }}
                     </p>
-                    
+
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
                         <option value="">Select option</option>
                         <option  v-for="item in courses" :key="item.id"  :value=item.id>{{ item.companyName }}</option>
                     </select> -->
-                </div>             
+                </div>
                 <div class="grid gap-4" id="email">
                     <label for="email" class="font-semibold">
                         Email*
@@ -602,7 +602,7 @@ onBeforeUnmount(() => {
                     <p class="text-[10px] text-red">
                         {{ errors.location ? errors.locationText : '' }}
                     </p>
-                    
+
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="trainingtype" id="trainingtype">
                         <option value="">Select option</option>
                         <option value="Online">Online</option>
@@ -672,7 +672,7 @@ onBeforeUnmount(() => {
                                     <div class="flex w-2/5 items-center">
                                         <!-- <button
                                         type="button"
-                                        @click="showDelete = !showDelete" @click.prevent="sendId(talent.id)" 
+                                        @click="showDelete = !showDelete" @click.prevent="sendId(talent.id)"
                                         class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                         >
                                             <SvgIcons name="delete" />
@@ -703,7 +703,7 @@ onBeforeUnmount(() => {
                 <!-- <button
                 type="button"
                 @click="showUpdateStatus = !showUpdateStatus"
-                @click.prevent="setId(outsourcingitem.id)"    
+                @click.prevent="setId(outsourcingitem.id)"
                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                 >
                     <SvgIcons name="update" />

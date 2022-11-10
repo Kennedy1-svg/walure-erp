@@ -72,7 +72,7 @@ export default {
       return computed(() => {
         return state.alert_status
       })
-    },   
+    },
     getIPOAlertText: (state: any) => {
       return computed(() => {
         return state.alert_text

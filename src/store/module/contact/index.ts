@@ -34,7 +34,7 @@ export default {
       return computed(() => {
         return state.alert_status
       })
-    },   
+    },
     getContactAlertText: (state: any) => {
       return computed(() => {
         return state.alert_text

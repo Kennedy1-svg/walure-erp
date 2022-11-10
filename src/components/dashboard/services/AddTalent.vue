@@ -16,7 +16,7 @@ import Filter from '../../Filter.vue';
 import Datepicker from 'vue3-date-time-picker';
 import 'v-calendar/dist/style.css';
 import 'vue3-date-time-picker/dist/main.css'
-import datepicker from '../../datepicker.vue'
+// import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
 import * as projectActionTypes from '../../../store/module/services/constants/action'
 import * as projectMutationTypes from '../../../store/module/services/constants/mutation'
@@ -116,7 +116,7 @@ const checkError:any = () => {
     } else {
         isError.value = false;
         isDisabled.value = false;
-    }   
+    }
 }
 
 const contract_type = [
@@ -293,7 +293,7 @@ const addoutsourcingtalent:any = async () => {
     //     Instructors: JSON.parse(JSON.stringify(newOutsourcingTalent.value.description)),
     //     CourseId: newOutsourcingTalent.value.courseId,
     }
-    
+
     // formData.append('role', newOutsourcingTalent.value.role);
     // formData.append('email', newOutsourcingTalent.value.email);
     // formData.append('noOfResources', newOutsourcingTalent.value.noOfResources);
@@ -336,7 +336,7 @@ const editoutsourcingtalent:any = async () => {
     //     Instructors: JSON.parse(JSON.stringify(newOutsourcingTalent.value.description)),
     //     CourseId: newOutsourcingTalent.value.courseId,
     }
-    
+
     // formData.append('role', newOutsourcingTalent.value.role);
     // formData.append('email', newOutsourcingTalent.value.email);
     // formData.append('noOfResources', newOutsourcingTalent.value.noOfResources);
@@ -380,7 +380,7 @@ const editoutsourcingtalent:any = async () => {
     //     Instructors: JSON.parse(JSON.stringify(newOutsourcingTalent.value.description)),
     //     CourseId: newOutsourcingTalent.value.courseId,
     // }
-    
+
     // formData.append('Title', newOutsourcingTalent.value.role);
     // formData.append('Id', newOutsourcingTalent.value.id);
     // formData.append('TrainingType', newOutsourcingTalent.value.email);
@@ -471,14 +471,14 @@ onMounted(async () => {
                     <p class="text-[10px] text-red">
                         {{ errors.jobEngagementType ? errors.jobEngagementTypeText : '' }}
                     </p>
-                    
+
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
                         <option value="">Select option</option>
                         <option  v-for="item in courses" :key="item.id"  :value=item.id>{{ item.jobEngagementType }}</option>
                     </select> -->
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 mb-10">                
+            <div class="grid grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4" id="startdate">
                     <label for="noOfResource" class="font-semibold">
                         No of resources*

@@ -24,7 +24,7 @@ const store = useStore();
 const closeModal:any = () => {
   // document.getElementById('addinstructor').showModal()
   console.log('close student modal')
-    store.commit(mutationTypes.SetNewInstructor, {})
+  store.commit(mutationTypes.SetNewInstructor, {})
   let doc:any = document.getElementById('addinstructor')
   doc.close()
 }
@@ -78,7 +78,7 @@ const filter:any = async () => {
   //   console.log('row', rows[1].textContent)
   //   console.log('row', rows[2].textContent)
   //   if (
-  //     row.textContent.toLowerCase().indexOf(search) > -1 
+  //     row.textContent.toLowerCase().indexOf(search) > -1
   //   ) {
   //     rows[i].style.display = '';
   //   } else {
@@ -101,7 +101,7 @@ const cancan:any = async (name:any) => {
   //   const request:any = `${api_url}api/student/get-students/{pageIndex}/{pageSize}`;
   //   store.dispatch(actionTypes.FetchStudents, request)
   //   store.getters.getStudents
-  //   // console.log('all url', url) 
+  //   // console.log('all url', url)
   //   return info.value = 'Status'
   // } else if (name == 'Active') {
     const request:any = `${api_url}api/instructor/filter-instructors/{pageIndex}/{pageSize}/${name}`;
@@ -143,7 +143,7 @@ onMounted( async () => {
                       </div>
                   </section>
 
-                  <dialog id="addinstructor" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">            
+                  <dialog id="addinstructor" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">
                       <div class="w-full h-auto">
                           <!-- Modal Content-->
                               <AddInstructor @close="closeModal" />
@@ -200,8 +200,8 @@ onMounted( async () => {
     background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
     backdrop-filter: blur(3px);
   }
-  
- 
+
+
 @keyframes appear {
   from {
     opacity: 0;
@@ -212,7 +212,7 @@ onMounted( async () => {
     opacity: 1;
     transform: translateX(0);
   }
-} 
+}
 
 .multiselect-blue {
   --ms-option-bg: #DBEAFE;

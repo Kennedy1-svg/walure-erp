@@ -104,7 +104,7 @@ export default {
           return computed(() => {
               return state.editconsultancy
           })
-        },  
+        },
         getProjectAlertStatus: (state: any) => {
           return computed(() => {
             return state.alert_status
@@ -309,7 +309,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -346,7 +346,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -423,7 +423,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -447,7 +447,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -472,7 +472,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -497,7 +497,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -522,7 +522,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -546,7 +546,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -610,7 +610,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Something went wrong')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -638,7 +638,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Something went wrong')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')
@@ -666,7 +666,7 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Something went wrong')
             await commit(mutationTypes.SetProjectAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetProjectAlertStatus, false)
             commit(mutationTypes.SetProjectAlertText, '')

@@ -122,7 +122,7 @@ export default {
       return computed(() => {
         return state.alert_status
       })
-    },   
+    },
     getCourseAlertText: (state: any) => {
       return computed(() => {
         return state.alert_text

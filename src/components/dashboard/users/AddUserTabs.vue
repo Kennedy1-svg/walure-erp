@@ -64,10 +64,10 @@ const closeModal:any =  () => {
 
 		<div class="bg-white rounded-md px-6 max-h-screen py-10 pr-12 text-center w-full mx-auto overflow-auto">
 			<div v-show="activeTab===0">
-				<AddUser />
+				<AddUser @close="closeModal" />
 			</div>
 			<div v-show="activeTab===1">
-				<UploadUser />
+				<UploadUser @close="closeModal" />
 			</div>
 		</div>
 
@@ -78,7 +78,7 @@ const closeModal:any =  () => {
 					v-text="tab"></li>
 			</template>
 		</ul> -->
-		
+
 		<!-- <div class="flex gap-4 justify-center border-t p-4">
 			<button
 				class="py-2 px-4 border rounded-md border-blue-600 text-blue-600 cursor-pointer uppercase text-sm font-bold hover:bg-blue-500 hover:text-white hover:shadow"

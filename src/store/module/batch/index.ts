@@ -46,12 +46,12 @@ export default {
           return computed(() => {
             return state.alert_status
           })
-        },   
+        },
         getBatchAlertText: (state: any) => {
           return computed(() => {
             return state.alert_text
           })
-        },    
+        },
         getEditBatchStatus: (state: any) => {
         return computed(() => {
             return state.isEditing
@@ -212,7 +212,7 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetBatchAlertStatus, false)
             commit(mutationTypes.SetBatchAlertText, '')
@@ -237,7 +237,7 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetBatchAlertStatus, false)
             commit(mutationTypes.SetBatchAlertText, '')
@@ -263,7 +263,7 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetBatchAlertStatus, false)
             commit(mutationTypes.SetBatchAlertText, '')
@@ -300,7 +300,7 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
           }
-    
+
           setTimeout(() => {
             commit(mutationTypes.SetBatchAlertStatus, false)
             commit(mutationTypes.SetBatchAlertText, '')

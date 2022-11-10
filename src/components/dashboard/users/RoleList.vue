@@ -31,7 +31,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/role/get-roles/${pageIndex.value}/{pageSize}`;
+    const request:any = `${api_url}api/role-management/get-roles/${pageIndex.value}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchRole, request)
 }
@@ -48,10 +48,11 @@ const sendId:any = (id:any) => {
 const deleteRole:any = async (id:any) => {
     console.log('category category', id);
 
-    const request:any = `${api_url}api/iposquoterequest/delete/${id}`;
+    const request:any = `${api_url}api/role-management/delete-role/${id}`;
 
     console.log('requestData', request)
-    // await store.dispatch(actionTypes.RemoveRoleQuote, request)
+    await store.dispatch(actionTypes.RemoveRole, request)
+    await store.dispatch(actionTypes.FetchRole)
     closeModal()
     // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
     // console.log('url', fetchrequest)
@@ -107,7 +108,7 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('Role List mounted');
-    const request:any = `${api_url}api/role/get-roles/{pageIndex}/{pageSize}`;
+    const request:any = `${api_url}api/role-management/get-roles/{pageIndex}/{pageSize}`;
     await store.dispatch(actionTypes.FetchRole)
 });
 </script>
@@ -143,7 +144,7 @@ onMounted( async () => {
                           {{ pageIndex == 1 ? (roles.indexOf(role) + 1) : ((pageIndex - 1) * 10) + (roles.indexOf(role) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ role.roleName }}
+                          {{ role.role }}
                       </td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                           {{ role.modifiedOn }}
@@ -163,7 +164,7 @@ onMounted( async () => {
 
                             <button
                             type="button"
-                            @click="showDelete = !showDelete" @click.prevent="sendId(role.id)" 
+                            @click="showDelete = !showDelete" @click.prevent="sendId(role.id)"
                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                             >
                                 <SvgIcons name="delete" />

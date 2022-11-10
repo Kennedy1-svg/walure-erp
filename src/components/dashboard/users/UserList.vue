@@ -8,7 +8,7 @@ export default {
 import SvgIcons from '../../SvgIcons.vue';
 import UserDetails from './UserDetails.vue';
 import Modal from '../../Modals.vue';
-// import EditUser from './EditUser.vue';
+import EditUser from './EditUser.vue';
 import DeleteModal from '../../DeleteModal.vue';
 import Switch from '../../switch.vue';
 import { computed, ref, onMounted, reactive } from 'vue';
@@ -21,14 +21,10 @@ import pagination from '../../pagination.vue'
 const store = useStore();
 
 const users:any = computed(() => {
-    // console.log('users', JSON.parse(JSON.stringify(store.getters.getUser.value)))
-    // return JSON.parse(JSON.stringify(store.getters.getUser.value))
     return store.getters.getUsers.value.payload
 })
 
 const totalCount:any = computed(() => {
-    // console.log('totalCount', JSON.parse(JSON.stringify(store.getters.getUserTotalCount.value)))
-    // return JSON.parse(JSON.stringify(store.getters.getUserTotalCount.value))
     return store.getters.getUsers.value.totalCount
 })
 
@@ -67,7 +63,7 @@ const sendId:any = (id:any) => {
 const deleteUser:any = async (id:any) => {
     console.log('batch id', id);
 
-    const request:any = `${api_url}api/user/delete/${id}`;
+    const request:any = `${api_url}api/user-management/delete-user/${id}`;
 
     console.log('requestData', request)
     await store.dispatch(actionTypes.RemoveUser, request)
@@ -77,14 +73,14 @@ const deleteUser:any = async (id:any) => {
 
 const setId:any = async (id:any) => {
     console.log('userid', id)
-    const request:any = `${api_url}api/user/${id}`;
+    const request:any = `${api_url}api/user-management/get-user-by/${id}`;
     console.log('request forid', request)
     await store.dispatch(actionTypes.FetchEditUser, request)
 }
 
 const editUser:any = async (id:any) => {
     console.log('userid', id)
-    const request:any = `${api_url}api/user/${id}`;
+    const request:any = `${api_url}api/user-management/get-user-by/${id}`;
     console.log('request for the', request)
     await store.dispatch(actionTypes.FetchEditUser, request)
     // console.log('user', user)
@@ -115,7 +111,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/user/get-users/${pageIndex.value}/{pageSize}`;
+    const request:any = `${api_url}api/user-management/users/${pageIndex.value}/{pageSize}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchUsers, request)
 }
@@ -123,8 +119,6 @@ const onPageChange:any = async (page:any) => {
 
 onMounted(async() => {
     console.log('I started here');
-    // const request:any = 'https://walurebackofficev1.azurewebsites.net/api/user/get-users/{pageIndex}/{pageSize}';
-    // const request:any = `${api_url}api/user/get-users/${pageIndex.value}/{pageSize}`;
     await store.dispatch(actionTypes.FetchUsers)
 })
 
@@ -145,17 +139,17 @@ onMounted(async() => {
                         <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
                         S/N
                         </th>
-                        <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="align-middle px-2 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
                         Username
                         </th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="px-2 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Email
                         </th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">First name</th>
-                        <th class="px-6 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Last name</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Phone number</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Role</th>
-                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
+                        <th class="px-2 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">First name</th>
+                        <th class="px-2 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Last name</th>
+                        <th class="px-2 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Phone number</th>
+                        <th class="px-2 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Role</th>
+                        <th class="px-2 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                     </tr>
                     </thead>
 
@@ -164,10 +158,10 @@ onMounted(async() => {
                         <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                             {{ pageIndex == 1 ? (users.indexOf(user) + 1) : ((pageIndex - 1) * 10) + (users.indexOf(user) + 1) }}
                         </td>
-                        <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                        <td class="border-t-0 px-2 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                             {{ user.username }}
                         </td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ user.email }}
                         </td>
                         <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -179,10 +173,10 @@ onMounted(async() => {
                         <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                             {{ user.phoneNumber }}
                         </td>
-                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ user.role }}
+                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            {{ user.roleName }}
                         </td>
-                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-left">
+                        <td class="border-t-0 px-2 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-left">
                             <div class="relative inline-block dropdown">
                                 <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                     <SvgIcons name="ellipsis" />
@@ -338,8 +332,8 @@ onMounted(async() => {
     background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
     backdrop-filter: blur(3px);
   }
-  
- 
+
+
 @keyframes appear {
   from {
     opacity: 0;
@@ -350,5 +344,5 @@ onMounted(async() => {
     opacity: 1;
     transform: translateX(0);
   }
-} 
+}
 </style>

@@ -16,7 +16,7 @@ import Filter from '../../Filter.vue';
 import Datepicker from 'vue3-date-time-picker';
 import 'v-calendar/dist/style.css';
 import 'vue3-date-time-picker/dist/main.css'
-import datepicker from '../../datepicker.vue'
+// import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
 import * as projectActionTypes from '../../../store/module/services/constants/action'
 import * as projectMutationTypes from '../../../store/module/services/constants/mutation'
@@ -136,7 +136,7 @@ const checkError:any = () => {
     } else {
         isError.value = false;
         isDisabled.value = false;
-    }   
+    }
 }
 
 let isChecked:any = ref(false);
@@ -216,7 +216,7 @@ const addproject:any = async () => {
     //     Instructors: JSON.parse(JSON.stringify(newProject.value.brief)),
     //     CourseId: newProject.value.courseId,
     }
-    
+
     // formData.append('companyName', newProject.value.companyName);
     // formData.append('email', newProject.value.email);
     // formData.append('noOfResources', newProject.value.noOfResources);
@@ -260,7 +260,7 @@ const editproject:any = async () => {
     //     Instructors: JSON.parse(JSON.stringify(newProject.value.brief)),
     //     CourseId: newProject.value.courseId,
     }
-    
+
     // formData.append('Title', newProject.value.companyName);
     // formData.append('Id', newProject.value.id);
     // formData.append('TrainingType', newProject.value.email);
@@ -350,14 +350,14 @@ onMounted(async () => {
                     <p class="text-[10px] text-red">
                         {{ errors.title ? errors.titleText : '' }}
                     </p>
-                    
+
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
                         <option value="">Select option</option>
                         <option  v-for="item in courses" :key="item.id"  :value=item.id>{{ item.title }}</option>
                     </select> -->
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 mb-10">                
+            <div class="grid grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4" id="startdate">
                     <label for="startdate" class="font-semibold">
                         Start date*
@@ -408,7 +408,7 @@ onMounted(async () => {
                     <p class="text-[10px] text-red">
                         {{ errors.email ? errors.emailText : '' }}
                     </p>
-                    
+
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="trainingtype" id="trainingtype">
                         <option value="">Select option</option>
                         <option value="Online">Online</option>

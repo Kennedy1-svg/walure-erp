@@ -22,8 +22,9 @@ const store = useStore();
 const closeModal:any = () => {
   // document.getElementById('myoal').showModal()
   console.log('close course modal')
+//   store.commit(mutationTypes.SetNewUser, {})
   let doc:any = document.getElementById('adduser')
-  doc.close()  
+  doc.close()
 }
 
 let isSearching:any = ref(false)
@@ -37,35 +38,11 @@ const deselect:any = async () => {
 let searchText:any = ref('');
 
 const filter:any = async () => {
-    isSearching.value = true
+  isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
-  const request:any = `${api_url}api/user/search-user/{pageIndex}/{pageSize}/${search}`;
+  const request:any = `${api_url}api/user-management/search-Userbyrole/${search}/{pageIndex}/{pageSize}`;
   await store.dispatch(actionTypes.FetchUsers, request)
-  // store.getters.getStudents
-
-  // const status:any = document.getElementById('status');
-  // console.log('status', status)
-  // const rows:any = status.getElementsByTagName('ul');
-  // console.log('rows', rows)
-  // console.log('rows length', rows.length)
-
-  // for (let i:any = 0; i < rows.length; i++) {
-  //   const row:any = rows[i];
-  //   console.log('row', rows[0])
-  //   console.log('row', rows[1])
-  //   console.log('row', rows[2])
-  //   console.log('row', rows[0].textContent)
-  //   console.log('row', rows[1].textContent)
-  //   console.log('row', rows[2].textContent)
-  //   if (
-  //     row.textContent.toLowerCase().indexOf(search) > -1 
-  //   ) {
-  //     rows[i].style.display = '';
-  //   } else {
-  //     rows[i].style.display = 'none';
-  //   }
-  // }
 }
 
 const cancan:any = async (name:any) => {
@@ -122,7 +99,7 @@ onMounted( async() => {
                         </div>
                     </section>
 
-                    <dialog id="adduser" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">            
+                    <dialog id="adduser" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
                                 <AddUserTabs @close="closeModal" />
@@ -150,13 +127,13 @@ onMounted( async() => {
                     </template>
                 </Filter> -->
                 <!-- {{ roles }} -->
-                <multiselect v-model="statusField" @clear="deselect" @select="cancan(statusField)" valueProp="id" :options="roles" track-by="roleName" label="roleName" placeholder="Status" :searchable="true" class="multiselect-blue" />
+                <multiselect v-model="statusField" @clear="deselect" @select="cancan(statusField)" valueProp="id" :options="roles" track-by="role" label="role" placeholder="Filter role" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="search">
                 <Search>
                     <template #input>
                         <input class="rounded text-sm p-1 focus:outline-none" @keyup.esc="close" v-model="searchText" type="text" placeholder="Search">
-                        <span class="w-auto flex justify-end items-center text-grey p-2">                           
+                        <span class="w-auto flex justify-end items-center text-grey p-2">
                             <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
                             <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                         </span>
@@ -179,8 +156,8 @@ onMounted( async() => {
     background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
     backdrop-filter: blur(3px);
   }
-  
- 
+
+
 @keyframes appear {
   from {
     opacity: 0;
@@ -191,7 +168,7 @@ onMounted( async() => {
     opacity: 1;
     transform: translateX(0);
   }
-} 
+}
 .multiselect-blue {
   --ms-option-bg: #DBEAFE;
   --ms-option-color: #2563EB;
