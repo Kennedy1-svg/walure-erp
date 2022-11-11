@@ -511,7 +511,7 @@ onMounted(async () => {
 
 <template>
     <div class="main grid pt-[50px] h-full bg-white px-10 pb-[10px] gap-5">
-        {{ newRole }}
+        <!-- {{ newRole }} -->
         <div class="flex justify-between items-center">
             <div class="grid gap-3">
                 <label for="rolename" class="font-semibold">

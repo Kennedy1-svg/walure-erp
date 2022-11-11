@@ -209,6 +209,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: false },
       },
       {
+        path: 'user-management/edit-role/:id',
+        name: 'EditRole',
+        component: () => import('../views/dashboard/users/EditRole.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
         path: '/:pathMatch(.*)*',
         name: 'Error',
         component: () => import('../components/NotFound.vue'),

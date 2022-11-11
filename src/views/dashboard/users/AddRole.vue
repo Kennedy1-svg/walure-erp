@@ -1,7 +1,7 @@
 <script lang="ts">
 
 export default {
-    name: 'Role',
+    name: 'AddRole',
 }
 </script>
 

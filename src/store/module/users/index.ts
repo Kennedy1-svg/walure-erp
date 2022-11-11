@@ -113,7 +113,7 @@ export default {
       state.alert_text = data
     },
     [mutationTypes.SetEditRole] (state: any, data: any) {
-      state.role = data
+      state.editrole = data
     },
   },
   actions: {
@@ -238,7 +238,21 @@ export default {
       }, 2000)
     },
     async [actionTypes.FetchEditRole] ({ commit }: any, data: any) {
-      await commit(mutationTypes.SetEditRole, data)
+      // await commit(mutationTypes.SetEditRole, data)
+      const token:any = localStorage.getItem('token')
+      console.log('token here')
+      const role = await fetchData(data, token)
+      console.log('data tch', data)
+      console.log('Iroles', role.payload)
+    //   console.log('Iroles', roles.value)
+    //   console.log('Iroles', JSON.parse(JSON.stringify(roles)))
+    //   console.log('Iroles', JSON.parse(JSON.stringify(roles.value)))
+    //   console.log('Iroles', roles.value)
+      if (role.payload) {
+        await commit(mutationTypes.SetEditRole, role.payload)
+      } else if (role.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
     },
     async [actionTypes.EditRole] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')

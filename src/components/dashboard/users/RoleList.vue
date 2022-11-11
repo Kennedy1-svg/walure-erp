@@ -9,12 +9,17 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import RoleDetails from './RoleQuoteDetails.vue';
+import EditRole from './EditRoleForm.vue';
+import EditRoleHeader from './EditRoleHeader.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
 import * as actionTypes from '../../../store/module/users/constants/action';
-import { api_url } from '../../../config/index'
+import { api_url } from '../../../config/index';
+
+import { useRouter } from 'vue-router';
+
+const route = useRouter();
 
 const roles:any = computed(() => {
     return store.getters.getRole.value.payload;
@@ -82,9 +87,15 @@ const totalPages:any = computed(() => {
 
 const setId:any = (id:any) => {
     console.log('role', id)
-    const request:any = `${api_url}api/iposquoterequest/${id}`;
-    console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditRoleQuote, request)
+    // const request:any = `${api_url}api/role-management/get-role-details/${id}`;
+    // console.log('request forid', request)
+    // store.dispatch(actionTypes.FetchEditRole, request)
+    route.push({
+        name: 'EditRole',
+        params: {
+            id: id
+        }
+    })
 }
 
 const toggle:any = (status:any) => {
@@ -153,14 +164,14 @@ onMounted( async () => {
                         <div class="flex w-2/5 items-center">
                             <button
                             type="button"
-                            @click="showDetails = !showDetails" @click.prevent="setId(role.id)"
+                            @click="showEdit = !showEdit" @click.prevent="setId(role.id)"
                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
                             >
                                 <SvgIcons name="edit" />
                             </button>
-                            <Modal :show="showDetails" @close="showDetails = !showDetails">
-                                <RoleDetails :role="role" @close="showDetails = !showDetails"  />
-                            </Modal>
+                            <!-- <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                <EditRole :role="role" @close="showEdit = !showEdit"  />
+                            </Modal> -->
 
                             <button
                             type="button"

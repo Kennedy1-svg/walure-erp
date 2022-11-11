@@ -21,7 +21,6 @@ import AddCourse from './AddCourse.vue';
 import EditCourse from './EditCourse.vue';
 import { useRouter } from 'vue-router';
 
-
 const route = useRouter();
 
 const courses:any = computed(() => {
@@ -178,7 +177,7 @@ onMounted( async () => {
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                 <Switch :status="course.isActive" @toggle="toggle(course.isActive)" />
                             </td>
-                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">                            
+                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                 <div class="relative inline-block dropdown">
                                     <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                         <SvgIcons name="ellipsis" />
@@ -211,7 +210,7 @@ onMounted( async () => {
                                                     <SvgIcons name="curriculum" />
                                                     Curriculum
                                                 </button>
-<!-- 
+<!--
                                                 <button
                                                 type="button"
                                                 @click="showCurriculum = !showCurriculum" @click.prevent="setId(course.id)"
@@ -222,7 +221,7 @@ onMounted( async () => {
                                                 </button>
                                                 <Modal :show="showCurriculum" @close="showCurriculum = false">
                                                     <AddToBatch />
-                                                </Modal> 
+                                                </Modal>
 
                                                 <button
                                                 type="button"

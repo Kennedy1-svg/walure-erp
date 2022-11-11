@@ -25,7 +25,7 @@ const closeModal:any = () => {
   // document.getElementById('addinstructor').showModal()
   console.log('close student modal')
   let doc:any = document.getElementById('addinstructor')
-  doc.close()  
+  doc.close()
 }
 
 const addRole:any = async () => {
@@ -66,23 +66,23 @@ onMounted(() => {
             <div class="buttons flex gap-10">
                 <button class="focus:outline-none flex items-center gap-3 text-sm">
                     <p class="text-grey font-semibold">Add Role</p>
-                <div class="relative overflow-hdden">
-                    <section class="flex h-full justify-ceter items-start">
-                        <div @click="addRole" id="btn">
-                            <span class="bg-blue p-1 flex justify-center text-white rounded-md">
-                                <SvgIcons name="plus" /> 
-                            </span>
-                        </div>
-                    </section>
+                    <div class="relative overflow-hdden">
+                        <section class="flex h-full justify-ceter items-start">
+                            <div @click="addRole" id="btn">
+                                <span class="bg-blue p-1 flex justify-center text-white rounded-md">
+                                    <SvgIcons name="plus" />
+                                </span>
+                            </div>
+                        </section>
 
-                    <dialog id="addrole" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                        <div class="w-full h-auto">
-                            <!-- Modal Content-->
-                                <!-- <AddIPO @close="closeModal" /> -->
-                            <!-- End of Modal Content-->
-                        </div>
-                    </dialog>
-                </div>
+                        <dialog id="addrole" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">
+                            <div class="w-full h-auto">
+                                <!-- Modal Content-->
+                                    <!-- <AddIPO @close="closeModal" /> -->
+                                <!-- End of Modal Content-->
+                            </div>
+                        </dialog>
+                    </div>
                 </button>
             </div>
         </div>
@@ -91,7 +91,7 @@ onMounted(() => {
                 <Search>
                     <template #input>
                         <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Search">
-                        <span class="w-auto flex justify-end items-center text-grey p-2">                            
+                        <span class="w-auto flex justify-end items-center text-grey p-2">
                             <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
                             <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                         </span>
@@ -114,8 +114,8 @@ onMounted(() => {
     background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
     backdrop-filter: blur(3px);
   }
-  
- 
+
+
 @keyframes appear {
   from {
     opacity: 0;
@@ -126,5 +126,5 @@ onMounted(() => {
     opacity: 1;
     transform: translateX(0);
   }
-} 
+}
 </style>
