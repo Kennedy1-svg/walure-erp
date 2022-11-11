@@ -40,6 +40,7 @@ const allPermissions:any = computed(() => {
 });
 
 const checkError:any = () => {
+    console.log(`this is permission check ${newRole.value}`)
     if (!newRole.value.role) {
         errors.RoleName = true;
         errors.RoleNameText = 'New role name is required'
@@ -50,7 +51,7 @@ const checkError:any = () => {
         errors.RoleName = false;
     }
 
-    if (!newRole.value.Permission) {
+    if (!newRole.value.permissions) {
         errors.Permission = true;
         errors.PermissionText = 'Add a permission'
     } else {
@@ -60,7 +61,7 @@ const checkError:any = () => {
 
     if (errors.RoleName) {
         errors.RoleName = true;
-        isError.value = true;
+        // isError.value = true;
     } else if (errors.Permission) {
         errors.Permission = true;
         isError.value = true;
@@ -77,21 +78,27 @@ const closeModal:any =  () => {
 
 const addRole:any = async () => {
     console.log('hi');
-    const request:any = `${api_url}api/user-management/new-userapp`;
+    const request:any = `${api_url}api/role-management/create-role`;
 
     let requestData:any = {
         role: newRole.value.role,
         permissions: newRole.value.permissions
     }
 
+    console.log(`request data is ${requestData}`)
+
     const newData:any = {
         url: request,
         data: requestData
     }
+    const newrole:any = {
+        role: '',
+        permissions: []
+    }
     console.log('newData', newData)
     await store.dispatch(actionTypes.AddNewRole, newData)
     const result = await store.getters.getRoles
-    store.commit(mutationTypes.SetNewRole, {})
+    store.commit(mutationTypes.SetNewRole, newrole)
     closeModal()
 }
 
@@ -104,42 +111,89 @@ const submit:any = () => {
     checkError();
     console.log('iserror value', isError.value)
     !isError.value ? addRole() : '';
+    route.push({
+        name: 'Roles'
+    })
 }
 
-const createUsers:any = {
-    name: 'Create all users'
+const courseMgmt:any = {
+    name: 'COURSE_MANAGEMENT'
 }
 
-const viewDashboard:any = {
-    name: 'View dashboard'
+const courseCreateCategory:any = {
+    name: 'COURSE_CREATE_CATEGORY'
 }
 
-const accessCourse:any = {
-    name: 'Access to course'
+const courseDeleteCategory:any = {
+    name: 'COURSE_DELETE_CATEGORY'
 }
 
-const accessTalentMgmt:any = {
-    name: 'Access to talent management'
+const courseCreate:any = {
+    name: 'COURSE_CREATE'
 }
 
-const contactUs:any = {
-    name: 'Contact us'
+const courseViewDetails:any = {
+    name: 'COURSE_VIEW_DETAILS'
 }
 
-const allModules:any = {
-    name: 'Access to all modules'
+const courseCategory:any = {
+    name: 'COURSE_CATEGORY'
 }
 
-const iposModules:any = {
-    name: 'Access to all ipos modules'
+const courseEditCategory:any = {
+    name: 'COURSE_EDIT_CATEGORY'
 }
 
-const student:any = {
-    name: 'Access to all student'
+const courseAccess:any = {
+    name: 'COURSE_ACCESS'
 }
 
-const serviceMgmt:any = {
-    name: 'Access to all service management'
+const courseEdit:any = {
+    name: 'COURSE_EDIT'
+}
+
+const courseUpdateCurriculum:any = {
+    name: 'COURSE_UPDATE_CURRICULUM'
+}
+
+const courseDelete:any = {
+    name: 'COURSE_DELETE'
+}
+
+const courseReviewRate:any = {
+    name: 'COURSE_REVEIW_RATE'
+}
+
+const courseApplicant:any = {
+    name: 'COURSE_APPLICANT'
+}
+
+const courseAddNewApplicant:any = {
+    name: 'COURSE_ADD_NEW_APPLICANT'
+}
+
+const courseUpdateApplicantStatus:any = {
+    name: 'COURSE_UPDATE_APPLICANT_STATUS'
+}
+
+const courseViewApplicantDetails:any = {
+    name: 'COURSE_VIEW_APPLICANT_DETAILS'
+}
+
+const courseDeleteApplicant:any = {
+    name: 'COURSE_DELETE_APPLICANT'
+}
+
+const studentMgmt:any = {
+    name: 'STUDENT_MANAGEMENT'
+}
+
+const studentPage:any = {
+    name: 'STUDENT_PAGE'
+}
+
+const studentAddNew:any = {
+    name: 'STUDENT_ADD_NEW'
 }
 
 let isSearching:any = ref(false)
@@ -159,134 +213,277 @@ const close:any = async () => {
     await store.dispatch(actionTypes.FetchRole)
 }
 
-const toggleCreateUser:any = async () => {
-    if (!checked.createUsers) {
-        newRole.value.permissions.push(createUsers)
-        checked.createUsers = !checked.createUsers
+const toggleCourseMgmt:any = async () => {
+    if (!checked.courseMgmt) {
+        newRole.value.permissions.push(courseMgmt)
+        checked.courseMgmt = !checked.courseMgmt
     } else {
-        remove(createUsers)
-        checked.createUsers = !checked.createUsers
+        remove(courseMgmt)
+        checked.courseMgmt = !checked.courseMgmt
     }
 }
 
-const toggleAllModules:any = async () => {
-    if (!checked.allModules) {
-        newRole.value.permissions.push(allModules)
-        checked.allModules = !checked.allModules
+const toggleCourseUpdateCurriculum:any = async () => {
+    if (!checked.courseMgmt) {
+        newRole.value.permissions.push(courseMgmt)
+        checked.courseMgmt = !checked.courseMgmt
     } else {
-        remove(allModules)
-        checked.allModules = !checked.allModules
+        remove(courseMgmt)
+        checked.courseMgmt = !checked.courseMgmt
     }
 }
 
-const toggleViewDashboard:any = async () => {
-    if (!checked.viewDashboard) {
-        newRole.value.permissions.push(viewDashboard)
-        checked.viewDashboard = !checked.viewDashboard
+const toggleCourseCategory:any = async () => {
+    if (!checked.courseCategory) {
+        newRole.value.permissions.push(courseCategory)
+        checked.courseCategory = !checked.courseCategory
     } else {
-        remove(viewDashboard)
-        checked.viewDashboard = !checked.viewDashboard
+        remove(courseCategory)
+        checked.courseCategory = !checked.courseCategory
     }
 }
 
-const toggleIposModules:any = async () => {
-    if (!checked.iposModules) {
-        newRole.value.permissions.push(iposModules)
-        checked.iposModules = !checked.iposModules
+const toggleCourseCreateCategory:any = async () => {
+    if (!checked.courseCreateCategory) {
+        newRole.value.permissions.push(courseCreateCategory)
+        checked.courseCreateCategory = !checked.courseCreateCategory
     } else {
-        remove(iposModules)
-        checked.iposModules = !checked.iposModules
+        remove(courseCreateCategory)
+        checked.courseCreateCategory = !checked.courseCreateCategory
     }
 }
 
-const toggleAccessCourse:any = async () => {
-    if (!checked.accessCourse) {
-        newRole.value.permissions.push(accessCourse)
-        checked.accessCourse = !checked.accessCourse
+const toggleCourseEditCategory:any = async () => {
+    if (!checked.courseEditCategory) {
+        newRole.value.permissions.push(courseEditCategory)
+        checked.courseEditCategory = !checked.courseEditCategory
     } else {
-        remove(accessCourse)
-        checked.accessCourse = !checked.accessCourse
+        remove(courseEditCategory)
+        checked.courseEditCategory = !checked.courseEditCategory
     }
 }
 
-const toggleStudent:any = async () => {
-    if (!checked.student) {
-        newRole.value.permissions.push(student)
-        checked.student = !checked.student
+const togglecourseDeleteCategory:any = async () => {
+    if (!checked.courseDeleteCategory) {
+        newRole.value.permissions.push(courseDeleteCategory)
+        checked.courseDeleteCategory = !checked.courseDeleteCategory
     } else {
-        remove(student)
-        checked.student = !checked.student
+        remove(courseDeleteCategory)
+        checked.courseDeleteCategory = !checked.courseDeleteCategory
     }
 }
 
-const toggleAccessTalentMgmt:any = async () => {
-    if (!checked.accessTalentMgmt) {
-        newRole.value.permissions.push(accessTalentMgmt)
-        checked.accessTalentMgmt = !checked.accessTalentMgmt
+const togglecourseAccess:any = async () => {
+    if (!checked.courseAccess) {
+        newRole.value.permissions.push(courseAccess)
+        checked.courseAccess = !checked.courseAccess
     } else {
-        remove(accessTalentMgmt)
-        checked.accessTalentMgmt = !checked.accessTalentMgmt
+        remove(courseAccess)
+        checked.courseAccess = !checked.courseAccess
     }
 }
 
-const toggleServiceMgmt:any = async () => {
-    if (!checked.serviceMgmt) {
-        newRole.value.permissions.push(serviceMgmt)
-        checked.serviceMgmt = !checked.serviceMgmt
+const togglecourseEdit:any = async () => {
+    if (!checked.courseEdit) {
+        newRole.value.permissions.push(courseEdit)
+        checked.courseEdit = !checked.courseEdit
     } else {
-        remove(serviceMgmt)
-        checked.serviceMgmt = !checked.serviceMgmt
+        remove(courseEdit)
+        checked.courseEdit = !checked.courseEdit
     }
 }
 
-const toggleContactUs:any = async () => {
-    if (!checked.contactUs) {
-        newRole.value.permissions.push(contactUs)
-        checked.contactUs = !checked.contactUs
+const togglecourseUpdateCurriculum:any = async () => {
+    if (!checked.courseUpdateCurriculum) {
+        newRole.value.permissions.push(courseUpdateCurriculum)
+        checked.courseUpdateCurriculum = !checked.courseUpdateCurriculum
     } else {
-        remove(contactUs)
-        checked.contactUs = !checked.contactUs
+        remove(courseUpdateCurriculum)
+        checked.courseUpdateCurriculum = !checked.courseUpdateCurriculum
+    }
+}
+
+const togglecourseDelete:any = async () => {
+    if (!checked.courseDelete) {
+        newRole.value.permissions.push(courseDelete)
+        checked.courseDelete = !checked.courseDelete
+    } else {
+        remove(courseDelete)
+        checked.courseDelete = !checked.courseDelete
+    }
+}
+
+const togglecourseReviewRate:any = async () => {
+    if (!checked.courseReviewRate) {
+        newRole.value.permissions.push(courseReviewRate)
+        checked.courseReviewRate = !checked.courseReviewRate
+    } else {
+        remove(courseReviewRate)
+        checked.courseReviewRate = !checked.courseReviewRate
+    }
+}
+
+const togglecourseApplicant:any = async () => {
+    if (!checked.courseApplicant) {
+        newRole.value.permissions.push(courseApplicant)
+        checked.courseApplicant = !checked.courseApplicant
+    } else {
+        remove(courseApplicant)
+        checked.courseApplicant = !checked.courseApplicant
+    }
+}
+
+const togglecourseAddNewApplicant:any = async () => {
+    if (!checked.courseAddNewApplicant) {
+        newRole.value.permissions.push(courseAddNewApplicant)
+        checked.courseAddNewApplicant = !checked.courseAddNewApplicant
+    } else {
+        remove(courseAddNewApplicant)
+        checked.courseAddNewApplicant = !checked.courseAddNewApplicant
+    }
+}
+
+const toggleCourseCreate:any = async () => {
+    if (!checked.courseCreate) {
+        newRole.value.permissions.push(courseCreate)
+        checked.courseCreate = !checked.courseCreate
+    } else {
+        remove(courseCreate)
+        checked.courseCreate = !checked.courseCreate
+    }
+}
+
+const toggleCourseEdit:any = async () => {
+    if (!checked.courseEdit) {
+        newRole.value.permissions.push(courseEdit)
+        checked.courseEdit = !checked.courseEdit
+    } else {
+        remove(courseEdit)
+        checked.courseEdit = !checked.courseEdit
+    }
+}
+
+const togglecourseViewDetails:any = async () => {
+    if (!checked.courseViewDetails) {
+        newRole.value.permissions.push(courseViewDetails)
+        checked.courseViewDetails = !checked.courseViewDetails
+    } else {
+        remove(courseViewDetails)
+        checked.courseViewDetails = !checked.courseViewDetails
+    }
+}
+
+const togglecourseUpdateApplicantStatus:any = async () => {
+    if (!checked.courseUpdateApplicantStatus) {
+        newRole.value.permissions.push(courseUpdateApplicantStatus)
+        checked.courseUpdateApplicantStatus = !checked.courseUpdateApplicantStatus
+    } else {
+        remove(courseUpdateApplicantStatus)
+        checked.courseUpdateApplicantStatus = !checked.courseUpdateApplicantStatus
+    }
+}
+
+const togglecourseViewApplicantDetails:any = async () => {
+    if (!checked.courseViewApplicantDetails) {
+        newRole.value.permissions.push(courseViewApplicantDetails)
+        checked.courseViewApplicantDetails = !checked.courseViewApplicantDetails
+    } else {
+        remove(courseViewApplicantDetails)
+        checked.courseViewApplicantDetails = !checked.courseViewApplicantDetails
+    }
+}
+
+const togglecourseDeleteApplicant:any = async () => {
+    if (!checked.courseDeleteApplicant) {
+        newRole.value.permissions.push(courseDeleteApplicant)
+        checked.courseDeleteApplicant = !checked.courseDeleteApplicant
+    } else {
+        remove(courseDeleteApplicant)
+        checked.courseDeleteApplicant = !checked.courseDeleteApplicant
+    }
+}
+
+const togglestudentMgmt:any = async () => {
+    if (!checked.studentMgmt) {
+        newRole.value.permissions.push(studentMgmt)
+        checked.studentMgmt = !checked.studentMgmt
+    } else {
+        remove(studentMgmt)
+        checked.studentMgmt = !checked.studentMgmt
     }
 }
 
 const toggle:any = (permission:any) => {}
 
 let checked:any = reactive({
-    createUsers: false,
-    allModules: false,
-    viewDashboard: false,
-    iposModules: false,
-    accessCourse: false,
-    student: false,
-    accessTalentMgmt: false,
-    serviceMgmt: false,
-    contactUs: false,
+    courseMgmt: false,
+    courseCategory: false,
+    courseCreateCategory: false,
+    courseEditCategory: false,
+    courseDeleteCategory: false,
+    courseAccess: false,
+    courseCreate: false,
+    courseEdit: false,
+    courseViewDetails: false,
+    courseUpdateCurriculum: false,
+    courseDelete: false,
+    courseReviewRate: false,
+    courseApplicant: false,
+    courseAddNewApplicant: false,
+    courseUpdateApplicantStatus: false,
+    courseViewApplicantDetails: false,
+    courseDeleteApplicant: false,
+    studentMgmt: false,
+    studentPage: false,
+    studentAddNew: false,
 })
 
 const selectAll = () => {
-    checked.createUsers = true
-    checked.allModules = true
-    checked.viewDashboard = true
-    checked.iposModules = true
-    checked.accessCourse = true
-    checked.student = true
-    checked.accessTalentMgmt = true
-    checked.serviceMgmt = true
-    checked.contactUs = true
+    checked.courseMgmt = true
+    checked.courseCategory = true
+    checked.courseCreateCategory = true
+    checked.courseEditCategory = true
+    checked.courseDeleteCategory = true
+    checked.courseAccess = true
+    checked.courseCreate = true
+    checked.courseEdit = true
+    checked.courseViewDetails = true
+    checked.courseUpdateCurriculum = true
+    checked.courseDelete = true
+    checked.courseReviewRate = true
+    checked.courseApplicant = true
+    checked.courseAddNewApplicant = true
+    checked.courseUpdateApplicantStatus = true
+    checked.courseViewApplicantDetails = true
+    checked.courseDeleteApplicant = true
+    checked.studentMgmt = true
+    checked.studentPage = true
+    checked.studentAddNew = true
 }
 
 const unselectAll = () => {
     clicked.value = false
     newRole.value.permissions = []
-    checked.createUsers = false
-    checked.allModules = false
-    checked.viewDashboard = false
-    checked.iposModules = false
-    checked.accessCourse = false
-    checked.student = false
-    checked.accessTalentMgmt = false
-    checked.serviceMgmt = false
-    checked.contactUs = false
+    checked.courseMgmt = false
+    checked.courseCategory = false
+    checked.courseCreateCategory = false
+    checked.courseEditCategory = false
+    checked.courseDeleteCategory = false
+    checked.courseAccess = false
+    checked.courseCreate = false
+    checked.courseEdit = false
+    checked.courseViewDetails = false
+    checked.courseUpdateCurriculum = false
+    checked.courseDelete = false
+    checked.courseReviewRate = false
+    checked.courseApplicant = false
+    checked.courseAddNewApplicant = false
+    checked.courseUpdateApplicantStatus = false
+    checked.courseViewApplicantDetails = false
+    checked.courseDeleteApplicant = false
+    checked.studentMgmt = false
+    checked.studentPage = false
+    checked.studentAddNew = false
 }
 
 const remove:any = (permission:any) => {
@@ -301,7 +498,7 @@ const markAll:any = () => {
         clicked.value = false
         unselectAll()
     } else {
-        newRole.value.permissions = [createUsers, viewDashboard, accessCourse, accessTalentMgmt, contactUs, allModules, iposModules, student, serviceMgmt]
+        newRole.value.permissions = [courseMgmt, courseCreateCategory, courseDeleteCategory, courseCreate, courseViewDetails, courseCategory, courseEditCategory, courseAccess, courseEdit, courseUpdateCurriculum]
         clicked.value=true
         selectAll()
     }
@@ -314,7 +511,7 @@ onMounted(async () => {
 
 <template>
     <div class="main grid pt-[50px] h-full bg-white px-10 pb-[10px] gap-5">
-        <!-- {{ allPermissions }} -->
+        {{ newRole }}
         <div class="flex justify-between items-center">
             <div class="grid gap-3">
                 <label for="rolename" class="font-semibold">
@@ -350,198 +547,260 @@ onMounted(async () => {
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch @change="markAll" @click="clicked.value = !clicked.value" /> -->
             </span> </p>
         </div>
-        <!-- <switcher :checked="clicked" /> -->
         <div class="grid grid-cols-2 gap-x-44 gap-y-2">
             <div class="flex justify-between items-center">
-                <p>Create all users</p>
+                <p class="uppercase">COURSE MANAGEMENT</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.createUsers"
-                        @click="toggleCreateUser()"
+                        :checked="checked.courseMgmt"
+                        @click="toggleCourseMgmt()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(createUsers)" @remove="remove(createUsers)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Create all users</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>Access all modules</p>
+                <p class="uppercase">COURSE CATEGORY</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.allModules"
-                        @click="toggleAllModules()"
+                        :checked="checked.courseCategory"
+                        @click="toggleCourseCategory()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(allModules)" @remove="remove(allModules)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Access all modules</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>View Dashboard</p>
+                <p class="uppercase">Course Create Category</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.viewDashboard"
-                        @click="toggleViewDashboard()"
+                        :checked="checked.courseCreateCategory"
+                        @click="toggleCourseCreateCategory()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(viewDashboard)" @remove="remove(viewDashboard)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>View Dashboard</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>Access Ipos module</p>
+                <p class="uppercase">COURSE EDIT CATEGORY</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.iposModules"
-                        @click="toggleIposModules()"
+                        :checked="checked.courseEditCategory"
+                        @click="toggleCourseEditCategory()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(iposModules)" @remove="remove(iposModules)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Access Ipos module</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>Access to course</p>
+                <p class="uppercase">COURSE DELETE CATEGORY</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.accessCourse"
-                        @click="toggleAccessCourse()"
+                        :checked="checked.courseDeleteCategory"
+                        @click="togglecourseDeleteCategory()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(accessCourse)" @remove="remove(accessCourse)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Access to course</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>Access student</p>
+                <p class="uppercase">COURSE ACCESS</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.student"
-                        @click="toggleStudent()"
+                        :checked="checked.courseAccess"
+                        @click="togglecourseAccess()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(student)" @remove="remove(student)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Access student</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>Access Talent mgt</p>
+                <p class="uppercase">course create</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.accessTalentMgmt"
-                        @click="toggleAccessTalentMgmt()"
+                        :checked="checked.courseCreate"
+                        @click="toggleCourseCreate()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(accessTalentMgmt)" @remove="remove(accessTalentMgmt)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Access Talent mgt</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>Access to service mgt</p>
+                <p class="uppercase">course edit</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.serviceMgmt"
-                        @click="toggleServiceMgmt()"
+                        :checked="checked.courseEdit"
+                        @click="toggleCourseEdit()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(serviceMgmt)" @remove="remove(serviceMgmt)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Access to service mgt</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-44"> -->
             <div class="flex justify-between items-center">
-                <p>Contact us</p>
+                <p class="uppercase">COURSE VIEW DETAILS</p>
                 <div class="my-2 flex items-center">
                     <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.contactUs"
-                        @click="toggleContactUs()"
+                        :checked="checked.courseViewDetails"
+                        @click="togglecourseViewDetails()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>
                 </div>
-                <!-- <Switch class="" @toggle="toggle(contactUs)" @remove="remove(contactUs)" /> -->
             </div>
-            <!-- <div class="flex justify-between items-center">
-                <p>Contact us</p>
-                <Switch class="" @toggle="toggle(createUsers)" @remove="remove()" />
-            </div> -->
+            <div class="flex justify-between items-center">
+                <p class="uppercase">COURSE UPDATE CURRICULUM</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseUpdateCurriculum"
+                        @click="toggleCourseUpdateCurriculum()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">COURSE delete</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseDelete"
+                        @click="togglecourseDelete()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">COURSE review rate</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseReviewRate"                        @click="togglecourseReviewRate()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">Course applicant</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseApplicant"
+                        @click="togglecourseApplicant()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">COURSE Add new applicant</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseAddNewApplicant"
+                        @click="togglecourseAddNewApplicant()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">COURSE UPDATE APPLICANT STATUS</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseUpdateApplicantStatus"
+                        @click="togglecourseUpdateApplicantStatus()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">COURSE VIEW APPLICANT DETAILS</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseViewApplicantDetails"
+                        @click="togglecourseViewApplicantDetails()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">COURSE DELETE APPLICANT</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.courseDeleteApplicant"
+                        @click="toggleCourseCreate()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="uppercase">student management</p>
+                <div class="my-2 flex items-center">
+                    <label class="relative inline-block h-6 w-12 border rounded-full border-gray-300">
+                        <input
+                        type="checkbox"
+                        class="perms"
+                        :checked="checked.studentMgmt"
+                        @click="togglestudentMgmt()"
+                        id="checkbox">
+                        <span class="toggler round"></span>
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="flex justify-between items-center py-10">
             <div class="grid gap-3">
