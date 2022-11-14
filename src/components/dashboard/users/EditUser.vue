@@ -360,7 +360,7 @@ const disabledView:any = 'bg-gray-300';
 </script>
 
 <template>
-    <div class="h-[92vh]">
+    <div class="h[92vh]">
         <div class="main relative w-full mt-[0.5px] xl:px-[45px] overflow-hidden px-6 bg-white">
             <div class="flex justify-between py-[53px] items-center ">
                 <p class="text-2xl">Edit User</p>
@@ -493,7 +493,7 @@ const disabledView:any = 'bg-gray-300';
                     </div>
                 </div>
                 <div class="flex justify-end pb-10">
-                    <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Add</button>
+                    <button @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save</button>
                 </div>
             </form>
         </div>

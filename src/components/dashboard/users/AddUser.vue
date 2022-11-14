@@ -139,7 +139,7 @@ const newUser:any = computed(() => {
 });
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
-const phone ='^[0]+[0-9]';
+const phone ='^[0]{1}[0-9]{10}$';
 
 const checkError:any = () => {
     // let imageType:String = newUser.value.Image.type;
@@ -209,10 +209,10 @@ const checkError:any = () => {
         errors.phoneText = 'Phone number cannot contain letters'
     } else if (!newUser.value.PhoneNumber.match(phone)) {
         errors.phone = true;
-        errors.phoneText = 'Phone numer must start with 0'
+        errors.phoneText = 'Invalid phone number'
     } else if (newUser.value.PhoneNumber.length <= 9) {
         errors.phone = true;
-        errors.phoneText = 'Phone numer cannot be less than 10 digits'
+        errors.phoneText = 'Phone number should be 11 digits long'
     } else {
         errors.phone = false;
     }

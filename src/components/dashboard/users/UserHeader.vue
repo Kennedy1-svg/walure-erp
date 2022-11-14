@@ -41,14 +41,14 @@ const filter:any = async () => {
   isSearching.value = true
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
-  const request:any = `${api_url}api/user-management/search-Userbyrole/${search}/{pageIndex}/{pageSize}`;
+  const request:any = `${api_url}api/user-management/users/{pageIndex}/{pageSize}?keyword=${search}`;
   await store.dispatch(actionTypes.FetchUsers, request)
 }
 
 const cancan:any = async (name:any) => {
-  console.log('i can can')
-  console.log('name', name)
-    const request:any = `${api_url}api/user/filter-users/{pageNumber}/{pageSize}/${name}`;
+    console.log('i can can')
+    console.log('name', name)
+    const request:any = `${api_url}api/user-management/search-Userbyrole/${name}/{pageNumber}/{pageSize}`;
     await store.dispatch(actionTypes.FetchUsers, request)
 }
 
@@ -77,6 +77,7 @@ onMounted( async() => {
     <div class="main pt-[50px] grid gap-5 pb-[90px]">
         <div class="top flex justify-between items-center">
             <h1 class="font-semibold text-2xl">User Management</h1>
+            <!-- {{ roles }} -->
             <button class="focus:outline-none flex items-center gap-3 text-sm">
                 <p class="text-grey font-semibold">Add User</p>
                 <!-- <Modal>
@@ -127,7 +128,7 @@ onMounted( async() => {
                     </template>
                 </Filter> -->
                 <!-- {{ roles }} -->
-                <multiselect v-model="statusField" @clear="deselect" @select="cancan(statusField)" valueProp="id" :options="roles" track-by="role" label="role" placeholder="Filter role" :searchable="true" class="multiselect-blue" />
+                <multiselect v-model="statusField" @clear="deselect" @select="cancan(statusField)" valueProp="role" :options="roles" track-by="role" label="role" placeholder="Filter role" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="search">
                 <Search>

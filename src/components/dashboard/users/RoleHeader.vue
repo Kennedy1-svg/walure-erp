@@ -42,7 +42,7 @@ const filter:any = async () => {
     isSearching.value = true
     const search:any = searchText.value.toLowerCase();
     console.log('search', search)
-    const request:any = `${api_url}api/role/search-role/{pageIndex}/{pageSize}/${search}`;
+    const request:any = `${api_url}api/role-management/get-roles/{pageIndex}/{pageSize}?keyword=${search}`;
     await store.dispatch(actionTypes.FetchRole, request)
 }
 
