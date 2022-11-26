@@ -127,7 +127,7 @@ const submit:any = () => {
 
 <template>
     <div class="relative main w-full bg-white">
-        <form class=" text-sm grid my10">
+        <form class=" text-sm grid">
             <div class="grid gap-1 mb-4">
                 <label for="username" class="font-semibold">
                     Username
@@ -173,6 +173,16 @@ const submit:any = () => {
                 </button>
             </div>
         </form>
+        <div class="flex items-center justify-center mt-8 gap-3">
+            <hr class="bg-primary w-full h-[2px]"/>
+            <p>OR</p>
+            <hr class="bg-primary w-full h-[2px]"/>
+        </div>
+        <div class="my-5">
+            <button class="bg-[#CE2232] flex w-full font-semibold bg-opacity-70 hover:bg-opacity-100 justify-center text-white py-3 px-5 rounded">
+                Sign in with Zoho
+            </button>
+        </div>
     </div>
 </template>
 

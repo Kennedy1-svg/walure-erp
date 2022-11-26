@@ -54,29 +54,6 @@ onMounted(() => {
     <div class="main pt-[50px] grid gap-5 pb-[90px]">
         <div class="top flex justify-between items-center">
             <h1 class="font-semibold text-2xl">Contact Us</h1>
-            <!-- <div class="buttons flex gap-10">
-                <button class="focus:outline-none flex items-center gap-3 text-sm">
-                    <p class="text-grey font-semibold">Add Contact</p>
-                <div class="relative overflow-hdden">
-                    <section class="flex h-full justify-ceter items-start">
-                        <div onclick="document.getElementById('addskill').showModal()" id="btn">
-                            <span class="bg-blue p-1 flex justify-center text-white rounded-md"> -->
-                                <!-- plus icon -->
-                                <!-- <SvgIcons name="plus" />  -->
-                            <!-- </span>
-                        </div>
-                    </section>
-
-                    <dialog id="addskill" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">            
-                        <div class="w-full h-auto"> -->
-                            <!-- Modal Content-->
-                                <!-- <AddContact @close="closeModal" /> -->
-                            <!-- End of Modal Content-->
-                        <!-- </div>
-                    </dialog>
-                </div>
-                </button>
-            </div> -->
         </div>
         <div class="filter flex bg-white rounded-t-lg justify-end items-center px-11 py-5">
             <div class="search">

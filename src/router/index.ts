@@ -131,12 +131,6 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: false },
       },
       {
-        path: 'user-management',
-        name: 'UserManagement',
-        component: () => import('../views/dashboard/users/Index.vue'),
-        meta: { requiresAuth: false },
-      },
-      {
         path: 'service-management/projects',
         name: 'Project',
         component: () => import('../views/dashboard/services/Index.vue'),
@@ -214,6 +208,24 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/dashboard/users/EditRole.vue'),
         meta: { requiresAuth: false },
       },
+      {
+        path: 'account-management/revenue',
+        name: 'Revenue',
+        component: () => import('../views/dashboard/account/Index.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'account-management/expenditure',
+        name: 'Expenditure',
+        component: () => import('../views/dashboard/account/Expenditure.vue'),
+        meta: { requiresAuth: false },
+      },
+      // {
+      //   path: 'account-management/expenditure/ExpenditureDetails/:id',
+      //   name: 'ExpenditureDetails',
+      //   component: () => import('../components/dashboard/account/ExpenditureDetails.vue'),
+      //   meta: { requiresAuth: true },
+      // },
       {
         path: '/:pathMatch(.*)*',
         name: 'Error',

@@ -39,7 +39,7 @@ const status:any = computed(() => {
             </template>
             <template #button></template>
         </alert>
-        <div class="z-10 grid lg:max-h-[556px] rounded lg:w-1/2 md:w-2/3 w-full bg-white m-10">
+        <div class="z-10 grid lg:max-h-[656px] rounded lg:w-1/2 md:w-2/3 w-full bg-white m-10">
             <!-- Walure capital logo -->
             <!-- <SvgIcons class="flex justify-center mt-6 mb-[60px]" name="logo" /> -->
             <div class="flex justify-center mt-6 lg:mb-[60px] mb-7">
