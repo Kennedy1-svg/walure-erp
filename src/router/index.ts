@@ -11,6 +11,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: false },
   },
   {
+    path: '/redirect',
+    name: 'AuthRedirect',
+    component: () => import('../views/auth/Redirect.vue'),
+    meta: { requiresAuth: false },
+  },
+  {
     path: '/forgot-password',
     name: 'ForgotPassword',
     component: () => import('../views/auth/ForgotPassword.vue'),
