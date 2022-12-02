@@ -711,7 +711,8 @@ onMounted(async () => {
                         <input
                         type="checkbox"
                         class="perms"
-                        :checked="checked.courseReviewRate"                        @click="togglecourseReviewRate()"
+                        :checked="checked.courseReviewRate"
+                        @click="togglecourseReviewRate()"
                         id="checkbox">
                         <span class="toggler round"></span>
                     </label>

@@ -12,7 +12,8 @@ import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
-// import AddBatch from './AddBatch.vue';
+import AddExpenditure from './AddExpenditure.vue';
+// import AddExpenditure from './ViewExpenditureDetails.vue';
 import { useStore } from 'vuex';
 import moment from 'moment';
 // import multiselect from 'vue-multiselect';
@@ -110,7 +111,7 @@ const deselect:any = async () => {
     console.log('on deselect')
     filterClicked.value = false;
     // const batchrequest:any = `${api_url}api/batch/get-batches`;
-    await store.dispatch(batchActionTypes.FetchBatch)  
+    await store.dispatch(batchActionTypes.FetchBatch)
 }
 
 const format:any = (date:any) => {
@@ -131,8 +132,8 @@ const close:any = async () => {
 const closeModal:any = () => {
   // document.getElementById('addstudent').showModal()
   console.log('close batch modal')
-  let doc:any = document.getElementById('addBatch')
-  doc.close()  
+  let doc:any = document.getElementById('addexpenditure')
+  doc.close()
 }
 
 let isActive:any = computed(() => {
@@ -149,7 +150,7 @@ const disabledView:any = 'bg-gray-300';
 onMounted( async() => {
     console.log('onMounted')
     const courserequest:any = `${api_url}api/course/get-courses`;
-    await store.dispatch(courseActionTypes.FetchCourses, courserequest)
+    // await store.dispatch(courseActionTypes.FetchCourses, courserequest)
 })
 
 </script>
@@ -200,8 +201,22 @@ onMounted( async() => {
                 <SvgIcons name="export" class="text-2xl" />
                 Export
               </button>
-              <button @click="filterAllBatch" class="py-4 px-10 text-white bg-primary hover:shadow rounded border">
-                Add Revenue
+              <button class="focus:outline-none flex items-center gap-3">
+                <div class="relative overflow-hdden">
+                  <section class="flex h-full justify-ceter items-start">
+                    <div onclick="document.getElementById('addexpenditure').showModal()" id="btn" class="py-4 bg-primary text-white px-7 rounded">
+                      Add Expenditure
+                    </div>
+                  </section>
+
+                  <dialog id="addexpenditure" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">
+                    <div class="w-full h-auto">
+                      <!-- Modal Content-->
+                        <AddExpenditure name="Add" @close="closeModal" />
+                      <!-- End of Modal Content-->
+                    </div>
+                  </dialog>
+                </div>
               </button>
               <!-- <button @click="deselect" class="text-3xl" :class="[filterClicked ? 'flex' : 'hidden']">
                 <SvgIcons name="refresh" />
@@ -224,8 +239,8 @@ onMounted( async() => {
     background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(54, 54, 54, 0.5));
     backdrop-filter: blur(3px);
   }
-  
- 
+
+
 @keyframes appear {
   from {
     opacity: 0;

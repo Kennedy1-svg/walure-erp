@@ -6,7 +6,7 @@ export default {
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
-import Expenditure from '../../../components/dashboard/account/Index.vue'
+import Expenditure from '../../../components/dashboard/account/Expenditure.vue'
 import Category from '../../../components/dashboard/account/Category.vue'
 // import UploadTopic from './UploadTopics.vue'
 import { useRoute } from 'vue-router';
