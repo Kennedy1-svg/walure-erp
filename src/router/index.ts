@@ -226,6 +226,18 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/dashboard/account/Expenditure.vue'),
         meta: { requiresAuth: false },
       },
+      {
+        path: 'account-management/income-statement',
+        name: 'IncomeStatement',
+        component: () => import('../views/dashboard/account/IncomeStatement.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'account-management/payroll',
+        name: 'Payroll',
+        component: () => import('../views/dashboard/account/Payroll.vue'),
+        meta: { requiresAuth: false },
+      },
       // {
       //   path: 'account-management/expenditure/ExpenditureDetails/:id',
       //   name: 'ExpenditureDetails',

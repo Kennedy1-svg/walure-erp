@@ -270,7 +270,7 @@ onMounted( async() => {
   --ms-dropdown-bg: #FFFFFF;
   --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
   --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
-  --ms-py: 9px;
+  --ms-py: 10px;
   --ms-font-size: 16px;
 }
 </style>
