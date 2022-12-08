@@ -7,7 +7,7 @@ export default {
 
 <script setup lang="ts">
 import HRHeader from '../../../components/dashboard/hr/HRHeader.vue';
-import InstructorList from '../../../components/dashboard/hr/InstructorList.vue';
+// import InstructorList from '../../../components/dashboard/hr/InstructorList.vue';
 import alert from '../../../components/alerts.vue';
 import SvgIcons from '../../../components/SvgIcons.vue';
 import { ref, computed, onMounted } from 'vue'
