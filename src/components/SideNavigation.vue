@@ -28,7 +28,7 @@ import SvgIcons from './SvgIcons.vue'
 						</div>
 					</router-link>
 				</li>
-				<li>					   
+				<li>
 					<div class="dropdown">
 						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2 gap-3">
 							<div class="flex text-left items-center gap-4 py-4">
@@ -42,7 +42,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div class="">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
-						</button>        
+						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
@@ -60,7 +60,7 @@ import SvgIcons from './SvgIcons.vue'
 						</div>
 					</div>
 				</li>
-				<li>					   
+				<li>
 					<div class="dropdown">
 						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2">
 							<div class="flex text-left items-center gap-3 py-4">
@@ -74,7 +74,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div class="flex justify-end">
 								<SvgIcons class="ml-2" name="chevron-right" /> <!-- right icon -->
 							</div>
-						</button>        
+						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
@@ -85,7 +85,7 @@ import SvgIcons from './SvgIcons.vue'
 						</div>
 					</div>
 				</li>
-				<li>					   
+				<li>
 					<div class="dropdown">
 						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2 gap-3">
 							<div class="flex items-center gap-4 py-4">
@@ -99,7 +99,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
-						</button>        
+						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
@@ -131,7 +131,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
-						</button>        
+						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
@@ -163,7 +163,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
-						</button>        
+						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
@@ -204,7 +204,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
-						</button>        
+						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
@@ -219,6 +219,50 @@ import SvgIcons from './SvgIcons.vue'
 									</li>
 									<li class="hover:text-primary pb-3">
 										<router-link active-class="active" to="/dashboard/account-management/payroll">Payroll</router-link>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="dropdown">
+						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2 gap-3">
+							<div class="flex items-center gap-4 py-4">
+								<div>
+									<SvgIcons name="user-group" /> <!-- user icon -->
+								</div>
+								<p class="text-left text-[15px]">
+									HR Department
+								</p>
+							</div>
+							<div class="flex justify-end">
+								<SvgIcons name="chevron-right" /> <!-- right icon -->
+							</div>
+						</button>
+						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
+							<div>
+								<ul class="grid px-14 text-sm gap-6 pt-3">
+									<li class="hover:text-primary">
+										<router-link active-class="active" to="/dashboard/human-resource/employee-data">Employee Data</router-link>
+									</li>
+									<li class="hover:text-primary">
+										<router-link active-class="active" to="/dashboard/human-resource/employee-birthday">Employee Birthday</router-link>
+									</li>
+									<li class="hover:text-primary">
+										<router-link active-class="active" to="/dashboard/human-resource/employee-portal">Employee Portal</router-link>
+									</li>
+									<li class="hover:text-primary pb-3">
+										<router-link active-class="active" to="/dashboard/human-resource/leave-management">Leave Management</router-link>
+									</li>
+									<li class="hover:text-primary">
+										<router-link active-class="active" to="/dashboard/human-resource/recruitment">Recruitment</router-link>
+									</li>
+									<li class="hover:text-primary">
+										<router-link active-class="active" to="/dashboard/human-resource/performance-management">Performance Management</router-link>
+									</li>
+									<li class="hover:text-primary pb-3">
+										<router-link active-class="active" to="/dashboard/human-resource/payroll">payroll</router-link>
 									</li>
 								</ul>
 							</div>
@@ -251,7 +295,7 @@ import SvgIcons from './SvgIcons.vue'
 							<div class="flex justify-end">
 								<SvgIcons name="chevron-right" /> <!-- right icon -->
 							</div>
-						</button>        
+						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
 							<div>
 								<ul class="grid px-14 text-sm gap-6 pt-3">
