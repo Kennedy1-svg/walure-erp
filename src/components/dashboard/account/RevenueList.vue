@@ -9,8 +9,8 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-import EditRole from './EditRoleForm.vue';
-import EditRoleHeader from './EditRoleHeader.vue';
+// import EditRole from './EditRoleForm.vue';
+// import EditRoleHeader from './EditRoleHeader.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';

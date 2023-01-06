@@ -6,8 +6,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import HRHeader from '../../../components/dashboard/hr/HRHeader.vue';
-// import InstructorList from '../../../components/dashboard/hr/InstructorList.vue';
+import EmployeeDataHeader from '../../../components/dashboard/hr/EmployeeDataHeader.vue';
+import EmployeeDataList from '../../../components/dashboard/hr/EmployeeDataList.vue';
 import alert from '../../../components/alerts.vue';
 import SvgIcons from '../../../components/SvgIcons.vue';
 import { ref, computed, onMounted } from 'vue'
@@ -48,7 +48,7 @@ const status:any = computed(() => {
             </template>
             <template #button></template>
         </alert>
-        <HRHeader />
-        <InstructorList />
+        <EmployeeDataHeader />
+        <EmployeeDataList />
     </div>
 </template>

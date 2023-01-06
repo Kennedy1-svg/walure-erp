@@ -123,8 +123,8 @@ export default {
       console.log('permissions', permissions)
       if (permissions.payload) {
         await commit(mutationTypes.SetPermission, permissions)
-      } else if (permissions.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (permissions.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchUsers] ({ commit }: any, data: any = `${api_url}api/user-management/users/{pageIndex}/{pageSize}`) {
@@ -133,8 +133,8 @@ export default {
       console.log('users', users)
       if (users.payload) {
         await commit(mutationTypes.SetUsers, users)
-      } else if (users.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (users.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchRole] ({ commit }: any, data: any = `${api_url}api/role-management/get-roles/{pageIndex}/{pageSize}`) {
@@ -144,8 +144,8 @@ export default {
       console.log('roles', roles)
       if (roles.payload) {
         await commit(mutationTypes.SetRole, roles)
-      } else if (roles.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (roles.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchEditUser] ({ commit }: any, data: any) {
@@ -160,8 +160,8 @@ export default {
     //   console.log('Iusers', users.value)
       if (user.payload) {
         await commit(mutationTypes.SetEditUser, user.payload)
-      } else if (user.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (user.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
       // await commit(mutationTypes.SetNewUser, user.payload)
     },
@@ -174,8 +174,8 @@ export default {
         await commit(mutationTypes.SetUserAlertText, 'Role added successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchRole)
-      } else if (role.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (role.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (role.message.includes('400')) {
         await commit(mutationTypes.SetUserAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetUserAlertStatus, true)
@@ -198,8 +198,8 @@ export default {
         await commit(mutationTypes.SetUserAlertText, 'User added successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchUsers)
-      } else if (user.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (user.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (user.message.includes('400')) {
         await commit(mutationTypes.SetUserAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetUserAlertStatus, true)
@@ -222,8 +222,8 @@ export default {
         await commit(mutationTypes.SetUserAlertText, 'User updated successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchUsers)
-      } else if (role.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (role.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (role.message.includes('400')) {
         await commit(mutationTypes.SetUserAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetUserAlertStatus, true)
@@ -250,8 +250,8 @@ export default {
     //   console.log('Iroles', roles.value)
       if (role.payload) {
         await commit(mutationTypes.SetEditRole, role.payload)
-      } else if (role.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (role.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.EditRole] ({ commit, dispatch }: any, data: any) {
@@ -263,8 +263,8 @@ export default {
         await commit(mutationTypes.SetUserAlertText, 'Role updated successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchRole)
-      } else if (role.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (role.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (role.message.includes('400')) {
         await commit(mutationTypes.SetUserAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetUserAlertStatus, true)
@@ -287,8 +287,8 @@ export default {
         await commit(mutationTypes.SetUserAlertText, 'Role removed successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchRole)
-      } else if (role.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (role.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (role.message.includes('400')) {
         await commit(mutationTypes.SetUserAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetUserAlertStatus, true)
@@ -310,8 +310,8 @@ export default {
         await commit(mutationTypes.SetUserAlertText, 'User removed successfully')
         await commit(mutationTypes.SetUserAlertStatus, true)
         await dispatch(actionTypes.FetchUsers)
-      } else if (user.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (user.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (user.message.includes('400')) {
         await commit(mutationTypes.SetUserAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetUserAlertStatus, true)

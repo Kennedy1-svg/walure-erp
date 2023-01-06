@@ -64,8 +64,8 @@ export default {
       console.log('contacts', contacts)
       if (contacts.payload) {
         await commit(mutationTypes.SetContacts, contacts)
-      } else if (contacts.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (contacts.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchEditContact] ({ commit }: any, data: any) {
@@ -80,8 +80,8 @@ export default {
     //   console.log('Icontacts', contacts.value)
       if (contact.payload) {
         await commit(mutationTypes.SetEditContact, contact.payload)
-      } else if (contact.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (contact.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
       // await commit(mutationTypes.SetNewContact, contact.payload)
     },
@@ -93,8 +93,8 @@ export default {
         await commit(mutationTypes.SetContactAlertText, 'Contact removed successfully')
         await commit(mutationTypes.SetContactAlertStatus, true)
         await dispatch(actionTypes.FetchContacts)
-      } else if (contact.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (contact.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (contact.message.includes('400')) {
         await commit(mutationTypes.SetContactAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetContactAlertStatus, true)

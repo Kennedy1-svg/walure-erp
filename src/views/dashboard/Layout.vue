@@ -4,12 +4,12 @@ import TopNavigation from '../../components/TopNavigation.vue';
 
 </script>
 
-<template>    
+<template>
     <div class="flex">
         <div class="w-1/5 border-r">
-            <Navigation class="" />            
+            <Navigation class="" />
         </div>
-        <div class="main w-4/5">
+        <div class="main w-4/5 overflow-x-hidden">
             <TopNavigation class="fixed z-10" />
             <router-view class="mt-12" />
         </div>

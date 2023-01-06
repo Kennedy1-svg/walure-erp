@@ -199,8 +199,8 @@ export default {
       } else if (instructors.message.includes('404')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
-      } else if (instructors.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (instructors.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -230,8 +230,8 @@ export default {
       } else if (talents.message.includes('404')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Talents not found')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
-      } else if (talents.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (talents.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -262,8 +262,8 @@ export default {
         } else if (skill.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Skills not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (skill.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (skill.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -288,8 +288,8 @@ export default {
       // await commit(mutationTypes.SetTotalCount, file.totalCount)
       if (file.payload) {
           await commit(mutationTypes.SetFile, file)
-        } else if (file.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (file.response.status === 401) {
+        //   router.push({ name: 'Login' });
         }
 
         setTimeout(() => {
@@ -350,8 +350,8 @@ export default {
       } else if (skill.response.status === 400) {
         await commit(mutationTypes.SetInstructorAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
-      } else if (skill.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (skill.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -381,8 +381,8 @@ export default {
       } else if (skill.message.includes('400')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
-      } else if (skill.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (skill.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -412,8 +412,8 @@ export default {
       } else if (instructor.message.includes('400')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
-      } else if (instructor.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (instructor.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -450,8 +450,8 @@ export default {
         } else if (instructor.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (instructor.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (instructor.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -475,8 +475,8 @@ export default {
         } else if (instructor.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (instructor.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (instructor.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -500,8 +500,8 @@ export default {
         } else if (skill.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (skill.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (skill.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -525,8 +525,8 @@ export default {
         } else if (talent.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Talent not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (talent.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (talent.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -552,8 +552,8 @@ export default {
         } else if (skill.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Skill not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (skill.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (skill.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -579,8 +579,8 @@ export default {
         } else if (instructor.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (instructor.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (instructor.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -606,8 +606,8 @@ export default {
         } else if (talent.message.includes('404')) {
           await commit(mutationTypes.SetInstructorAlertText, 'Talent not found')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
-        } else if (talent.response.status === 401) {
-          router.push({ name: 'Login' });
+        // } else if (talent.response.status === 401) {
+        //   router.push({ name: 'Login' });
         } else {
           await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
           await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -633,8 +633,8 @@ export default {
       } else if (updateInstructorStatus.message.includes('404')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Instructor not found')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
-      } else if (updateInstructorStatus.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (updateInstructorStatus.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
@@ -660,8 +660,8 @@ export default {
       } else if (updateTalentStatus.message.includes('404')) {
         await commit(mutationTypes.SetInstructorAlertText, 'Talent not found')
         await commit(mutationTypes.SetInstructorAlertStatus, true)
-      } else if (updateTalentStatus.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (updateTalentStatus.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetInstructorAlertText, 'Something went wrong')
         await commit(mutationTypes.SetInstructorAlertStatus, true)

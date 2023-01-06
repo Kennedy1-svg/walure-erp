@@ -205,8 +205,8 @@ export default {
         //   console.log('Iprojects', projects.value)
           if (project.payload) {
             await commit(mutationTypes.SetProject, project)
-          } else if (project.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (project.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
@@ -223,8 +223,8 @@ export default {
         //   console.log('Ioutsourcings', outsourcings.value)
           if (outsourcing.payload) {
             await commit(mutationTypes.SetOutsourcing, outsourcing)
-          } else if (outsourcing.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (outsourcing.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
@@ -241,8 +241,8 @@ export default {
         //   console.log('Iconsultancys', consultancys.value)
           if (consultancy.payload) {
             await commit(mutationTypes.SetConsultancy, consultancy)
-          } else if (consultancy.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (consultancy.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
@@ -259,8 +259,8 @@ export default {
         //   console.log('Ijobdetails', jobdetails.value)
           if (jobdetail.payload) {
             await commit(mutationTypes.SetJobDetail, jobdetail)
-          } else if (jobdetail.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (jobdetail.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
@@ -277,8 +277,8 @@ export default {
         //   console.log('Italentss', talentss.value)
           if (talents.payload) {
             await commit(mutationTypes.SetOutsourcingTalent, talents.payload.jobDetails)
-          } else if (talents.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (talents.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
           // commit(mutationTypes.SetProject, project)
           // commit(mutationTypes.SetTotalProjectCount, project.totalCount)
@@ -300,8 +300,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Outsourcing updated successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchOutsourcing)
-          } else if (outsourcing.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (outsourcing.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (outsourcing.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -337,8 +337,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Outsourcing added successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchOutsourcing)
-          } else if (addOutsourcing.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (addOutsourcing.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (addOutsourcing.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -372,8 +372,8 @@ export default {
             commit(mutationTypes.SetProjectAlertText, 'Student added to project successfully')
             commit(mutationTypes.SetProjectAlertStatus, true)
             dispatch(actionTypes.FetchProject)
-          } else if (addToProject.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (addToProject.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (addToProject.message.includes('400')) {
             commit(mutationTypes.SetProjectAlertText, 'Student already added to project')
             commit(mutationTypes.SetProjectAlertStatus, true)
@@ -417,8 +417,8 @@ export default {
           } else if (newproject.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
-          } else if (newproject.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (newproject.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else {
             await commit(mutationTypes.SetProjectAlertText, 'Houston, we have a problem!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -438,8 +438,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Project updated successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchProject)
-          } else if (project.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (project.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (project.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -463,8 +463,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Project removed successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchProject)
-          } else if (newproject.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (newproject.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (newproject.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -488,8 +488,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Consultancy removed successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchProject)
-          } else if (newproject.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (newproject.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (newproject.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -513,8 +513,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Outsourcing removed successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchOutsourcing)
-          } else if (outsourcing.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (outsourcing.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (outsourcing.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -560,8 +560,8 @@ export default {
           console.log('project', project)
           if (project.payload) {
             commit(mutationTypes.SetEditProject, project.payload)
-          } else if (project.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (project.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
         },
         async [actionTypes.FetchEditOutsourcing] ({ commit }: any, data: any) {
@@ -572,8 +572,8 @@ export default {
           console.log('outsourcing', outsourcing)
           if (outsourcing.payload) {
             commit(mutationTypes.SetEditOutsourcing, outsourcing.payload)
-          } else if (outsourcing.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (outsourcing.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
         },
         async [actionTypes.FetchEditConsultancy] ({ commit }: any, data: any) {
@@ -584,8 +584,8 @@ export default {
           console.log('consultancy', consultancy)
           if (consultancy.payload) {
             commit(mutationTypes.SetEditConsultancy, consultancy.payload)
-          } else if (consultancy.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (consultancy.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
         },
         async [actionTypes.UpdateProjectStatus] ({ commit, dispatch }: any, data: any) {
@@ -598,8 +598,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Project status updated successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchConsultancy)
-          } else if (UpdateProjectStatus.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (UpdateProjectStatus.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (UpdateProjectStatus.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Bad request received')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -626,8 +626,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Outsourcing status updated successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchOutsourcing)
-          } else if (UpdateOutsourcingStatus.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (UpdateOutsourcingStatus.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (UpdateOutsourcingStatus.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Bad request received')
             await commit(mutationTypes.SetProjectAlertStatus, true)
@@ -654,8 +654,8 @@ export default {
             await commit(mutationTypes.SetProjectAlertText, 'Consultancy status updated successfully')
             await commit(mutationTypes.SetProjectAlertStatus, true)
             await dispatch(actionTypes.FetchConsultancy)
-          } else if (UpdateConsultancyStatus.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (UpdateConsultancyStatus.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (UpdateConsultancyStatus.message.includes('400')) {
             await commit(mutationTypes.SetProjectAlertText, 'Bad request received')
             await commit(mutationTypes.SetProjectAlertStatus, true)

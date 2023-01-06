@@ -46,12 +46,12 @@ export default {
       return computed(() => {
         return state.alert_status
       })
-    },   
+    },
     getStudentAlertText: (state: any) => {
       return computed(() => {
         return state.alert_text
       })
-    },    
+    },
     getStudentTotalCount: (state: any) => {
       return computed(() => {
         console.log('total_count here', state.total_count)
@@ -109,8 +109,8 @@ export default {
       if (students.payload) {
         await commit(mutationTypes.SetStudent, students.payload)
         await commit(mutationTypes.SetTotalCount, students.totalCount)
-      } else if (students.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (students.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchEditStudent] ({ commit }: any, data: any) {
@@ -126,8 +126,8 @@ export default {
       if (student.payload) {
         await commit(mutationTypes.SetEditStudent, student.payload)
         await commit(mutationTypes.SetNewStudent, student.payload)
-      } else if (student.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (student.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
@@ -143,8 +143,8 @@ export default {
     //   console.log('Istudents', students.value)
       if (student.payload) {
         commit(mutationTypes.SetStudent, student.payload)
-      } else if (student.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (student.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
@@ -160,8 +160,8 @@ export default {
     //   console.log('Istudents', students.value)
       if (student.payload) {
         commit(mutationTypes.SetStudent, student.payload)
-      } else if (student.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (student.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetTotalCount, students.totalCount)
     },
@@ -177,8 +177,8 @@ export default {
       } else if (student.message.includes('400')) {
         await commit(mutationTypes.SetStudentAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetStudentAlertStatus, true)
-      } else if (student.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (student.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetStudentAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetStudentAlertStatus, true)
@@ -198,8 +198,8 @@ export default {
         await commit(mutationTypes.SetStudentAlertText, 'Student updated successfully')
         await commit(mutationTypes.SetStudentAlertStatus, true)
         await dispatch(actionTypes.FetchStudents)
-      } else if (student.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (student.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (student.message.includes('400')) {
         await commit(mutationTypes.SetStudentAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetStudentAlertStatus, true)

@@ -185,8 +185,8 @@ export default {
       console.log('courses', courses)
       if (courses.payload) {
         await commit(mutationTypes.SetCourses, courses)
-      } else if (courses.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (courses.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.AddCurriculum] ({ commit }: any, data: any) {
@@ -195,8 +195,8 @@ export default {
       console.log('courses', courses)
       if (courses.payload) {
         await commit(mutationTypes.SetCourses, courses)
-      } else if (courses.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (courses.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchCourseCategories] ({ commit }: any, data: any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`) {
@@ -206,8 +206,8 @@ export default {
       console.log('categories', categories)
       if (categories.payload) {
         await commit(mutationTypes.SetCourseCategories, categories)
-      } else if (categories.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (categories.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchEditCourse] ({ commit }: any, data: any) {
@@ -222,8 +222,8 @@ export default {
     //   console.log('Icourses', courses.value)
       if (course.payload) {
         await commit(mutationTypes.SetEditCourse, course.payload)
-      } else if (course.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
       // await commit(mutationTypes.SetNewCourse, course.payload)
     },
@@ -301,8 +301,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course Applicant added successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseApplicants)
-      } else if (course_applicant.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_applicant.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_applicant.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -326,8 +326,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Curriculum uploaded successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCurriculum)
-      } else if (uploadCurriculum.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (uploadCurriculum.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (uploadCurriculum.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Bad request received')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -354,8 +354,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Curriculum updated successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseApplicants)
-      } else if (UploadCurriculum.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (UploadCurriculum.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (UploadCurriculum.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Bad request received')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -382,8 +382,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Applicant status updated successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseApplicants)
-      } else if (updateApplicantStatus.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (updateApplicantStatus.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (updateApplicantStatus.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Bad request received')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -407,8 +407,8 @@ export default {
       console.log('data tch', applicant.payload)
       if (applicant.payload) {
         await commit(mutationTypes.SetEditCourseApplicant, applicant.payload)
-      } else if (applicant.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (applicant.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.AddNewCourseCategory] ({ commit, dispatch }: any, data: any) {
@@ -420,8 +420,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course Category added successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseCategories)
-      } else if (course_category.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_category.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_category.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -444,8 +444,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course added successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourses)
-      } else if (course_category.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_category.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_category.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -468,8 +468,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course updated successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourses)
-      } else if (course_category.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_category.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_category.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -489,8 +489,8 @@ export default {
       console.log('course applicants', courseapplicants)
       if (courseapplicants.payload) {
         await commit(mutationTypes.SetCourseApplicants, courseapplicants)
-      } else if (courseapplicants.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (courseapplicants.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchCurriculum] ({ commit }: any, data: any) {
@@ -499,8 +499,8 @@ export default {
       console.log('course curriculum', curriculum)
       if (curriculum.payload) {
         await commit(mutationTypes.setCurriculum, curriculum.payload)
-      } else if (curriculum.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (curriculum.response.status === 401) {
+      //   router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchEditCourseCategory] ({ commit }: any, data: any) {
@@ -515,8 +515,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course Category updated successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseCategories)
-      } else if (course_category.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_category.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_category.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -539,8 +539,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course Category removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseCategories)
-      } else if (course_category.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_category.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_category.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -562,8 +562,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course Curriculum removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseCategories)
-      } else if (course_curriculum.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_curriculum.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_curriculum.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -585,8 +585,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course Applicant removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourseApplicants)
-      } else if (course_category.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course_category.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course_category.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetCourseAlertStatus, true)
@@ -608,8 +608,8 @@ export default {
         await commit(mutationTypes.SetCourseAlertText, 'Course removed successfully')
         await commit(mutationTypes.SetCourseAlertStatus, true)
         await dispatch(actionTypes.FetchCourses)
-      } else if (course.response.status === 401) {
-        router.push({ name: 'Login' });
+      // } else if (course.response.status === 401) {
+      //   router.push({ name: 'Login' });
       } else if (course.message.includes('400')) {
         await commit(mutationTypes.SetCourseAlertText, 'Invalid Id!')
         await commit(mutationTypes.SetCourseAlertStatus, true)

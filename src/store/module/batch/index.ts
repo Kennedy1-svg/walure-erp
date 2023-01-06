@@ -113,8 +113,8 @@ export default {
           if (batch.payload) {
             await commit(mutationTypes.SetBatch, batch.payload)
             await commit(mutationTypes.SetTotalBatchCount, batch.totalCount)
-          } else if (batch.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (batch.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
         },
         async [actionTypes.AddStudentToBatch] ({ commit, dispatch }: any, data: any) {
@@ -130,8 +130,8 @@ export default {
           } else if (addStudent.message.includes('400')) {
             commit(mutationTypes.SetBatchAlertText, 'Student already added to cohort')
             commit(mutationTypes.SetBatchAlertStatus, true)
-          } else if (addStudent.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (addStudent.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (addStudent.message.includes('404')) {
             commit(mutationTypes.SetBatchAlertText, 'Cohort not found')
             commit(mutationTypes.SetBatchAlertStatus, true)
@@ -160,8 +160,8 @@ export default {
           } else if (addInstructor.message.includes('400')) {
             commit(mutationTypes.SetBatchAlertText, 'Instructor already added to cohort')
             commit(mutationTypes.SetBatchAlertStatus, true)
-          } else if (addInstructor.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (addInstructor.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (addInstructor.message.includes('404')) {
             commit(mutationTypes.SetBatchAlertText, 'Cohort not found')
             commit(mutationTypes.SetBatchAlertStatus, true)
@@ -190,8 +190,8 @@ export default {
           if (studentsinbatch.payload) {
             await commit(mutationTypes.SetStudentsInBatch, studentsinbatch)
             await commit(mutationTypes.SetTotalBatchCount, studentsinbatch.totalCount)
-          } else if (studentsinbatch.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (studentsinbatch.response.status === 401) {
+          //   router.push({ name: 'Login' });
           }
         },
         async [actionTypes.AddBatch] ({ commit, dispatch }: any, data: any) {
@@ -203,8 +203,8 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Cohort added successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
             await dispatch(actionTypes.FetchBatch)
-          } else if (newbatch.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (newbatch.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (newbatch.message.includes('400')) {
             await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
@@ -228,8 +228,8 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Cohort removed successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
             await dispatch(actionTypes.FetchBatch)
-          } else if (newbatch.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (newbatch.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (newbatch.message.includes('400')) {
             await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
@@ -254,8 +254,8 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Student removed successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
             await dispatch(actionTypes.FetchBatch)
-          } else if (newbatch.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (newbatch.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (newbatch.message.includes('400')) {
             await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetBatchAlertStatus, true)
@@ -276,8 +276,8 @@ export default {
           const batch = await fetchData(data, token)
           console.log('batch now now', batch)
           if (batch.payload) {
-            await commit(mutationTypes.SetEditBatch, batch.payload)
-          } else if (batch.response.status === 401) {
+          //   await commit(mutationTypes.SetEditBatch, batch.payload)
+          // } else if (batch.response.status === 401) {
             router.push({ name: 'Login' });
           }
           // commit(mutationTypes.SetNewBatch, batch.payload)
@@ -291,8 +291,8 @@ export default {
             await commit(mutationTypes.SetBatchAlertText, 'Cohort updated successfully')
             await commit(mutationTypes.SetBatchAlertStatus, true)
             await dispatch(actionTypes.FetchBatch)
-          } else if (newbatch.response.status === 401) {
-            router.push({ name: 'Login' });
+          // } else if (newbatch.response.status === 401) {
+          //   router.push({ name: 'Login' });
           } else if (newbatch.message.includes('400')) {
             await commit(mutationTypes.SetBatchAlertText, 'Invalid Input!')
             await commit(mutationTypes.SetBatchAlertStatus, true)

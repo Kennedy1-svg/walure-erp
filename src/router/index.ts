@@ -35,6 +35,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: false },
   },
   {
+    path: '/fill-employee-biodata',
+    name: 'FillEmployeeBiodata',
+    component: () => import('../views/dashboard/hr/FillEmployeeBiodata.vue'),
+    meta: { requiresAuth: false },
+  },
+  {
     path: '/home',
     name: 'Home',
     component: () => import('../views/Home.vue'),
