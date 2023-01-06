@@ -10,17 +10,17 @@ export default {
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import EmployeeBiodataDetails from './EmployeeBiodataDetails.vue';
-import UpdateStatus from './UpdateStatus.vue';
-import Switch from '../../switch.vue';
+// import UpdateStatus from './UpdateStatus.vue';
+// import Switch from '../../switch.vue';
 import pagination from '../../pagination.vue'
-import AddToBatch from './AddToBatch.vue';
+// import AddToBatch from './AddToBatch.vue';
 import Modal from '../../Modals.vue';
 import WideModal from '../../WideModals.vue';
 import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
 import { api_url } from '../../../config/index'
 import Delete from '../../delete.vue'
 import DeleteModal from '../../DeleteModal.vue';
-import EditInstructor from './EditInstructor.vue';
+// import EditInstructor from './EditInstructor.vue';
 
 const instructors:any = computed(() => {
     return store.getters.getInstructor.value.payload;
