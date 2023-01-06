@@ -23,7 +23,6 @@ let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
 
-
 let errors = reactive({
     username: false,
     usertext: '',
@@ -58,7 +57,7 @@ const login:any = async () => {
     params.append('client_id', `${client_id}`);
     params.append('client_secret', `${client_secret}`);
     params.append('scope', `${scope}`);
-    
+
     const request:any = {
         url: `${api_url}connect/token`,
         data: params,
@@ -76,7 +75,7 @@ const login:any = async () => {
             isLoading.value = false;
             isDisabled.value = false;
         }
-    })    
+    })
 }
 
 const checkError:any = () => {
@@ -115,7 +114,7 @@ const checkError:any = () => {
     } else {
         isError.value = false;
         isDisabled.value = false;
-    }   
+    }
 }
 
 const submit:any = () => {
