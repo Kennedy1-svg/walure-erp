@@ -2,21 +2,34 @@ import { User } from 'oidc-client'
 import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
 
 const loco = window.location
-// const appRootUrl = `${loco.protocol}//${loco.host}${process.env.BASE_URL}`
+// const appRootUrl = `${loco.protocol}//${loco.host}`
 
-const appRootUrl = 'localhost:3000'
+// console.log(`Creating OIDC client for ${appRootUrl}`)
+  const appRootUrl = 'localhost:5500'
+  const authCallbackPath = '/index.html?auth-callback=1';
+  const logoutCallbackPath = '/index.html?logout-callback=1';
+  const backendUri = 'https://walureerp.azurewebsites.net'
+  const redirectUri = `https://localhost:5500${authCallbackPath}`;
+  const scopes = 'offline_access';
+  const logoutRedirectUri = `${backendUri}${logoutCallbackPath}`;
+// console.log(`Creating OIDC client for ${redirectUri}`)
 
 const idsrvAuth = createOidcAuth(
   'main',
   SignInType.Popup,
   appRootUrl,
   {
-    authority: 'https://demo.identityserver.io/',
-    client_id: 'interactive.public', // 'implicit.shortlived',
+    authority: 'https://walureerp.azurewebsites.net/',
+    client_id: 'erp_webapp', // 'implicit.shortlived',
     response_type: 'code',
-    scope: 'openid profile email api',
+    // scope: 'openid profile email api',
     // test use
-    prompt: 'login'
+    filterProtocolClaims: true,
+    loadUserInfo: false,
+    scope: scopes,
+    redirect_uri: redirectUri,
+    prompt: 'login',
+    // extraTokenParams: {scope: scopes},
   },
   console,
   LogLevel.Debug

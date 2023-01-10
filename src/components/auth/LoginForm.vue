@@ -117,6 +117,27 @@ const checkError:any = () => {
     }
 }
 
+// const clientSettings = {
+//     authority: backendUri,
+//     client_id: clientId,
+//     redirect_uri: redirectUri,
+//     post_logout_redirect_uri: logoutRedirectUri,
+//     response_type: 'code',
+//     filterProtocolClaims: true,
+//     loadUserInfo: false,
+//     scope: scopes,
+//     extraTokenParams: {scope: scopes},
+// };
+
+const loginWithZoho:any = async () => {
+    console.log(`I am here lil chicito`)
+    await store.dispatch(actionTypes.FetchZohoCreds)
+    const authCredentials:any = JSON.stringify(store.getters.getAuthCreds.value)
+    console.log(`auth credentials retrieved: ${authCredentials}`)
+    route.push('/walure-dashboard')
+    // return authCredentials
+}
+
 const submit:any = () => {
     console.log('hello');
     checkError();
@@ -178,7 +199,7 @@ const submit:any = () => {
             <hr class="bg-primary w-full h-[2px]"/>
         </div>
         <div class="my-5">
-            <button class="bg-[#CE2232] flex w-full font-semibold bg-opacity-70 hover:bg-opacity-100 justify-center text-white py-3 px-5 rounded">
+            <button @click="loginWithZoho" class="bg-[#CE2232] flex w-full font-semibold bg-opacity-70 hover:bg-opacity-100 justify-center text-white py-3 px-5 rounded">
                 Sign in with Zoho
             </button>
         </div>
