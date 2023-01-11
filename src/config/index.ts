@@ -5,3 +5,5 @@ export const scope = import.meta.env.VITE_APP_SCOPE;
 export const api_url = import.meta.env.VITE_APP_ROOT_API;
 export const oidc_authority = import.meta.env.VITE_APP_OIDC_AUTHORITY;
 export const auth_creds = import.meta.env.VITE_APP_OIDC_AUTHCREDS;
+export const zoho_client_id = import.meta.env.VITE_APP_ZOHO_CLIENT_ID;
+export const zoho_scope = import.meta.env.VITE_APP_ZOHO_SCOPE;

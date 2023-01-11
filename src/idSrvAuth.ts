@@ -1,5 +1,6 @@
 import { User } from 'oidc-client'
 import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
+import { zoho_client_id, zoho_scope } from './config'
 
 const loco = window.location
 // const appRootUrl = `${loco.protocol}//${loco.host}`
