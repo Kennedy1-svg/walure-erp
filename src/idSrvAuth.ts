@@ -3,12 +3,12 @@ import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
 import { zoho_client_id, zoho_scope, base_url, oidc_authority } from './config'
 
 const loco = window.location
-const appRootUrl = `${loco.protocol}//${loco.host}/`
-// const appRootUrl = 'localhost:5500/'
+// const appRootUrl = `${loco.protocol}//${loco.host}/`
+const appRootUrl = 'localhost:5500/'
 
   console.log(`Creating OIDC client for ${appRootUrl}`)
-  const authCallbackPath = '/index.html?auth-callback=1';
-  const logoutCallbackPath = '/index.html?logout-callback=1';
+  const authCallbackPath = 'index.html?auth-callback=1';
+  const logoutCallbackPath = 'index.html?logout-callback=1';
   // const backendUri = `${oidc_authority}`
   // const redirectUri = `https://localhost:5500${authCallbackPath}`;
   const redirectUri = `${base_url}${authCallbackPath}`;
@@ -29,7 +29,7 @@ const idsrvAuth = createOidcAuth(
     filterProtocolClaims: true,
     loadUserInfo: false,
     scope: zoho_scope,
-    // prompt: 'login',
+    prompt: 'login',
     // extraTokenParams: {scope: scopes},
   },
   console,
