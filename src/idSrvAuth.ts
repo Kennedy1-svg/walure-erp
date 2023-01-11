@@ -10,7 +10,7 @@ const appRootUrl = 'localhost:5500/'
   const authCallbackPath = 'index.html?auth-callback=1';
   const logoutCallbackPath = 'index.html?logout-callback=1';
   // const backendUri = `${oidc_authority}`
-  // const redirectUri = `https://localhost:5500${authCallbackPath}`;
+  // const redirectUri = `https://localhost:5500/${authCallbackPath}`;
   const redirectUri = `${base_url}${authCallbackPath}`;
   const scopes = 'offline_access';
   const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
@@ -50,12 +50,12 @@ const clientSettings = {
   extraTokenParams: {scope: scopes},
 };
 
-const userManager = new Oidc.UserManager(clientSettings);
+// const userManager = new Oidc.UserManager(clientSettings);
 
 if (window.location.href.includes('auth-callback')) {
-  userManager.signinPopupCallback();
+  idsrvAuth.signIn(clientSettings)
 } else if (window.location.href.includes('logout-callback')) {
-  userManager.signoutPopupCallback();
+  idsrvAuth.signOut(clientSettings)
 }
 
 // handle events
