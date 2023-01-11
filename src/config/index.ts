@@ -7,3 +7,4 @@ export const oidc_authority:any = import.meta.env.VITE_APP_OIDC_AUTHORITY;
 export const auth_creds:any = import.meta.env.VITE_APP_OIDC_AUTHCREDS;
 export const zoho_client_id:any = import.meta.env.VITE_APP_ZOHO_CLIENT_ID;
 export const zoho_scope:any = import.meta.env.VITE_APP_ZOHO_SCOPE;
+export const base_url:any = import.meta.env.VITE_APP_BASE_URL;
