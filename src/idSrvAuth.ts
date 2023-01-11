@@ -22,13 +22,13 @@ const idsrvAuth = createOidcAuth(
   appRootUrl,
   {
     authority: 'https://walureerp.azurewebsites.net/',
-    client_id: 'erp_webapp', // 'implicit.shortlived',
+    client_id: zoho_client_id, // 'implicit.shortlived',
     response_type: 'code',
     // scope: 'openid profile email api',
     // test use
     filterProtocolClaims: true,
     loadUserInfo: false,
-    scope: scopes,
+    scope: zoho_scope,
     redirect_uri: redirectUri,
     prompt: 'login',
     // extraTokenParams: {scope: scopes},
