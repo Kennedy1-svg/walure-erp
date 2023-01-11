@@ -3,14 +3,15 @@ import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
 import { zoho_client_id, zoho_scope } from './config'
 
 const loco = window.location
-// const appRootUrl = `${loco.protocol}//${loco.host}`
+const appRootUrl = `${loco.protocol}//${loco.host}`
 
 // console.log(`Creating OIDC client for ${appRootUrl}`)
-  const appRootUrl = 'localhost:5500'
+  // const appRootUrl = 'localhost:5500'
   const authCallbackPath = '/index.html?auth-callback=1';
   const logoutCallbackPath = '/index.html?logout-callback=1';
   const backendUri = 'https://walureerp.azurewebsites.net'
-  const redirectUri = `https://localhost:5500${authCallbackPath}`;
+  // const redirectUri = `https://localhost:5500${authCallbackPath}`;
+  const redirectUri = `https://walure-erp.netlify.app${authCallbackPath}`;
   const scopes = 'offline_access';
   const logoutRedirectUri = `${backendUri}${logoutCallbackPath}`;
 // console.log(`Creating OIDC client for ${redirectUri}`)
