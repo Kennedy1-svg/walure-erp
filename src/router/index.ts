@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw, onBeforeRouteLeave, } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useStore } from 'vuex'
 import idsrvAuth from '../idSrvAuth';
 

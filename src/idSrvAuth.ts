@@ -1,5 +1,6 @@
-import Oidc, { User } from 'oidc-client'
-import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
+import { User } from 'oidc-client'
+import { createOidcAuth, SignInType, LogLevel } from './vue-oidc-client'
+// import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
 import { zoho_client_id, zoho_scope, base_url, oidc_authority } from './config'
 
 const loco = window.location
@@ -38,25 +39,25 @@ const idsrvAuth = createOidcAuth(
 
 
 
-const clientSettings = {
-  authority: oidc_authority,
-  client_id: zoho_client_id,
-  redirect_uri: redirectUri,
-  post_logout_redirect_uri: logoutRedirectUri,
-  response_type: 'code',
-  filterProtocolClaims: true,
-  loadUserInfo: false,
-  scope: scopes,
-  extraTokenParams: {scope: scopes},
-};
+// const clientSettings = {
+//   authority: oidc_authority,
+//   client_id: zoho_client_id,
+//   redirect_uri: redirectUri,
+//   post_logout_redirect_uri: logoutRedirectUri,
+//   response_type: 'code',
+//   filterProtocolClaims: true,
+//   loadUserInfo: false,
+//   scope: scopes,
+//   extraTokenParams: {scope: scopes},
+// };
 
 // const userManager = new Oidc.UserManager(clientSettings);
 
-if (window.location.href.includes('auth-callback')) {
-  idsrvAuth.signIn(clientSettings)
-} else if (window.location.href.includes('logout-callback')) {
-  idsrvAuth.signOut(clientSettings)
-}
+// if (window.location.href.includes('auth-callback')) {
+//   idsrvAuth.signIn(clientSettings)
+// } else if (window.location.href.includes('logout-callback')) {
+//   idsrvAuth.signOut(clientSettings)
+// }
 
 // handle events
 idsrvAuth.events.addAccessTokenExpiring(function() {
