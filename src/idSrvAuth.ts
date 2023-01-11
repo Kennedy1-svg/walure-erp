@@ -1,36 +1,35 @@
 import { User } from 'oidc-client'
 import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
-import { zoho_client_id, zoho_scope, base_url } from './config'
+import { zoho_client_id, zoho_scope, base_url, oidc_authority } from './config'
 
 const loco = window.location
 const appRootUrl = `${loco.protocol}//${loco.host}/`
+// const appRootUrl = 'localhost:5500/'
 
-// console.log(`Creating OIDC client for ${appRootUrl}`)
-  // const appRootUrl = 'localhost:5500/'
+  console.log(`Creating OIDC client for ${appRootUrl}`)
   const authCallbackPath = '/index.html?auth-callback=1';
   const logoutCallbackPath = '/index.html?logout-callback=1';
-  const backendUri = 'https://walureerp.azurewebsites.net'
+  // const backendUri = `${oidc_authority}`
   // const redirectUri = `https://localhost:5500${authCallbackPath}`;
   const redirectUri = `${base_url}${authCallbackPath}`;
   const scopes = 'offline_access';
-  const logoutRedirectUri = `${backendUri}${logoutCallbackPath}`;
-console.log(`Creating OIDC client for ${redirectUri}`)
+  const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
+  console.log(`Creating OIDC client for ${redirectUri}`)
 
 const idsrvAuth = createOidcAuth(
   'main',
   SignInType.Popup,
   appRootUrl,
   {
-    authority: 'https://walureerp.azurewebsites.net/',
-    client_id: zoho_client_id, // 'implicit.shortlived',
+    authority: oidc_authority,
+    client_id: zoho_client_id,
+    redirect_uri: redirectUri,
+    post_logout_redirect_uri: logoutRedirectUri,
     response_type: 'code',
-    // scope: 'openid profile email api',
-    // test use
     filterProtocolClaims: true,
     loadUserInfo: false,
     scope: zoho_scope,
-    redirect_uri: redirectUri,
-    prompt: 'login',
+    // prompt: 'login',
     // extraTokenParams: {scope: scopes},
   },
   console,
