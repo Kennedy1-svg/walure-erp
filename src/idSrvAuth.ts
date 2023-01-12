@@ -6,6 +6,7 @@ import { zoho_client_id, zoho_scope, base_url, oidc_authority } from './config'
 const loco = window.location
 const appRootUrl = `${loco.protocol}//${loco.host}/`
 // const appRootUrl = 'localhost:5500/'
+const provider:any = 'zoho'
 
   console.log(`Creating OIDC client for ${appRootUrl}`)
   const authCallbackPath = 'index.html?auth-callback=1';
@@ -31,13 +32,12 @@ const idsrvAuth = createOidcAuth(
     loadUserInfo: false,
     scope: zoho_scope,
     prompt: 'login',
+    extraQueryParams: { scope: zoho_scope, provider: provider }
     // extraTokenParams: {scope: scopes},
   },
   console,
   LogLevel.Debug
 )
-
-
 
 // const clientSettings = {
 //   authority: oidc_authority,
