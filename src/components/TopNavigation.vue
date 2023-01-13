@@ -8,6 +8,7 @@ export default {
 import SvgIcons from '../components/SvgIcons.vue';
 
 const logout:any = () => {
+	// $oidc.signOut
 	localStorage.clear();
 	window.location.href = '/';
 }
