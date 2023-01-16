@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '',
         name: 'Dashboard',
         component: () => import('../views/dashboard/Index.vue'),
-        meta: { authName: idsrvAuth.authName },
+        meta: { requiresAuth: false },
       },
       // {
       //   path: 'student-management/batch/view-student/:id',
