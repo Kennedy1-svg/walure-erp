@@ -21,6 +21,7 @@ export default {
     issuer: '',
     authorization_endpoint: '',
     token_endpoint: '',
+    end_session_endpoint: '',
     jwks_uri: '',
     grant_types_supported: '',
     response_types_supported: '',
@@ -71,6 +72,11 @@ export default {
         return state.token_type
       })
     },
+    getEndSessionEndpoint: (state: any) => {
+      return computed(() => {
+        return state.end_session_endpoint
+      })
+    },
     getRefreshToken: (state: any) => {
       return computed(() => {
         return state.refresh_token
@@ -105,6 +111,9 @@ export default {
     },
     [mutationTypes.SetTokenEndpoint] (state: any, data: any) {
       state.token_endpoint = data
+    },
+    [mutationTypes.SetEndSessionEndpoint] (state: any, data: any) {
+      state.end_session_endpoint = data
     },
     [mutationTypes.SetJwksUri] (state: any, data: any) {
       state.jwks_uri = data
@@ -202,6 +211,7 @@ export default {
       commit(mutationTypes.SetIssuer, authdata.issuer)
       commit(mutationTypes.SetAuthEndpoint, authdata.authorization_endpoint)
       commit(mutationTypes.SetTokenEndpoint, authdata.token_endpoint)
+      commit(mutationTypes.SetEndSessionEndpoint, authdata.end_session_endpoint)
       commit(mutationTypes.SetJwksUri, authdata.jwks_uri)
       commit(mutationTypes.SetGrantType, authdata.grant_types_supported)
       commit(mutationTypes.SetResponseType, authdata.response_types_supported)

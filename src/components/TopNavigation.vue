@@ -5,10 +5,21 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import SvgIcons from '../components/SvgIcons.vue';
+import { useStore } from 'vuex';
+import { addEmptyData } from '../helpers/api';
 
-const logout:any = () => {
+const store = useStore();
+
+const endSessionEndpoint:any = computed(() => {
+    return store.getters.getEndSessionEndpoint.value;
+})
+
+const logout:any = async () => {
+	const token:any = localStorage.getItem('token')
 	// $oidc.signOut
+	await addEmptyData(endSessionEndpoint.value, token)
 	localStorage.clear();
 	window.location.href = '/';
 }
@@ -16,6 +27,7 @@ const logout:any = () => {
 
 <template>
 <div class="grid w-4/5 bg-white shadow-md py-2 justify-end items-center px-6">
+	{{ endSessionEndpoint }}
 	<div class="relative inline-block text-left dropdown">
 		<button class="border text-grey flex justify-around gap-8 items-center rounded px-3 py-2" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
 			<span class="icon border rounded-full ">
