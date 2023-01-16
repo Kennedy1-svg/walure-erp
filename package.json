@@ -1,7 +1,7 @@
 {
-  "name": "walure-backoffice",
+  "name": "walure-erp",
   "version": "0.0.0",
-  "description": "a simple backoffice dashboard for Walure Capital",
+  "description": "a simple application for Walure Capital to manage human and capital resources",
   "author": {
     "name": "Oluwashina Odumosu",
     "email": "odumz20@gmail.com",
@@ -11,7 +11,7 @@
     "vite",
     "tailwind",
     "vuex",
-    "starter",
+    "walure",
     "vite-tailwind-vuex-starter",
     "dashboard application",
     "store"
