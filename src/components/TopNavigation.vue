@@ -9,6 +9,7 @@ import { computed } from 'vue'
 import SvgIcons from '../components/SvgIcons.vue';
 import { useStore } from 'vuex';
 import { addEmptyData } from '../helpers/api';
+import idsrvAuth from '../idSrvAuth';
 
 const store = useStore();
 
@@ -21,6 +22,7 @@ const logout:any = async () => {
 	// $oidc.signOut
 	let response:any = await addEmptyData(endSessionEndpoint.value, token)
 	console.log(`emergency ${endSessionEndpoint}`)
+	idsrvAuth.signOut();
 	localStorage.clear();
 	window.location.href = '/';
 }

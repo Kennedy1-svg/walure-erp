@@ -12,8 +12,6 @@ const provider:any = 'Zoho'
   const authCallbackPath = 'index.html?auth-callback=1';
   const logoutCallbackPath = 'index.html?logout-callback=1';
   const prompt= 'login'
-  // const backendUri = `${oidc_authority}`
-  // const redirectUri = `https://localhost:5500/${authCallbackPath}`;
   const redirectUri = `${base_url}${authCallbackPath}`;
   const scopes = 'offline_access';
   const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
