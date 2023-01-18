@@ -37,7 +37,7 @@ const provider:any = 'Zoho'
 	filterProtocolClaims: true,
 	loadUserInfo: true,
 	scope: zoho_scope,
-	extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
+	extraQueryParams: { scope: zoho_scope, provider: provider }
 	// extraTokenParams: {scope: scopes},
 	};
 
