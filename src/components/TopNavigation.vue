@@ -75,10 +75,10 @@
 		console.log(`emergency ${endSessionEndpoint}`)
 		idsrvAuth.signOut(clientSettings);
 		localStorage.clear();
-		setTimeout(() => {
-			window.location.href = '/';
-		}, 2000);
-		// window.location.href = '/';
+		// setTimeout(() => {
+		// 	window.location.href = '/';
+		// }, 2000);
+		window.location.href = '/';
 	}
 </script>
 
