@@ -31,7 +31,7 @@
 	authority: oidc_authority,
 	client_id: zoho_client_id,
 	// redirect_uri: redirectUri,
-	post_logout_redirect_uri: 'https://walure-erp.netlify.app',
+	post_logout_redirect_uri: 'https://walure-erp.netlify.app/logout',
 	// post_logout_redirect_uri: logoutRedirectUri,
 	// response_type: 'code',
 	// filterProtocolClaims: true,
@@ -53,8 +53,7 @@
 		// $oidc.signOut
 		// let response:any = await addEmptyData(endSessionEndpoint.value, token)
 		console.log(`emergency ${endSessionEndpoint}`)
-		// idsrvAuth.signOut(clientSettings);
-		idsrvAuth.signOut();
+		idsrvAuth.signOut(clientSettings);
 		localStorage.clear();
 		setTimeout(() => {
 			window.location.href = '/';
