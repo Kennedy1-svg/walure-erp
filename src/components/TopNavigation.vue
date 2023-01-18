@@ -56,6 +56,7 @@
 		idsrvAuth.events.addUserSignedOut(() => {
 			// eslint-disable-next-line no-console
 			console.log('user signed out')
+			window.close();
 		})
 		localStorage.clear();
 		setTimeout(() => {
