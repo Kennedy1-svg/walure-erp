@@ -31,8 +31,8 @@ const provider:any = 'Zoho'
 	authority: oidc_authority,
 	client_id: zoho_client_id,
 	redirect_uri: redirectUri,
-	// post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
-	post_logout_redirect_uri: logoutRedirectUri,
+	post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
+	// post_logout_redirect_uri: logoutRedirectUri,
 	response_type: 'code',
 	filterProtocolClaims: true,
 	loadUserInfo: true,
@@ -41,24 +41,24 @@ const provider:any = 'Zoho'
 	// extraTokenParams: {scope: scopes},
 	};
 
-const store = useStore();
+	const store = useStore();
 
-const endSessionEndpoint:any = computed(() => {
-    return store.getters.getEndSessionEndpoint.value;
-})
+	const endSessionEndpoint:any = computed(() => {
+		return store.getters.getEndSessionEndpoint.value;
+	})
 
-const logout:any = async () => {
-	// const token:any = localStorage.getItem('token')
-	// $oidc.signOut
-	// let response:any = await addEmptyData(endSessionEndpoint.value, token)
-	console.log(`emergency ${endSessionEndpoint}`)
-	idsrvAuth.signOut(clientSettings);
-	localStorage.clear();
-	setTimeout(() => {
-		window.location.href = '/';
-	}, 5000);
-	// window.location.href = '/';
-}
+	const logout:any = async () => {
+		// const token:any = localStorage.getItem('token')
+		// $oidc.signOut
+		// let response:any = await addEmptyData(endSessionEndpoint.value, token)
+		console.log(`emergency ${endSessionEndpoint}`)
+		idsrvAuth.signOut(clientSettings);
+		localStorage.clear();
+		setTimeout(() => {
+			window.location.href = '/';
+		}, 5000);
+		// window.location.href = '/';
+	}
 </script>
 
 <template>
