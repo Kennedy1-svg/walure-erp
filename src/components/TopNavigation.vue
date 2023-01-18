@@ -18,11 +18,11 @@ const endSessionEndpoint:any = computed(() => {
 })
 
 const logout:any = async () => {
-	const token:any = localStorage.getItem('token')
+	// const token:any = localStorage.getItem('token')
 	// $oidc.signOut
-	let response:any = await addEmptyData(endSessionEndpoint.value, token)
+	// let response:any = await addEmptyData(endSessionEndpoint.value, token)
 	console.log(`emergency ${endSessionEndpoint}`)
-	idsrvAuth.signOut();
+	idsrvAuth.signOut(endSessionEndpoint);
 	localStorage.clear();
 	window.location.href = '/';
 }
