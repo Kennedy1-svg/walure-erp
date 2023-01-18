@@ -9,7 +9,7 @@
 	import SvgIcons from '../components/SvgIcons.vue';
 	import { useStore } from 'vuex';
 	import { addEmptyData } from '../helpers/api';
-	import idsrvAuth from '../idSrvAuth';
+	// import idsrvAuth from '../idSrvAuth';
 	import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
 	import { zoho_client_id, zoho_scope, base_url, oidc_authority } from '../config'
 
@@ -27,19 +27,38 @@
 	const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
 	console.log(`Creating OIDC client for ${redirectUri}`)
 
+	const idsrvAuth = createOidcAuth(
+		'main',
+		SignInType.Window,
+		appRootUrl,
+		{
+			authority: oidc_authority,
+			client_id: zoho_client_id,
+			redirect_uri: redirectUri,
+			post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
+			response_type: 'code',
+			filterProtocolClaims: true,
+			loadUserInfo: true,
+			scope: zoho_scope,
+			extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
+			// extraTokenParams: {scope: scopes},
+		},
+		console,
+		LogLevel.Debug
+	)
+
 	const clientSettings = {
 	authority: oidc_authority,
 	client_id: zoho_client_id,
-	// redirect_uri: redirectUri,
+	redirect_uri: redirectUri,
 	post_logout_redirect_uri: 'https://walure-erp.netlify.app',
 	// post_logout_redirect_uri: logoutRedirectUri,
-	// response_type: 'code',
+	response_type: 'code',
 	// filterProtocolClaims: true,
-	// loadUserInfo: true,
-	// scope: zoho_scope,
-	display: 'hidden',
-	signoutpopup: false,
-	// extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
+	loadUserInfo: true,
+	scope: zoho_scope,
+	// display: 'hidden',
+	extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
 	// extraTokenParams: {scope: scopes},
 	};
 
