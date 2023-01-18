@@ -25,7 +25,7 @@ const idsrvAuth = createOidcAuth(
     authority: oidc_authority,
     client_id: zoho_client_id,
     redirect_uri: redirectUri,
-    post_logout_redirect_uri: 'https://walureerp.azurewebsites.net/connect/logout',
+    post_logout_redirect_uri: 'https://walure-erp.netlify.app',
     response_type: 'code',
     filterProtocolClaims: true,
     loadUserInfo: false,
