@@ -21,7 +21,7 @@ const provider:any = 'Zoho'
   console.log(`Creating OIDC client for ${appRootUrl}`)
   const authCallbackPath = 'index.html?auth-callback=1';
   const logoutCallbackPath = 'index.html?logout-callback=1';
-  const prompt= 'none'
+  const prompt= 'signout'
   const redirectUri = `${base_url}${authCallbackPath}`;
   const scopes = 'offline_access';
   const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
@@ -37,7 +37,7 @@ const provider:any = 'Zoho'
 	filterProtocolClaims: true,
 	loadUserInfo: true,
 	scope: zoho_scope,
-	extraQueryParams: { scope: zoho_scope, provider: provider }
+	extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
 	// extraTokenParams: {scope: scopes},
 	};
 
