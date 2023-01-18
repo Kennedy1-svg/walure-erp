@@ -31,7 +31,7 @@ const provider:any = 'Zoho'
 	authority: oidc_authority,
 	client_id: zoho_client_id,
 	redirect_uri: redirectUri,
-	post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
+	post_logout_redirect_uri: 'https://walure-erp.netlify.app',
 	// post_logout_redirect_uri: logoutRedirectUri,
 	response_type: 'code',
 	filterProtocolClaims: true,
