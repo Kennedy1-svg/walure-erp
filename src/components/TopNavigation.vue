@@ -10,6 +10,35 @@ import SvgIcons from '../components/SvgIcons.vue';
 import { useStore } from 'vuex';
 import { addEmptyData } from '../helpers/api';
 import idsrvAuth from '../idSrvAuth';
+import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
+import { zoho_client_id, zoho_scope, base_url, oidc_authority } from '../config'
+
+const loco = window.location
+const appRootUrl = `${loco.protocol}//${loco.host}/`
+// const appRootUrl = 'localhost:5500/'
+const provider:any = 'Zoho'
+
+  console.log(`Creating OIDC client for ${appRootUrl}`)
+  const authCallbackPath = 'index.html?auth-callback=1';
+  const logoutCallbackPath = 'index.html?logout-callback=1';
+  const prompt= 'login'
+  const redirectUri = `${base_url}${authCallbackPath}`;
+  const scopes = 'offline_access';
+  const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
+  console.log(`Creating OIDC client for ${redirectUri}`)
+
+	const clientSettings = {
+	authority: oidc_authority,
+	client_id: zoho_client_id,
+	redirect_uri: redirectUri,
+	post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
+	response_type: 'code',
+	filterProtocolClaims: true,
+	loadUserInfo: true,
+	scope: zoho_scope,
+	extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
+	// extraTokenParams: {scope: scopes},
+	};
 
 const store = useStore();
 
@@ -22,8 +51,11 @@ const logout:any = async () => {
 	// $oidc.signOut
 	// let response:any = await addEmptyData(endSessionEndpoint.value, token)
 	console.log(`emergency ${endSessionEndpoint}`)
-	idsrvAuth.signOut();
-	// localStorage.clear();
+	idsrvAuth.signOut(clientSettings);
+	localStorage.clear();
+	setTimeout(() => {
+		window.location.href = '/';
+	}, 5000);
 	// window.location.href = '/';
 }
 </script>

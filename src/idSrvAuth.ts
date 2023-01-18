@@ -41,12 +41,13 @@ const idsrvAuth = createOidcAuth(
 //   authority: oidc_authority,
 //   client_id: zoho_client_id,
 //   redirect_uri: redirectUri,
-//   post_logout_redirect_uri: logoutRedirectUri,
+//   post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
 //   response_type: 'code',
 //   filterProtocolClaims: true,
-//   loadUserInfo: false,
-//   scope: scopes,
-//   extraTokenParams: {scope: scopes},
+//   loadUserInfo: true,
+//   scope: zoho_scope,
+//   extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
+//   // extraTokenParams: {scope: scopes},
 // };
 
 // const userManager = new Oidc.UserManager(clientSettings);
