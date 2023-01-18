@@ -23,8 +23,8 @@ const logout:any = async () => {
 	// let response:any = await addEmptyData(endSessionEndpoint.value, token)
 	console.log(`emergency ${endSessionEndpoint}`)
 	idsrvAuth.signOut();
-	localStorage.clear();
-	window.location.href = '/';
+	// localStorage.clear();
+	// window.location.href = '/';
 }
 </script>
 
