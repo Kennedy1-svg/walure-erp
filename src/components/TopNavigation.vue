@@ -21,7 +21,7 @@ const provider:any = 'Zoho'
   console.log(`Creating OIDC client for ${appRootUrl}`)
   const authCallbackPath = 'index.html?auth-callback=1';
   const logoutCallbackPath = 'index.html?logout-callback=1';
-  const prompt= 'login'
+  const prompt= 'logout'
   const redirectUri = `${base_url}${authCallbackPath}`;
   const scopes = 'offline_access';
   const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
@@ -31,7 +31,8 @@ const provider:any = 'Zoho'
 	authority: oidc_authority,
 	client_id: zoho_client_id,
 	redirect_uri: redirectUri,
-	post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
+	// post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
+	post_logout_redirect_uri: logoutRedirectUri,
 	response_type: 'code',
 	filterProtocolClaims: true,
 	loadUserInfo: true,
