@@ -19,7 +19,7 @@ const provider:any = 'Zoho'
 
 const idsrvAuth = createOidcAuth(
   'main',
-  SignInType.Window,
+  SignInType.Popup,
   appRootUrl,
   {
     authority: oidc_authority,
@@ -30,7 +30,7 @@ const idsrvAuth = createOidcAuth(
     filterProtocolClaims: true,
     loadUserInfo: true,
     scope: zoho_scope,
-    extraQueryParams: { scope: zoho_scope, provider: provider }
+    extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
     // extraTokenParams: {scope: scopes},
   },
   console,
