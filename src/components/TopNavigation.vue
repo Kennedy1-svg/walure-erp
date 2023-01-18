@@ -21,7 +21,7 @@ const provider:any = 'Zoho'
   console.log(`Creating OIDC client for ${appRootUrl}`)
   const authCallbackPath = 'index.html?auth-callback=1';
   const logoutCallbackPath = 'index.html?logout-callback=1';
-  const prompt= 'none'
+  const prompt= 'logout'
   const redirectUri = `${base_url}${authCallbackPath}`;
   const scopes = 'offline_access';
   const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
