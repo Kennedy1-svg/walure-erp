@@ -35,9 +35,10 @@
 	// post_logout_redirect_uri: logoutRedirectUri,
 	// response_type: 'code',
 	// filterProtocolClaims: true,
-	loadUserInfo: true,
-	scope: zoho_scope,
-	display: 'off',
+	// loadUserInfo: true,
+	// scope: zoho_scope,
+	display: 'hidden',
+	signoutpopup: false,
 	// extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
 	// extraTokenParams: {scope: scopes},
 	};
