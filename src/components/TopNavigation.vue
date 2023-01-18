@@ -37,6 +37,7 @@
 	filterProtocolClaims: true,
 	loadUserInfo: true,
 	scope: zoho_scope,
+	display: 'none',
 	// extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
 	// extraTokenParams: {scope: scopes},
 	};
@@ -53,15 +54,10 @@
 		// let response:any = await addEmptyData(endSessionEndpoint.value, token)
 		console.log(`emergency ${endSessionEndpoint}`)
 		idsrvAuth.signOut(clientSettings);
-		idsrvAuth.events.addUserSignedOut(() => {
-			// eslint-disable-next-line no-console
-			console.log('user signed out')
-			window.close();
-		})
 		localStorage.clear();
 		setTimeout(() => {
 			window.location.href = '/';
-		}, 5000);
+		}, 2000);
 		// window.location.href = '/';
 	}
 </script>
