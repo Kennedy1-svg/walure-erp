@@ -53,7 +53,8 @@
 		// $oidc.signOut
 		// let response:any = await addEmptyData(endSessionEndpoint.value, token)
 		console.log(`emergency ${endSessionEndpoint}`)
-		idsrvAuth.signOut(clientSettings);
+		// idsrvAuth.signOut(clientSettings);
+		idsrvAuth.signOut();
 		localStorage.clear();
 		setTimeout(() => {
 			window.location.href = '/';
