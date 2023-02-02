@@ -12,7 +12,7 @@ import spinner from '../spinner.vue'
 import { useStore } from 'vuex'
 import * as actionTypes from '../../store/module/auth/constants/action'
 import * as mutationTypes from '../../store/module/auth/constants/mutation'
-import { grant_type, client_id, client_secret, scope, api_url } from '../../config'
+import { grant_type, client_id, scope, api_url } from '../../config'
 
 const store = useStore();
 
@@ -55,7 +55,7 @@ const login:any = async () => {
     params.append('password', data.password);
     params.append('grant_type', `${grant_type}`);
     params.append('client_id', `${client_id}`);
-    // params.append('client_secret', `${client_secret}`);
+    // params.append', `}`);
     params.append('scope', `${scope}`);
 
     const request:any = {
