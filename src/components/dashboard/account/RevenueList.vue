@@ -9,24 +9,25 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import EditRole from './EditRoleForm.vue';
-// import EditRoleHeader from './EditRoleHeader.vue';
+// import EditRevenue from './EditRevenueForm.vue';
+// import EditRevenueHeader from './EditRevenueHeader.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
-import * as actionTypes from '../../../store/module/users/constants/action';
+import * as actionTypes from '../../../store/module/account/constants/action';
+import moment from 'moment';
 import { api_url } from '../../../config/index';
 
 import { useRouter } from 'vue-router';
 
 const route = useRouter();
 
-const roles:any = computed(() => {
-    return store.getters.getRole.value.payload;
+const revenues:any = computed(() => {
+    return store.getters.getRevenue.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getRole.value.totalCount;
+    return store.getters.getRevenue.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
@@ -36,9 +37,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/role-management/get-roles/${pageIndex.value}/{pageSize}`;
+    const request:any = `${api_url}api/revenue-management/get-revenues/${pageIndex.value}/{pageSize}`;
     console.log('url', request)
-    await store.dispatch(actionTypes.FetchRole, request)
+    await store.dispatch(actionTypes.FetchRevenue, request)
 }
 
 let roleitemtodelete:any = ref('')
@@ -50,18 +51,18 @@ const sendId:any = (id:any) => {
     return roleitemtodelete
 }
 
-const deleteRole:any = async (id:any) => {
+const deleteRevenue:any = async (id:any) => {
     console.log('category category', id);
 
-    const request:any = `${api_url}api/role-management/delete-role/${id}`;
+    const request:any = `${api_url}api/revenue-management/delete-revenue/${id}`;
 
     console.log('requestData', request)
-    await store.dispatch(actionTypes.RemoveRole, request)
-    await store.dispatch(actionTypes.FetchRole)
+    await store.dispatch(actionTypes.RemoveRevenue, request)
+    await store.dispatch(actionTypes.FetchRevenue)
     closeModal()
     // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
     // console.log('url', fetchrequest)
-    // await store.dispatch(actionTypes.FetchRoleQuotes)
+    // await store.dispatch(actionTypes.FetchRevenueQuotes)
 }
 
 const emits = defineEmits(['close']);
@@ -86,12 +87,12 @@ const totalPages:any = computed(() => {
 })
 
 const setId:any = (id:any) => {
-    console.log('role', id)
-    // const request:any = `${api_url}api/role-management/get-role-details/${id}`;
+    console.log('revenue', id)
+    // const request:any = `${api_url}api/revenue-management/get-revenue-details/${id}`;
     // console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditRole, request)
+    // store.dispatch(actionTypes.FetchEditRevenue, request)
     route.push({
-        name: 'EditRole',
+        name: 'EditRevenue',
         params: {
             id: id
         }
@@ -118,20 +119,20 @@ const store = useStore();
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
-    console.log('Role List mounted');
-    const request:any = `${api_url}api/role-management/get-roles/{pageIndex}/{pageSize}`;
-    await store.dispatch(actionTypes.FetchRole)
+    console.log('Revenue List mounted');
+    const request:any = `${api_url}api/revenue/getall_revenue`;
+    await store.dispatch(actionTypes.FetchRevenue)
 });
 </script>
 
 <template>
     <div class="main grid mt-3">
         <div class="title flex justify-end items-center mb-10">
-            <!-- <h1 class="text-2xl font-semibold text-black">Role List</h1> -->
+            <!-- <h1 class="text-2xl font-semibold text-black">Revenue List</h1> -->
             <p class="text-xl pr-3 font-medium text-primary">Total : {{ total_count }}</p>
         </div>
         <div class="table">
-            <!-- {{ roles }} -->
+            <!-- {{ revenues }} -->
         <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
             <table class="overflow-x-scroll border items-center w-full">
                 <thead class="bg-table-head">
@@ -162,57 +163,57 @@ onMounted( async () => {
                 </thead>
 
                 <tbody id="students" class="bg-white">
-                  <tr v-for="(role) in roles" :key="role.id">
+                  <tr v-for="(revenue) in revenues" :key="revenue.id">
                       <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ pageIndex == 1 ? (roles.indexOf(role) + 1) : ((pageIndex - 1) * 10) + (roles.indexOf(role) + 1) }}
+                          {{ pageIndex == 1 ? (revenues.indexOf(revenue) + 1) : ((pageIndex - 1) * 10) + (revenues.indexOf(revenue) + 1) }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ role.role }}
+                          {{ revenue.categoryName }}
                       </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ role.modifiedOn }}
-                      </td>
-                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ role.role }}
-                      </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ role.modifiedOn }}
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                          {{ revenue.item }}
                       </td>
                       <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ role.role }}
+                          {{ revenue.uniqueIdentifierCode }}
                       </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ role.modifiedOn }}
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                          {{ revenue.amount }}
                       </td>
-                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                        {{ moment(revenue.createdOn).format('MM/DD/YYYY') }}
+                      </td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                        {{ moment(revenue.transactionDate).format('MM/DD/YYYY') }}
+                      </td>
+                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                         <div class="flex w-2/5 items-center">
                             <button
                             type="button"
-                            @click="showEdit = !showEdit" @click.prevent="setId(role.id)"
+                            @click="showEdit = !showEdit" @click.prevent="setId(revenue.id)"
                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
                             >
                                 <SvgIcons name="edit" />
                             </button>
                             <!-- <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                <EditRole :role="role" @close="showEdit = !showEdit"  />
+                                <EditRevenue :revenue="revenue" @close="showEdit = !showEdit"  />
                             </Modal> -->
 
                             <button
                             type="button"
-                            @click="showDelete = !showDelete" @click.prevent="sendId(role.id)"
+                            @click="showDelete = !showDelete" @click.prevent="sendId(revenue.id)"
                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                             >
                                 <SvgIcons name="delete" />
                             </button>
-                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteRole(roleitemtodelete)">
+                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteRevenue(roleitemtodelete)">
                                     <template #title>
-                                        Delete Role
+                                        Delete Revenue
                                     </template>
                                     <template #info>
-                                        Are you sure you want to remove role?
+                                        Are you sure you want to remove revenue?
                                     </template>
                                     <template #delete>
-                                        Yes, Delete Role
+                                        Yes, Delete Revenue
                                     </template>
                             </DeleteModal>
                         </div>

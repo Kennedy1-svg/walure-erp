@@ -6,12 +6,12 @@ export default {
 
 <script setup lang="ts">
 import { ref, computed, onMounted, reactive, toRefs } from 'vue'
-import { api_url } from '../../../config'
-import { useRouter } from 'vue-router'
+import { account_api_url } from '../../../config'
+import { useRouter, useRoute } from 'vue-router'
 import SvgIcons from '../../SvgIcons.vue';
 import Switch from '../../switch.vue'
-import * as courseActionTypes from '../../../store/module/courses/constants/action'
-import * as courseMutationTypes from '../../../store/module/courses/constants/mutation'
+import * as accountActionTypes from '../../../store/module/account/constants/action'
+import * as accountMutationTypes from '../../../store/module/account/constants/mutation'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
 import { useStore } from 'vuex';
 
@@ -22,6 +22,18 @@ const route = useRouter();
 let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
+
+const routeName:any = computed(() => {
+    return useRoute().fullPath
+})
+
+const useAddApi:any = computed(() => {
+    return routeName.value.includes('expenditure') ? '/api/expenditurecategory' : '/api/revenuecategory';
+})
+
+// const useEditApi:any = computed(() => {
+//     return routeName.value.contains('expenditure') ? '/api/expenditurecategory/create_category' : '/api/revenuecategory/create_category';
+// })
 
 // const alertState:any = computed(() => store.getters.getCourseAlertStatus.value)
 // const alertText:any = computed(() => store.getters.getCourseAlertText.value)
@@ -72,7 +84,7 @@ const newCategory:any = computed(() => {
     return store.getters.getNewCourseCategory.value;
 });
 
-const courseContentTwo ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+const accountContentTwo ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 const phone ='^[0]+[0-9]';
 
 const checkError:any = () => {
@@ -113,7 +125,7 @@ const checkError:any = () => {
 
 const test = () => {
     console.log('hi')
-    // console.log('new notes', newCategory.courseDescription.value)
+    // console.log('new notes', newCategory.accountDescription.value)
 }
 
 const isEditing:any = computed(() => {
@@ -128,7 +140,7 @@ const isEditing:any = computed(() => {
 
 const newText = () => {
     console.log('hello')
-    // console.log('new notes here', newCategory.courseDescription.value)
+    // console.log('new notes here', newCategory.accountDescription.value)
 }
 
 const notes = ref('')
@@ -136,7 +148,7 @@ const notes = ref('')
 const emits = defineEmits(['close'])
 
 const closeModal:any =  () => {
-    // store.commit(courseMutationTypes.SetNewCourseCategory, {})
+    // store.commit(accountMutationTypes.SetNewCourseCategory, {})
     emits('close')
 }
 
@@ -165,18 +177,20 @@ const resetForm:any = Object.freeze({
 
 const addCategory:any = async () => {
     console.log('hi');
-    // console.log('newstudent', newCategory.value)
+    console.log('newstudent', newCategory.value)
     // console.log('newstudent', newCategory.value.imageFile)
-    const request:any = `${api_url}api/coursecategory/create-category`;
+    const request:any = `${account_api_url}${useAddApi.value}/create_category`;
+
+    console.log('request add cat', request)
 
     // const formElem = document.getElementById('formElem')
-    formData.append('Name', newCategory.value.name)
+    formData.append('name', newCategory.value.name)
     // formData.append('Description', newCategory.value.description)
 
-    // const data:any = {
-    //     name: newCategory.value.name,
+    const data:any = {
+        name: newCategory.value.name,
     //     description: newCategory.value.description,
-    // }
+    }
 
     // console.log('formData', JSON.parse(JSON.stringify(formData)))
 
@@ -190,18 +204,18 @@ const addCategory:any = async () => {
     //     ...formData,
     //     imageFile: newCategory.value.imageFile
     // }
-    console.log('added Data', formData)
+    console.log('added Data', data)
     // console.log('formdata items', [...data.entries()])
 
     const newData:any = {
         url: request,
-        data: formData
+        data: data
     }
     console.log('newData', newData)
-    await store.dispatch(courseActionTypes.AddNewCourseCategory, newData)
+    await store.dispatch(accountActionTypes.AddExpenditureCategory, newData)
     const result = await store.getters.getCourseCategories
     closeModal()
-    store.commit(courseMutationTypes.SetNewCourseCategory, {})
+    store.commit(accountMutationTypes.SetCategory, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
@@ -218,7 +232,7 @@ const editCategory:any = async () => {
     console.log('hi');
     // console.log('newstudent', newCategory.value)
     // console.log('newstudent', newCategory.value.imageFile)
-    const request:any = `${api_url}api/coursecategory/edit-category`;
+    const request:any = `${account_api_url}api/accountcategory/edit-category`;
 
     // const formElem = document.getElementById('formElem')
     // formData.append('Name', newCategory.value.name)
@@ -250,10 +264,10 @@ const editCategory:any = async () => {
         data: data
     }
     console.log('newData', newData)
-    await store.dispatch(courseActionTypes.EditCourseCategory, newData)
+    // await store.dispatch(accountActionTypes.EditCourseCategory, newData)
     const result = await store.getters.getCourseCategories
     closeModal()
-    store.commit(courseMutationTypes.SetNewCourseCategory, {})
+    // store.commit(accountMutationTypes.SetNewCourseCategory, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
@@ -268,8 +282,8 @@ const submitEdit:any = () => {
 
 onMounted(async () => {
     console.log('I am now here')
-    // const request:any = `${api_url}api/coursecategory/get-categories`;
-    // await store.dispatch(courseActionTypes.FetchCourseCategories, request)
+    // const request:any = `${account_api_url}api/accountcategory/get-categories`;
+    // await store.dispatch(accountActionTypes.FetchCourseCategories, request)
 
 })
 
@@ -285,6 +299,7 @@ const disabledView:any = 'bg-gray-300';
             <p class="text-2xl">{{ props.name }} Category</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
+        {{ useAddApi }}
         <form class="text-sm grid">
             <div class="grid text-left gap-8 mb-10">
                 <!-- {{ newCategory }} -->

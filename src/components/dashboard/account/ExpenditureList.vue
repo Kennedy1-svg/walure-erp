@@ -9,24 +9,25 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import EditRole from './EditRoleForm.vue';
-// import EditRoleHeader from './EditRoleHeader.vue';
+// import EditExpFetchExpenditure from './EditExpFetchExpenditureForm.vue';
+// import EditExpFetchExpenditureHeader from './EditExpFetchExpenditureHeader.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
+import moment from 'moment';
 import DeleteModal from '../../DeleteModal.vue';
-import * as actionTypes from '../../../store/module/users/constants/action';
-import { api_url } from '../../../config/index';
+import * as actionTypes from '../../../store/module/account/constants/action';
+import { account_api_url } from '../../../config/index';
 
 import { useRouter } from 'vue-router';
 
 const route = useRouter();
 
-const roles:any = computed(() => {
-    return store.getters.getRole.value.payload;
+const expenditures:any = computed(() => {
+    return store.getters.getExpenditure.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getRole.value.totalCount;
+    return store.getters.getExpenditure.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
@@ -36,32 +37,32 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/role-management/get-roles/${pageIndex.value}/{pageSize}`;
+    const request:any = `${account_api_url}api/expenditure/getall_expenditure?pageIndex=${pageIndex.value}&pageSize={pageSize}`;
     console.log('url', request)
-    await store.dispatch(actionTypes.FetchRole, request)
+    await store.dispatch(actionTypes.FetchExpenditure, request)
 }
 
-let roleitemtodelete:any = ref('')
+let expenditureitemtodelete:any = ref('')
 
 const sendId:any = (id:any) => {
-    console.log('batchid', id)
-    roleitemtodelete.value = id
-    console.log('roleitemtodelete', roleitemtodelete.value)
-    return roleitemtodelete
+    console.log('expenditureid', id)
+    expenditureitemtodelete.value = id
+    console.log('expenditureitemtodelete', expenditureitemtodelete.value)
+    return expenditureitemtodelete
 }
 
-const deleteRole:any = async (id:any) => {
-    console.log('category category', id);
+const deleteExpenditure:any = async (id:any) => {
+    console.log('expenditure expenditure', id);
 
-    const request:any = `${api_url}api/role-management/delete-role/${id}`;
+    const request:any = `${account_api_url}api/expenditure/delete-expenditure/${id}`;
 
     console.log('requestData', request)
-    await store.dispatch(actionTypes.RemoveRole, request)
-    await store.dispatch(actionTypes.FetchRole)
+    await store.dispatch(actionTypes.RemoveExpenditure, request)
+    await store.dispatch(actionTypes.FetchExpenditure)
     closeModal()
-    // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
+    // const fetchrequest:any = `${account_api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
     // console.log('url', fetchrequest)
-    // await store.dispatch(actionTypes.FetchRoleQuotes)
+    // await store.dispatch(actionTypes.FetchExpenditureQuotes)
 }
 
 const emits = defineEmits(['close']);
@@ -87,11 +88,11 @@ const totalPages:any = computed(() => {
 
 const setId:any = (id:any) => {
     console.log('role', id)
-    // const request:any = `${api_url}api/role-management/get-role-details/${id}`;
+    // const request:any = `${account_api_url}api/role-management/get-role-details/${id}`;
     // console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditRole, request)
+    // store.dispatch(actionTypes.FetchEditExpFetchExpenditure, request)
     route.push({
-        name: 'EditRole',
+        name: 'EditExpenditure',
         params: {
             id: id
         }
@@ -118,106 +119,107 @@ const store = useStore();
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
-    console.log('Role List mounted');
-    const request:any = `${api_url}api/role-management/get-roles/{pageIndex}/{pageSize}`;
-    await store.dispatch(actionTypes.FetchRole)
+    console.log('FetchExpenditure List mounted');
+    await store.dispatch(actionTypes.FetchExpenditure)
 });
 </script>
 
 <template>
     <div class="main grid mt-3">
         <div class="title flex justify-end items-center mb-10">
-            <!-- <h1 class="text-2xl font-semibold text-black">Role List</h1> -->
+            <!-- <h1 class="text-2xl font-semibold text-black">ExpFetchExpenditure List</h1> -->
             <p class="text-xl pr-3 font-medium text-primary">Total : {{ total_count }}</p>
         </div>
         <div class="table">
-            <!-- {{ roles }} -->
-        <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
-            <table class="overflow-x-scroll border items-center w-full">
-                <thead class="bg-table-head">
-                <tr class="justify-items-center">
-                    <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
-                    S/N
-                    </th>
-                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Category
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Items
-                    </th>
-                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Unique Identifier Code
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Amount
-                    </th>
-                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Date/Time Created
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Date of transaction
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
-                </tr>
-                </thead>
+            <!-- {{ expenditures }} -->
+            <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
+                <table class="overflow-x-scroll border items-center w-full">
+                    <thead class="bg-table-head">
+                        <tr class="justify-items-center">
+                            <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
+                                S/N
+                            </th>
+                            <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                                Category
+                            </th>
+                            <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                                Items
+                            </th>
+                            <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                                Unique Identifier Code
+                            </th>
+                            <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                                Amount
+                            </th>
+                            <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                                Date Created
+                            </th>
+                            <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                                Transaction Date
+                            </th>
+                            <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
 
-                <tbody id="students" class="bg-white">
-                  <tr v-for="(role) in roles" :key="role.id">
-                      <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ pageIndex == 1 ? (roles.indexOf(role) + 1) : ((pageIndex - 1) * 10) + (roles.indexOf(role) + 1) }}
-                      </td>
-                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ role.role }}
-                      </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ role.modifiedOn }}
-                      </td>
-                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ role.role }}
-                      </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ role.modifiedOn }}
-                      </td>
-                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ role.role }}
-                      </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {{ role.modifiedOn }}
-                      </td>
-                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div class="flex w-2/5 items-center">
-                            <button
-                            type="button"
-                            @click="showEdit = !showEdit" @click.prevent="setId(role.id)"
-                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
-                            >
-                                <SvgIcons name="edit" />
-                            </button>
-                            <!-- <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                <EditRole :role="role" @close="showEdit = !showEdit"  />
-                            </Modal> -->
+                    <tbody id="students" class="bg-white">
+                        <tr v-for="(expenditure) in expenditures" :key="expenditure.id">
+                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                                {{ pageIndex == 1 ? (expenditures.indexOf(expenditure) + 1) : ((pageIndex - 1) * 10) + (expenditures.indexOf(expenditure) + 1) }}
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ expenditure.category }}
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                {{ expenditure.item }}
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ expenditure.uniqueIdentifierCode }}
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                {{ expenditure.amount }}
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ moment(expenditure.createdOn).format('MM/DD/YYYY') }}
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                {{ moment(expenditure.transactionDate).format('MM/DD/YYYY') }}
+                            </td>
+                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                <div class="flex w-2/5 items-center">
+                                    <button
+                                    type="button"
+                                    @click="showEdit = !showEdit" @click.prevent="setId(expenditure.id)"
+                                    class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
+                                    >
+                                        <SvgIcons name="edit" />
+                                    </button>
+                                    <!-- <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                        <EditExpFetchExpenditure :expenditure="expenditure" @close="showEdit = !showEdit"  />
+                                    </Modal> -->
 
-                            <button
-                            type="button"
-                            @click="showDelete = !showDelete" @click.prevent="sendId(role.id)"
-                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                            >
-                                <SvgIcons name="delete" />
-                            </button>
-                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteRole(roleitemtodelete)">
-                                    <template #title>
-                                        Delete Role
-                                    </template>
-                                    <template #info>
-                                        Are you sure you want to remove role?
-                                    </template>
-                                    <template #delete>
-                                        Yes, Delete Role
-                                    </template>
-                            </DeleteModal>
-                        </div>
-                      </td>
-                  </tr>
+                                    <button
+                                    type="button"
+                                    @click="showDelete = !showDelete" @click.prevent="sendId(expenditure.id)"
+                                    class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                    >
+                                        <SvgIcons name="delete" />
+                                    </button>
+                                    <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteExpenditure(expenditureitemtodelete)">
+                                        <template #title>
+                                            Delete Expenditure
+                                        </template>
+                                        <template #info>
+                                            Are you sure you want to remove expenditure?
+                                        </template>
+                                        <template #delete>
+                                            Yes, Delete Expenditure
+                                        </template>
+                                    </DeleteModal>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">

@@ -1,7 +1,7 @@
 import { User } from 'oidc-client'
 // import { createOidcAuth, SignInType, LogLevel } from './vue-oidc-client'
 import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
-import { zoho_client_id, zoho_scope, base_url, oidc_authority } from './config'
+import { client_id, scope, base_url, oidc_authority } from './config'
 
 const loco = window.location
 const appRootUrl = `${loco.protocol}//${loco.host}/`
@@ -23,14 +23,14 @@ const idsrvAuth = createOidcAuth(
   appRootUrl,
   {
     authority: oidc_authority,
-    client_id: zoho_client_id,
+    client_id: client_id,
     redirect_uri: redirectUri,
     post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
     response_type: 'code',
     filterProtocolClaims: true,
     loadUserInfo: true,
-    scope: zoho_scope,
-    extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
+    scope: scope,
+    extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
     // extraTokenParams: {scope: scopes},
   },
   console,
@@ -39,14 +39,14 @@ const idsrvAuth = createOidcAuth(
 
 // const clientSettings = {
 //   authority: oidc_authority,
-//   client_id: zoho_client_id,
+//   client_id: client_id,
 //   redirect_uri: redirectUri,
 //   post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
 //   response_type: 'code',
 //   filterProtocolClaims: true,
 //   loadUserInfo: true,
-//   scope: zoho_scope,
-//   extraQueryParams: { scope: zoho_scope, prompt: prompt, provider: provider }
+//   scope: scope,
+//   extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
 //   // extraTokenParams: {scope: scopes},
 // };
 

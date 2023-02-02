@@ -55,7 +55,7 @@ const login:any = async () => {
     params.append('password', data.password);
     params.append('grant_type', `${grant_type}`);
     params.append('client_id', `${client_id}`);
-    params.append('client_secret', `${client_secret}`);
+    // params.append('client_secret', `${client_secret}`);
     params.append('scope', `${scope}`);
 
     const request:any = {
@@ -185,7 +185,7 @@ const submit:any = () => {
                 </div>
             </div>
             <div class="grid">
-                <button @click.prevent="submit" :disabled="isDisabled" :class="[isDisabled ? 'bg-grey' : 'bg-primary']" class="p-4 font-bold flex justify-center border text-white rounded-md">
+                <button @click.prevent="submit" :disabled="isDisabled" :class="[isDisabled ? 'bg-grey' : 'bg-primary']" class="p-4 font-bold flex justify-center items-center border text-white rounded-md">
                     <span class="px-4 flex" :class="[isLoading ? '' : 'hidden']">
                         <spinner />
                     </span>

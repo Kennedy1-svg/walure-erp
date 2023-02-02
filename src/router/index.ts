@@ -51,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'Layout',
     component: () => import('../views/dashboard/Layout.vue'),
-    meta: { authName: idsrvAuth.authName },
+    meta: { requiresAuth: true }, // meta: { authName: idsrvAuth.authName },
     children: [
       {
         path: '',
@@ -197,54 +197,54 @@ const routes: Array<RouteRecordRaw> = [
       //   component: () => import('../views/dashboard/ipos/DemoRequest.vue'),
       //   meta: { authName: idsrvAuth.authName },
       // },
-      // {
-      //   path: 'user-management/users',
-      //   name: 'User',
-      //   component: () => import('../views/dashboard/users/Index.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
-      // {
-      //   path: 'user-management/roles',
-      //   name: 'Roles',
-      //   component: () => import('../views/dashboard/users/Role.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
-      // {
-      //   path: 'user-management/add-role',
-      //   name: 'AddRole',
-      //   component: () => import('../views/dashboard/users/AddRole.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
-      // {
-      //   path: 'user-management/edit-role/:id',
-      //   name: 'EditRole',
-      //   component: () => import('../views/dashboard/users/EditRole.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
-      // {
-      //   path: 'account-management/revenue',
-      //   name: 'Revenue',
-      //   component: () => import('../views/dashboard/account/Index.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
-      // {
-      //   path: 'account-management/expenditure',
-      //   name: 'Expenditure',
-      //   component: () => import('../views/dashboard/account/Expenditure.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
-      // {
-      //   path: 'account-management/income-statement',
-      //   name: 'IncomeStatement',
-      //   component: () => import('../views/dashboard/account/IncomeStatement.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
-      // {
-      //   path: 'account-management/payroll',
-      //   name: 'Payroll',
-      //   component: () => import('../views/dashboard/account/Payroll.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
+      {
+        path: 'user-management/users',
+        name: 'User',
+        component: () => import('../views/dashboard/users/Index.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'user-management/roles',
+        name: 'Roles',
+        component: () => import('../views/dashboard/users/Role.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'user-management/add-role',
+        name: 'AddRole',
+        component: () => import('../views/dashboard/users/AddRole.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'user-management/edit-role/:id',
+        name: 'EditRole',
+        component: () => import('../views/dashboard/users/EditRole.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'account-management/revenue',
+        name: 'Revenue',
+        component: () => import('../views/dashboard/account/Index.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'account-management/expenditure',
+        name: 'Expenditure',
+        component: () => import('../views/dashboard/account/Expenditure.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'account-management/income-statement',
+        name: 'IncomeStatement',
+        component: () => import('../views/dashboard/account/IncomeStatement.vue'),
+        meta: { requiresAuth: false },
+      },
+      {
+        path: 'account-management/payroll',
+        name: 'Payroll',
+        component: () => import('../views/dashboard/account/Payroll.vue'),
+        meta: { requiresAuth: false },
+      },
       // {
       //   path: 'human-resource/employee-data',
       //   name: 'EmployeeData',
@@ -326,14 +326,19 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach(async (to, from) => {
-//   const token:any = await localStorage.getItem('token')
-//   if (to.meta.requiresAuth) {
-//     if (!token) {
-//       router.push({ name: 'Login' })
-//     }
-//   }
-// })
+router.beforeEach(async (to, from) => {
+  const token:any = await localStorage.getItem('token')
+  if (to.meta.requiresAuth) {
+    if (!token) {
+      // router.push({ name: 'Login' })
+      return {
+        path: '/',
+        // save the location we were at to come back later
+        query: { redirect: to.fullPath },
+      }
+    }
+  }
+})
 
 idsrvAuth.useRouter(router);
 

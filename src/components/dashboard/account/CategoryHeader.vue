@@ -1,7 +1,5 @@
 <script lang="ts">
-import { onMounted, ref, reactive } from 'vue'
-import { api_url } from '../../../config'
-import { useStore } from 'vuex'
+import { onMounted, ref, toRefs, computed } from 'vue'
 
 export default {
     name: 'AccountCategoryHeader',
@@ -11,19 +9,36 @@ export default {
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
+import { account_api_url } from '../../../config'
 import Filter from '../../Filter.vue';
+import { useRoute } from 'vue-router'
 import Modal from '../../Modal.vue';
 import AddCategory from './AddCategory.vue';
-import * as courseActionTypes from '../../../store/module/courses/constants/action';
+import * as accountActionTypes from '../../../store/module/account/constants/action';
+import { useStore } from 'vuex'
 
 const store = useStore();
 
 const closeModal:any = () => {
   // document.getElementById('myoal').showModal()
-  console.log('close course modal')
+  console.log('close account modal')
   let doc:any = document.getElementById('addaccountcategory')
   doc.close()
 }
+
+const props:any = defineProps({
+  url: String
+});
+
+const { url } = toRefs(props);
+
+// const routeName:any = computed(() => {
+//     return useRoute().fullPath
+// })
+
+// const useAddApi:any = computed(() => {
+//     return routeName.value.includes('expenditure') ? 'api/expenditurecategory/' : 'api/revenuecategory/';
+// })
 
 let isSearching:any = ref(false)
 
@@ -33,14 +48,15 @@ const filter:any = async () => {
     isSearching.value = true
     const search:any = searchText.value.toLowerCase();
     console.log('search', search)
-    const request:any = `${api_url}api/coursecategory/filter-categories/${search}`;
-    await store.dispatch(courseActionTypes.FetchCourseCategories, request)
+    const request:any = `${account_api_url}${url.value}getall_category?keyword=${search}`;
+    await store.dispatch(accountActionTypes.FetchCategory, request)
 }
 
 const close:any = async () => {
     isSearching.value = false
     searchText.value = ''
-    await store.dispatch(courseActionTypes.FetchCourseCategories)
+    const request:any = `${account_api_url}${url.value}getall_category`;
+    await store.dispatch(accountActionTypes.FetchCategory, request)
 }
 
 onMounted(() => {

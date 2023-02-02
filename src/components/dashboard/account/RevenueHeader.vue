@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: 'BatchHeader',
+  name: 'RevenueHeader',
 }
 </script>
 
@@ -15,11 +15,13 @@ import Modal from '../../Modal.vue';
 import AddRevenue from './AddRevenue.vue';
 // import AddRevenue from './ViewRevenueDetails.vue';
 import { useStore } from 'vuex';
+import { account_api_url } from '../../../config/index'
 import moment from 'moment';
 // import multiselect from 'vue-multiselect';
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
-import * as batchActionTypes from '../../../store/module/batch/constants/action';
+import * as accountActionTypes from '../../../store/module/account/constants/action';
+// import * as accountActionTypes from '../../../store/module/batch/constants/action';
 import { api_url } from '../../../config/index'
 
 const store = useStore();
@@ -37,6 +39,10 @@ let isSearching:any = ref(false)
 const courses:any = computed(() => {
   return store.getters.getCourses.value.payload;
 });
+
+const categories:any = computed(() => {
+    return store.getters.getCategory.value.payload;
+})
 
 const statusoptions:any = [
   {
@@ -60,6 +66,7 @@ const statusField:any = ref('')
 const filter:any = async () => {
     isSearching.value = true
     const search:any = searchText.value.toLowerCase();
+    console.log('search', search)
   // const batch:any = document.getElementById('course');
   // const rows:any = batch.getElementsByTagName('ul');
 
@@ -72,24 +79,24 @@ const filter:any = async () => {
   //     rows[i].style.display = 'none';
   //   }
   // }
-  const request:any = `${api_url}api/batch/search-batch/{pageIndex}/{pageSize}/${search}`;
-  await store.dispatch(batchActionTypes.FetchBatch, request)
+  const request:any = `${account_api_url}api/revenue/getall_revenue?keyword=${search}`;
+  await store.dispatch(accountActionTypes.FetchRevenue, request)
 }
 
 const filtercourse:any = async () => {
   console.log('i am here')
 }
 
-const filterAllBatch:any = async () => {
+const filterAllRevenue:any = async () => {
   console.log('let us filter')
   console.log('course id', courseField.value)
   filterClicked.value = true;
   if (courseField.value) {
     const request:any = `${api_url}api/batch/filter-batchCourse/{pageNumber}/{pageSize}/${courseField.value}`;
-    store.dispatch(batchActionTypes.FetchBatch, request)
+    store.dispatch(accountActionTypes.FetchRevenue, request)
   } else if (statusField.value || statusField.value == '0') {
     const request:any = `${api_url}api/batch/filter-batch/{pageNumber}/{pageSize}/${statusField.value}`;
-    store.dispatch(batchActionTypes.FetchBatch, request)
+    store.dispatch(accountActionTypes.FetchRevenue, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
     let start:any = moment(startDate.value).format('MM/DD/YYYY');
@@ -97,7 +104,7 @@ const filterAllBatch:any = async () => {
     console.log('date filter formatted', start, end)
     const request:any = `${api_url}api/batch/get-batchesRange/{pageNumber}/{pageSize}?startDate=${start}&endDate=${end}`;
     console.log('request', request)
-    store.dispatch(batchActionTypes.FetchBatch, request)
+    store.dispatch(accountActionTypes.FetchRevenue, request)
   } else {
     return
   }
@@ -111,7 +118,7 @@ const deselect:any = async () => {
     console.log('on deselect')
     filterClicked.value = false;
     // const batchrequest:any = `${api_url}api/batch/get-batches`;
-    await store.dispatch(batchActionTypes.FetchBatch)
+    await store.dispatch(accountActionTypes.FetchRevenue)
 }
 
 const format:any = (date:any) => {
@@ -126,7 +133,7 @@ const close:any = async () => {
     isSearching.value = false
     searchText.value = ''
   // const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
-    await store.dispatch(batchActionTypes.FetchBatch)
+    await store.dispatch(accountActionTypes.FetchRevenue)
 }
 
 const closeModal:any = () => {
@@ -149,8 +156,11 @@ const disabledView:any = 'bg-gray-300';
 
 onMounted( async() => {
     console.log('onMounted')
-    const courserequest:any = `${api_url}api/course/get-courses`;
-    await store.dispatch(courseActionTypes.FetchCourses, courserequest)
+    const request:any = `${account_api_url}api/revenuecategory/getall_category`;
+    console.log('url', request)
+    await store.dispatch(accountActionTypes.FetchCategory, request)
+    // const courserequest:any = `${api_url}api/course/get-courses`;
+    // await store.dispatch(courseActionTypes.FetchCourses, courserequest)
 })
 
 </script>
@@ -166,7 +176,7 @@ onMounted( async() => {
                 <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date"  />
             </div>
             <div class="status">
-              <multiselect v-model="statusField" @clear="deselect" @select="cancan" valueProp="value" :options="statusoptions" track-by="label" label="label" placeholder="Category" :searchable="true" class="multiselect-blue" />
+              <multiselect v-model="statusField" @clear="deselect" @select="cancan" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="courses">
               <!-- <multiselect @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" /> -->
@@ -189,7 +199,7 @@ onMounted( async() => {
           </div>
           <div class="search-items flex justify-between items-center px11 py-5">
             <div class="status flex gap-4 items-center">
-              <button @click="filterAllBatch" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
+              <button @click="filterAllRevenue" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
                 Apply Filter
               </button>
               <button @click="deselect" class="text-3xl" :class="[filterClicked ? 'flex' : 'hidden']">
@@ -197,7 +207,7 @@ onMounted( async() => {
               </button>
             </div>
             <div class="status flex gap-7 items-center">
-              <button @click="filterAllBatch" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
+              <button @click="filterAllRevenue" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
                 <SvgIcons name="export" class="text-2xl" />
                 Export
               </button>
@@ -218,7 +228,7 @@ onMounted( async() => {
                   </dialog>
                 </div>
               </button>
-              <!-- <button @click="filterAllBatch" class="py-4 px-10 text-white bg-primary hover:shadow rounded border">
+              <!-- <button @click="filterAllRevenue" class="py-4 px-10 text-white bg-primary hover:shadow rounded border">
                 Add Revenue
               </button> -->
               <!-- <button @click="deselect" class="text-3xl" :class="[filterClicked ? 'flex' : 'hidden']">

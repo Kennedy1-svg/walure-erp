@@ -16,11 +16,19 @@ import { api_url } from '../../../config'
 const store = useStore();
 const route = useRoute();
 
-const activeTab:any = ref(0)
-const tabs:any = [
-	"Add Topics",
-	"Upload Topics",
-]
+const routeName:any = computed(() => {
+    return useRoute().fullPath
+})
+
+const useAddApi:any = computed(() => {
+    return routeName.value.includes('expenditure') ? 'api/expenditurecategory/' : 'api/revenuecategory/';
+})
+
+// const activeTab:any = ref(0)
+// const tabs:any = [
+// 	"Add Topics",
+// 	"Upload Topics",
+// ]
 
 // const curriculum:any = computed(():any => {
 // 	return store.getters.getCurriculum.value.payload
@@ -36,8 +44,9 @@ const tabs:any = [
 
 <template>
 <div class="grid w-full">
-	<CategoryHeader />
-	<CategoryList />
+	{{ useAddApi }}
+	<CategoryHeader :url="useAddApi" />
+	<CategoryList :url="useAddApi" />
 	<!--actual component start-->
 	<!-- {{ curriculum }} -->
 	<!--actual component end-->

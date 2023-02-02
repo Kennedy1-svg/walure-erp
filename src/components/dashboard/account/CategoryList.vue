@@ -1,5 +1,5 @@
 <script lang="ts">
-import { onMounted, ref, reactive, computed } from 'vue'
+import { onMounted, ref, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -13,17 +13,32 @@ import Switch from '../../switch.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
-// import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
-import { api_url } from '../../../config/index';
-// import AddSkill from './AddSkill.vue';
+import * as accountActionTypes from '../../../store/module/account/constants/action';
+// import { useRoute } from 'vue-router'
+import { account_api_url } from '../../../config/index';
+import AddCategory from './AddCategory.vue';
 
-const skills:any = computed(() => {
-    return store.getters.getSkills.value.payload;
+const categories:any = computed(() => {
+    return store.getters.getCategory.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getSkills.value.totalCount;
+    return store.getters.getCategory.value.totalCount;
 })
+
+// const routeName:any = computed(() => {
+//     return useRoute().fullPath
+// })
+
+// const useAddApi:any = computed(() => {
+//     return routeName.value.includes('expenditure') ? '/api/expenditurecategory' : '/api/revenuecategory';
+// })
+
+const props:any = defineProps({
+  url: String
+});
+
+const { url } = toRefs(props);
 
 let pageIndex: any = ref(1);
 
@@ -32,9 +47,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/skill/get-skills/${pageIndex.value}/{pageSize}`;
+    const request:any = `${account_api_url}${url.value}/getall_category?pageIndex=${pageIndex.value}`;
     console.log('url', request)
-    // await store.dispatch(instructorActionTypes.FetchSkills, request)
+    await store.dispatch(accountActionTypes.FetchCategory, request)
 }
 
 const totalPages:any = computed(() => {
@@ -49,36 +64,36 @@ const totalPages:any = computed(() => {
     return total
 })
 
-const editSkill:any = async (skill:any) => {
-    console.log('skill', skill)
-    const editingSkill:any = skill;
-    // const request:any = `${api_url}api/batch/${id}`;
-    // console.log('request for the', request)
-    // await store.dispatch(instructorActionTypes.FetchEditSkill, skill)
+const editCategory:any = async (category:any) => {
+    console.log('category', category.id)
+    const editingCategory:any = category;
+    const request:any = `${account_api_url}${url.value}/get_category/${category}`;
+    console.log('request for the', request)
+    await store.dispatch(accountActionTypes.FetchEditCategory, category)
     // console.log('student', student)
     // console.log('student', student.value)
 }
 
-let skillitemtodelete:any = ref('')
+let categoryitemtodelete:any = ref('')
 
 const sendId:any = (id:any) => {
     console.log('batchid', id)
-    skillitemtodelete.value = id
-    console.log('skillitemtodelete', skillitemtodelete.value)
-    return skillitemtodelete
+    categoryitemtodelete.value = id
+    console.log('categoryitemtodelete', categoryitemtodelete.value)
+    return categoryitemtodelete
 }
 
-const deleteSkill:any = async (skill:any) => {
-    console.log('category category', skill);
+const deleteCategory:any = async (category:any) => {
+    console.log('category category', category);
 
-    const request:any = `${api_url}api/skill/delete/${skill}`;
+    const request:any = `${account_api_url}${url.value}/delete-category/${category}`;
 
     console.log('requestData', request)
-    // await store.dispatch(instructorActionTypes.RemoveSkill, request)
+    await store.dispatch(accountActionTypes.RemoveExpenditureCategory, request)
     closeModal()
-    const fetchrequest:any = `${api_url}api/skill/get-skills/{pageNumber}/{pageSize}`;
+    const fetchrequest:any = `${account_api_url}${url.value}/getall_category`;
     console.log('url', fetchrequest)
-    // await store.dispatch(instructorActionTypes.FetchSkills, fetchrequest)
+    await store.dispatch(accountActionTypes.FetchCategory, fetchrequest)
 }
 
 const emits = defineEmits(['close']);
@@ -100,9 +115,10 @@ const store = useStore();
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
-    console.log('SkillList mounted');
-    // const request:any = `${api_url}api/skill/get-skills/{pageIndex}/{pageSize}`;
-    // await store.dispatch(instructorActionTypes.FetchSkills)
+    console.log('ECategory List mounted', url.value);
+    const request:any = `${account_api_url}${url.value}getall_category`;
+    console.log('url', request)
+    await store.dispatch(accountActionTypes.FetchCategory, request)
 });
 </script>
 
@@ -110,6 +126,7 @@ onMounted( async () => {
     <div class="main grid">
         <div class="title flex justify-end pr-3 items-center mb-10">
             <!-- <h1 class="text-2xl font-semibold text-black">Category List</h1> -->
+            <!-- {{ category }} -->
             <p class="text-xl font-medium text-primary">Total : {{ total_count }}</p>
         </div>
         <div class="table">
@@ -128,42 +145,42 @@ onMounted( async () => {
                     </thead>
 
                     <tbody id="students" class="bg-white">
-                    <tr v-for="(skill) in skills" :key="skill.id">
+                    <tr v-for="(category) in categories" :key="category.id">
                             <td class="border-t-0 pl-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ pageIndex == 1 ? (skills.indexOf(skill) + 1) : ((pageIndex - 1) * 10) + (skills.indexOf(skill) + 1) }}
+                            {{ pageIndex == 1 ? (categories.indexOf(category) + 1) : ((pageIndex - 1) * 10) + (categories.indexOf(category) + 1) }}
                             </td>
                             <td class="border-t-0 pr-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                {{ skill.name }}
+                                {{ category.name }}
                             </td>
                             <td class="border-t-0 pl-3 flex justify-end align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                                 <div class="flex w-2/5 items-center">
                                     <button
                                     type="button"
-                                    @click="showEdit = !showEdit" @click.prevent="editSkill(skill)"
+                                    @click="showEdit = !showEdit" @click.prevent="editCategory(category)"
                                     class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
                                     >
                                         <SvgIcons name="edit" />
                                     </button>
                                     <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                        <AddSkill name="Edit" @close="showEdit = !showEdit"  />
+                                        <AddCategory name="Edit" @close="showEdit = !showEdit"  />
                                     </Modal>
 
                                     <button
                                     type="button"
-                                    @click="showDelete = !showDelete" @click.prevent="sendId(skill.id)"
+                                    @click="showDelete = !showDelete" @click.prevent="sendId(category.id)"
                                     class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                     >
                                         <SvgIcons name="delete" />
                                     </button>
-                                    <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteSkill(skillitemtodelete)">
+                                    <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteCategory(categoryitemtodelete)">
                                             <template #title>
-                                                Delete Skill
+                                                Delete Category
                                             </template>
                                             <template #info>
-                                                Are you sure you want to remove course skill?
+                                                Are you sure you want to remove course category?
                                             </template>
                                             <template #delete>
-                                                Yes, Delete Skill
+                                                Yes, Delete Category
                                             </template>
                                     </DeleteModal>
                                 </div>
