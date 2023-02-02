@@ -299,7 +299,7 @@ const disabledView:any = 'bg-gray-300';
             <p class="text-2xl">{{ props.name }} Category</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
-        {{ useAddApi }}
+        <!-- {{ useAddApi }} -->
         <form class="text-sm grid">
             <div class="grid text-left gap-8 mb-10">
                 <!-- {{ newCategory }} -->

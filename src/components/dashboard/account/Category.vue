@@ -44,7 +44,7 @@ const useAddApi:any = computed(() => {
 
 <template>
 <div class="grid w-full">
-	{{ useAddApi }}
+	<!-- {{ useAddApi }} -->
 	<CategoryHeader :url="useAddApi" />
 	<CategoryList :url="useAddApi" />
 	<!--actual component start-->
