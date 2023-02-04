@@ -37,26 +37,26 @@ const idsrvAuth = createOidcAuth(
   LogLevel.Debug
 )
 
-const clientSettings = {
-  authority: oidc_authority,
-  client_id: client_id,
-  redirect_uri: redirectUri,
-  post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
-  response_type: 'code',
-  filterProtocolClaims: true,
-  loadUserInfo: true,
-  scope: scope,
-  extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
-  // extraTokenParams: {scope: scopes},
-};
+// const clientSettings = {
+//   authority: oidc_authority,
+//   client_id: client_id,
+//   redirect_uri: redirectUri,
+//   post_logout_redirect_uri: 'https://walure-erp.netlify.app/',
+//   response_type: 'code',
+//   filterProtocolClaims: true,
+//   loadUserInfo: true,
+//   scope: scope,
+//   extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
+//   // extraTokenParams: {scope: scopes},
+// };
 
 // const userManager = new Oidc.UserManager(clientSettings);
 
-if (window.location.href.includes('auth-callback')) {
-  idsrvAuth.signIn(clientSettings)
-} else if (window.location.href.includes('logout-callback')) {
-  idsrvAuth.signOut(clientSettings)
-}
+// if (window.location.href.includes('auth-callback')) {
+//   idsrvAuth.signIn(clientSettings)
+// } else if (window.location.href.includes('logout-callback')) {
+//   idsrvAuth.signOut(clientSettings)
+// }
 
 // handle events
 idsrvAuth.events.addAccessTokenExpiring(function() {
