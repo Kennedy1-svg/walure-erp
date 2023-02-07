@@ -59,6 +59,8 @@ const close:any = async () => {
     await store.dispatch(accountActionTypes.FetchCategory, request)
 }
 
+const newUrl:any = url.value;
+
 onMounted(() => {
     // store.commit('setPageTitle', 'Course List');
     console.log('AccountCategoryHeader mounted');
@@ -111,7 +113,7 @@ onMounted(() => {
                     <dialog id="addaccountcategory" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">
                         <div class="w-full h-auto">
                             <!-- Modal Content-->
-                                <AddCategory name="Add" @close="closeModal" />
+                                <AddCategory :url="newUrl" name="Add" @close="closeModal" />
                             <!-- End of Modal Content-->
                         </div>
                     </dialog>

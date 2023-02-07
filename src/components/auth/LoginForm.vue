@@ -185,8 +185,8 @@ const submit:any = () => {
                 </div>
             </div>
             <div class="grid">
-                <button @click.prevent="submit" :disabled="isDisabled" :class="[isDisabled ? 'bg-grey' : 'bg-primary']" class="p-4 font-bold flex justify-center items-center border text-white rounded-md">
-                    <span class="px-4 flex" :class="[isLoading ? '' : 'hidden']">
+                <button @click.prevent="submit" :disabled="isDisabled" :class="[isDisabled ? 'bg-grey' : 'bg-primary']" class="p-4 font-bold flex justify-center border text-white rounded-md">
+                    <span class="px-4" :class="[isLoading ? '' : 'hidden']">
                         <spinner />
                     </span>
                     Login

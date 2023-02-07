@@ -22,7 +22,6 @@ import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
 import * as accountActionTypes from '../../../store/module/account/constants/action';
 // import * as accountActionTypes from '../../../store/module/batch/constants/action';
-import { api_url } from '../../../config/index'
 
 const store = useStore();
 const startDate:any = ref('');
@@ -61,7 +60,7 @@ const statusoptions:any = [
 
 const courseField:any = ref('');
 
-const statusField:any = ref('')
+const categoryField:any = ref('')
 
 const filter:any = async () => {
     isSearching.value = true
@@ -91,18 +90,28 @@ const filterAllRevenue:any = async () => {
   console.log('let us filter')
   console.log('course id', courseField.value)
   filterClicked.value = true;
-  if (courseField.value) {
-    const request:any = `${api_url}api/batch/filter-batchCourse/{pageNumber}/{pageSize}/${courseField.value}`;
-    store.dispatch(accountActionTypes.FetchRevenue, request)
-  } else if (statusField.value || statusField.value == '0') {
-    const request:any = `${api_url}api/batch/filter-batch/{pageNumber}/{pageSize}/${statusField.value}`;
+  // if (courseField.value) {
+  //   const request:any = `${account_api_url}api/batch/filter-batchCourse/{pageNumber}/{pageSize}/${courseField.value}`;
+  //   store.dispatch(accountActionTypes.FetchRevenue, request)
+  // } else
+
+  if (categoryField.value) {
+    const request:any = `${account_api_url}api/revenue/getall_revenue?categoryId=${categoryField.value}`;
     store.dispatch(accountActionTypes.FetchRevenue, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
-    let start:any = moment(startDate.value).format('MM/DD/YYYY');
-    let end:any = moment(endDate.value).format('MM/DD/YYYY');
+    let start:any = moment(startDate.value).format('DD-MM-YYYY');
+    let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${api_url}api/batch/get-batchesRange/{pageNumber}/{pageSize}?startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/revenue/getall_revenue?startDate=${start}&endDate=${end}`;
+    console.log('request', request)
+    store.dispatch(accountActionTypes.FetchRevenue, request)
+  } else if (startDate.value && endDate.value && categoryField.value) {
+    console.log('date filter', startDate.value, endDate.value)
+    let start:any = moment(startDate.value).format('DD-MM-YYYY');
+    let end:any = moment(endDate.value).format('DD-MM-YYYY');
+    console.log('date filter formatted', start, end)
+    const request:any = `${account_api_url}api/revenue/getall_revenue?categoryId=${categoryField.value}&startDate=${start}&endDate=${end}`;
     console.log('request', request)
     store.dispatch(accountActionTypes.FetchRevenue, request)
   } else {
@@ -117,7 +126,10 @@ const cancan:any = async () => {
 const deselect:any = async () => {
     console.log('on deselect')
     filterClicked.value = false;
-    // const batchrequest:any = `${api_url}api/batch/get-batches`;
+    categoryField.value = ''
+    startDate.value = ''
+    endDate.value = ''
+    // const batchrequest:any = `${account_api_url}api/batch/get-batches`;
     await store.dispatch(accountActionTypes.FetchRevenue)
 }
 
@@ -132,7 +144,7 @@ const format:any = (date:any) => {
 const close:any = async () => {
     isSearching.value = false
     searchText.value = ''
-  // const request:any = `${api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
+  // const request:any = `${account_api_url}api/batch/get-batches/{pageIndex}/{pageSize}`;
     await store.dispatch(accountActionTypes.FetchRevenue)
 }
 
@@ -144,7 +156,7 @@ const closeModal:any = () => {
 }
 
 let isActive:any = computed(() => {
-    if (courseField.value || statusField.value || statusField.value == '0' || (startDate.value && endDate.value)) {
+    if (courseField.value || categoryField.value || categoryField.value == '0' || (startDate.value && endDate.value)) {
         return true
     } else {
         return false
@@ -156,10 +168,10 @@ const disabledView:any = 'bg-gray-300';
 
 onMounted( async() => {
     console.log('onMounted')
-    const request:any = `${account_api_url}api/revenuecategory/getall_category`;
+    const request:any = `${account_api_url}api/revenuecategory/getlist_category`;
     console.log('url', request)
     await store.dispatch(accountActionTypes.FetchCategory, request)
-    // const courserequest:any = `${api_url}api/course/get-courses`;
+    // const courserequest:any = `${account_api_url}api/course/get-courses`;
     // await store.dispatch(courseActionTypes.FetchCourses, courserequest)
 })
 
@@ -176,7 +188,7 @@ onMounted( async() => {
                 <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date"  />
             </div>
             <div class="status">
-              <multiselect v-model="statusField" @clear="deselect" @select="cancan" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
+              <multiselect v-model="categoryField" @clear="deselect" @select="cancan" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="courses">
               <!-- <multiselect @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" /> -->

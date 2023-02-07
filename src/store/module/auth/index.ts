@@ -205,8 +205,8 @@ export default {
     async [actionTypes.FetchZohoCreds] ({ commit }: any, data: any = `${auth_creds}`) {
       console.log(`data is ${data}`)
       const authdata:any = await getData(data)
-      console.log(`data is ${JSON.stringify(authdata.issuer)}`)
-      console.log(`authdata is ${authdata.issuer}`)
+      // console.log(`data is ${JSON.stringify(authdata.issuer)}`)
+      // console.log(`authdata is ${authdata.issuer}`)
       commit(mutationTypes.SetAuthCreds, authdata)
       commit(mutationTypes.SetIssuer, authdata.issuer)
       commit(mutationTypes.SetAuthEndpoint, authdata.authorization_endpoint)
@@ -225,9 +225,9 @@ export default {
       commit(mutationTypes.SetClaimsParameter, authdata.claims_parameter_supported)
       commit(mutationTypes.SetRequestParams, authdata.request_parameter_supported)
       commit(mutationTypes.SetRequestURIParam, authdata.request_uri_parameter_supported)
-      console.log(`authdata authorization_endpoint is ${authdata.authorization_endpoint}`)
-      console.log(`authdata token_endpoint is ${authdata.token_endpoint}`)
-      console.log(`authdata response_types_supported is ${authdata.response_types_supported}`)
+      // console.log(`authdata authorization_endpoint is ${authdata.authorization_endpoint}`)
+      // console.log(`authdata token_endpoint is ${authdata.token_endpoint}`)
+      // console.log(`authdata response_types_supported is ${authdata.response_types_supported}`)
     },
   }
 }

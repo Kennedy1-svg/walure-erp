@@ -8,6 +8,7 @@ export default {
 import { ref, reactive, computed, onMounted } from 'vue';
 import Revenue from '../../../components/dashboard/account/Index.vue'
 import Category from '../../../components/dashboard/account/Category.vue'
+import alert from '../../../components/alerts.vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/courses/constants/action'
@@ -16,11 +17,24 @@ import { api_url } from '../../../config'
 const store = useStore();
 const route = useRoute();
 
+const alertState:any = computed(() => store.getters.getExpenditureAlertStatus.value)
+const alertText:any = computed(() => store.getters.getExpenditureAlertText.value)
+
 const activeTab:any = ref(0)
 const tabs:any = [
 	"Revenue List",
 	"Category",
 ]
+
+const status:any = computed(() => {
+    let answer:any
+    if (alertText.value.includes('successfully')) {
+        answer = true
+    } else {
+        answer = false
+    }
+    return answer
+})
 
 // const curriculum:any = computed(():any => {
 // 	return store.getters.getCurriculum.value.payload
@@ -36,6 +50,22 @@ const tabs:any = [
 
 <template>
 <div class="grid pt-[50px] px-[35px] pb-[90px]">
+	<alert :class="[alertState ? '' : 'hidden']"  class="fixed z-60 top-40 bg-white p-2 right-0" name="result">
+		<template #icon>
+			<p v-if="status" class="bg-green-accent rounded-full border p-2">
+				<SvgIcons class="text-white" name="tick" />
+			</p>
+			<p v-else class="">
+				<SvgIcons class="text-red" name="exclamation" />
+			</p>
+		</template>
+		<template #info>
+			<p class="text-sm">
+				{{ alertText }}
+			</p>
+		</template>
+		<template #button></template>
+	</alert>
 	<div class="top flex justify-between items-center">
 		<h1 class="font-semibold text-2xl">Revenue</h1>
 	</div>

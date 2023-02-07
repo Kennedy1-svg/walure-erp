@@ -52,6 +52,8 @@ const onPageChange:any = async (page:any) => {
     await store.dispatch(accountActionTypes.FetchCategory, request)
 }
 
+const newUrl:any = url.value;
+
 const totalPages:any = computed(() => {
     // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
     console.log(total_count.value)
@@ -66,10 +68,9 @@ const totalPages:any = computed(() => {
 
 const editCategory:any = async (category:any) => {
     console.log('category', category.id)
-    const editingCategory:any = category;
-    const request:any = `${account_api_url}${url.value}/get_category/${category}`;
+    const request:any = `${account_api_url}${url.value}get_category/${category.id}`;
     console.log('request for the', request)
-    await store.dispatch(accountActionTypes.FetchEditCategory, category)
+    await store.dispatch(accountActionTypes.FetchEditCategory, request)
     // console.log('student', student)
     // console.log('student', student.value)
 }
@@ -162,7 +163,7 @@ onMounted( async () => {
                                         <SvgIcons name="edit" />
                                     </button>
                                     <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                        <AddCategory name="Edit" @close="showEdit = !showEdit"  />
+                                        <AddCategory :url="newUrl" name="Edit" @close="showEdit = !showEdit"  />
                                     </Modal>
 
                                     <button

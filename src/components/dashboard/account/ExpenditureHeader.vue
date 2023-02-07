@@ -13,7 +13,6 @@ import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
 import Modal from '../../Modal.vue';
 import AddExpenditure from './AddExpenditure.vue';
-// import AddExpenditure from './ViewExpenditureDetails.vue';
 import { useStore } from 'vuex';
 import moment from 'moment';
 // import multiselect from 'vue-multiselect';
@@ -60,7 +59,7 @@ const statusoptions:any = [
 
 const courseField:any = ref('');
 
-const statusField:any = ref('')
+const categoryField:any = ref('')
 
 const filter:any = async () => {
     isSearching.value = true
@@ -90,20 +89,30 @@ const filterAllExpenditure:any = async () => {
   console.log('let us filter')
   console.log('course id', courseField.value)
   filterClicked.value = true;
-  if (courseField.value) {
-    const request:any = `${account_api_url}api/expenditure/filter-expenditureCourse/{pageNumber}/{pageSize}/${courseField.value}`;
-    store.dispatch(accountActionTypes.FetchExpenditure, request)
-  } else if (statusField.value || statusField.value == '0') {
-    const request:any = `${account_api_url}api/expenditure/filter-expenditure/{pageNumber}/{pageSize}/${statusField.value}`;
+  // if (courseField.value) {
+  //   const request:any = `${account_api_url}api/expenditure/filter-expenditureCourse/{pageNumber}/{pageSize}/${courseField.value}`;
+  //   store.dispatch(accountActionTypes.FetchExpenditure, request)
+  // } else
+
+  if (categoryField.value) {
+    const request:any = `${account_api_url}api/expenditure/getall_expenditure?categoryId=${categoryField.value}`;
     store.dispatch(accountActionTypes.FetchExpenditure, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
-    let start:any = moment(startDate.value).format('MM/DD/YYYY');
-    let end:any = moment(endDate.value).format('MM/DD/YYYY');
+    let start:any = moment(startDate.value).format('DD-MM-YYYY');
+    let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${account_api_url}api/expenditure/get-expenditureesRange/{pageNumber}/{pageSize}?startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/expenditure/getall_expenditure?startDate=${start}&endDate=${end}`;
     console.log('request', request)
     store.dispatch(accountActionTypes.FetchExpenditure, request)
+  } else if (startDate.value && endDate.value && categoryField.value) {
+    console.log('date filter', startDate.value, endDate.value)
+    let start:any = moment(startDate.value).format('DD-MM-YYYY');
+    let end:any = moment(endDate.value).format('DD-MM-YYYY');
+    console.log('date filter formatted', start, end)
+    const request:any = `${account_api_url}api/expenditure/getall_expenditure?categoryId=${categoryField.value}&startDate=${start}&endDate=${end}`;
+    console.log('request', request)
+    store.dispatch(accountActionTypes.FetchRevenue, request)
   } else {
     return
   }
@@ -116,6 +125,9 @@ const cancan:any = async () => {
 const deselect:any = async () => {
     console.log('on deselect')
     filterClicked.value = false;
+    categoryField.value = ''
+    startDate.value = ''
+    endDate.value = ''
     // const expenditurerequest:any = `${account_api_url}api/expenditure/get-expenditurees`;
     await store.dispatch(accountActionTypes.FetchExpenditure)
 }
@@ -143,7 +155,7 @@ const closeModal:any = () => {
 }
 
 let isActive:any = computed(() => {
-    if (courseField.value || statusField.value || statusField.value == '0' || (startDate.value && endDate.value)) {
+    if (courseField.value || categoryField.value || categoryField.value == '0' || (startDate.value && endDate.value)) {
         return true
     } else {
         return false
@@ -173,7 +185,7 @@ onMounted( async() => {
                 <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date"  />
             </div>
             <div class="status">
-              <multiselect v-model="statusField" @clear="deselect" @select="cancan" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
+              <multiselect v-model="categoryField" @clear="deselect" @select="cancan" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="courses">
               <!-- <multiselect @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" /> -->

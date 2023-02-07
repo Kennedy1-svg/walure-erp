@@ -23,13 +23,13 @@ let isDisabled = ref(true);
 let isError:any = ref(false);
 let isLoading:any = ref(false);
 
-const routeName:any = computed(() => {
-    return useRoute().fullPath
-})
+// const routeName:any = computed(() => {
+//     return useRoute().fullPath
+// })
 
-const useAddApi:any = computed(() => {
-    return routeName.value.includes('expenditure') ? '/api/expenditurecategory' : '/api/revenuecategory';
-})
+// const useAddApi:any = computed(() => {
+//     return routeName.value.includes('expenditure') ? '/api/expenditurecategory' : '/api/revenuecategory';
+// })
 
 // const useEditApi:any = computed(() => {
 //     return routeName.value.contains('expenditure') ? '/api/expenditurecategory/create_category' : '/api/revenuecategory/create_category';
@@ -43,11 +43,14 @@ const useAddApi:any = computed(() => {
 
 const props = defineProps({
     name: {
-    type: String,
-  }
+        type: String,
+    },
+    url: {
+        type: String,
+    }
 });
 
-const { name } = toRefs(props);
+const { name, url } = toRefs(props);
 
 let errors = reactive({
     name: false,
@@ -70,7 +73,7 @@ const formEl:any = ref(null)
 
 let isChecked:any = ref(false);
 
-let formData = new FormData()
+// let formData = new FormData()
 
 const check:any = ():any => {
     isChecked.value = !isChecked.value;
@@ -81,7 +84,7 @@ const check:any = ():any => {
 // })
 
 const newCategory:any = computed(() => {
-    return store.getters.getNewCourseCategory.value;
+    return store.getters.getNewCategory.value;
 });
 
 const accountContentTwo ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
@@ -179,12 +182,12 @@ const addCategory:any = async () => {
     console.log('hi');
     console.log('newstudent', newCategory.value)
     // console.log('newstudent', newCategory.value.imageFile)
-    const request:any = `${account_api_url}${useAddApi.value}/create_category`;
+    const request:any = `${account_api_url}${props.url}create_category`;
 
     console.log('request add cat', request)
 
     // const formElem = document.getElementById('formElem')
-    formData.append('name', newCategory.value.name)
+    // formData.append('name', newCategory.value.name)
     // formData.append('Description', newCategory.value.description)
 
     const data:any = {
@@ -212,10 +215,24 @@ const addCategory:any = async () => {
         data: data
     }
     console.log('newData', newData)
-    await store.dispatch(accountActionTypes.AddExpenditureCategory, newData)
-    const result = await store.getters.getCourseCategories
-    closeModal()
-    store.commit(accountMutationTypes.SetCategory, {})
+
+    let uri:any = props.url
+
+    if (uri.includes('expenditure')) {
+        console.log('i am spending di cash')
+        await store.dispatch(accountActionTypes.AddExpenditureCategory, newData)
+        const result = await store.getters.getCategory
+        closeModal()
+        store.commit(accountMutationTypes.SetNewCategory, {})
+    } else {
+        console.log('onye ji cashi')
+        await store.dispatch(accountActionTypes.AddRevenueCategory, newData)
+        const result = await store.getters.getCategory
+        closeModal()
+        store.commit(accountMutationTypes.SetNewCategory, {})
+    }
+
+
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
     // route.push('/dashboard/student-management')
@@ -230,9 +247,9 @@ const submit:any = () => {
 
 const editCategory:any = async () => {
     console.log('hi');
-    // console.log('newstudent', newCategory.value)
+    console.log('newstudent', props.url)
     // console.log('newstudent', newCategory.value.imageFile)
-    const request:any = `${account_api_url}api/accountcategory/edit-category`;
+    const request:any = `${account_api_url}${props.url}edit_category`;
 
     // const formElem = document.getElementById('formElem')
     // formData.append('Name', newCategory.value.name)
@@ -256,7 +273,7 @@ const editCategory:any = async () => {
     //     ...formData,
     //     imageFile: newCategory.value.imageFile
     // }
-    console.log('edited data', data)
+    console.log('edited data is', data, request.value)
     // console.log('formdata items', [...formData.entries()])
 
     const newData:any = {
@@ -264,9 +281,23 @@ const editCategory:any = async () => {
         data: data
     }
     console.log('newData', newData)
-    // await store.dispatch(accountActionTypes.EditCourseCategory, newData)
-    const result = await store.getters.getCourseCategories
-    closeModal()
+
+    let uri:any = props.url
+
+    if (uri.includes('expenditure')) {
+        console.log('i am spending di cash')
+        await store.dispatch(accountActionTypes.EditExpenditureCategory, newData)
+        const result = await store.getters.getCategory
+        closeModal()
+        store.commit(accountMutationTypes.SetNewCategory, {})
+    } else {
+        console.log('onye ji cashi')
+        await store.dispatch(accountActionTypes.EditRevenueCategory, newData)
+        const result = await store.getters.getCategory
+        closeModal()
+        store.commit(accountMutationTypes.SetNewCategory, {})
+    }
+
     // store.commit(accountMutationTypes.SetNewCourseCategory, {})
     // formEl.reset()
     // console.log('result', JSON.parse(JSON.stringify(result.value)))
@@ -299,10 +330,9 @@ const disabledView:any = 'bg-gray-300';
             <p class="text-2xl">{{ props.name }} Category</p>
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
-        <!-- {{ useAddApi }} -->
         <form class="text-sm grid">
             <div class="grid text-left gap-8 mb-10">
-                <!-- {{ newCategory }} -->
+                <!-- {{ props.url }} -->
                 <div class="grid gap-4">
                     <label for="name" class="font-semibold">
                         Name*

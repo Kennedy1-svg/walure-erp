@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { api_url } from '../../../config'
 import moment from 'moment';
+import { account_api_url } from '../../../config'
 import SvgIcons from '../../SvgIcons.vue';
 import { DatePicker } from 'v-calendar'
 import Filter from '../../Filter.vue';
@@ -17,10 +18,9 @@ import Datepicker from 'vue3-date-time-picker';
 import 'v-calendar/dist/style.css';
 import 'vue3-date-time-picker/dist/main.css'
 // import datepicker from '../../datepicker.vue'
+import * as accountActionTypes from '../../../store/module/account/constants/action'
 import multiselect from '@vueform/multiselect'
-import * as projectActionTypes from '../../../store/module/services/constants/action'
-import * as projectMutationTypes from '../../../store/module/services/constants/mutation'
-import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
+import * as accountMutationTypes from '../../../store/module/account/constants/mutation'
 
 const store = useStore();
 
@@ -40,25 +40,29 @@ const props = defineProps({
 
 const { name } = toRefs(props);
 
-const newProject:any = computed(() => {
-    return store.getters.getNewProject.value
+const newExpenditure:any = computed(() => {
+    return store.getters.getNewExpenditure.value
+})
+
+const categories:any = computed(() => {
+    return store.getters.getCategory.value.payload;
 })
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 
 const checkError:any = () => {
-    if (!newProject.value.category && newProject.value.category != '0') {
-        errors.category = true;
-        errors.categoryText = 'Category is required'
+    if (!newExpenditure.value.categoryId) {
+        errors.categoryId = true;
+        errors.categoryIdText = 'Category is required'
     } else {
-        errors.category = false;
-        errors.categoryText = '';
+        errors.categoryId = false;
+        errors.categoryIdText = '';
     }
 
-    // if (!newProject.value.email) {
+    // if (!newExpenditure.value.email) {
     //     errors.email = true;
     //     errors.emailText = 'Email is required'
-    // } else if (!newProject.value.email.match(email)) {
+    // } else if (!newExpenditure.value.email.match(email)) {
     //     errors.email = true;
     //     errors.emailText = `Email must should have the format 'brianadams@walure.com`
     // } else {
@@ -66,10 +70,10 @@ const checkError:any = () => {
     //     errors.emailText = ''
     // }
 
-    if (!newProject.value.amount) {
+    if (!newExpenditure.value.amount) {
         errors.amount = true;
         errors.amountText = 'Number of resources is required'
-    } else if (isNaN(newProject.value.amount)) {
+    } else if (isNaN(newExpenditure.value.amount)) {
         errors.amount = true;
         errors.amountText = 'Number of resources cannot contain letters'
     } else {
@@ -77,23 +81,23 @@ const checkError:any = () => {
         errors.amountText = '';
     }
 
-    if (!newProject.value.dot) {
-        errors.dot = true;
-        errors.dotText = 'DOT is required.'
+    if (!newExpenditure.value.transactionDate) {
+        errors.transactionDate = true;
+        errors.transactionDateText = 'DOT is required.'
     } else {
-        errors.dot = false;
-        errors.dotText = '';
+        errors.transactionDate = false;
+        errors.transactionDateText = '';
     }
 
-    if (!newProject.value.product) {
-        errors.product = true;
-        errors.productText = 'Product is required. Please enter a product'
+    if (!newExpenditure.value.item) {
+        errors.item = true;
+        errors.itemText = 'Product is required. Please enter an item'
     } else {
-        errors.product = false;
-        errors.productText = '';
+        errors.item = false;
+        errors.itemText = '';
     }
 
-    // if (!newProject.value.endDate) {
+    // if (!newExpenditure.value.endDate) {
     //     errors.endDate = true;
     //     errors.endDateText = 'End date is required'
     // } else {
@@ -101,7 +105,7 @@ const checkError:any = () => {
     //     errors.endDateText = '';
     // }
 
-    // if (!newProject.value.brief) {
+    // if (!newExpenditure.value.brief) {
     //     errors.brief = true;
     //     errors.briefText = 'Project brief is required'
     // } else {
@@ -109,8 +113,8 @@ const checkError:any = () => {
     //     errors.briefText = '';
     // }
 
-    if (errors.category) {
-        errors.category = true;
+    if (errors.categoryId) {
+        errors.categoryId = true;
         isError.value = true;
     // } else if (errors.email) {
     //     errors.email = true;
@@ -124,11 +128,11 @@ const checkError:any = () => {
     // } else if (errors.brief) {
     //     errors.brief = true;
     //     isError.value = true;
-    } else if (errors.dot) {
-        errors.dot = true;
+    } else if (errors.transactionDate) {
+        errors.transactionDate = true;
         isError.value = true;
-    } else if (errors.product) {
-        errors.product = true;
+    } else if (errors.item) {
+        errors.item = true;
         isError.value = true;
     } else {
         isError.value = false;
@@ -137,7 +141,7 @@ const checkError:any = () => {
 }
 
 let isChecked:any = ref(false);
-const dot:any = ref('');
+const transactionDate:any = ref('');
 const endDate:any = ref('');
 
 const check:any = ():any => {
@@ -145,20 +149,14 @@ const check:any = ():any => {
 }
 
 let errors = reactive({
-    category: false,
-    categoryText: '',
-    email: false,
-    emailText: '',
+    categoryId: false,
+    categoryIdText: '',
     amount: false,
     amountText: '',
-    dot: false,
-    dotText: '',
-    endDate: false,
-    endDateText: '',
-    brief: false,
-    briefText: '',
-    product: false,
-    productText: '',
+    transactionDate: false,
+    transactionDateText: '',
+    item: false,
+    itemText: '',
 })
 
 const today:any = moment().format('YYYY-MM-DD');
@@ -166,21 +164,6 @@ const today:any = moment().format('YYYY-MM-DD');
 const briefs:any = computed(() => {
   return store.getters.getInstructor.value.payload;
 });
-
-const training:any = ref('')
-
-const brief:any = ref([])
-
-const trainingoptions:any = ref([
-    {
-        label: "Onsite",
-        value: 0
-    },
-    {
-        label: "Online",
-        value: 1
-    }
-]);
 
 const emits = defineEmits(['close'])
 
@@ -194,99 +177,75 @@ const isEditing:any = computed(() => {
     return answer;
 })
 
+const uniqueIdentifier:any = async () => {
+    console.log('uniqueIdentifier')
+    console.log(`${newExpenditure.value.category}`)
+    const request:any = `${account_api_url}api/expenditurecategory/get_category/${newExpenditure.value.category}`;
+    console.log('request for the', request)
+    await store.dispatch(accountActionTypes.FetchEditCategory, request)
+    let category:any = await store.getters.getNewCategory.value
+    console.log('category for the', category, newExpenditure.value.item)
+    let code:any = `${category.name.substring(0, 3).toUpperCase()}${newExpenditure.value.item.substring(0, 3).toUpperCase()}${randomDigits.value}`
+    console.log('code for the', code, randomDigits.value)
+    return code
+}
+
+const randomDigits = computed(() => {
+  return Math.floor(1000 + Math.random() * 9000);
+})
+
 const closeModal:any = async () => {
-    await store.commit(projectMutationTypes.SetNewProject, {})
+    await store.commit(accountMutationTypes.SetNewExpenditure, {})
     emits('close')
 }
 
 const projectcourse:any = ref('')
 
-const addproject:any = async () => {
+const addexpenditure:any = async () => {
     console.log('hi');
-    const request:any = `${api_url}api/project/create-project`;
+    const request:any = `${account_api_url}api/expenditure/create_expenditure`;
+    let code:any = await uniqueIdentifier()
 
-    const projectdata:any = {
-        category: newProject.value.category,
-        email: newProject.value.email,
-        amount: newProject.value.amount,
-        dot: moment(newProject.value.dot).format('MM/DD/YYYY'),
-        endDate: moment(newProject.value.endDate).format('MM/DD/YYYY'),
-        brief: newProject.value.brief,
-        product: newProject.value.product
-    //     Product: newProject.value.name,
-    //     TrainingType: newProject.value.email,
-    //     ProjectCapacity: newProject.value.amount,
-    //     // StartDate: moment(newProject.value.dot).format('MM/DD/YYYY'),
-    //     // EndDate: moment(newProject.value.endDate).format('MM/DD/YYYY'),
-    //     StartDate: newProject.value.dot,
-    //     EndDate: newProject.value.endDate,
-    //     Instructors: JSON.parse(JSON.stringify(newProject.value.brief)),
-    //     CourseId: newProject.value.courseId,
+    const expendituredata:any = {
+        categoryId: newExpenditure.value.categoryId,
+        uniqueIdentifierCode: code,
+        amount: newExpenditure.value.amount,
+        transactionDate: newExpenditure.value.transactionDate,
+        item: newExpenditure.value.item,
     }
-
-    // formData.append('category', newProject.value.category);
-    // formData.append('email', newProject.value.email);
-    // formData.append('amount', newProject.value.amount);
-    // formData.append('dot', moment(newProject.value.dot).format('MM/DD/YYYY'));
-    // formData.append('endDate', moment(newProject.value.endDate).format('MM/DD/YYYY'));
-    // formData.append('brief', newProject.value.brief);
-    // formData.append('product', newProject.value.product);
 
     const newData:any = {
         url: request,
-        data: projectdata,
+        data: expendituredata,
     }
     console.log('newData', newData)
-    await store.dispatch(projectActionTypes.AddProject, newData)
-    await store.dispatch(projectActionTypes.FetchProject)
-    store.commit(projectMutationTypes.SetNewProject, {})
-    const result = await store.getters.getProject
+    await store.dispatch(accountActionTypes.AddExpenditure, newData)
     closeModal()
+    await store.dispatch(accountActionTypes.FetchExpenditure)
+    store.commit(accountMutationTypes.SetNewExpenditure, {})
 }
 
-const editproject:any = async () => {
+const editexpenditure:any = async () => {
     console.log('hi');
-    const request:any = `${api_url}api/project/edit-project`;
+    const request:any = `${account_api_url}api/expenditure/edit_expenditure`;
 
-    const projectdata:any = {
-        category: newProject.value.category,
-        email: newProject.value.email,
-        amount: newProject.value.amount,
-        dot: moment(newProject.value.dot).format('MM/DD/YYYY'),
-        endDate: moment(newProject.value.endDate).format('MM/DD/YYYY'),
-        brief: newProject.value.brief,
-        product: newProject.value.product,
-        id: newProject.value.id
-    //     Product: newProject.value.name,
-    //     TrainingType: newProject.value.email,
-    //     ProjectCapacity: newProject.value.amount,
-    //     // StartDate: moment(newProject.value.dot).format('MM/DD/YYYY'),
-    //     // EndDate: moment(newProject.value.endDate).format('MM/DD/YYYY'),
-    //     StartDate: newProject.value.dot,
-    //     EndDate: newProject.value.endDate,
-    //     Instructors: JSON.parse(JSON.stringify(newProject.value.brief)),
-    //     CourseId: newProject.value.courseId,
+    const expendituredata:any = {
+        categoryId: newExpenditure.value.categoryId,
+        amount: newExpenditure.value.amount,
+        transactionDate: newExpenditure.value.transactionDate,
+        item: newExpenditure.value.item,
+        id: newExpenditure.value.id
     }
-
-    // formData.append('Product', newProject.value.category);
-    // formData.append('Id', newProject.value.id);
-    // formData.append('TrainingType', newProject.value.email);
-    // formData.append('ProjectCapacity', newProject.value.amount);
-    // formData.append('StartDate', moment(newProject.value.dot).format('MM/DD/YYYY'));
-    // formData.append('EndDate', moment(newProject.value.endDate).format('MM/DD/YYYY'));
-    // formData.append('Instructors', newProject.value.brief);
-    // formData.append('CourseId', newProject.value.product);
 
     const newData:any = {
         url: request,
-        data: projectdata,
+        data: expendituredata,
     }
     console.log('newData', newData)
-    await store.dispatch(projectActionTypes.EditProject, newData)
-    await store.dispatch(projectActionTypes.FetchProject)
-    await store.getters.getProject
+    await store.dispatch(accountActionTypes.EditExpenditure, newData)
     closeModal()
-    store.commit(projectMutationTypes.SetNewProject, {})
+    await store.dispatch(accountActionTypes.FetchExpenditure)
+    store.commit(accountMutationTypes.SetNewExpenditure, {})
 }
 
 const format:any = (date:any) => {
@@ -309,14 +268,14 @@ const submit:any = () => {
     console.log('hello project');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? addproject() : '';
+    !isError.value ? addexpenditure() : '';
 }
 
 const submitEdit:any = () => {
     console.log('hello project');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? editproject() : '';
+    !isError.value ? editexpenditure() : '';
 }
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
@@ -336,27 +295,27 @@ onMounted(async () => {
             <!-- <SvgIcons onclick="document.getElementById('myModal').close();" name="cancel" class="cursor-pointer" /> -->
             <SvgIcons @click="closeModal" name="cancel" class="cursor-pointer" />
         </div>
-        <form id="addproject" class="text-sm text-left grid">
+        <form id="addexpenditure" class="text-sm text-left grid">
             <div class="grid grid-cols-2 gap-8 mb-10">
-                <!-- {{ newProject }} -->
+                <!-- {{ newExpenditure }} -->
                 <div class="grid gap-4">
                     <label for="category" class="font-semibold">
                         Category <span class="text-red font-bold">*</span>
                     </label>
-                    <!-- <input type="text" @focus="checkError" @keyup="checkError"  v-model="newProject.category" name="category" id="category" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none"> -->
-                    <multiselect @select="checkError" @clear="checkError"  v-model="newProject.category" valueProp="value" :options="trainingoptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                    <!-- <input type="text" @focus="checkError" @keyup="checkError"  v-model="newExpenditure.category" name="category" id="category" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none"> -->
+                    <multiselect @select="checkError" @clear="checkError"  v-model="newExpenditure.categoryId" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Select option" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] text-red">
-                        {{ errors.category ? errors.categoryText : '' }}
+                        {{ errors.categoryId ? errors.categoryIdText : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="product" class="font-semibold">
                         Product <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newProject.product" name="product" id="product" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
-                    <!-- <multiselect @select="checkError" @clear="checkError" v-model="newProject.product" valueProp="id" :options="courses" track-by="product" label="product" placeholder="Select option" :searchable="true" class="multiselect-blue" /> -->
+                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newExpenditure.item" name="product" id="product" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <!-- <multiselect @select="checkError" @clear="checkError" v-model="newExpenditure.product" valueProp="id" :options="courses" track-by="product" label="product" placeholder="Select option" :searchable="true" class="multiselect-blue" /> -->
                     <p class="text-[10px] text-red">
-                        {{ errors.product ? errors.productText : '' }}
+                        {{ errors.item ? errors.itemText : '' }}
                     </p>
 
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
@@ -366,11 +325,11 @@ onMounted(async () => {
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">
-                <div class="grid gap-4" id="dot">
-                    <label for="dot" class="font-semibold">
+                <div class="grid gap-4" id="transactionDate">
+                    <label for="transactionDate" class="font-semibold">
                         DOT <span class="text-red font-bold">*</span>
                     </label>
-                    <DatePicker v-if="props.name == 'Edit'" v-model="newProject.dot">
+                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.transactionDate">
                         <template v-slot="{ inputValue, inputEvents }">
                             <input
                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -379,17 +338,17 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newProject.dot" placeholder="Select Date" :format="format" position="left" teleport="#dot"/>
+                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.transactionDate" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate"/>
                     <!-- <datepicker /> -->
                     <p class="text-[10px] text-red">
-                        {{ errors.dot ? errors.dotText : '' }}
+                        {{ errors.transactionDate ? errors.transactionDateText : '' }}
                     </p>
                 </div>
                 <div class="grid gap-4">
                     <label for="amount" class="font-semibold">
                         Amount <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newProject.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newExpenditure.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
                     <p class="text-[10px] text-red">
                         {{ errors.amount ? errors.amountText : '' }}
                     </p>

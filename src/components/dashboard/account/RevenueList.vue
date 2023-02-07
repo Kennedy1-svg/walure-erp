@@ -9,14 +9,13 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import EditRevenue from './EditRevenueForm.vue';
-// import EditRevenueHeader from './EditRevenueHeader.vue';
 import pagination from '../../pagination.vue'
+import AddRevenue from './AddRevenue.vue';
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
 import * as actionTypes from '../../../store/module/account/constants/action';
 import moment from 'moment';
-import { api_url } from '../../../config/index';
+import { account_api_url } from '../../../config';
 
 import { useRouter } from 'vue-router';
 
@@ -37,7 +36,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/revenue-management/get-revenues/${pageIndex.value}/{pageSize}`;
+    const request:any = `${account_api_url}api/revenue/getall_revenue?pageIndex=${pageIndex.value}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchRevenue, request)
 }
@@ -51,16 +50,23 @@ const sendId:any = (id:any) => {
     return roleitemtodelete
 }
 
+const editRevenue:any = async (revenue:any) => {
+    console.log('revenue', revenue)
+    const request:any = `${account_api_url}api/revenue/get_revenue/${revenue}`;
+    console.log('request for the', request)
+    await store.dispatch(actionTypes.FetchEditRevenue, request)
+}
+
 const deleteRevenue:any = async (id:any) => {
     console.log('category category', id);
 
-    const request:any = `${api_url}api/revenue-management/delete-revenue/${id}`;
+    const request:any = `${account_api_url}api/revenue/delete-revenue/${id}`;
 
     console.log('requestData', request)
     await store.dispatch(actionTypes.RemoveRevenue, request)
     await store.dispatch(actionTypes.FetchRevenue)
     closeModal()
-    // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
+    // const fetchrequest:any = `${account_api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
     // console.log('url', fetchrequest)
     // await store.dispatch(actionTypes.FetchRevenueQuotes)
 }
@@ -88,7 +94,7 @@ const totalPages:any = computed(() => {
 
 const setId:any = (id:any) => {
     console.log('revenue', id)
-    // const request:any = `${api_url}api/revenue-management/get-revenue-details/${id}`;
+    // const request:any = `${account_api_url}api/revenue-management/get-revenue-details/${id}`;
     // console.log('request forid', request)
     // store.dispatch(actionTypes.FetchEditRevenue, request)
     route.push({
@@ -120,7 +126,7 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('Revenue List mounted');
-    const request:any = `${api_url}api/revenue/getall_revenue`;
+    const request:any = `${account_api_url}api/revenue/getall_revenue`;
     await store.dispatch(actionTypes.FetchRevenue)
 });
 </script>
@@ -189,14 +195,14 @@ onMounted( async () => {
                         <div class="flex w-2/5 items-center">
                             <button
                             type="button"
-                            @click="showEdit = !showEdit" @click.prevent="setId(revenue.id)"
+                            @click="showEdit = !showEdit" @click.prevent="editRevenue(revenue.id)"
                             class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
                             >
                                 <SvgIcons name="edit" />
                             </button>
-                            <!-- <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                <EditRevenue :revenue="revenue" @close="showEdit = !showEdit"  />
-                            </Modal> -->
+                            <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                <AddRevenue name="Edit" @close="showEdit = !showEdit"  />
+                            </Modal>
 
                             <button
                             type="button"

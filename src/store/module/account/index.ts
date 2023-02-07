@@ -3,29 +3,17 @@ import * as mutationTypes from './constants/mutation'
 import * as actionTypes from './constants/action'
 import router from '../../../router'
 import { account_api_url } from '../../../config/index'
-import { addData, fetchData, editData, addEmptyData, removeData } from '../../../helpers/api'
+import { addData, fetchData, editData, editDataPut, addEmptyData, removeData } from '../../../helpers/api'
 
 export default {
   state: () => ({
     expenditures: '',
-    // revenueTalent: localStorage.getItem('revenueTalent'),
-    revenueTalent: [],
-    newRevenueTalent: {
-      jobEngagementType: '',
-      noOfResource: '',
-      description: '',
-      experienceLevel: '',
-      role: '',
-    },
     revenues: '',
     newRevenue: {
-      contactName: '',
-      companyName: '',
-      email: '',
-      phoneNumber: '',
-      location: '',
-      companyType: '',
-      jobDetails: [],
+      category: '',
+      item: '',
+      amount: '',
+      dot: '',
     },
     revenue: '',
     expenditure: '',
@@ -35,10 +23,9 @@ export default {
     editing: false,
     isEditing: false,
     categories: '',
-    editconsultancy: '',
-    studentsInExpenditure: '',
-    title: '',
-    revenuejobdetails: '',
+    category: {
+      name: ''
+    },
   }),
   getters: {
     getExpenditure: (state: any) => {
@@ -76,11 +63,11 @@ export default {
           return state.revenues
       })
     },
-    // getNewRevenue: (state: any) => {
-    //   return computed(() => {
-    //       return state.newRevenue
-    //   })
-    // },
+    getNewRevenue: (state: any) => {
+      return computed(() => {
+          return state.newRevenue
+      })
+    },
     // getRevenueList: (state: any) => {
     //   return computed(() => {
     //       return state.revenueList
@@ -89,6 +76,11 @@ export default {
     getCategory: (state: any) => {
       return computed(() => {
           return state.categories
+      })
+    },
+    getNewCategory: (state: any) => {
+      return computed(() => {
+          return state.category
       })
     },
     // getEditCategory: (state: any) => {
@@ -111,17 +103,6 @@ export default {
           return state.isEditing
       })
     },
-    getExpenditureTitle: (state: any) => {
-      return computed(() => {
-          return state.title
-      })
-    },
-    getStudentsInExpenditure: (state: any) => {
-      console.log(state.studentsInExpenditure)
-      return computed(() => {
-        return state.studentsInExpenditure
-      })
-    }
   },
   mutations: {
     [mutationTypes.SetExpenditure] (state: any, data: any) {
@@ -178,9 +159,9 @@ export default {
     [mutationTypes.SetExpenditureAlertText] (state: any, data: any) {
       state.alert_text = data
     },
-    [mutationTypes.SetStudentsInExpenditure] (state: any, data: any) {
+    [mutationTypes.SetNewCategory] (state: any, data: any) {
       console.log('studentsInaExpenditure', data)
-      state.studentsInExpenditure = data
+      state.category = data
     },
   },
   actions: {
@@ -223,16 +204,16 @@ export default {
     async [actionTypes.FetchCategory] ({ commit }: any, data: any) {
       const token:any = localStorage.getItem('token')
     //   console.log('token here', token)
-      const consultancy = await fetchData(data, token)
-    //   console.log('data', data)
-    //   console.log('Iconsultancys', consultancys.payload)
-    //   console.log('Iconsultancys', consultancys.value)
-    //   console.log('Iconsultancys', JSON.parse(JSON.stringify(consultancys)))
-    //   console.log('Iconsultancys', JSON.parse(JSON.stringify(consultancys.value)))
-    //   console.log('Iconsultancys', consultancys.value)
-      if (consultancy.payload) {
-        await commit(mutationTypes.SetCategory, consultancy)
-      } else if (consultancy.response.status === 401) {
+      const category = await fetchData(data, token)
+      console.log('data', data)
+      console.log('Icategorys', category.payload)
+    //   console.log('Icategorys', categorys.value)
+    //   console.log('Icategorys', JSON.parse(JSON.stringify(categorys)))
+    //   console.log('Icategorys', JSON.parse(JSON.stringify(categorys.value)))
+    //   console.log('Icategorys', categorys.value)
+      if (category.payload) {
+        await commit(mutationTypes.SetCategory, category)
+      } else if (category.response.status === 401) {
         router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetExpenditure, expenditure)
@@ -285,7 +266,7 @@ export default {
     async [actionTypes.EditRevenue] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const revenue = await editData(data.url, data.data, token)
+      const revenue = await editDataPut(data.url, data.data, token)
       if (revenue.payload) {
         // commit(mutationTypes.SetNewExpenditureCategory, revenue.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Revenue updated successfully')
@@ -328,10 +309,104 @@ export default {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category added successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         const requesturl:any = `${account_api_url}${url}`
+        console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
       } else if (addCategory.response.status === 401) {
         router.push({ name: 'Login' });
       } else if (addCategory.message.includes('400')) {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      } else {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetExpenditureAlertStatus, false)
+        commit(mutationTypes.SetExpenditureAlertText, '')
+      }, 2000)
+    },
+    async [actionTypes.AddRevenueCategory] ({ commit, dispatch }:any, data:any) {
+      // const revenueTalent:any = await JSON.parse(JSON.stringify(state.revenueTalent))
+      const token:any = localStorage.getItem('token')
+      // console.log('revenue talent here', revenueTalent)
+      console.log('data', data)
+      const url = 'api/revenuecategory/getall_category'
+      // console.log('new added revenue talent data', newData)
+      // await commit(mutationTypes.SetRevenueTalent, newData)
+      const addCategory = await addData(data.url, data.data, token)
+      if (!addCategory.hasErrors) {
+        // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
+        await commit(mutationTypes.SetExpenditureAlertText, 'Category added successfully')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+        const requesturl:any = `${account_api_url}${url}`
+        console.log(`the request url is ${requesturl}`)
+        await dispatch(actionTypes.FetchCategory, requesturl)
+      } else if (addCategory.response.status === 401) {
+        router.push({ name: 'Login' });
+      } else if (addCategory.message.includes('400')) {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      } else {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetExpenditureAlertStatus, false)
+        commit(mutationTypes.SetExpenditureAlertText, '')
+      }, 2000)
+    },
+    async [actionTypes.EditExpenditureCategory] ({ commit, dispatch }:any, data:any) {
+      // const revenueTalent:any = await JSON.parse(JSON.stringify(state.revenueTalent))
+      const token:any = localStorage.getItem('token')
+      // console.log('revenue talent here', revenueTalent)
+      console.log('data', data)
+      const url = 'api/expenditurecategory/getall_category'
+      // console.log('new added revenue talent data', newData)
+      // await commit(mutationTypes.SetRevenueTalent, newData)
+      const editCategory = await editDataPut(data.url, data.data, token)
+      if (!editCategory.hasErrors) {
+        // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
+        await commit(mutationTypes.SetExpenditureAlertText, 'Category updated successfully')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+        const requesturl:any = `${account_api_url}${url}`
+        console.log(`the request url is ${requesturl}`)
+        await dispatch(actionTypes.FetchCategory, requesturl)
+      } else if (editCategory.response.status === 401) {
+        router.push({ name: 'Login' });
+      } else if (editCategory.message.includes('400')) {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      } else {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetExpenditureAlertStatus, false)
+        commit(mutationTypes.SetExpenditureAlertText, '')
+      }, 2000)
+    },
+    async [actionTypes.EditRevenueCategory] ({ commit, dispatch }:any, data:any) {
+      // const revenueTalent:any = await JSON.parse(JSON.stringify(state.revenueTalent))
+      const token:any = localStorage.getItem('token')
+      // console.log('revenue talent here', revenueTalent)
+      console.log('data', data)
+      const url = 'api/revenuecategory/getall_category'
+      // console.log('new added revenue talent data', newData)
+      // await commit(mutationTypes.SetRevenueTalent, newData)
+      const editCategory = await editDataPut(data.url, data.data, token)
+      if (!editCategory.hasErrors) {
+        // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
+        await commit(mutationTypes.SetExpenditureAlertText, 'Category updated successfully')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+        const requesturl:any = `${account_api_url}${url}`
+        console.log(`the request url is ${requesturl}`)
+        await dispatch(actionTypes.FetchCategory, requesturl)
+      } else if (editCategory.response.status === 401) {
+        router.push({ name: 'Login' });
+      } else if (editCategory.message.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
@@ -410,7 +485,7 @@ export default {
     async [actionTypes.EditExpenditure] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
-      const expenditure = await editData(data.url, data.data, token)
+      const expenditure = await editDataPut(data.url, data.data, token)
       if (!expenditure.hasErrors) {
         // commit(mutationTypes.SetNewExpenditureCategory, expenditure.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Expenditure updated successfully')
@@ -535,11 +610,11 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('all data is', data)
-      const consultancy = await fetchData(data, token)
-      console.log('consultancy', consultancy)
-      if (consultancy.payload) {
-        commit(mutationTypes.SetEditCategory, consultancy.payload)
-      } else if (consultancy.response.status === 401) {
+      const category = await fetchData(data, token)
+      console.log('category value is', category)
+      if (category.payload) {
+        commit(mutationTypes.SetNewCategory, category.payload)
+      } else if (category.response.status === 401) {
         router.push({ name: 'Login' });
       }
     },

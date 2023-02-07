@@ -9,9 +9,8 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import EditExpFetchExpenditure from './EditExpFetchExpenditureForm.vue';
-// import EditExpFetchExpenditureHeader from './EditExpFetchExpenditureHeader.vue';
 import pagination from '../../pagination.vue'
+import AddExpenditure from './AddExpenditure.vue';
 import Modal from '../../Modals.vue';
 import moment from 'moment';
 import DeleteModal from '../../DeleteModal.vue';
@@ -99,6 +98,13 @@ const setId:any = (id:any) => {
     })
 }
 
+const editExpenditure:any = async (expenditure:any) => {
+    console.log('expenditure', expenditure)
+    const request:any = `${account_api_url}api/expenditure/get_expenditure/${expenditure}`;
+    console.log('request for the', request)
+    await store.dispatch(actionTypes.FetchEditExpenditure, request)
+}
+
 const toggle:any = (status:any) => {
     if (status == 0) {
         return status = 1
@@ -169,7 +175,7 @@ onMounted( async () => {
                                 {{ pageIndex == 1 ? (expenditures.indexOf(expenditure) + 1) : ((pageIndex - 1) * 10) + (expenditures.indexOf(expenditure) + 1) }}
                             </td>
                             <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                {{ expenditure.category }}
+                                {{ expenditure.categoryName }}
                             </td>
                             <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                 {{ expenditure.item }}
@@ -190,14 +196,14 @@ onMounted( async () => {
                                 <div class="flex w-2/5 items-center">
                                     <button
                                     type="button"
-                                    @click="showEdit = !showEdit" @click.prevent="setId(expenditure.id)"
+                                    @click="showEdit = !showEdit" @click.prevent="editExpenditure(expenditure.id)"
                                     class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
                                     >
                                         <SvgIcons name="edit" />
                                     </button>
-                                    <!-- <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                        <EditExpFetchExpenditure :expenditure="expenditure" @close="showEdit = !showEdit"  />
-                                    </Modal> -->
+                                    <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                        <AddExpenditure name="Edit" @close="showEdit = !showEdit"  />
+                                    </Modal>
 
                                     <button
                                     type="button"
