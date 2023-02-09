@@ -17,12 +17,15 @@ export default {
     },
     revenue: '',
     expenditure: '',
-    total_count: '',
+    // total_expenditure_count: '',
+    // total_revenue_count: '',
+    // total_category_count: '',
     alert_status: false,
     alert_text: '',
     editing: false,
     isEditing: false,
     categories: '',
+    categoryList: '',
     category: {
       name: ''
     },
@@ -33,11 +36,11 @@ export default {
           return state.expenditures
       })
     },
-    // getRevenueTalent: (state: any) => {
-    //   return computed(() => {
-    //       return state.revenueTalent
-    //   })
-    // },
+    getCategoryList: (state: any) => {
+      return computed(() => {
+          return state.categoryList
+      })
+    },
     // getNewRevenueTalent: (state: any) => {
     //   return computed(() => {
     //       return state.newRevenueTalent
@@ -53,11 +56,21 @@ export default {
           return state.expenditure
       })
     },
-    getTotalExpenditureCount: (state: any) => {
-      return computed(() => {
-          return state.total_count
-      })
-    },
+    // getTotalExpenditureCount: (state: any) => {
+    //   return computed(() => {
+    //       return state.total_expenditure_count
+    //   })
+    // },
+    // getTotalRevenueCount: (state: any) => {
+    //   return computed(() => {
+    //       return state.total_revenue_count
+    //   })
+    // },
+    // getTotalCategoryCount: (state: any) => {
+    //   return computed(() => {
+    //       return state.total_category_count
+    //   })
+    // },
     getRevenue: (state: any) => {
       return computed(() => {
           return state.revenues
@@ -112,7 +125,7 @@ export default {
       state.expenditure = data
     },
     [mutationTypes.SetTotalExpenditureCount] (state: any, data: any) {
-      state.total_count = data
+      state.total_expenditure_count = data
     },
     [mutationTypes.SetRevenue] (state: any, data: any) {
       state.revenues = data
@@ -131,6 +144,9 @@ export default {
     },
     [mutationTypes.SetCategory] (state: any, data: any) {
       state.categories = data
+    },
+    [mutationTypes.SetCategoryList] (state: any, data: any) {
+      state.categoryList = data
     },
     // [mutationTypes.SetRevenueTalent] (state: any, data: any) {
     //   localStorage.setItem('revenueTalent', state.revenueTalent = data)
@@ -213,6 +229,24 @@ export default {
     //   console.log('Icategorys', categorys.value)
       if (category.payload) {
         await commit(mutationTypes.SetCategory, category)
+      } else if (category.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
+      // commit(mutationTypes.SetExpenditure, expenditure)
+      // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
+    },
+    async [actionTypes.FetchCategoryList] ({ commit }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+    //   console.log('token here', token)
+      const category = await fetchData(data, token)
+      console.log('data', data)
+      console.log('Icategorys', category.payload)
+    //   console.log('Icategorys', categorys.value)
+    //   console.log('Icategorys', JSON.parse(JSON.stringify(categorys)))
+    //   console.log('Icategorys', JSON.parse(JSON.stringify(categorys.value)))
+    //   console.log('Icategorys', categorys.value)
+      if (category.payload) {
+        await commit(mutationTypes.SetCategoryList, category)
       } else if (category.response.status === 401) {
         router.push({ name: 'Login' });
       }

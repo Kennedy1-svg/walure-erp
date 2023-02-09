@@ -87,12 +87,12 @@ const sendId:any = (id:any) => {
 const deleteCategory:any = async (category:any) => {
     console.log('category category', category);
 
-    const request:any = `${account_api_url}${url.value}/delete-category/${category}`;
+    const request:any = `${account_api_url}${url.value}delete-category/${category}`;
 
     console.log('requestData', request)
     await store.dispatch(accountActionTypes.RemoveExpenditureCategory, request)
     closeModal()
-    const fetchrequest:any = `${account_api_url}${url.value}/getall_category`;
+    const fetchrequest:any = `${account_api_url}${url.value}getall_category`;
     console.log('url', fetchrequest)
     await store.dispatch(accountActionTypes.FetchCategory, fetchrequest)
 }

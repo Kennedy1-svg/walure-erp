@@ -39,7 +39,7 @@ const courses:any = computed(() => {
 });
 
 const categories:any = computed(() => {
-    return store.getters.getCategory.value.payload;
+    return store.getters.getCategoryList.value.payload;
 })
 
 const statusoptions:any = [
@@ -167,9 +167,9 @@ const disabledView:any = 'bg-gray-300';
 
 onMounted( async() => {
     console.log('onMounted')
-    const request:any = `${account_api_url}api/expenditurecategory/getall_category`;
+    const request:any = `${account_api_url}api/expenditurecategory/getlist_category`;
     console.log('url', request)
-    await store.dispatch(accountActionTypes.FetchCategory, request)
+    await store.dispatch(accountActionTypes.FetchCategoryList, request)
 })
 
 </script>
