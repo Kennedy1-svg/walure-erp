@@ -348,9 +348,9 @@ onMounted(async () => {
                     </label>
                     <!-- <input type="text" disabled @focus="checkError" @keyup="checkError"  v-model="newProject.category" name="category" id="category" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none"> -->
                     <multiselect @select="checkError" @clear="checkError"  v-model="newProject.category" valueProp="value" :options="trainingoptions" track-by="label" label="label" placeholder="Select option" :searchable="true" class="multiselect-blue" disabled />
-                    <p class="text-[10px] text-red">
+                    <!-- <p class="text-[10px] text-red">
                         {{ errors.category ? errors.categoryText : '' }}
-                    </p>
+                    </p> -->
                 </div>
                 <div class="grid gap-4">
                     <label for="product" class="font-semibold">
@@ -358,9 +358,9 @@ onMounted(async () => {
                     </label>
                     <input type="text" disabled @focus="checkError" @keyup="checkError"  v-model="newProject.product" name="product" id="product" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
                     <!-- <multiselect @select="checkError" @clear="checkError" v-model="newProject.product" valueProp="id" :options="courses" track-by="product" label="product" placeholder="Select option" :searchable="true" class="multiselect-blue" /> -->
-                    <p class="text-[10px] text-red">
+                    <!-- <p class="text-[10px] text-red">
                         {{ errors.product ? errors.productText : '' }}
-                    </p>
+                    </p> -->
 
                     <!-- <select class="pl-5 text-sm py-3 bg-transparent rounded border text-grey" name="course" id="course">
                         <option value="">Select option</option>
@@ -384,18 +384,18 @@ onMounted(async () => {
                     </DatePicker>
                     <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newProject.dot" :minDate="today" placeholder="Select Date" :format="format" position="left" teleport="#dot" disabled/>
                     <!-- <datepicker /> -->
-                    <p class="text-[10px] text-red">
+                    <!-- <p class="text-[10px] text-red">
                         {{ errors.dot ? errors.dotText : '' }}
-                    </p>
+                    </p> -->
                 </div>
                 <div class="grid gap-4">
                     <label for="amount" class="font-semibold">
                         Amount
                     </label>
                     <input type="text" disabled @focus="checkError" @keyup="checkError" v-model="newProject.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] text-red">
+                    <!-- <p class="text-[10px] text-red">
                         {{ errors.amount ? errors.amountText : '' }}
-                    </p>
+                    </p> -->
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">
@@ -405,18 +405,18 @@ onMounted(async () => {
                     </label>
                     <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newProject.doc" :minDate="today" placeholder="Select Date" :format="format" position="left" teleport="#doc" disabled/>
                     <!-- <datepicker /> -->
-                    <p class="text-[10px] text-red">
+                    <!-- <p class="text-[10px] text-red">
                         {{ errors.doc ? errors.docText : '' }}
-                    </p>
+                    </p> -->
                 </div>
                 <div class="grid gap-4">
                     <label for="amount" class="font-semibold">
                         Created by
                     </label>
                     <input type="text" disabled @focus="checkError" @keyup="checkError" v-model="newProject.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] text-red">
+                    <!-- <p class="text-[10px] text-red">
                         {{ errors.amount ? errors.amountText : '' }}
-                    </p>
+                    </p> -->
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">
@@ -425,9 +425,9 @@ onMounted(async () => {
                         Modified by
                     </label>
                     <input type="text" disabled @focus="checkError" @keyup="checkError" v-model="newProject.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
-                    <p class="text-[10px] text-red">
+                    <!-- <p class="text-[10px] text-red">
                         {{ errors.amount ? errors.amountText : '' }}
-                    </p>
+                    </p> -->
                 </div>
             </div>
             <!-- <div class="flex justify-end gap-10 pb-10">

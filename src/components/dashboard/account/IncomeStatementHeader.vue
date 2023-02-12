@@ -172,7 +172,7 @@ const disabledView:any = 'bg-gray-300';
 onMounted( async() => {
     console.log('onMounted')
     const courserequest:any = `${api_url}api/course/get-courses`;
-    await store.dispatch(courseActionTypes.FetchCourses, courserequest)
+    // await store.dispatch(courseActionTypes.FetchCourses, courserequest)
 })
 
 </script>

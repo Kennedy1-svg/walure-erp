@@ -131,8 +131,9 @@ onMounted( async () => {
             <h1 class="text-2xl font-semibold text-black">Statement</h1>
             <!-- <p class="text-xl pr-3 font-medium text-primary">Total : {{ total_count }}</p> -->
         </div>
-        <div class="table">
             <!-- {{ incomeStatement }} -->
+        <div class="table" v-if="incomeStatement?.length != 0">
+            <!-- {{ incomeStatement.length }} -->
             <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
                 <table class="overflow-x-scroll border items-center w-full">
                     <thead class="bg-table-head">
@@ -199,6 +200,15 @@ onMounted( async () => {
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-else class="bg-white py-32 mb-10 grid items-center justify-center">
+            <img src="../../../assets/no-data.png" class="h-[374px] mb-3" alt="no data found" />
+            <p class="text-center">
+                No income statement
+            </p>
+            <p class="text-center">
+                Start by changing the date range to display statement
+            </p>
         </div>
     </div>
 </template>

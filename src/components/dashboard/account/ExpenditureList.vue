@@ -14,6 +14,7 @@ import AddExpenditure from './AddExpenditure.vue';
 import Modal from '../../Modals.vue';
 import moment from 'moment';
 import DeleteModal from '../../DeleteModal.vue';
+import ViewExpenditureDetails from './ViewExpenditure.vue'
 import * as actionTypes from '../../../store/module/account/constants/action';
 import { account_api_url } from '../../../config/index';
 
@@ -193,7 +194,62 @@ onMounted( async () => {
                                 {{ moment(expenditure.transactionDate).format('MM/DD/YYYY') }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                <div class="flex w-2/5 items-center">
+                                <div class="relative inline-block dropdown">
+                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                                        <SvgIcons name="ellipsis" />
+                                    </button>
+                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                                            <div class="py-3 gap-3">
+                                                <button
+                                                type="button"
+                                                @click="showDetails = !showDetails"
+                                                @click.prevent="editExpenditure(expenditure.id)"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="details" />
+                                                    Details
+                                                </button>
+                                                <Modal :show="showDetails" @close="showDetails = !showDetails">
+                                                    <ViewExpenditureDetails :id="expenditure.id" @close="showDetails = !showDetails" />
+                                                </Modal>
+
+                                                <button
+                                                type="button"
+                                                @click="showEdit = !showEdit" @click.prevent="editExpenditure(expenditure.id)"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="edit" />
+                                                    Edit
+                                                </button>
+                                                <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                    <AddExpenditure name="Edit" @close="showEdit = !showEdit"  />
+                                                </Modal>
+
+                                                <button
+                                                type="button"
+                                                @click="showDelete = !showDelete" @click.prevent="sendId(expenditure.id)"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="delete" />
+                                                    Delete
+                                                </button>
+                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteExpenditure(expenditureitemtodelete)">
+                                                    <template #title>
+                                                        Delete Expenditure
+                                                    </template>
+                                                    <template #info>
+                                                        Are you sure you want to remove expenditure?
+                                                    </template>
+                                                    <template #delete>
+                                                        Yes, Delete Expenditure
+                                                    </template>
+                                                </DeleteModal>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="flex w-2/5 items-center">
                                     <button
                                     type="button"
                                     @click="showEdit = !showEdit" @click.prevent="editExpenditure(expenditure.id)"
@@ -223,7 +279,7 @@ onMounted( async () => {
                                             Yes, Delete Expenditure
                                         </template>
                                     </DeleteModal>
-                                </div>
+                                </div> -->
                             </td>
                         </tr>
                     </tbody>
