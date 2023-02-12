@@ -203,7 +203,7 @@ const projectcourse:any = ref('')
 
 const addexpenditure:any = async () => {
     console.log('hi');
-    const request:any = `${account_api_url}api/expenditure/create_expenditure`;
+    const request:any = `${account_api_url}api/expenditure/create-expenditure`;
     let code:any = await uniqueIdentifier()
 
     const expendituredata:any = {

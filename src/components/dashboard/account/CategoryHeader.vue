@@ -48,14 +48,14 @@ const filter:any = async () => {
     isSearching.value = true
     const search:any = searchText.value.toLowerCase();
     console.log('search', search)
-    const request:any = `${account_api_url}${url.value}getall_category?keyword=${search}`;
+    const request:any = `${account_api_url}${url.value}getall-category?keyword=${search}`;
     await store.dispatch(accountActionTypes.FetchCategory, request)
 }
 
 const close:any = async () => {
     isSearching.value = false
     searchText.value = ''
-    const request:any = `${account_api_url}${url.value}getall_category`;
+    const request:any = `${account_api_url}${url.value}getall-category`;
     await store.dispatch(accountActionTypes.FetchCategory, request)
 }
 

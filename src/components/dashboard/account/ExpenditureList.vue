@@ -36,7 +36,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${account_api_url}api/expenditure/getall_expenditure?pageIndex=${pageIndex.value}&pageSize={pageSize}`;
+    const request:any = `${account_api_url}api/expenditure/getall-expenditure?pageIndex=${pageIndex.value}&pageSize={pageSize}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchExpenditure, request)
 }

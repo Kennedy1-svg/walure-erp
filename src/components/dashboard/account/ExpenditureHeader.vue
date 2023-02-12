@@ -77,7 +77,7 @@ const filter:any = async () => {
   //     rows[i].style.display = 'none';
   //   }
   // }
-  const request:any = `${account_api_url}api/expenditure/getall_expenditure?keyword=${search}`;
+  const request:any = `${account_api_url}api/expenditure/getall-expenditure?keyword=${search}`;
   await store.dispatch(accountActionTypes.FetchExpenditure, request)
 }
 
@@ -95,14 +95,14 @@ const filterAllExpenditure:any = async () => {
   // } else
 
   if (categoryField.value) {
-    const request:any = `${account_api_url}api/expenditure/getall_expenditure?categoryId=${categoryField.value}`;
+    const request:any = `${account_api_url}api/expenditure/getall-expenditure?categoryId=${categoryField.value}`;
     store.dispatch(accountActionTypes.FetchExpenditure, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
     let start:any = moment(startDate.value).format('DD-MM-YYYY');
     let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${account_api_url}api/expenditure/getall_expenditure?startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/expenditure/getall-expenditure?startDate=${start}&endDate=${end}`;
     console.log('request', request)
     store.dispatch(accountActionTypes.FetchExpenditure, request)
   } else if (startDate.value && endDate.value && categoryField.value) {
@@ -110,7 +110,7 @@ const filterAllExpenditure:any = async () => {
     let start:any = moment(startDate.value).format('DD-MM-YYYY');
     let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${account_api_url}api/expenditure/getall_expenditure?categoryId=${categoryField.value}&startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/expenditure/getall-expenditure?categoryId=${categoryField.value}&startDate=${start}&endDate=${end}`;
     console.log('request', request)
     store.dispatch(accountActionTypes.FetchRevenue, request)
   } else {
@@ -143,7 +143,7 @@ const format:any = (date:any) => {
 const close:any = async () => {
     isSearching.value = false
     searchText.value = ''
-  // const request:any = `${account_api_url}api/expenditure/getall_expenditures/{pageIndex}/{pageSize}`;
+  // const request:any = `${account_api_url}api/expenditure/getall-expenditures/{pageIndex}/{pageSize}`;
     await store.dispatch(accountActionTypes.FetchExpenditure)
 }
 
@@ -167,7 +167,7 @@ const disabledView:any = 'bg-gray-300';
 
 onMounted( async() => {
     console.log('onMounted')
-    const request:any = `${account_api_url}api/expenditurecategory/getlist_category`;
+    const request:any = `${account_api_url}api/expenditurecategory/getlist-category`;
     console.log('url', request)
     await store.dispatch(accountActionTypes.FetchCategoryList, request)
 })

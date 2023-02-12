@@ -181,7 +181,7 @@ export default {
     },
   },
   actions: {
-    async [actionTypes.FetchExpenditure] ({ commit }: any, data: any = `${account_api_url}api/expenditure/getall_expenditure?pageIndex=1&pageSize=10`) {
+    async [actionTypes.FetchExpenditure] ({ commit }: any, data: any = `${account_api_url}api/expenditure/getall-expenditure?pageIndex=1&pageSize=10`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
       const expenditure = await fetchData(data, token)
@@ -199,7 +199,7 @@ export default {
       // commit(mutationTypes.SetExpenditure, expenditure)
       // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
     },
-    async [actionTypes.FetchRevenue] ({ commit }: any, data: any = `${account_api_url}api/revenue/getall_revenue`) {
+    async [actionTypes.FetchRevenue] ({ commit }: any, data: any = `${account_api_url}api/revenue/getall-revenue`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
       const revenues = await fetchData(data, token)
@@ -334,7 +334,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/expenditurecategory/getall_category'
+      const url = 'api/expenditurecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const addCategory = await addData(data.url, data.data, token)
@@ -365,7 +365,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/revenuecategory/getall_category'
+      const url = 'api/revenuecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const addCategory = await addData(data.url, data.data, token)
@@ -396,7 +396,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/expenditurecategory/getall_category'
+      const url = 'api/expenditurecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory = await editDataPut(data.url, data.data, token)
@@ -427,7 +427,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/revenuecategory/getall_category'
+      const url = 'api/revenuecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory = await editDataPut(data.url, data.data, token)
@@ -574,7 +574,7 @@ export default {
       if (!newcategory.hasErrors) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category removed successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
-        const fetchrequest:any = `${account_api_url}api/expenditurecategory/getall_category`;
+        const fetchrequest:any = `${account_api_url}api/expenditurecategory/getall-category`;
         await dispatch(actionTypes.FetchExpenditure, fetchrequest)
       } else if (newcategory.response.status === 401) {
         router.push({ name: 'Login' });

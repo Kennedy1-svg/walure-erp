@@ -78,7 +78,7 @@ const filter:any = async () => {
   //     rows[i].style.display = 'none';
   //   }
   // }
-  const request:any = `${account_api_url}api/revenue/getall_revenue?keyword=${search}`;
+  const request:any = `${account_api_url}api/revenue/getall-revenue?keyword=${search}`;
   await store.dispatch(accountActionTypes.FetchRevenue, request)
 }
 
@@ -96,14 +96,14 @@ const filterAllRevenue:any = async () => {
   // } else
 
   if (categoryField.value) {
-    const request:any = `${account_api_url}api/revenue/getall_revenue?categoryId=${categoryField.value}`;
+    const request:any = `${account_api_url}api/revenue/getall-revenue?categoryId=${categoryField.value}`;
     store.dispatch(accountActionTypes.FetchRevenue, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
     let start:any = moment(startDate.value).format('DD-MM-YYYY');
     let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${account_api_url}api/revenue/getall_revenue?startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/revenue/getall-revenue?startDate=${start}&endDate=${end}`;
     console.log('request', request)
     store.dispatch(accountActionTypes.FetchRevenue, request)
   } else if (startDate.value && endDate.value && categoryField.value) {
@@ -111,7 +111,7 @@ const filterAllRevenue:any = async () => {
     let start:any = moment(startDate.value).format('DD-MM-YYYY');
     let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${account_api_url}api/revenue/getall_revenue?categoryId=${categoryField.value}&startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/revenue/getall-revenue?categoryId=${categoryField.value}&startDate=${start}&endDate=${end}`;
     console.log('request', request)
     store.dispatch(accountActionTypes.FetchRevenue, request)
   } else {
@@ -168,7 +168,7 @@ const disabledView:any = 'bg-gray-300';
 
 onMounted( async() => {
     console.log('onMounted')
-    const request:any = `${account_api_url}api/revenuecategory/getlist_category`;
+    const request:any = `${account_api_url}api/revenuecategory/getlist-category`;
     console.log('url', request)
     await store.dispatch(accountActionTypes.FetchCategory, request)
     // const courserequest:any = `${account_api_url}api/course/get-courses`;

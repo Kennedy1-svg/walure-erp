@@ -32,7 +32,7 @@ let isLoading:any = ref(false);
 // })
 
 // const useEditApi:any = computed(() => {
-//     return routeName.value.contains('expenditure') ? '/api/expenditurecategory/create_category' : '/api/revenuecategory/create_category';
+//     return routeName.value.contains('expenditure') ? '/api/expenditurecategory/create-category' : '/api/revenuecategory/create-category';
 // })
 
 // const alertState:any = computed(() => store.getters.getCourseAlertStatus.value)
@@ -182,7 +182,7 @@ const addCategory:any = async () => {
     console.log('hi');
     console.log('newstudent', newCategory.value)
     // console.log('newstudent', newCategory.value.imageFile)
-    const request:any = `${account_api_url}${props.url}create_category`;
+    const request:any = `${account_api_url}${props.url}create-category`;
 
     console.log('request add cat', request)
 

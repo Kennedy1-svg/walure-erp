@@ -199,7 +199,7 @@ const closeModal:any = async () => {
 
 const addrevenue:any = async () => {
     console.log('hi');
-    const request:any = `${account_api_url}api/revenue/create_revenue`;
+    const request:any = `${account_api_url}api/revenue/create-revenue`;
     let code:any = await uniqueIdentifier()
 
     const revenuedata:any = {
@@ -283,7 +283,7 @@ const disabledView:any = 'bg-gray-300';
 
 onMounted(async () => {
     console.log('I am now here')
-    const request:any = `${account_api_url}api/revenuecategory/getlist_category`;
+    const request:any = `${account_api_url}api/revenuecategory/getlist-category`;
     console.log('url', request)
     await store.dispatch(accountActionTypes.FetchCategory, request)
 })

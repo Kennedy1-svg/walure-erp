@@ -36,7 +36,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${account_api_url}api/revenue/getall_revenue?pageIndex=${pageIndex.value}`;
+    const request:any = `${account_api_url}api/revenue/getall-revenue?pageIndex=${pageIndex.value}`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchRevenue, request)
 }
@@ -126,7 +126,7 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('Revenue List mounted');
-    const request:any = `${account_api_url}api/revenue/getall_revenue`;
+    const request:any = `${account_api_url}api/revenue/getall-revenue`;
     await store.dispatch(actionTypes.FetchRevenue)
 });
 </script>

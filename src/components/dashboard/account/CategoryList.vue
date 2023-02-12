@@ -47,7 +47,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${account_api_url}${url.value}/getall_category?pageIndex=${pageIndex.value}`;
+    const request:any = `${account_api_url}${url.value}/getall-category?pageIndex=${pageIndex.value}`;
     console.log('url', request)
     await store.dispatch(accountActionTypes.FetchCategory, request)
 }
@@ -92,7 +92,7 @@ const deleteCategory:any = async (category:any) => {
     console.log('requestData', request)
     await store.dispatch(accountActionTypes.RemoveExpenditureCategory, request)
     closeModal()
-    const fetchrequest:any = `${account_api_url}${url.value}getall_category`;
+    const fetchrequest:any = `${account_api_url}${url.value}getall-category`;
     console.log('url', fetchrequest)
     await store.dispatch(accountActionTypes.FetchCategory, fetchrequest)
 }
@@ -117,7 +117,7 @@ const store = useStore();
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('ECategory List mounted', url.value);
-    const request:any = `${account_api_url}${url.value}getall_category`;
+    const request:any = `${account_api_url}${url.value}getall-category`;
     console.log('url', request)
     await store.dispatch(accountActionTypes.FetchCategory, request)
 });
