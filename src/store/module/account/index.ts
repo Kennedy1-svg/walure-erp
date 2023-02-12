@@ -1,9 +1,9 @@
 import { computed } from 'vue'
-import * as mutationTypes from './constants/mutation'
-import * as actionTypes from './constants/action'
-import router from '../../../router'
 import { account_api_url } from '../../../config/index'
-import { addData, fetchData, editData, editDataPut, addEmptyData, removeData } from '../../../helpers/api'
+import { addData, addEmptyData, editData, editDataPut, fetchData, removeData } from '../../../helpers/api'
+import router from '../../../router'
+import * as actionTypes from './constants/action'
+import * as mutationTypes from './constants/mutation'
 
 export default {
   state: () => ({
@@ -17,18 +17,17 @@ export default {
     },
     revenue: '',
     expenditure: '',
-    // total_expenditure_count: '',
-    // total_revenue_count: '',
-    // total_category_count: '',
+    total_count: '',
     alert_status: false,
     alert_text: '',
     editing: false,
     isEditing: false,
     categories: '',
-    categoryList: '',
     category: {
       name: ''
     },
+    categoryList: '',
+    incomeStatement: '',
   }),
   getters: {
     getExpenditure: (state: any) => {
@@ -46,31 +45,21 @@ export default {
     //       return state.newRevenueTalent
     //   })
     // },
-    // getRevenueJobDetails: (state: any) => {
-    //   return computed(() => {
-    //       return state.revenuejobdetails
-    //   })
-    // },
+    getIncomeStatement: (state: any) => {
+      return computed(() => {
+          return state.incomeStatement
+      })
+    },
     getNewExpenditure: (state: any) => {
       return computed(() => {
           return state.expenditure
       })
     },
-    // getTotalExpenditureCount: (state: any) => {
-    //   return computed(() => {
-    //       return state.total_expenditure_count
-    //   })
-    // },
-    // getTotalRevenueCount: (state: any) => {
-    //   return computed(() => {
-    //       return state.total_revenue_count
-    //   })
-    // },
-    // getTotalCategoryCount: (state: any) => {
-    //   return computed(() => {
-    //       return state.total_category_count
-    //   })
-    // },
+    getTotalExpenditureCount: (state: any) => {
+      return computed(() => {
+          return state.total_count
+      })
+    },
     getRevenue: (state: any) => {
       return computed(() => {
           return state.revenues
@@ -81,11 +70,6 @@ export default {
           return state.newRevenue
       })
     },
-    // getRevenueList: (state: any) => {
-    //   return computed(() => {
-    //       return state.revenueList
-    //   })
-    // },
     getCategory: (state: any) => {
       return computed(() => {
           return state.categories
@@ -121,11 +105,17 @@ export default {
     [mutationTypes.SetExpenditure] (state: any, data: any) {
       state.expenditures = data
     },
+    [mutationTypes.SetIncomeStatement] (state: any, data: any) {
+      state.incomeStatement = data
+    },
+    [mutationTypes.SetCategoryList] (state: any, data: any) {
+      state.categoryList = data
+    },
     [mutationTypes.SetNewExpenditure] (state: any, data: any) {
       state.expenditure = data
     },
     [mutationTypes.SetTotalExpenditureCount] (state: any, data: any) {
-      state.total_expenditure_count = data
+      state.total_count = data
     },
     [mutationTypes.SetRevenue] (state: any, data: any) {
       state.revenues = data
@@ -144,9 +134,6 @@ export default {
     },
     [mutationTypes.SetCategory] (state: any, data: any) {
       state.categories = data
-    },
-    [mutationTypes.SetCategoryList] (state: any, data: any) {
-      state.categoryList = data
     },
     // [mutationTypes.SetRevenueTalent] (state: any, data: any) {
     //   localStorage.setItem('revenueTalent', state.revenueTalent = data)
@@ -194,6 +181,24 @@ export default {
       if (expenditure.payload) {
         await commit(mutationTypes.SetExpenditure, expenditure)
       } else if (expenditure.response.status === 401) {
+        router.push({ name: 'Login' });
+      }
+      // commit(mutationTypes.SetExpenditure, expenditure)
+      // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
+    },
+    async [actionTypes.FetchIncomeStatement] ({ commit }: any, data: any = `${account_api_url}api/incomestatement/getall-incomestatement`) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here', token)
+      const incomestatement = await fetchData(data, token)
+      console.log('data', data)
+      console.log('Iincomestatements', incomestatement)
+    //   console.log('Iincomestatements', incomestatements.value)
+    //   console.log('Iincomestatements', JSON.parse(JSON.stringify(incomestatements)))
+    //   console.log('Iincomestatements', JSON.parse(JSON.stringify(incomestatements.value)))
+    //   console.log('Iincomestatements', incomestatements.value)
+      if (incomestatement.payload) {
+        await commit(mutationTypes.SetIncomeStatement, incomestatement)
+      } else if (incomestatement.response.status === 401) {
         router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetExpenditure, expenditure)

@@ -100,7 +100,7 @@ const setId:any = (id:any) => {
 
 const editExpenditure:any = async (expenditure:any) => {
     console.log('expenditure', expenditure)
-    const request:any = `${account_api_url}api/expenditure/get_expenditure/${expenditure}`;
+    const request:any = `${account_api_url}api/expenditure/get-expenditure/${expenditure}`;
     console.log('request for the', request)
     await store.dispatch(actionTypes.FetchEditExpenditure, request)
 }

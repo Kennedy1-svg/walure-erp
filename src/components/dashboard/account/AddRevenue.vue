@@ -164,7 +164,7 @@ let errors = reactive({
 const uniqueIdentifier:any = async () => {
     console.log('uniqueIdentifier')
     console.log(`${newRevenue.value.categoryId}`)
-    const request:any = `${account_api_url}api/revenuecategory/get_category/${newRevenue.value.categoryId}`;
+    const request:any = `${account_api_url}api/revenuecategory/get-category/${newRevenue.value.categoryId}`;
     console.log('request for the', request)
     await store.dispatch(accountActionTypes.FetchEditCategory, request)
     let category:any = await store.getters.getNewCategory.value

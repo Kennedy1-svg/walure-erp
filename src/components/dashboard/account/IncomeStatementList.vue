@@ -37,7 +37,7 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/incomestatement/getall_incomestatement`;
+    const request:any = `${api_url}api/incomestatement/getall-incomestatement`;
     console.log('url', request)
     await store.dispatch(actionTypes.FetchIncomeStatement)
 }

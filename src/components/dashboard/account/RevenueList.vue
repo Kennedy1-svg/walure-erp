@@ -52,7 +52,7 @@ const sendId:any = (id:any) => {
 
 const editRevenue:any = async (revenue:any) => {
     console.log('revenue', revenue)
-    const request:any = `${account_api_url}api/revenue/get_revenue/${revenue}`;
+    const request:any = `${account_api_url}api/revenue/get-revenue/${revenue}`;
     console.log('request for the', request)
     await store.dispatch(actionTypes.FetchEditRevenue, request)
 }

@@ -68,7 +68,7 @@ const totalPages:any = computed(() => {
 
 const editCategory:any = async (category:any) => {
     console.log('category', category.id)
-    const request:any = `${account_api_url}${url.value}get_category/${category.id}`;
+    const request:any = `${account_api_url}${url.value}get-category/${category.id}`;
     console.log('request for the', request)
     await store.dispatch(accountActionTypes.FetchEditCategory, request)
     // console.log('student', student)
