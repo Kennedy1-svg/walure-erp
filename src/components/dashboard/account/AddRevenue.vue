@@ -223,7 +223,7 @@ const addrevenue:any = async () => {
 
 const editrevenue:any = async () => {
     console.log('hi');
-    const request:any = `${account_api_url}api/revenue/edit_revenue`;
+    const request:any = `${account_api_url}api/revenue/edit-revenue`;
 
     const revenuedata:any = {
         categoryId: newRevenue.value.categoryId,

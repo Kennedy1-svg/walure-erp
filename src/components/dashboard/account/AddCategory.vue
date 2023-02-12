@@ -249,7 +249,7 @@ const editCategory:any = async () => {
     console.log('hi');
     console.log('newstudent', props.url)
     // console.log('newstudent', newCategory.value.imageFile)
-    const request:any = `${account_api_url}${props.url}edit_category`;
+    const request:any = `${account_api_url}${props.url}edit-category`;
 
     // const formElem = document.getElementById('formElem')
     // formData.append('Name', newCategory.value.name)

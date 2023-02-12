@@ -227,7 +227,7 @@ const addexpenditure:any = async () => {
 
 const editexpenditure:any = async () => {
     console.log('hi');
-    const request:any = `${account_api_url}api/expenditure/edit_expenditure`;
+    const request:any = `${account_api_url}api/expenditure/edit-expenditure`;
 
     const expendituredata:any = {
         categoryId: newExpenditure.value.categoryId,
