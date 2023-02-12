@@ -14,19 +14,20 @@ import SvgIcons from '../../SvgIcons.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
-import * as actionTypes from '../../../store/module/users/constants/action';
+import moment from 'moment';
+import * as actionTypes from '../../../store/module/account/constants/action';
 import { api_url } from '../../../config/index';
 
 import { useRouter } from 'vue-router';
 
 const route = useRouter();
 
-const roles:any = computed(() => {
-    return store.getters.getRole.value.payload;
+const incomeStatement:any = computed(() => {
+    return store.getters.getIncomeStatement.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getRole.value.totalCount;
+    return store.getters.getIncomeStatement.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
@@ -36,42 +37,42 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/role-management/get-roles/${pageIndex.value}/{pageSize}`;
+    const request:any = `${api_url}api/incomestatement/getall_incomestatement`;
     console.log('url', request)
-    await store.dispatch(actionTypes.FetchRole, request)
+    await store.dispatch(actionTypes.FetchIncomeStatement)
 }
 
-let roleitemtodelete:any = ref('')
+// let incomestatementitemtodelete:any = ref('')
 
-const sendId:any = (id:any) => {
-    console.log('batchid', id)
-    roleitemtodelete.value = id
-    console.log('roleitemtodelete', roleitemtodelete.value)
-    return roleitemtodelete
-}
+// const sendId:any = (id:any) => {
+//     console.log('batchid', id)
+//     incomestatementitemtodelete.value = id
+//     console.log('incomestatementitemtodelete', incomestatementitemtodelete.value)
+//     return incomestatementitemtodelete
+// }
 
-const deleteRole:any = async (id:any) => {
-    console.log('category category', id);
+// const deleteRole:any = async (id:any) => {
+//     console.log('category category', id);
 
-    const request:any = `${api_url}api/role-management/delete-role/${id}`;
+//     const request:any = `${api_url}api/incomestatement-management/delete-incomestatement/${id}`;
 
-    console.log('requestData', request)
-    await store.dispatch(actionTypes.RemoveRole, request)
-    await store.dispatch(actionTypes.FetchRole)
-    closeModal()
-    // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
-    // console.log('url', fetchrequest)
-    // await store.dispatch(actionTypes.FetchRoleQuotes)
-}
+//     console.log('requestData', request)
+//     await store.dispatch(actionTypes.RemoveRole, request)
+//     await store.dispatch(actionTypes.FetchRole)
+//     closeModal()
+//     // const fetchrequest:any = `${api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
+//     // console.log('url', fetchrequest)
+//     // await store.dispatch(actionTypes.FetchRoleQuotes)
+// }
 
-const emits = defineEmits(['close']);
+// const emits = defineEmits(['close']);
 
-const closeModal:any = async () => {
-  emits('close')
-  setTimeout(() => {
-    showDelete.value = false;
-  }, 500);
-}
+// const closeModal:any = async () => {
+//   emits('close')
+//   setTimeout(() => {
+//     showDelete.value = false;
+//   }, 500);
+// }
 
 const totalPages:any = computed(() => {
     // (totalCount.value % 10 != 0) ? `Math.floor(${totalCount.value} / 10) + 1` : `${totalCount.value} / 10`;
@@ -85,42 +86,42 @@ const totalPages:any = computed(() => {
     return total
 })
 
-const setId:any = (id:any) => {
-    console.log('role', id)
-    // const request:any = `${api_url}api/role-management/get-role-details/${id}`;
-    // console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditRole, request)
-    route.push({
-        name: 'EditRole',
-        params: {
-            id: id
-        }
-    })
-}
+// const setId:any = (id:any) => {
+//     console.log('incomestatement', id)
+//     // const request:any = `${api_url}api/incomestatement-management/get-incomestatement-details/${id}`;
+//     // console.log('request forid', request)
+//     // store.dispatch(actionTypes.FetchEditRole, request)
+//     route.push({
+//         name: 'EditRole',
+//         params: {
+//             id: id
+//         }
+//     })
+// }
 
-const toggle:any = (status:any) => {
-    if (status == 0) {
-        return status = 1
-    } else {
-        return status = 0
-    }
-}
+// const toggle:any = (status:any) => {
+//     if (status == 0) {
+//         return status = 1
+//     } else {
+//         return status = 0
+//     }
+// }
 
-const showAddToBatch = ref(false);
+// const showAddToBatch = ref(false);
 
-const showEdit = ref(false);
+// const showEdit = ref(false);
 
-const showDelete = ref(false);
+// const showDelete = ref(false);
 
-const showDetails = ref(false);
+// const showDetails = ref(false);
 
 const store = useStore();
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
-    console.log('Role List mounted');
-    const request:any = `${api_url}api/role-management/get-roles/{pageIndex}/{pageSize}`;
-    await store.dispatch(actionTypes.FetchRole)
+    console.log('FetchIncomeStatement List mounted');
+    const request:any = `${api_url}api/incomestatement-management/get-incomeStatement/{pageIndex}/{pageSize}`;
+    await store.dispatch(actionTypes.FetchIncomeStatement)
 });
 </script>
 
@@ -131,7 +132,7 @@ onMounted( async () => {
             <!-- <p class="text-xl pr-3 font-medium text-primary">Total : {{ total_count }}</p> -->
         </div>
         <div class="table">
-            <!-- {{ roles }} -->
+            <!-- {{ incomeStatement }} -->
             <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
                 <table class="overflow-x-scroll border items-center w-full">
                     <thead class="bg-table-head">
@@ -140,10 +141,10 @@ onMounted( async () => {
                         S/N
                         </th>
                         <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                        Revenue
+                        Product
                         </th>
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                        Payment Category
+                        Category
                         </th>
                         <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
                         Unique Identifier Code
@@ -151,25 +152,37 @@ onMounted( async () => {
                         <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
                         Amount
                         </th>
+                        <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                        Payment Category
+                        </th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        Date
+                        </th>
                     </tr>
                     </thead>
 
                     <tbody id="students" class="bg-white">
-                    <tr v-for="(role) in roles" :key="role.id">
+                    <tr v-for="(incomestatement) in incomeStatement" :key="incomestatement.id">
                         <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                            {{ pageIndex == 1 ? (roles.indexOf(role) + 1) : ((pageIndex - 1) * 10) + (roles.indexOf(role) + 1) }}
+                            {{ pageIndex == 1 ? (incomeStatement.indexOf(incomestatement) + 1) : ((pageIndex - 1) * 10) + (incomeStatement.indexOf(incomestatement) + 1) }}
                         </td>
                         <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ role.role }}
+                            {{ incomestatement.item }}
                         </td>
                         <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ role.modifiedOn }}
+                            {{ incomestatement.categoryName }}
                         </td>
                         <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                            {{ role.role }}
+                            {{ incomestatement.uniqueIdentifierCode }}
                         </td>
                         <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                            {{ role.modifiedOn }}
+                            {{ incomestatement.amount }}
+                        </td>
+                        <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                            {{ incomestatement.source }}
+                        </td>
+                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                            {{  moment(incomestatement.transactionDate).format('MM/DD/YYYY') }}
                         </td>
                         </tr>
                     </tbody>
