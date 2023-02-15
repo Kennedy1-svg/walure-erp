@@ -134,7 +134,7 @@ const loginWithZoho:any = async () => {
     await store.dispatch(actionTypes.FetchZohoCreds)
     const authCredentials:any = JSON.stringify(store.getters.getAuthCreds.value)
     console.log(`auth credentials retrieved: ${authCredentials}`)
-    // route.push('/dashboards')
+    route.push('/dashboards')
     return authCredentials
 }
 
