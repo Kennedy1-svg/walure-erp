@@ -13,8 +13,8 @@ import SvgIcons from '../../../components/SvgIcons.vue';
 import { useStore } from 'vuex'
 const store = useStore();
 
-const alertState:any = computed(() => store.getters.getCourseAlertStatus.value)
-const alertText:any = computed(() => store.getters.getCourseAlertText.value)
+const alertState:any = computed(() => store.getters.getExpenditureAlertStatus.value)
+const alertText:any = computed(() => store.getters.getExpenditureAlertText.value)
 
 const status:any = computed(() => {
     let answer:any

@@ -63,6 +63,8 @@ const newUrl:any = url.value;
 
 onMounted(() => {
     // store.commit('setPageTitle', 'Course List');
+    // const request:any = `${account_api_url}${url.value}getall-category`;
+    // store.dispatch(accountActionTypes.FetchCategory, request)
     console.log('AccountCategoryHeader mounted');
 });
 

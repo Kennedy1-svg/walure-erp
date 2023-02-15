@@ -15,6 +15,12 @@ export default {
       amount: '',
       dot: '',
     },
+    newExpenditure: {
+      category: '',
+      item: '',
+      amount: '',
+      dot: '',
+    },
     revenue: '',
     expenditure: '',
     total_count: '',
@@ -52,7 +58,7 @@ export default {
     },
     getNewExpenditure: (state: any) => {
       return computed(() => {
-          return state.expenditure
+          return state.newExpenditure
       })
     },
     getTotalExpenditureCount: (state: any) => {
@@ -112,7 +118,7 @@ export default {
       state.categoryList = data
     },
     [mutationTypes.SetNewExpenditure] (state: any, data: any) {
-      state.expenditure = data
+      state.newExpenditure = data
     },
     [mutationTypes.SetTotalExpenditureCount] (state: any, data: any) {
       state.total_count = data
@@ -151,7 +157,7 @@ export default {
       state.isEditing = data
     },
     [mutationTypes.SetEditExpenditure] (state: any, data: any) {
-      state.expenditure = data
+      state.newExpenditure = data
     },
     [mutationTypes.SetTitle] (state: any, data: any) {
       state.title = data
@@ -168,7 +174,7 @@ export default {
     },
   },
   actions: {
-    async [actionTypes.FetchExpenditure] ({ commit }: any, data: any = `${account_api_url}api/expenditure/getall-expenditure?pageIndex=1&pageSize=10`) {
+    async [actionTypes.FetchExpenditure] ({ commit }: any, data: any = `${account_api_url}api/expenditure/getall-expenditure`) {
       const token:any = localStorage.getItem('token')
       console.log('token here', token)
       const expenditure = await fetchData(data, token)
@@ -343,7 +349,7 @@ export default {
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const addCategory = await addData(data.url, data.data, token)
-      if (!addCategory.hasErrors) {
+      if (addCategory.data) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category added successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -353,7 +359,7 @@ export default {
       } else if (addCategory.response.status === 401) {
         router.push({ name: 'Login' });
       } else if (addCategory.message.includes('400')) {
-        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
         await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
@@ -373,8 +379,12 @@ export default {
       const url = 'api/revenuecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
-      const addCategory = await addData(data.url, data.data, token)
-      if (!addCategory.hasErrors) {
+      const addCategory:any = await addData(data.url, data.data, token)
+      console.log('addCategory is the same', addCategory)
+      console.log('addCategory is the same', addCategory.message)
+      console.log('addCategory is the same', addCategory.message.includes('400'))
+      console.log('addCategory is the same', addCategory.title)
+      if (addCategory.data) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category added successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -384,7 +394,7 @@ export default {
       } else if (addCategory.response.status === 401) {
         router.push({ name: 'Login' });
       } else if (addCategory.message.includes('400')) {
-        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
         await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
@@ -405,7 +415,7 @@ export default {
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory = await editDataPut(data.url, data.data, token)
-      if (!editCategory.hasErrors) {
+      if (editCategory.data) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category updated successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -415,7 +425,7 @@ export default {
       } else if (editCategory.response.status === 401) {
         router.push({ name: 'Login' });
       } else if (editCategory.message.includes('400')) {
-        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
         await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
@@ -436,7 +446,7 @@ export default {
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory = await editDataPut(data.url, data.data, token)
-      if (!editCategory.hasErrors) {
+      if (editCategory.data) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category updated successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -446,7 +456,7 @@ export default {
       } else if (editCategory.response.status === 401) {
         router.push({ name: 'Login' });
       } else if (editCategory.message.includes('400')) {
-        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
         await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
@@ -525,14 +535,15 @@ export default {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       const expenditure = await editDataPut(data.url, data.data, token)
-      if (!expenditure.hasErrors) {
+      console.log('expenditure that came', expenditure)
+      if (expenditure.data) {
         // commit(mutationTypes.SetNewExpenditureCategory, expenditure.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Expenditure updated successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchExpenditure)
-      } else if (expenditure.response.status === 401) {
+      } else if (expenditure.response?.status === 401) {
         router.push({ name: 'Login' });
-      } else if (expenditure.message.includes('400')) {
+      } else if (expenditure.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {

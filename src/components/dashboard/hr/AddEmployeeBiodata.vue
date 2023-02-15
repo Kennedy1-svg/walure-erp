@@ -12,9 +12,9 @@ import moment from 'moment';
 import SvgIcons from '../../SvgIcons.vue';
 import multiselect from '@vueform/multiselect'
 import Modal from '../../Modal.vue'
-import Datepicker from 'vue3-date-time-picker';
+import Datepicker from '@vuepic/vue-datepicker';
 import 'v-calendar/dist/style.css';
-import 'vue3-date-time-picker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css'
 import * as actionTypes from '../../../store/module/instructors/constants/action'
 import * as mutationTypes from '../../../store/module/instructors/constants/mutation'
 import * as studentActionTypes from '../../../store/module/students/constants/action'
@@ -941,7 +941,7 @@ const disabledView:any = 'bg-gray-300';
                                             />
                                         </template>
                                     </DatePicker> -->
-                                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newTalent.dot" placeholder="Select Date" :format="format" :maxDate="dobRestriction" position="left" teleport="#dot"/>
+                                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newTalent.dot" placeholder="Select Date" :format="format" :maxDate="dobRestriction" position="left" teleport="#dot" autoApply/>
                                     <!-- <datepicker /> -->
                                     <p class="text-[10px] text-red">
                                         <!-- {{ errors.dot ? errors.dotText : '' }} -->

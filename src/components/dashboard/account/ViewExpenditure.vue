@@ -13,9 +13,9 @@ import moment from 'moment';
 import SvgIcons from '../../SvgIcons.vue';
 import { DatePicker } from 'v-calendar'
 import Filter from '../../Filter.vue';
-import Datepicker from 'vue3-date-time-picker';
+import Datepicker from '@vuepic/vue-datepicker';
 import 'v-calendar/dist/style.css';
-import 'vue3-date-time-picker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css'
 // import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
 import * as accountActionTypes from '../../../store/module/account/constants/action'
@@ -285,7 +285,7 @@ onMounted(async () => {
     console.log('I am now here')
     const request:any = `${account_api_url}api/expenditurecategory/getlist-category`;
     console.log('url', request)
-    await store.dispatch(accountActionTypes.FetchCategory, request)
+    await store.dispatch(accountActionTypes.FetchCategoryList, request)
 })
 </script>
 
@@ -330,7 +330,7 @@ onMounted(async () => {
                     <label for="transactionDate" class="font-semibold">
                         DOT <span class="text-red font-bold">*</span>
                     </label>
-                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.transactionDate">
+                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.transactionDate" autoApply>
                         <template v-slot="{ inputValue, inputEvents }">
                             <input
                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -340,7 +340,7 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.transactionDate" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" disabled/>
+                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.transactionDate" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" disabled autoApply/>
                     <!-- <datepicker /> -->
                     <!-- <p class="text-[10px] text-red">
                         {{ errors.transactionDate ? errors.transactionDateText : '' }}
@@ -368,7 +368,7 @@ onMounted(async () => {
                     <label for="doc" class="font-semibold">
                         DOC <span class="text-red font-bold">*</span>
                     </label>
-                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.createdOn">
+                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.createdOn" autoApply>
                         <template v-slot="{ inputValue, inputEvents }">
                             <input
                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -378,7 +378,7 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.createdOn" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" disabled/>
+                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.createdOn" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" disabled autoApply/>
                     <!-- <input type="date" v-model="newExpenditure.createdOn" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled> -->
                     <!-- <p class="text-[10px] text-red">
                         {{ errors.amount ? errors.amountText : '' }}

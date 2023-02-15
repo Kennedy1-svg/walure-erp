@@ -6,8 +6,8 @@ export default {
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import Datepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css'
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
@@ -179,10 +179,10 @@ onMounted( async() => {
         <div class="filter py-5 px-8">
           <div class="filter-items text-grey grid grid-cols-2 xl:grid-cols-4 gap-7 xl:gap-3 2xl:gap-10 py-5">
             <div class="startdate">
-                <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format" textInput/>
+                <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format" textInput autoApply/>
             </div>
             <div class="enddate">
-                <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date"  />
+                <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date" autoApply/>
             </div>
             <div class="status">
               <multiselect v-model="categoryField" @clear="deselect" @select="cancan" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />

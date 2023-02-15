@@ -223,7 +223,7 @@ onMounted( async () => {
                                                     Edit
                                                 </button>
                                                 <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                                    <AddExpenditure name="Edit" @close="showEdit = !showEdit"  />
+                                                    <AddExpenditure name="Edit" @close="showEdit = false"  />
                                                 </Modal>
 
                                                 <button

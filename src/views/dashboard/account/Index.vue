@@ -13,6 +13,7 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/courses/constants/action'
 import { api_url } from '../../../config'
+import SvgIcons from '../../../components/SvgIcons.vue';
 
 const store = useStore();
 const route = useRoute();
@@ -50,7 +51,7 @@ const status:any = computed(() => {
 
 <template>
 <div class="grid pt-[50px] px-[35px] pb-[90px]">
-	<alert :class="[alertState ? '' : 'hidden']"  class="fixed z-60 top-40 bg-white p-2 right-0" name="result">
+	<alert :class="[alertState ? '' : 'hidden']"  class="fixed z-70 top-40 bg-white p-2 right-0" name="result">
 		<template #icon>
 			<p v-if="status" class="bg-green-accent rounded-full border p-2">
 				<SvgIcons class="text-white" name="tick" />

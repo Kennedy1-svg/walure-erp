@@ -6,8 +6,8 @@ export default {
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import Datepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css'
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
@@ -185,10 +185,10 @@ onMounted( async() => {
         <div class="filter py-5 px-8 bg-white">
           <div class="filter-items text-grey grid grid-cols-1 xl:grid-cols-3 gap-7 xl:gap-10 2xl:gap-16 py-5">
             <div class="startdate">
-              <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="From" :format="format" textInput/>
+              <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="From" :format="format" textInput autoApply/>
             </div>
             <div class="enddate">
-              <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="To"  />
+              <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="To" autoApply/>
             </div>
             <div class="courses">
               <div class="search grid justify-self-end">

@@ -14,9 +14,9 @@ import { account_api_url } from '../../../config'
 import SvgIcons from '../../SvgIcons.vue';
 import { DatePicker } from 'v-calendar'
 import Filter from '../../Filter.vue';
-import Datepicker from 'vue3-date-time-picker';
+import Datepicker from '@vuepic/vue-datepicker';
 import 'v-calendar/dist/style.css';
-import 'vue3-date-time-picker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css'
 // import datepicker from '../../datepicker.vue'
 import * as accountActionTypes from '../../../store/module/account/constants/action'
 import multiselect from '@vueform/multiselect'
@@ -72,10 +72,10 @@ const checkError:any = () => {
 
     if (!newExpenditure.value.amount) {
         errors.amount = true;
-        errors.amountText = 'Number of resources is required'
+        errors.amountText = 'Amount is required'
     } else if (isNaN(newExpenditure.value.amount)) {
         errors.amount = true;
-        errors.amountText = 'Number of resources cannot contain letters'
+        errors.amountText = 'Amount cannot contain letters'
     } else {
         errors.amount = false;
         errors.amountText = '';
@@ -161,10 +161,6 @@ let errors = reactive({
 
 const today:any = moment().format('YYYY-MM-DD');
 
-const briefs:any = computed(() => {
-  return store.getters.getInstructor.value.payload;
-});
-
 const emits = defineEmits(['close'])
 
 const isEditing:any = computed(() => {
@@ -195,7 +191,7 @@ const randomDigits = computed(() => {
 })
 
 const closeModal:any = async () => {
-    await store.commit(accountMutationTypes.SetNewExpenditure, {})
+    store.commit(accountMutationTypes.SetNewExpenditure, {})
     emits('close')
 }
 
@@ -299,16 +295,6 @@ onMounted(async () => {
             <div class="grid grid-cols-2 gap-8 mb-10">
                 <!-- {{ newExpenditure }} -->
                 <div class="grid gap-4">
-                    <label for="category" class="font-semibold">
-                        Category <span class="text-red font-bold">*</span>
-                    </label>
-                    <!-- <input type="text" @focus="checkError" @keyup="checkError"  v-model="newExpenditure.category" name="category" id="category" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none"> -->
-                    <multiselect @select="checkError" @clear="checkError"  v-model="newExpenditure.categoryId" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Select option" :searchable="true" class="multiselect-blue" />
-                    <p class="text-[10px] text-red">
-                        {{ errors.categoryId ? errors.categoryIdText : '' }}
-                    </p>
-                </div>
-                <div class="grid gap-4">
                     <label for="product" class="font-semibold">
                         Product <span class="text-red font-bold">*</span>
                     </label>
@@ -323,13 +309,23 @@ onMounted(async () => {
                         <option  v-for="item in courses" :key="item.id"  :value=item.id>{{ item.product }}</option>
                     </select> -->
                 </div>
+                <div class="grid gap-4">
+                    <label for="category" class="font-semibold">
+                        Category <span class="text-red font-bold">*</span>
+                    </label>
+                    <!-- <input type="text" @focus="checkError" @keyup="checkError"  v-model="newExpenditure.category" name="category" id="category" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none"> -->
+                    <multiselect @select="checkError" @clear="checkError"  v-model="newExpenditure.categoryId" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Select option" :searchable="true" class="multiselect-blue" />
+                    <p class="text-[10px] text-red">
+                        {{ errors.categoryId ? errors.categoryIdText : '' }}
+                    </p>
+                </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">
                 <div class="grid gap-4" id="transactionDate">
                     <label for="transactionDate" class="font-semibold">
                         DOT <span class="text-red font-bold">*</span>
                     </label>
-                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.transactionDate">
+                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.transactionDate" autoApply>
                         <template v-slot="{ inputValue, inputEvents }">
                             <input
                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -338,7 +334,7 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.transactionDate" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate"/>
+                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.transactionDate" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" autoApply/>
                     <!-- <datepicker /> -->
                     <p class="text-[10px] text-red">
                         {{ errors.transactionDate ? errors.transactionDateText : '' }}

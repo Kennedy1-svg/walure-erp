@@ -48,6 +48,13 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: false },
   },
   {
+    path: '/dashboards',
+    name: 'Home',
+    component: () => import('../views/dashboard/Layout.vue'),
+    meta: { authName: idsrvAuth.authName },
+    // meta: { requiresAuth: false },
+  },
+  {
     path: '/dashboard',
     name: 'Layout',
     component: () => import('../views/dashboard/Layout.vue'),
@@ -109,12 +116,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/dashboard/account/Payroll.vue'),
         meta: { requiresAuth: true },
       },
-      // {
-      //   path: 'human-resource/employee-data',
-      //   name: 'EmployeeData',
-      //   component: () => import('../views/dashboard/hr/EmployeeData.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
+      {
+        path: 'human-resource/employee-data',
+        name: 'EmployeeData',
+        component: () => import('../views/dashboard/hr/EmployeeData.vue'),
+        meta: { requiresAuth: true },
+      },
       // {
       //   path: 'human-resource/employee-birthday',
       //   name: 'EmployeeBirthday',
@@ -191,7 +198,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-  const token:any = await localStorage.getItem('token')
+  const token:any = localStorage.getItem('token')
   if (to.meta.requiresAuth) {
     if (!token) {
       router.push({ name: 'Login' })
@@ -201,6 +208,10 @@ router.beforeEach(async (to, from) => {
       //   query: { redirect: to.fullPath },
       // }
     }
+  }
+
+  if (to.path == '/dashboards') {
+    router.push({ path: '/dashboard' })
   }
 })
 

@@ -25,6 +25,7 @@
   "dependencies": {
     "@headlessui/vue": "^1.5.0",
     "@vueform/multiselect": "^2.3.3",
+    "@vuepic/vue-datepicker": "^3.6.8",
     "@vueup/vue-quill": "^1.0.0-beta.8",
     "apexcharts": "^3.35.0",
     "axios": "^0.26.0",
@@ -39,7 +40,6 @@
     "vue-oidc-client": "^1.0.0-alpha.5",
     "vue-router": "^4.0.12",
     "vue3-circle-progress": "^1.0.7",
-    "vue3-date-time-picker": "^2.7.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

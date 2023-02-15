@@ -48,9 +48,14 @@ export const addData = async (url: any, data: any = null, token:any) => {
     // setTimeout(() => {
     //   store.dispatch()
     // })
+    console.log('response in here is, ', response)
     return response.data
-  } catch (err) {
-    console.log('err', err)
+  } catch (err:any ) {
+    console.log('err in here', err, typeof(err))
+    console.log('err in here', err.name, typeof(err))
+    console.log('err in here', err.title, typeof(err))
+    console.log('err in here', err.status, typeof(err))
+    console.log('err in here', err.message, typeof(err))
     return err
   }
 }
@@ -92,6 +97,8 @@ export const addDataFile = async (url: any, data: any, token:any) => {
 export const editData = async (url: any, payload: any, token:any) => {
   try {
     const response = await axios.patch(url, payload, { headers: { Authorization: `Bearer ${token}` } })
+    console.log('response dat we see', response.data)
+    console.log('response in here is, ', response)
     return response.data
   } catch (err) {
     return err
@@ -102,6 +109,8 @@ export const editData = async (url: any, payload: any, token:any) => {
 export const editDataPut = async (url: any, payload: any, token:any) => {
   try {
     const response = await axios.put(url, payload, { headers: { Authorization: `Bearer ${token}` } })
+    console.log('response of which', response.data)
+    console.log('response in here is, ', response)
     return response.data
   } catch (err) {
     return err

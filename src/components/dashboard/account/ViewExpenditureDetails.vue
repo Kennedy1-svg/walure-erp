@@ -13,9 +13,9 @@ import moment from 'moment';
 import SvgIcons from '../../SvgIcons.vue';
 import { DatePicker } from 'v-calendar'
 import Filter from '../../Filter.vue';
-import Datepicker from 'vue3-date-time-picker';
+import Datepicker from '@vuepic/vue-datepicker';
 import 'v-calendar/dist/style.css';
-import 'vue3-date-time-picker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css'
 // import datepicker from '../../datepicker.vue'
 import multiselect from '@vueform/multiselect'
 import * as projectActionTypes from '../../../store/module/services/constants/action'
@@ -373,7 +373,7 @@ onMounted(async () => {
                     <label for="dot" class="font-semibold">
                         DOT
                     </label>
-                    <DatePicker v-if="props.name == 'Edit'" v-model="newProject.dot">
+                    <DatePicker v-if="props.name == 'Edit'" v-model="newProject.dot" autoApply>
                         <template v-slot="{ inputValue, inputEvents }">
                             <input
                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -382,7 +382,7 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newProject.dot" :minDate="today" placeholder="Select Date" :format="format" position="left" teleport="#dot" disabled/>
+                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newProject.dot" :minDate="today" placeholder="Select Date" :format="format" position="left" teleport="#dot" disabled autoApply/>
                     <!-- <datepicker /> -->
                     <!-- <p class="text-[10px] text-red">
                         {{ errors.dot ? errors.dotText : '' }}
@@ -403,7 +403,7 @@ onMounted(async () => {
                     <label for="doc" class="font-semibold">
                         DOC
                     </label>
-                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newProject.doc" :minDate="today" placeholder="Select Date" :format="format" position="left" teleport="#doc" disabled/>
+                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newProject.doc" :minDate="today" placeholder="Select Date" :format="format" position="left" teleport="#doc" disabled autoApply/>
                     <!-- <datepicker /> -->
                     <!-- <p class="text-[10px] text-red">
                         {{ errors.doc ? errors.docText : '' }}
