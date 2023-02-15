@@ -207,11 +207,11 @@ router.beforeEach(async (to, from) => {
       //   // save the location we were at to come back later
       //   query: { redirect: to.fullPath },
       // }
+    } else if (token) {
+      if (to.path == '/dashboards') {
+        router.push({ path: '/dashboard' })
+      }
     }
-  }
-
-  if (to.path == '/dashboards') {
-    router.push({ path: '/dashboard' })
   }
 })
 
