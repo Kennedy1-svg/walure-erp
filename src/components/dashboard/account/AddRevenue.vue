@@ -45,7 +45,7 @@ const newRevenue:any = computed(() => {
 })
 
 const categories:any = computed(() => {
-    return store.getters.getCategory.value.payload;
+    return store.getters.getCategoryList.value.payload;
 })
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';

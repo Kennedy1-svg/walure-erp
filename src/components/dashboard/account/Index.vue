@@ -8,7 +8,7 @@ export default {
 import { ref, reactive, computed, onMounted } from 'vue';
 import RevenueHeader from './RevenueHeader.vue'
 import RevenueList from './RevenueList.vue'
-import ProjectHeader from '../services/ProjectHeader.vue'
+// import ProjectHeader from '../services/ProjectHeader.vue'
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex'
 import * as actionTypes from '../../../store/module/courses/constants/action'

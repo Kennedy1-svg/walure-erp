@@ -15,7 +15,8 @@ import Modal from '../../Modal.vue';
 import AddRevenue from './AddRevenue.vue';
 // import AddRevenue from './ViewRevenueDetails.vue';
 import { useStore } from 'vuex';
-import { account_api_url } from '../../../config/index'
+import { account_api_url } from '../../../config/index';
+import { fetchData } from '../../../helpers/api';
 import moment from 'moment';
 // import multiselect from 'vue-multiselect';
 import multiselect from '@vueform/multiselect'
@@ -40,8 +41,15 @@ const courses:any = computed(() => {
 });
 
 const categories:any = computed(() => {
-    return store.getters.getCategory.value.payload;
-})
+    return store.getters.getCategoryList.value.payload;
+});
+
+const exportAll:any = async () => {
+  const url:any = `${account_api_url}/api/revenue/download-all-revenue`;
+  const token:any = localStorage.getItem('token')
+  const response = await fetchData(url, token);
+  console.log(`response is: ${response}`)
+}
 
 const statusoptions:any = [
   {
@@ -219,7 +227,7 @@ onMounted( async() => {
               </button>
             </div>
             <div class="status flex gap-7 items-center">
-              <button @click="filterAllRevenue" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
+              <button @click="exportAll" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
                 <SvgIcons name="export" class="text-2xl" />
                 Export
               </button>

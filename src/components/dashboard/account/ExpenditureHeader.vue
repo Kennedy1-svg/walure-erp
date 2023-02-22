@@ -15,6 +15,7 @@ import Modal from '../../Modal.vue';
 import AddExpenditure from './AddExpenditure.vue';
 import { useStore } from 'vuex';
 import moment from 'moment';
+import { fetchData } from '../../../helpers/api';
 // import multiselect from 'vue-multiselect';
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
@@ -154,6 +155,13 @@ const closeModal:any = () => {
   doc.close()
 }
 
+const exportAll:any = async () => {
+  const url:any = `${account_api_url}/api/expenditure/download-all-expenditure`;
+  const token:any = localStorage.getItem('token')
+  const response = await fetchData(url, token);
+  console.log(`response is: ${response}`)
+}
+
 let isActive:any = computed(() => {
     if (courseField.value || categoryField.value || categoryField.value == '0' || (startDate.value && endDate.value)) {
         return true
@@ -216,7 +224,7 @@ onMounted( async() => {
               </button>
             </div>
             <div class="status flex gap-7 items-center">
-              <button @click="filterAllExpenditure" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
+              <button @click="exportAll" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
                 <SvgIcons name="export" class="text-2xl" />
                 Export
               </button>

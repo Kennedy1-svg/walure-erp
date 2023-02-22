@@ -349,16 +349,16 @@ export default {
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const addCategory = await addData(data.url, data.data, token)
-      if (addCategory.data) {
+      if (addCategory?.payload) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category added successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         const requesturl:any = `${account_api_url}${url}`
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
-      } else if (addCategory.response.status === 401) {
+      } else if (addCategory?.response?.status === 401) {
         router.push({ name: 'Login' });
-      } else if (addCategory.message.includes('400')) {
+      } else if (addCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
@@ -381,19 +381,20 @@ export default {
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const addCategory:any = await addData(data.url, data.data, token)
       console.log('addCategory is the same', addCategory)
-      console.log('addCategory is the same', addCategory.message)
-      console.log('addCategory is the same', addCategory.message.includes('400'))
-      console.log('addCategory is the same', addCategory.title)
-      if (addCategory.data) {
+      console.log('addCategory is the same', addCategory.payload)
+      // console.log('addCategory is the same', addCategory?.message)
+      // console.log('addCategory is the same', addCategory?.message.includes('400'))
+      // console.log('addCategory is the same', addCategory?.title)
+      if (addCategory?.payload) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category added successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         const requesturl:any = `${account_api_url}${url}`
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
-      } else if (addCategory.response.status === 401) {
+      } else if (addCategory?.response?.status === 401) {
         router.push({ name: 'Login' });
-      } else if (addCategory.message.includes('400')) {
+      } else if (addCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
@@ -415,16 +416,16 @@ export default {
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory = await editDataPut(data.url, data.data, token)
-      if (editCategory.data) {
+      if (editCategory?.payload) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category updated successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         const requesturl:any = `${account_api_url}${url}`
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
-      } else if (editCategory.response.status === 401) {
+      } else if (editCategory?.response?.status === 401) {
         router.push({ name: 'Login' });
-      } else if (editCategory.message.includes('400')) {
+      } else if (editCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
@@ -446,16 +447,16 @@ export default {
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory = await editDataPut(data.url, data.data, token)
-      if (editCategory.data) {
+      if (editCategory?.payload) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Category updated successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         const requesturl:any = `${account_api_url}${url}`
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
-      } else if (editCategory.response.status === 401) {
+      } else if (editCategory?.response?.status === 401) {
         router.push({ name: 'Login' });
-      } else if (editCategory.message.includes('400')) {
+      } else if (editCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
@@ -662,9 +663,9 @@ export default {
       console.log('all data is', data)
       const category = await fetchData(data, token)
       console.log('category value is', category)
-      if (category.payload) {
+      if (category?.payload) {
         commit(mutationTypes.SetNewCategory, category.payload)
-      } else if (category.response.status === 401) {
+      } else if (category?.response?.status === 401) {
         router.push({ name: 'Login' });
       }
     },

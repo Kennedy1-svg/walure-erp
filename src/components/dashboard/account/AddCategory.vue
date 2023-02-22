@@ -231,6 +231,7 @@ const addCategory:any = async () => {
         closeModal()
         store.commit(accountMutationTypes.SetNewCategory, {})
     }
+    closeModal()
 
 
     // formEl.reset()
