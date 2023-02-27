@@ -15,7 +15,7 @@ import Modal from '../../Modal.vue';
 import AddExpenditure from './AddExpenditure.vue';
 import { useStore } from 'vuex';
 import moment from 'moment';
-import { fetchData } from '../../../helpers/api';
+import { downloadData } from '../../../helpers/api';
 // import multiselect from 'vue-multiselect';
 import multiselect from '@vueform/multiselect'
 import * as courseActionTypes from '../../../store/module/courses/constants/action';
@@ -157,8 +157,9 @@ const closeModal:any = () => {
 
 const exportAll:any = async () => {
   const url:any = `${account_api_url}/api/expenditure/download-all-expenditure`;
+  const title:any = 'Expenditure Report';
   const token:any = localStorage.getItem('token')
-  const response = await fetchData(url, token);
+  const response = await downloadData(title, url, token);
   console.log(`response is: ${response}`)
 }
 
@@ -287,7 +288,7 @@ onMounted( async() => {
 }
 </style>
 
-<style>
+<style scoped>
 .dp-custom-input {
     @apply py-[8px] rounded-md;
 }

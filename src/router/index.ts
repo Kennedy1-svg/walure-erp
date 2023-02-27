@@ -134,12 +134,12 @@ const routes: Array<RouteRecordRaw> = [
       //   component: () => import('../views/dashboard/hr/EmployeePortal.vue'),
       //   meta: { authName: idsrvAuth.authName },
       // },
-      // {
-      //   path: 'human-resource/leave-management',
-      //   name: 'LeaveManagement',
-      //   component: () => import('../views/dashboard/hr/LeaveManagement.vue'),
-      //   meta: { authName: idsrvAuth.authName },
-      // },
+      {
+        path: 'human-resource/leave-management',
+        name: 'LeaveManagement',
+        component: () => import('../views/dashboard/hr/LeaveManagement.vue'),
+        meta: { requiresAuth: true },
+      },
       // {
       //   path: 'human-resource/recruitment',
       //   name: 'Recruitment',

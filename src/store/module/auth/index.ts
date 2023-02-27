@@ -176,18 +176,19 @@ export default {
   actions: {
     async [actionTypes.FetchData] ({ commit }: any, data: any) {
       const user = await addData(data.url, data.data, data.token = null)
-      if (user.access_token) {
+      console.log(`Fetching data from ${data.url} with token ${data.token} to give the result ${JSON.stringify(user)} ${user} ${user.data.access_token}`)
+      if (user.data.access_token) {
         commit(mutationTypes.SetLoginAlertText, 'Login Successful')
         commit(mutationTypes.SetLoginAlertStatus, true)
-        commit(mutationTypes.SetData, user)
-        commit(mutationTypes.SetToken, user.access_token)
-        commit(mutationTypes.SetExpiresIn, user.expires_in)
-        commit(mutationTypes.SetRefreshToken, user.refresh_token)
-        commit(mutationTypes.SetTokenId, user.id_token)
-      } else if (user.message.includes('400')) {
+        commit(mutationTypes.SetData, user.data)
+        commit(mutationTypes.SetToken, user.data.access_token)
+        commit(mutationTypes.SetExpiresIn, user.data.expires_in)
+        commit(mutationTypes.SetRefreshToken, user.data.refresh_token)
+        commit(mutationTypes.SetTokenId, user.data.id_token)
+      } else if (user.data.status == 400) {
         commit(mutationTypes.SetLoginAlertText, 'Invalid Email or Password')
         commit(mutationTypes.SetLoginAlertStatus, true)
-      } else if (user.message.includes('404')) {
+      } else if (user.data.status == 404) {
         commit(mutationTypes.SetLoginAlertText, 'Invalid connection string!')
         commit(mutationTypes.SetLoginAlertStatus, true)
       } else {

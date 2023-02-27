@@ -131,7 +131,7 @@ import SvgIcons from './SvgIcons.vue'
 									<li class="hover:text-primary">
 										<router-link active-class="active" to="/dashboard/human-resource/employee-portal">Employee Portal</router-link>
 									</li>
-									<li class="hover:text-primary pb-3">
+									<li class="hover:text-primary">
 										<router-link active-class="active" to="/dashboard/human-resource/leave-management">Leave Management</router-link>
 									</li>
 									<li class="hover:text-primary">

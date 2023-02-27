@@ -40,12 +40,14 @@ const props = defineProps({
 
 const { name } = toRefs(props);
 
+const clicked:any = ref(false);
+
 const newExpenditure:any = computed(() => {
     return store.getters.getNewExpenditure.value
 })
 
 const categories:any = computed(() => {
-    return store.getters.getCategory.value.payload;
+    return store.getters.getCategoryList.value.payload;
 })
 
 const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
@@ -198,7 +200,7 @@ const closeModal:any = async () => {
 const projectcourse:any = ref('')
 
 const addexpenditure:any = async () => {
-    console.log('hi');
+    console.log('hi', clicked.value);
     const request:any = `${account_api_url}api/expenditure/create-expenditure`;
     let code:any = await uniqueIdentifier()
 
@@ -219,6 +221,9 @@ const addexpenditure:any = async () => {
     closeModal()
     await store.dispatch(accountActionTypes.FetchExpenditure)
     store.commit(accountMutationTypes.SetNewExpenditure, {})
+    setTimeout(() => {
+        clicked.value = false
+    }, 200);
 }
 
 const editexpenditure:any = async () => {
@@ -242,6 +247,9 @@ const editexpenditure:any = async () => {
     closeModal()
     await store.dispatch(accountActionTypes.FetchExpenditure)
     store.commit(accountMutationTypes.SetNewExpenditure, {})
+    setTimeout(() => {
+        clicked.value = false
+    }, 200);
 }
 
 const format:any = (date:any) => {
@@ -260,18 +268,25 @@ let isActive:any = computed(() => {
     }
 })
 
+const changeClicked:any = () => {
+    clicked.value = !clicked.value;
+}
+
 const submit:any = () => {
+    console.log('hi', clicked.value);
+    clicked.value = true;
     console.log('hello project');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? addexpenditure() : '';
+    !isError.value ? addexpenditure() : changeClicked();
 }
 
 const submitEdit:any = () => {
+    clicked.value = true;
     console.log('hello project');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? editexpenditure() : '';
+    !isError.value ? editexpenditure() : changeClicked();
 }
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
@@ -281,6 +296,9 @@ const disabledView:any = 'bg-gray-300';
 
 onMounted(async () => {
     console.log('I am now here')
+    const request:any = `${account_api_url}api/expenditurecategory/getlist-category`;
+    console.log('url', request)
+    await store.dispatch(accountActionTypes.FetchCategoryList, request)
 })
 </script>
 
@@ -320,12 +338,12 @@ onMounted(async () => {
                     </p>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 mb-10">
+            <div class="grid grid-cols-2 gap-8 mb-10 relative">
                 <div class="grid gap-4" id="transactionDate">
                     <label for="transactionDate" class="font-semibold">
                         DOT <span class="text-red font-bold">*</span>
                     </label>
-                    <DatePicker v-if="props.name == 'Edit'" v-model="newExpenditure.transactionDate" autoApply>
+                    <DatePicker v-if="props.name == 'Edit'" :maxDate="today" v-model="newExpenditure.transactionDate" autoApply>
                         <template v-slot="{ inputValue, inputEvents }">
                             <input
                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -334,13 +352,13 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.transactionDate" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" autoApply/>
+                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newExpenditure.transactionDate" placeholder="Select Date" :format="format" :maxDate="today" position="left" teleport="#transactionDate" autoApply/>
                     <!-- <datepicker /> -->
                     <p class="text-[10px] text-red">
                         {{ errors.transactionDate ? errors.transactionDateText : '' }}
                     </p>
                 </div>
-                <div class="grid gap-4">
+                <div class="grid gap-4 absolute right-0 w-[47%]">
                     <label for="amount" class="font-semibold">
                         Amount <span class="text-red font-bold">*</span>
                     </label>
@@ -352,8 +370,8 @@ onMounted(async () => {
             </div>
             <div class="flex justify-end mt-20 gap-10 pb-10">
                 <button @click.prevent="closeModal" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border border-primary text-primary rounded-md">Cancel</button>
-                <button v-if="!isEditing" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Create</button>
-                <button v-else @click.prevent="submitEdit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
+                <button v-if="!isEditing" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border text-white rounded-md" :disabled="clicked" :class="[clicked ? 'bg-grey' : 'bg-primary']">Create</button>
+                <button v-else @click.prevent="submitEdit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md" :disabled="clicked" :class="[clicked.value ? 'bg-grey-400' : '']">Save Changes</button>
             </div>
         </form>
     </div>
@@ -363,5 +381,9 @@ onMounted(async () => {
 
 .dp-custom-menu {
     position: static !important;
+}
+
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
 }
 </style>

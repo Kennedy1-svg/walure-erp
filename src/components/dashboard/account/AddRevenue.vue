@@ -40,6 +40,8 @@ const props = defineProps({
 
 const { name } = toRefs(props);
 
+const clicked:any = ref(false);
+
 const newRevenue:any = computed(() => {
     return store.getters.getNewRevenue.value
 })
@@ -219,6 +221,9 @@ const addrevenue:any = async () => {
     closeModal()
     await store.dispatch(accountActionTypes.FetchRevenue)
     store.commit(accountMutationTypes.SetNewRevenue, {})
+    setTimeout(() => {
+        clicked.value = false
+    }, 200);
 }
 
 const editrevenue:any = async () => {
@@ -244,6 +249,9 @@ const editrevenue:any = async () => {
     closeModal()
     await store.dispatch(accountActionTypes.FetchRevenue)
     store.commit(accountMutationTypes.SetNewRevenue, {})
+    setTimeout(() => {
+        clicked.value = false
+    }, 200);
 }
 
 const format:any = (date:any) => {
@@ -262,18 +270,25 @@ let isActive:any = computed(() => {
     }
 })
 
+const changeClicked:any = () => {
+    clicked.value = !clicked.value;
+}
+
 const submit:any = () => {
+    console.log('hi', clicked.value);
+    clicked.value = true;
     console.log('hello project');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? addrevenue() : '';
+    !isError.value ? addrevenue() : changeClicked();
 }
 
 const submitEdit:any = () => {
+    clicked.value = true;
     console.log('hello project');
     checkError();
     console.log('iserror value', isError.value)
-    !isError.value ? editrevenue() : '';
+    !isError.value ? editrevenue() : changeClicked();
 }
 
 const activeRemove:any = 'border-primary text-primary hover:opacity-80';
@@ -325,12 +340,12 @@ onMounted(async () => {
                     </p>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-8 mb-10">
+            <div class="grid grid-cols-2 gap-8 mb-10 relative">
                 <div class="grid gap-4" id="transactionDate">
                     <label for="transactionDate" class="font-semibold">
                         DOT <span class="text-red font-bold">*</span>
                     </label>
-                    <DatePicker v-if="props.name == 'Edit'" v-model="newRevenue.transactionDate" autoApply>
+                    <DatePicker v-if="props.name == 'Edit'" :maxDate="today" v-model="newRevenue.transactionDate" autoApply>
                         <template v-slot="{ inputValue, inputEvents }">
                             <input
                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -339,13 +354,13 @@ onMounted(async () => {
                             />
                         </template>
                     </DatePicker>
-                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newRevenue.transactionDate" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" autoApply/>
+                    <Datepicker v-else inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newRevenue.transactionDate" placeholder="Select Date" :format="format" :maxDate="today" position="left" teleport="#transactionDate" autoApply/>
                     <!-- <datepicker /> -->
                     <p class="text-[10px] text-red">
                         {{ errors.transactionDate ? errors.transactionDateText : '' }}
                     </p>
                 </div>
-                <div class="grid gap-4">
+                <div class="grid gap-4 absolute right-0 w-[47%]">
                     <label for="amount" class="font-semibold">
                         Amount <span class="text-red font-bold">*</span>
                     </label>
@@ -357,8 +372,8 @@ onMounted(async () => {
             </div>
             <div class="flex justify-end mt-20 gap-10 pb-10">
                 <button @click.prevent="closeModal" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border border-primary text-primary rounded-md">Cancel</button>
-                <button v-if="!isEditing" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Create</button>
-                <button v-else @click.prevent="submitEdit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md">Save Changes</button>
+                <button v-if="!isEditing" @click.prevent="submit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border text-white rounded-md" :disabled="clicked" :class="[clicked ? 'bg-grey' : 'bg-primary']">Create</button>
+                <button v-else @click.prevent="submitEdit" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border bg-primary text-white rounded-md" :disabled="clicked" :class="[clicked.value ? 'bg-grey-400' : '']">Save Changes</button>
             </div>
         </form>
     </div>
@@ -368,5 +383,9 @@ onMounted(async () => {
 
 .dp-custom-menu {
     position: static !important;
+}
+
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
 }
 </style>

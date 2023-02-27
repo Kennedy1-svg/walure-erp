@@ -508,7 +508,7 @@ const disabledView:any = 'bg-gray-300';
 }
 </style>
 
-<style>
+<style scoped>
 .dp-custom-input {
     @apply py-[8px] rounded-md;
 }

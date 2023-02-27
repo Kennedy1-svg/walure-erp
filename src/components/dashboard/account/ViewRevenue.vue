@@ -384,6 +384,24 @@ onMounted(async () => {
                         {{ errors.amount ? errors.amountText : '' }}
                     </p> -->
                 </div>
+                <div class="grid gap-4">
+                    <label for="amount" class="font-semibold">
+                        Created by <span class="text-red font-bold">*</span>
+                    </label>
+                    <input type="text" v-model="newRevenue.createdBy" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <!-- <p class="text-[10px] text-red">
+                        {{ errors.amount ? errors.amountText : '' }}
+                    </p> -->
+                </div>
+                <div class="grid gap-4">
+                    <label for="amount" class="font-semibold">
+                        Modified by <span class="text-red font-bold">*</span>
+                    </label>
+                    <input type="text" v-model="newRevenue.modifiedBy" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <!-- <p class="text-[10px] text-red">
+                        {{ errors.amount ? errors.amountText : '' }}
+                    </p> -->
+                </div>
             </div>
             <div class="flex justify-end mt-20 gap-10 pb-10">
                 <button @click.prevent="closeModal" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border border-primary text-primary rounded-md">Close</button>

@@ -16,7 +16,7 @@ import AddRevenue from './AddRevenue.vue';
 // import AddRevenue from './ViewRevenueDetails.vue';
 import { useStore } from 'vuex';
 import { account_api_url } from '../../../config/index';
-import { fetchData } from '../../../helpers/api';
+import { downloadData } from '../../../helpers/api';
 import moment from 'moment';
 // import multiselect from 'vue-multiselect';
 import multiselect from '@vueform/multiselect'
@@ -46,8 +46,9 @@ const categories:any = computed(() => {
 
 const exportAll:any = async () => {
   const url:any = `${account_api_url}/api/revenue/download-all-revenue`;
+  const title:any = 'Revenue Report';
   const token:any = localStorage.getItem('token')
-  const response = await fetchData(url, token);
+  const response = await downloadData(title, url, token);
   console.log(`response is: ${response}`)
 }
 

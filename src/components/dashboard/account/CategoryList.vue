@@ -135,26 +135,26 @@ onMounted( async () => {
                 <table class="overflow-x-scroll border items-center w-full">
                     <thead class="bg-table-head">
                     <tr class="justify-items-center">
-                        <th class="pl-6 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
+                        <th class="pl6 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 textleft">
                         S/N
                         </th>
                         <th class="align-middle pr-4 py-3 text-xs items-center whitespace-nowrap font-medium text-gray-500 text-left">
                         Category
                         </th>
-                        <th class="px-4 align-middle flex justify-end xl:pr-32 pr-14 py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
+                        <th class="px-4 align-middle flex justify-center xl:pr32 pr-14 py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
                     </tr>
                     </thead>
 
                     <tbody id="students" class="bg-white">
                     <tr v-for="(category) in categories" :key="category.id">
-                            <td class="border-t-0 pl-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                            <td class="border-t-0 pl6 align-left border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
                             {{ pageIndex == 1 ? (categories.indexOf(category) + 1) : ((pageIndex - 1) * 10) + (categories.indexOf(category) + 1) }}
                             </td>
                             <td class="border-t-0 pr-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
                                 {{ category.name }}
                             </td>
-                            <td class="border-t-0 pl-3 flex justify-end align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                <div class="flex w-2/5 items-center">
+                            <td class="border-t-0 pl-3 flex justify-center align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                                <div class="flex w-1/5 items-center">
                                     <button
                                     type="button"
                                     @click="showEdit = !showEdit" @click.prevent="editCategory(category)"
@@ -178,7 +178,7 @@ onMounted( async () => {
                                                 Delete Category
                                             </template>
                                             <template #info>
-                                                Are you sure you want to remove course category?
+                                                Are you sure you want to remove this category?
                                             </template>
                                             <template #delete>
                                                 Yes, Delete Category

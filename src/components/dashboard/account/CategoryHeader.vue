@@ -96,7 +96,7 @@ onMounted(() => {
             <div class="search">
                 <Search>
                     <template #input>
-                        <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none" type="text" placeholder="Search">
+                        <input @keyup.esc="close" v-model="searchText" class=" w-[306px] rounded text-sm p-1 focus:outline-none" type="text" placeholder="Search">
                         <span class="w-auto flex justify-end items-center text-grey p-2">
                             <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
                             <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
