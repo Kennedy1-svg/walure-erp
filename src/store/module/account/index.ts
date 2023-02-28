@@ -126,9 +126,6 @@ export default {
     [mutationTypes.SetRevenue] (state: any, data: any) {
       state.revenues = data
     },
-    [mutationTypes.SetJobDetail] (state: any, data: any) {
-      state.revenuejobdetails = data
-    },
     [mutationTypes.SetNewRevenue] (state: any, data: any) {
       state.newRevenue = data
     },

@@ -7,3 +7,4 @@ export const account_api_url:any = import.meta.env.VITE_APP_ACCOUNT_ROOT_API;
 export const oidc_authority:any = import.meta.env.VITE_APP_OIDC_AUTHORITY;
 export const auth_creds:any = import.meta.env.VITE_APP_OIDC_AUTHCREDS;
 export const base_url:any = import.meta.env.VITE_APP_BASE_URL;
+export const hr_api_url:any = import.meta.env.VITE_APP_HR_ROOT_API;
