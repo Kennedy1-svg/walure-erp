@@ -39,7 +39,7 @@ const props = defineProps({
 
 const isBannerActive:any = computed(() => {
     let answer:any = false
-    if (newTalent.value.banner) {
+    if (newEmployeeBiodata.value.banner) {
         answer = true
     }
     return answer
@@ -48,19 +48,19 @@ const isBannerActive:any = computed(() => {
 const isBannerRemoved:any = ref(false)
 
 const removeBanner:any = async () => {
-    return newTalent.value.banner = ''
+    return newEmployeeBiodata.value.banner = ''
 }
 
 const onChangePhoto:any = (event:any):any => {
     console.log('event', event.target.files[0])
-    newTalent.value.Resume = event.target.files[0]
+    newEmployeeBiodata.value.Resume = event.target.files[0]
     formData.append('Resume', event.target.files[0])
     // let images: any = document.getElementById('addinstructoroutput')
     // let image:any = document.getElementById('displayoutput')
     pdfSource.value = URL.createObjectURL(event.target.files[0])
     // image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newTalent resume', newTalent.value.Resume.type)
-    console.log('newTalent link', pdfSource.value)
+    console.log('newEmployeeBiodata resume', newEmployeeBiodata.value.Resume.type)
+    console.log('newEmployeeBiodata link', pdfSource.value)
 }
 
 const tabs:any = [
@@ -93,8 +93,8 @@ const format:any = (date:any) => {
 }
 
 let errors = reactive({
-    surname: false,
-    surnameText: '',
+    lastName: false,
+    lastNameText: '',
     firstName: false,
     firstNameText: '',
     role: false,
@@ -156,7 +156,7 @@ const afterDate:any = (years:any = 0, months:any = 0, days:any = 0) => {
 
 let dobRestriction:any = beforeDate(18)
 
-const newTalent:any = computed(() => {
+const newEmployeeBiodata:any = computed(() => {
     return store.getters.getNewTalent.value;
 })
 
@@ -164,23 +164,23 @@ const email ='^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
 const phone ='^[0]+[0-9]';
 
 const checkError:any = () => {
-    // let imageType:String = newTalent.value.imageFile.type;
-    console.log('newTalent skill is', JSON.stringify(newTalent.value.Skills))
-    if (!newTalent.value.Surname) {
-        errors.surname = true;
-        errors.surnameText = 'First name is required'
-    } else if (newTalent.value.Surname.length <= 3) {
-        errors.surname = true;
-        errors.surnameText = 'First name needs to be more than 3 characters'
+    // let imageType:String = newEmployeeBiodata.value.imageFile.type;
+    console.log('newEmployeeBiodata skill is', JSON.stringify(newEmployeeBiodata.value.Skills))
+    if (!newEmployeeBiodata.value.lastName) {
+        errors.lastName = true;
+        errors.lastNameText = 'Last name is required'
+    } else if (newEmployeeBiodata.value.lastName.length <= 3) {
+        errors.lastName = true;
+        errors.lastNameText = 'Last name needs to be more than 3 characters'
     } else {
-        errors.surname = false;
-        errors.surnameText = ''
+        errors.lastName = false;
+        errors.lastNameText = ''
     }
 
-    if (!newTalent.value.FirstName) {
+    if (!newEmployeeBiodata.value.firstName) {
         errors.firstName = true;
         errors.firstNameText = 'First name is required'
-    } else if (newTalent.value.FirstName.length <= 3) {
+    } else if (newEmployeeBiodata.value.firstName.length <= 3) {
         errors.firstName = true;
         errors.firstNameText = 'First name needs to be more than 3 characters'
     } else {
@@ -188,10 +188,10 @@ const checkError:any = () => {
         errors.firstNameText = ''
     }
 
-    if (!newTalent.value.Email) {
+    if (!newEmployeeBiodata.value.emailAddress) {
         errors.email = true;
         errors.emailText = 'Email is required'
-    } else if (!newTalent.value.Email.match(email)) {
+    } else if (!newEmployeeBiodata.value.emailAddress.match(email)) {
         errors.email = true;
         errors.emailText = `Email must should have the format 'brianadams@walure.com`
     } else {
@@ -199,10 +199,10 @@ const checkError:any = () => {
     }
 
 
-    if (!newTalent.value.GitHubUrl) {
+    if (!newEmployeeBiodata.value.GitHubUrl) {
         errors.github = true;
         errors.githubText = 'Github url is required'
-    } else if (newTalent.value.GitHubUrl.length <= 3) {
+    } else if (newEmployeeBiodata.value.GitHubUrl.length <= 3) {
         errors.github = true;
         errors.githubText = 'Github url needs to be more than 3 characters'
     } else {
@@ -210,10 +210,10 @@ const checkError:any = () => {
         errors.githubText = ''
     }
 
-    if (!newTalent.value.LinkedInUrl) {
+    if (!newEmployeeBiodata.value.LinkedInUrl) {
         errors.linkedin = true;
         errors.linkedinText = 'LinkedIn url is required'
-    } else if (newTalent.value.LinkedInUrl.length <= 3) {
+    } else if (newEmployeeBiodata.value.LinkedInUrl.length <= 3) {
         errors.linkedin = true;
         errors.linkedinText = 'LinkedIn url needs to be more than 3 characters'
     } else {
@@ -221,7 +221,7 @@ const checkError:any = () => {
         errors.linkedinText = ''
     }
 
-    if (!newTalent.value.Resume) {
+    if (!newEmployeeBiodata.value.Resume) {
         errors.resume = true;
         errors.resumeText = 'Your resume is required'
     } else {
@@ -229,7 +229,7 @@ const checkError:any = () => {
         errors.resumeText = ''
     }
 
-    if (!newTalent.value.Role && newTalent.value.Role != '0') {
+    if (!newEmployeeBiodata.value.Role && newEmployeeBiodata.value.Role != '0') {
         errors.role = true;
         errors.roleText = 'Please select a role'
     } else {
@@ -237,7 +237,7 @@ const checkError:any = () => {
         errors.roleText = ''
     }
 
-    if (!newTalent.value.Gender && newTalent.value.Gender != '0') {
+    if (!newEmployeeBiodata.value.Gender && newEmployeeBiodata.value.Gender != '0') {
         errors.gender = true;
         errors.genderText = 'Gender is required. Please select a gender'
     } else {
@@ -245,7 +245,7 @@ const checkError:any = () => {
         errors.genderText = ''
     }
 
-    if (!newTalent.value.ProficiencyLevel && newTalent.value.ProficiencyLevel != '0') {
+    if (!newEmployeeBiodata.value.ProficiencyLevel && newEmployeeBiodata.value.ProficiencyLevel != '0') {
         errors.proficiency = true;
         errors.proficiencyText = 'Proficiency is required. Please select a proficiency'
     } else {
@@ -253,23 +253,23 @@ const checkError:any = () => {
         errors.proficiencyText = ''
     }
 
-    if (newTalent.value.Skills.length == 0) {
+    if (newEmployeeBiodata.value.Skills.length == 0) {
         errors.skills = true;
         errors.skillsText = 'Please select at least a skill'
     } else {
         errors.skills = false;
     }
 
-    if (!newTalent.value.PhoneNumber) {
+    if (!newEmployeeBiodata.value.PhoneNumber) {
         errors.phone = true;
         errors.phoneText = 'Phone number is required'
-    } else if (isNaN(newTalent.value.PhoneNumber)) {
+    } else if (isNaN(newEmployeeBiodata.value.PhoneNumber)) {
         errors.phone = true;
         errors.phoneText = 'Phone number cannot contain letters'
-    } else if (!newTalent.value.PhoneNumber.match(phone)) {
+    } else if (!newEmployeeBiodata.value.PhoneNumber.match(phone)) {
         errors.phone = true;
         errors.phoneText = 'Phone numer must start with 0'
-    } else if (newTalent.value.PhoneNumber.length <= 9) {
+    } else if (newEmployeeBiodata.value.PhoneNumber.length <= 9) {
         errors.phone = true;
         errors.phoneText = 'Phone numer cannot be less than 10 digits'
     } else {
@@ -277,7 +277,7 @@ const checkError:any = () => {
         errors.phoneText = ''
     }
 
-    // if (newTalent.value.Skills.value <= 0) {
+    // if (newEmployeeBiodata.value.Skills.value <= 0) {
     //     errors.skills = true;
     //     errors.skillsText = 'Skill is required'
     // } else {
@@ -285,8 +285,8 @@ const checkError:any = () => {
     //     errors.skillsText = ''
     // }
 
-    if (errors.surname) {
-        errors.surname = true;
+    if (errors.lastName) {
+        errors.lastName = true;
         isError.value = true;
     } else if (errors.firstName) {
         errors.firstName = true;
@@ -319,7 +319,7 @@ const checkError:any = () => {
 }
 
 let isResumeActive:any = computed(() => {
-    if (newTalent.value.Resume) {
+    if (newEmployeeBiodata.value.Resume) {
         checkError();
         return true
     } else {
@@ -328,11 +328,11 @@ let isResumeActive:any = computed(() => {
 })
 
 // const removeImage:any = async () => {
-//     return newTalent.value.imageFile = ''
+//     return newEmployeeBiodata.value.imageFile = ''
 // }
 
 const removeResume:any = async () => {
-    return newTalent.value.Resume = ''
+    return newEmployeeBiodata.value.Resume = ''
 }
 
 const gender_options = [
@@ -748,7 +748,7 @@ const skills:any = computed(() => {
 })
 
 let isActive:any = computed(() => {
-    if (newTalent.value.imageFile) {
+    if (newEmployeeBiodata.value.imageFile) {
         return true
     } else {
         return false
@@ -763,7 +763,7 @@ const deselect:any = async () => {
 
 const onChange:any = (event:any):any => {
     console.log('event', event.target.files[0].name)
-    newTalent.value.ResumeFile = event.target.files[0]
+    newEmployeeBiodata.value.ResumeFile = event.target.files[0]
     formData.append('file', event.target.files[0])
     // let images: any = document.getElementById('output')
     pdfSource.value = URL.createObjectURL(event.target.files[0])
@@ -771,30 +771,30 @@ const onChange:any = (event:any):any => {
     // let image:any = document.getElementById('displayoutput')
     // images.src = URL.createObjectURL(event.target.files[0])
     // image.src = URL.createObjectURL(event.target.files[0])
-    console.log('newTalent image', newTalent.value.ResumeFile.type)
+    console.log('newEmployeeBiodata image', newEmployeeBiodata.value.ResumeFile.type)
 }
 
 const addTalent:any = async () => {
     console.log('hi');
     isDisabled.value = true;
-    // console.log('newstudent', newTalent.value)
-    // console.log('newstudent', newTalent.value.imageFile)
+    // console.log('newstudent', newEmployeeBiodata.value)
+    // console.log('newstudent', newEmployeeBiodata.value.imageFile)
     const request:any = `${api_url}api/talentpool/create-talentpool`;
 
     // const formElem = document.getElementById('formElem')
-    formData.append('Surname', newTalent.value.Surname)
-    formData.append('FirstName', newTalent.value.FirstName)
-    // formData.append('OtherName', newTalent.value.OtherName)
-    formData.append('Role', newTalent.value.Role)
-    // formData.append('imageFile', newTalent.value.imageFile, newTalent.value.imageFile.name)
-    formData.append('Email', newTalent.value.Email)
-    formData.append('Gender', newTalent.value.Gender)
-    formData.append('Skills', newTalent.value.Skills)
-    formData.append('PhoneNumber', newTalent.value.PhoneNumber)
-    formData.append('ResumeFile', newTalent.value.ResumeFile, newTalent.value.ResumeFile.name)
-    formData.append('ProficiencyLevel', newTalent.value.ProficiencyLevel)
-    formData.append('GitHubUrl', newTalent.value.GitHubUrl)
-    formData.append('LinkedInUrl', newTalent.value.LinkedInUrl)
+    formData.append('lastName', newEmployeeBiodata.value.lastName)
+    formData.append('firstName', newEmployeeBiodata.value.firstName)
+    // formData.append('OtherName', newEmployeeBiodata.value.OtherName)
+    formData.append('Role', newEmployeeBiodata.value.Role)
+    // formData.append('imageFile', newEmployeeBiodata.value.imageFile, newEmployeeBiodata.value.imageFile.name)
+    formData.append('emailAddress', newEmployeeBiodata.value.emailAddress)
+    formData.append('Gender', newEmployeeBiodata.value.Gender)
+    formData.append('Skills', newEmployeeBiodata.value.Skills)
+    formData.append('PhoneNumber', newEmployeeBiodata.value.PhoneNumber)
+    formData.append('ResumeFile', newEmployeeBiodata.value.ResumeFile, newEmployeeBiodata.value.ResumeFile.name)
+    formData.append('ProficiencyLevel', newEmployeeBiodata.value.ProficiencyLevel)
+    formData.append('GitHubUrl', newEmployeeBiodata.value.GitHubUrl)
+    formData.append('LinkedInUrl', newEmployeeBiodata.value.LinkedInUrl)
 
     // console.log('formData', JSON.parse(JSON.stringify(formData)))
 
@@ -802,11 +802,11 @@ const addTalent:any = async () => {
 // for (var value of formData.entries()) {
 //    console.log(value);
 // }
-    // const formData = JSON.parse(JSON.stringify(newTalent.value))
+    // const formData = JSON.parse(JSON.stringify(newEmployeeBiodata.value))
 
     // const submitdata = {
     //     ...formData,
-    //     imageFile: newTalent.value.imageFile
+    //     imageFile: newEmployeeBiodata.value.imageFile
     // }
     console.log('formData', formData)
     // console.log('formdata items', [...formData.entries()])
@@ -883,56 +883,56 @@ const disabledView:any = 'bg-gray-300';
                         <form id="formElem" ref="formEl" class="text-sm grid">
                             <div class="grid text-left grid-cols-2 gap-10 mb-10">
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
-                                        Surname
+                                    <label for="lastName" class="font-semibold">
+                                        lastName
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
                                     <label for="firstname" class="font-semibold">
                                         Firstname
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.FirstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.firstName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.firstName ? errors.firstNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="otherName" class="font-semibold">
                                         Other names
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.otherName" name="otherName" id="otherName" placeholder="Enter other name" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.otherName ? errors.otherNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="firstname" class="font-semibold">
+                                    <label for="religion" class="font-semibold">
                                         Religion
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.religion" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.religion" name="religion" id="religion" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.firstName ? errors.firstNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         State of origin
                                     </label>
-                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                                    <multiselect v-model="newTalent.state" @select="checkError" valueProp="value" :options="states" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
+                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                                    <multiselect v-model="newEmployeeBiodata.state" @select="checkError" valueProp="value" :options="states" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4" id="dot">
                                     <label for="dot" class="font-semibold">
                                         Date of birth
                                     </label>
-                                    <!-- <DatePicker v-model="newTalent.dot">
+                                    <!-- <DatePicker v-model="newEmployeeBiodata.dot">
                                         <template v-slot="{ inputValue, inputEvents }">
                                             <input
                                             class="px-3 py-4 w-full border rounded focus:outline-none focus:border-primary"
@@ -941,56 +941,56 @@ const disabledView:any = 'bg-gray-300';
                                             />
                                         </template>
                                     </DatePicker> -->
-                                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newTalent.dot" placeholder="Select Date" :format="format" :maxDate="dobRestriction" position="left" teleport="#dot" autoApply/>
+                                    <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newEmployeeBiodata.dot" placeholder="Select Date" :format="format" :maxDate="dobRestriction" position="left" teleport="#dot" autoApply/>
                                     <!-- <datepicker /> -->
                                     <p class="text-[10px] text-red">
                                         <!-- {{ errors.dot ? errors.dotText : '' }} -->
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Sex
                                     </label>
-                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                                    <multiselect v-model="newTalent.Gender" @select="checkError" valueProp="value" :options="gender_options" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
+                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                                    <multiselect v-model="newEmployeeBiodata.Gender" @select="checkError" valueProp="value" :options="gender_options" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Marital Status
                                     </label>
-                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                                    <multiselect v-model="newTalent.maritalStatus" @select="checkError" valueProp="value" :options="marital_status" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
+                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                                    <multiselect v-model="newEmployeeBiodata.maritalStatus" @select="checkError" valueProp="value" :options="marital_status" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Job Title
                                     </label>
-                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                                    <multiselect v-model="newTalent.jobTitle" @select="checkError" valueProp="value" :options="jobTitle" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
+                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                                    <multiselect v-model="newEmployeeBiodata.jobTitle" @select="checkError" valueProp="value" :options="jobTitle" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Contact Number
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.PhoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.PhoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.phone ? errors.phoneText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4 col-span-2">
                                     <label for="email" class="font-semibold">
-                                        Email
+                                        emailAddress
                                     </label>
-                                    <input type="email" @focus="checkError" @keyup="checkError" v-model="newTalent.Email" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="email" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.emailAddress" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.email ? errors.emailText : '' }}
                                     </p>
@@ -999,7 +999,7 @@ const disabledView:any = 'bg-gray-300';
                                     <label for="email" class="font-semibold">
                                         Home Address
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.address" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.address" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.email ? errors.emailText : '' }}
                                     </p>
@@ -1012,20 +1012,20 @@ const disabledView:any = 'bg-gray-300';
                                         <label for="dota" class="font-semibold">
                                             Date of birth
                                         </label>
-                                        <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newTalent.dot" placeholder="Select Date" :maxDate="dobRestriction" :format="format" position="left" teleport="#dota"/>
+                                        <Datepicker inputClassName="dp-custom-input" @update:model-value="checkError" @cleared="checkError"  menuClassName="dp-custom-menu" v-model="newEmployeeBiodata.dot" placeholder="Select Date" :maxDate="dobRestriction" :format="format" position="left" teleport="#dota"/>
                                         <!-- <datepicker /> -->
                                         <p class="text-[10px] text-red">
                                             <!-- {{ errors.dot ? errors.dotText : '' }} -->
                                         </p>
                                     </div>
                                     <div class="grid gap-4">
-                                        <label for="surname" class="font-semibold">
+                                        <label for="lastName" class="font-semibold">
                                             Set reminder
                                         </label>
-                                        <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                                        <multiselect v-model="newTalent.reminder" @select="checkError" valueProp="value" :options="reminder_status" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
+                                        <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                                        <multiselect v-model="newEmployeeBiodata.reminder" @select="checkError" valueProp="value" :options="reminder_status" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
                                         <p class="text-[10px] -mt-2 text-red">
-                                            {{ errors.surname ? errors.surnameText : '' }}
+                                            {{ errors.lastName ? errors.lastNameText : '' }}
                                         </p>
                                     </div>
                                 </div>
@@ -1040,48 +1040,48 @@ const disabledView:any = 'bg-gray-300';
                         <form id="formElem" ref="formEl" class="text-sm grid">
                             <div class="grid text-left grid-cols-2 gap-12 mb-10">
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Name of Next kin
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.nextKinName" name="surname" id="surname" placeholder="Enter sur name" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.nextKinName" name="lastName" id="lastName" placeholder="Enter sur name" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
                                     <label for="firstname" class="font-semibold">
                                         Relationship
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.nextKinRelationship" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.nextKinRelationship" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.firstName ? errors.firstNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         State of origin
                                     </label>
-                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                                    <multiselect v-model="newTalent.nextKinState" @select="checkError" valueProp="value" :options="states" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
+                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                                    <multiselect v-model="newEmployeeBiodata.nextKinState" @select="checkError" valueProp="value" :options="states" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Sex
                                     </label>
-                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.Surname" name="surname" id="surname" placeholder="Enter surname" class="p-4 border rounded-md text-xs focus:outline-none"> -->
-                                    <multiselect v-model="newTalent.nextKinGender" @select="checkError" valueProp="value" :options="gender_options" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
+                                    <!-- <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.lastName" name="lastName" id="lastName" placeholder="Enter lastName" class="p-4 border rounded-md text-xs focus:outline-none"> -->
+                                    <multiselect v-model="newEmployeeBiodata.nextKinGender" @select="checkError" valueProp="value" :options="gender_options" track-by="label" label="label" placeholder="Select state" :searchable="true" class="multiselect-blue" />
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4 col-span-2">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Contact Number
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.nextKinPhoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.nextKinPhoneNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.phone ? errors.phoneText : '' }}
                                     </p>
@@ -1090,7 +1090,7 @@ const disabledView:any = 'bg-gray-300';
                                     <label for="email" class="font-semibold">
                                         Home Address
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.nextKinAddress" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.nextKinAddress" name="email" id="email" placeholder="Enter email" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.email ? errors.emailText : '' }}
                                     </p>
@@ -1100,28 +1100,28 @@ const disabledView:any = 'bg-gray-300';
                             <h4 class="uppercase text-2xl font-semibold text-[#232D42] text-left mb-5">bank details</h4>
                             <div class="grid text-left grid-cols-2 gap-12 mb-10">
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Bank Name
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.bankName" name="surname" id="surname" placeholder="Enter sur name" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.bankName" name="lastName" id="lastName" placeholder="Enter sur name" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
-                                        {{ errors.surname ? errors.surnameText : '' }}
+                                        {{ errors.lastName ? errors.lastNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
                                     <label for="firstname" class="font-semibold">
                                         Account Name
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.accountName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.accountName" name="firstname" id="firstname" placeholder="Enter first name" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.firstName ? errors.firstNameText : '' }}
                                     </p>
                                 </div>
                                 <div class="grid gap-4">
-                                    <label for="surname" class="font-semibold">
+                                    <label for="lastName" class="font-semibold">
                                         Account Number
                                     </label>
-                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newTalent.accountNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
+                                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newEmployeeBiodata.accountNumber" name="phone" id="phone" placeholder="Enter phone number" class="p-4 border rounded-md text-xs focus:outline-none">
                                     <p class="text-[10px] -mt-2 text-red">
                                         {{ errors.phone ? errors.phoneText : '' }}
                                     </p>
@@ -1156,13 +1156,13 @@ const disabledView:any = 'bg-gray-300';
                                         </div>
                                         <input type="file" id="resume_upload" name="resume" @change="onChangePhoto" class="opacity-0 absolute" accept=".png, .jpeg, .jpg" :disabled="isResumeActive" />
                                     </label>
-                                    <div v-if="newTalent.Resume" class="flex justify-between mt-5 w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                                    <div v-if="newEmployeeBiodata.Resume" class="flex justify-between mt-5 w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
                                         <div class="">
                                             <p class="font-semibold py-1 w-40 truncate">
-                                                {{ newTalent.Resume.name }}
+                                                {{ newEmployeeBiodata.Resume.name }}
                                             </p>
                                             <p class="text-xs pb-1 text-left text-gray-500">
-                                                {{ newTalent.Resume.size > 999999 ? (newTalent.Resume.size / 1000000).toFixed(2) + 'Mb' : newTalent.Resume.size > 999 ? (newTalent.Resume.size / 1000).toFixed(2) + ' kb' : newTalent.Resume.size + ' bytes' }}
+                                                {{ newEmployeeBiodata.Resume.size > 999999 ? (newEmployeeBiodata.Resume.size / 1000000).toFixed(2) + 'Mb' : newEmployeeBiodata.Resume.size > 999 ? (newEmployeeBiodata.Resume.size / 1000).toFixed(2) + ' kb' : newEmployeeBiodata.Resume.size + ' bytes' }}
                                             </p>
                                         </div>
                                         <div class="flex justify-around gap-3 items-center">
@@ -1199,13 +1199,13 @@ const disabledView:any = 'bg-gray-300';
                                         </div>
                                         <input type="file" id="resume_upload" name="resume" @change="onChangePhoto" class="opacity-0 absolute" accept=".png, .jpeg, .jpg" :disabled="isResumeActive" />
                                     </label>
-                                    <div v-if="newTalent.Resume" class="flex justify-between mt-5 w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                                    <div v-if="newEmployeeBiodata.Resume" class="flex justify-between mt-5 w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
                                         <div class="">
                                             <p class="font-semibold py-1 w-40 truncate">
-                                                {{ newTalent.Resume.name }}
+                                                {{ newEmployeeBiodata.Resume.name }}
                                             </p>
                                             <p class="text-xs pb-1 text-left text-gray-500">
-                                                {{ newTalent.Resume.size > 999999 ? (newTalent.Resume.size / 1000000).toFixed(2) + 'Mb' : newTalent.Resume.size > 999 ? (newTalent.Resume.size / 1000).toFixed(2) + ' kb' : newTalent.Resume.size + ' bytes' }}
+                                                {{ newEmployeeBiodata.Resume.size > 999999 ? (newEmployeeBiodata.Resume.size / 1000000).toFixed(2) + 'Mb' : newEmployeeBiodata.Resume.size > 999 ? (newEmployeeBiodata.Resume.size / 1000).toFixed(2) + ' kb' : newEmployeeBiodata.Resume.size + ' bytes' }}
                                             </p>
                                         </div>
                                         <div class="flex justify-around gap-3 items-center">
@@ -1242,13 +1242,13 @@ const disabledView:any = 'bg-gray-300';
                                         </div>
                                         <input type="file" id="resume_upload" name="resume" @change="onChangePhoto" class="opacity-0 absolute" accept=".png, .jpeg, .jpg" :disabled="isResumeActive" />
                                     </label>
-                                    <div v-if="newTalent.Resume" class="flex justify-between mt-5 w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
+                                    <div v-if="newEmployeeBiodata.Resume" class="flex justify-between mt-5 w-1/2 rounded items-center p-5 bg-primary-accent" :class="[isResumeActive ? '' : 'hidden']">
                                         <div class="">
                                             <p class="font-semibold py-1 w-40 truncate">
-                                                {{ newTalent.Resume.name }}
+                                                {{ newEmployeeBiodata.Resume.name }}
                                             </p>
                                             <p class="text-xs pb-1 text-left text-gray-500">
-                                                {{ newTalent.Resume.size > 999999 ? (newTalent.Resume.size / 1000000).toFixed(2) + 'Mb' : newTalent.Resume.size > 999 ? (newTalent.Resume.size / 1000).toFixed(2) + ' kb' : newTalent.Resume.size + ' bytes' }}
+                                                {{ newEmployeeBiodata.Resume.size > 999999 ? (newEmployeeBiodata.Resume.size / 1000000).toFixed(2) + 'Mb' : newEmployeeBiodata.Resume.size > 999 ? (newEmployeeBiodata.Resume.size / 1000).toFixed(2) + ' kb' : newEmployeeBiodata.Resume.size + ' bytes' }}
                                             </p>
                                         </div>
                                         <div class="flex justify-around gap-3 items-center">

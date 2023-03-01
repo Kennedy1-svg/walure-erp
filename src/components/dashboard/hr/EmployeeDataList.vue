@@ -16,18 +16,18 @@ import pagination from '../../pagination.vue'
 // import AddToBatch from './AddToBatch.vue';
 import Modal from '../../Modals.vue';
 import WideModal from '../../WideModals.vue';
-import * as instructorActionTypes from '../../../store/module/instructors/constants/action';
-import { api_url } from '../../../config/index'
+import * as employeebiodataActionTypes from '../../../store/module/hr/constants/action';
+import { hr_api_url } from '../../../config/index'
 import Delete from '../../delete.vue'
 import DeleteModal from '../../DeleteModal.vue';
-// import EditInstructor from './EditInstructor.vue';
+// import EditEmployeeBiodata from './EditEmployeeBiodata.vue';
 
-const instructors:any = computed(() => {
-    return store.getters.getInstructor.value.payload;
+const employeebiodatas:any = computed(() => {
+    return store.getters.getEmployeeBiodata.value.payload;
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getInstructor.value.totalCount;
+    return store.getters.getEmployeeBiodata.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
@@ -37,9 +37,9 @@ const onPageChange:any = async (page:any) => {
     console.log('page na', page)
     pageIndex.value = page;
     console.log('pageIndex is', pageIndex.value)
-    const request:any = `${api_url}api/instructor/get-instructors/${pageIndex.value}/{pageSize}`;
+    const request:any = `${hr_api_url}api/employeebiodata/get-employeebiodatas/${pageIndex.value}/{pageSize}`;
     console.log('url', request)
-    await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    await store.dispatch(employeebiodataActionTypes.FetchEmployeeBiodata, request)
 }
 
 const totalPages:any = computed(() => {
@@ -55,42 +55,42 @@ const totalPages:any = computed(() => {
 })
 
 const setId:any = async (id:any) => {
-    console.log('instructorid', id)
-    const request:any = `${api_url}api/instructor/${id}`;
+    console.log('employeebiodataid', id)
+    const request:any = `${hr_api_url}api/employeebiodata/${id}`;
     console.log('request forid', request)
-    await store.dispatch(instructorActionTypes.FetchEditInstructor, request)
+    await store.dispatch(employeebiodataActionTypes.FetchEditEmployeeBiodata, request)
 }
 
-// const editInstructor:any = async (id:any) => {
-//     console.log('instructorid', id)
-//     const request:any = `${api_url}api/instructor/${id}`;
+// const editEmployeeBiodata:any = async (id:any) => {
+//     console.log('employeebiodataid', id)
+//     const request:any = `${hr_api_url}api/employeebiodata/${id}`;
 //     console.log('request for the', request)
 //     // await store.dispatch(actionTypes.FetchEditStudent, request)
-//     // console.log('instructor', instructor)
-//     // console.log('instructor', instructor.value)
+//     // console.log('employeebiodata', employeebiodata)
+//     // console.log('employeebiodata', employeebiodata.value)
 
 // }
 
-let instructoritemtodelete:any = ref('')
+let employeebiodataitemtodelete:any = ref('')
 
 const sendId:any = (id:any) => {
-    console.log('instructorid', id)
-    instructoritemtodelete.value = id
-    console.log('instructoritemtodelete', instructoritemtodelete.value)
-    return instructoritemtodelete
+    console.log('employeebiodataid', id)
+    employeebiodataitemtodelete.value = id
+    console.log('employeebiodataitemtodelete', employeebiodataitemtodelete.value)
+    return employeebiodataitemtodelete
 }
 
-const deleteInstructor:any = async (id:any) => {
+const deleteEmployeeBiodata:any = async (id:any) => {
     console.log('batch id', id);
 
-    const request:any = `${api_url}api/instructor/delete/${id}`;
+    const request:any = `${hr_api_url}api/employeebiodata/delete/${id}`;
 
     console.log('requestData', request)
-    await store.dispatch(instructorActionTypes.RemoveInstructor, request)
-    const fetchrequest:any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`;
+    await store.dispatch(employeebiodataActionTypes.RemoveEmployeeBiodata, request)
+    const fetchrequest:any = `${hr_api_url}api/employeebiodata/get-employeebiodatas/{pageIndex}/{pageSize}`;
     console.log('url', fetchrequest)
     // del.value = false
-    await store.dispatch(instructorActionTypes.FetchInstructors, fetchrequest)
+    await store.dispatch(employeebiodataActionTypes.FetchEmployeeBiodata, fetchrequest)
     closeModal()
 }
 
@@ -125,16 +125,16 @@ const store = useStore();
 
 onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
-    console.log('InstructorList mounted');
-    const request:any = `${api_url}api/instructor/get-instructors/{pageIndex}/{pageSize}`;
-    // await store.dispatch(instructorActionTypes.FetchInstructors, request)
+    console.log('EmployeeBiodataList mounted');
+    const request:any = `${hr_api_url}api/employeebiodata/get-employeebiodatas/{pageIndex}/{pageSize}`;
+    // await store.dispatch(employeebiodataActionTypes.FetchEmployeeBiodatas, request)
 });
 </script>
 
 <template>
     <div class="main grid">
         <div class="title flex justify-between items-center mb-10">
-            <!-- {{ instructors }} -->
+            <!-- {{ employeebiodatas }} -->
             <h1 class="text-2xl font-semibold text-black">Employee Data List</h1>
             <p class="text-xl font-medium text-primary">Total : {{ total_count }}</p>
         </div>
@@ -165,27 +165,27 @@ onMounted( async () => {
                     </thead>
 
                     <tbody id="students" class="bg-white">
-                        <!-- <tr v-for="(instructor) in instructors" :key="instructor.id">
+                        <!-- <tr v-for="(employeebiodata) in employeebiodatas" :key="employeebiodata.id">
                             <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                                {{ pageIndex == 1 ? (instructors.indexOf(instructor) + 1) : ((pageIndex - 1) * 10) + (instructors.indexOf(instructor) + 1) }}
+                                {{ pageIndex == 1 ? (employeebiodatas.indexOf(employeebiodata) + 1) : ((pageIndex - 1) * 10) + (employeebiodatas.indexOf(employeebiodata) + 1) }}
                             </td>
                             <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                {{ instructor.fullName }}
+                                {{ employeebiodata.fullName }}
                             </td>
                             <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ instructor.email }}
+                                {{ employeebiodata.email }}
                             </td>
                             <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ instructor.email }}
+                                {{ employeebiodata.email }}
                             </td>
                             <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ instructor.email }}
+                                {{ employeebiodata.email }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ instructor.phoneNumber }}
+                                {{ employeebiodata.phoneNumber }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{ instructor.status == 0 ? 'Pending' : instructor.status == 1 ? 'Approved' : 'Rejected' }}
+                                {{ employeebiodata.status == 0 ? 'Pending' : employeebiodata.status == 1 ? 'Approved' : 'Rejected' }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 
@@ -198,19 +198,19 @@ onMounted( async () => {
                                             <div class="py-3 gap-3">
                                                 <button
                                                 type="button"
-                                                @click="showEdit = !showEdit" @click.prevent="setId(instructor.id)"
+                                                @click="showEdit = !showEdit" @click.prevent="setId(employeebiodata.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="edit" />
                                                     Edit
                                                 </button>
                                                 <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                                    <EditInstructor @close="showEdit = !showEdit" />
+                                                    <EditEmployeeBiodata @close="showEdit = !showEdit" />
                                                 </Modal>
 
                                                 <button
                                                 type="button"
-                                                @click="showDetails = !showDetails" @click.prevent="setId(instructor.id)"
+                                                @click="showDetails = !showDetails" @click.prevent="setId(employeebiodata.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="details" />
@@ -222,7 +222,7 @@ onMounted( async () => {
 
                                                 <button
                                                 type="button"
-                                                @click="showAddToBatch = !showAddToBatch" @click.prevent="setId(instructor.id)"
+                                                @click="showAddToBatch = !showAddToBatch" @click.prevent="setId(employeebiodata.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="archive" />
@@ -234,21 +234,21 @@ onMounted( async () => {
 
                                                 <button
                                                 type="button"
-                                                @click="showDelete = !showDelete" @click.prevent="sendId(instructor.id)"
+                                                @click="showDelete = !showDelete" @click.prevent="sendId(employeebiodata.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="delete" />
                                                     Delete
                                                 </button>
-                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteInstructor(instructoritemtodelete)">
+                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteEmployeeBiodata(employeebiodataitemtodelete)">
                                                     <template #title>
-                                                        Delete instructor
+                                                        Delete employeebiodata
                                                     </template>
                                                     <template #info>
-                                                        Are you sure you want to remove instructor?
+                                                        Are you sure you want to remove employeebiodata?
                                                     </template>
                                                     <template #delete>
-                                                        Yes, Delete Instructor
+                                                        Yes, Delete EmployeeBiodata
                                                     </template>
                                                 </DeleteModal>
                                             </div>
@@ -297,7 +297,7 @@ onMounted( async () => {
                                                     Edit
                                                 </button>
                                                 <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                                    <EditInstructor @close="showEdit = !showEdit" />
+                                                    <EditEmployeeBiodata @close="showEdit = !showEdit" />
                                                 </Modal>
 
                                                 <button
@@ -332,15 +332,15 @@ onMounted( async () => {
                                                     <SvgIcons name="delete" />
                                                     Delete
                                                 </button>
-                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteInstructor(instructoritemtodelete)">
+                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteEmployeeBiodata(employeebiodataitemtodelete)">
                                                     <template #title>
-                                                        Delete instructor
+                                                        Delete employeebiodata
                                                     </template>
                                                     <template #info>
-                                                        Are you sure you want to remove instructor?
+                                                        Are you sure you want to remove employeebiodata?
                                                     </template>
                                                     <template #delete>
-                                                        Yes, Delete Instructor
+                                                        Yes, Delete EmployeeBiodata
                                                     </template>
                                                 </DeleteModal>
                                             </div>
