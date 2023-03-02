@@ -11,6 +11,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
+import { downloadData } from '../../../helpers/api';
 import Modal from '../../Modal.vue';
 // import AddIncomeStatement from './AddIncomeStatement.vue';
 import { useStore } from 'vuex';
@@ -114,6 +115,14 @@ const filterAllIncomeStatement:any = async () => {
   }
 }
 
+const exportAll:any = async () => {
+  const url:any = `${account_api_url}/api/incomestatement/download-all-incomestatement`;
+  const title:any = 'Income Statement Report';
+  const token:any = localStorage.getItem('token')
+  const response = await downloadData(title, url, token);
+  console.log(`response is: ${response}`)
+}
+
 const cancan:any = async () => {
   console.log('i can can')
 }
@@ -205,7 +214,7 @@ onMounted( async() => {
               </button>
             </div>
             <div class="status flex items-center">
-              <button @click="filterAllIncomeStatement" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
+              <button @click="exportAll" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
                 <SvgIcons name="export" class="text-2xl" />
                 Export
               </button>
