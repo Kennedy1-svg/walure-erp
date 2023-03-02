@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { account_api_url } from '../../../config/index'
-import { addData, addEmptyData, editData, editDataPut, fetchData, removeData } from '../../../helpers/api'
+import { addData, editDataPut, fetchData, removeData } from '../../../helpers/api'
 import router from '../../../router'
 import * as actionTypes from './constants/action'
 import * as mutationTypes from './constants/mutation'
@@ -86,11 +86,6 @@ export default {
           return state.category
       })
     },
-    // getEditCategory: (state: any) => {
-    //   return computed(() => {
-    //       return state.editconsultancy
-    //   })
-    // },
     getExpenditureAlertStatus: (state: any) => {
       return computed(() => {
         return state.alert_status
@@ -267,7 +262,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/expenditurecategory/getall-category'
+      const url:String = 'api/expenditurecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const addCategory:any = await addData(data.url, data.data, token)
@@ -299,7 +294,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/revenuecategory/getall-category'
+      const url:String = 'api/revenuecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const addCategory:any = await addData(data.url, data.data, token)
@@ -335,7 +330,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/expenditurecategory/getall-category'
+      const url:String = 'api/expenditurecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory:any = await editDataPut(data.url, data.data, token)
@@ -366,7 +361,7 @@ export default {
       const token:any = localStorage.getItem('token')
       // console.log('revenue talent here', revenueTalent)
       console.log('data', data)
-      const url = 'api/revenuecategory/getall-category'
+      const url:String = 'api/revenuecategory/getall-category'
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
       const editCategory:any = await editDataPut(data.url, data.data, token)
@@ -400,15 +395,15 @@ export default {
       // const newData = [...revenueTalent, data]
       // console.log('new added revenue talent data', newData)
       // await commit(mutationTypes.SetRevenueTalent, newData)
-      const addRevenue = await addData(data.url, data.data, token)
-      if (!addRevenue.hasErrors) {
+      const addRevenue:any = await addData(data.url, data.data, token)
+      if (addRevenue?.data?.payload) {
         // commit(mutationTypes.SetNewCourseCategory, course_applicant.payload)
         await commit(mutationTypes.SetExpenditureAlertText, 'Revenue added successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchRevenue)
-      } else if (addRevenue.response.status === 401) {
+      } else if (addRevenue?.response?.status === 401) {
         router.push({ name: 'Login' });
-      } else if (addRevenue.message.includes('400')) {
+      } else if (addRevenue?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {
@@ -421,29 +416,20 @@ export default {
         commit(mutationTypes.SetExpenditureAlertText, '')
       }, 2000)
     },
-    async [actionTypes.RemoveRevenueTalent] ({ state, commit }:any, data:any) {
-      const revenueTalent:any = await JSON.parse(JSON.stringify(state.revenueTalent))
-      console.log('revenue talent here', revenueTalent)
-      console.log('data', data)
-      const itemIndex = await revenueTalent.findIndex((item:any) => revenueTalent.indexOf(item) === data)
-      console.log('item index', itemIndex)
-      revenueTalent.splice(itemIndex, 1)
-      console.log('new daleted revenue talent data', revenueTalent)
-      await commit(mutationTypes.SetRevenueTalent, revenueTalent)
-    },
     async [actionTypes.AddExpenditure] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
       console.log('all data is', data.url, data.data)
-      const newexpenditure = await addData(data.url, data.data, token)
-      if (newexpenditure.payload) {
+      const newexpenditure:any = await addData(data.url, data.data, token)
+      console.log('newexpenditure data is', newexpenditure)
+      if (newexpenditure?.data) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Expenditure added successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchExpenditure)
-      } else if (newexpenditure.message.includes('400')) {
+      } else if (newexpenditure?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
-      } else if (newexpenditure.response.status === 401) {
+      } else if (newexpenditure?.response?.status === 401) {
         router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
@@ -486,13 +472,13 @@ export default {
       console.log('all data is', data)
       const newexpenditure:any = await removeData(data, token)
       console.log('newexpenditure here', newexpenditure)
-      if (!newexpenditure.hasErrors) {
+      if (newexpenditure?.data) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Expenditure removed successfully')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchExpenditure)
-      } else if (newexpenditure.response.status === 401) {
+      } else if (newexpenditure?.response?.status === 401) {
         router.push({ name: 'Login' });
-      } else if (newexpenditure.message.includes('400')) {
+      } else if (newexpenditure?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else {

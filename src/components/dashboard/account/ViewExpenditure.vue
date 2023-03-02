@@ -100,6 +100,18 @@ onMounted(async () => {
                     </label>
                     <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newExpenditure.createdOn" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" disabled autoApply/>
                 </div>
+                <div class="grid gap-4">
+                    <label for="createdBy" class="font-semibold">
+                        Created by <span class="text-red font-bold">*</span>
+                    </label>
+                    <input type="text" v-model="newExpenditure.createdBy" name="createdBy" id="createdBy" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                </div>
+                <div class="grid gap-4">
+                    <label for="modifiedBy" class="font-semibold">
+                        Modified by <span class="text-red font-bold">*</span>
+                    </label>
+                    <input type="text" v-model="newExpenditure.modifiedBy" name="modifiedBy" id="modifiedBy" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                </div>
             </div>
             <div class="flex justify-end mt-20 gap-10 pb-10">
                 <button @click.prevent="closeModal" class="py-4 px-8 hover:bg-opacity-80 font-bold flex justify-center border border-primary text-primary rounded-md">Close</button>

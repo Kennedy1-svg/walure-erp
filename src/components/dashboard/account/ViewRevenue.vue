@@ -106,16 +106,16 @@ onMounted(async () => {
                     <Datepicker inputClassName="dp-custom-input" menuClassName="dp-custom-menu" v-model="newRevenue.createdOn" placeholder="Select Date" :format="format" position="left" teleport="#transactionDate" disabled autoApply/>
                 </div>
                 <div class="grid gap-4">
-                    <label for="amount" class="font-semibold">
+                    <label for="createdBy" class="font-semibold">
                         Created by <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" v-model="newRevenue.createdBy" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <input type="text" v-model="newRevenue.createdBy" name="createdBy" id="createdBy" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
                 </div>
                 <div class="grid gap-4">
-                    <label for="amount" class="font-semibold">
+                    <label for="modifiedBy" class="font-semibold">
                         Modified by <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" v-model="newRevenue.modifiedBy" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <input type="text" v-model="newRevenue.modifiedBy" name="modifiedBy" id="modifiedBy" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
                 </div>
             </div>
             <div class="flex justify-end mt-20 gap-10 pb-10">
