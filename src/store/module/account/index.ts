@@ -441,6 +441,31 @@ export default {
         commit(mutationTypes.SetExpenditureAlertText, '')
       }, 2000)
     },
+    async [actionTypes.EditRevenue] ({ commit, dispatch }: any, data: any) {
+      const token:any = localStorage.getItem('token')
+      console.log('token here')
+      const revenue:any = await editDataPut(data.url, data.data, token)
+      console.log('revenue that came', revenue)
+      if (revenue?.data) {
+        // commit(mutationTypes.SetNewExpenditureCategory, revenue.payload)
+        await commit(mutationTypes.SetExpenditureAlertText, 'Revenue updated successfully')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+        await dispatch(actionTypes.FetchRevenue)
+      } else if (revenue?.response?.status === 401) {
+        router.push({ name: 'Login' });
+      } else if (revenue?.message?.includes('400')) {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      } else {
+        await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
+        await commit(mutationTypes.SetExpenditureAlertStatus, true)
+      }
+
+      setTimeout(() => {
+        commit(mutationTypes.SetExpenditureAlertStatus, false)
+        commit(mutationTypes.SetExpenditureAlertText, '')
+      }, 2000)
+    },
     async [actionTypes.EditExpenditure] ({ commit, dispatch }: any, data: any) {
       const token:any = localStorage.getItem('token')
       console.log('token here')
