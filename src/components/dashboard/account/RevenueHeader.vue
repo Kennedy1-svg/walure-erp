@@ -11,11 +11,13 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
+import alert from '../../alerts.vue';
 import Modal from '../../Modal.vue';
 import AddRevenue from './AddRevenue.vue';
 // import AddRevenue from './ViewRevenueDetails.vue';
 import { useStore } from 'vuex';
 import { account_api_url } from '../../../config/index';
+import spinner from '../../spinner.vue'
 import { downloadData } from '../../../helpers/api';
 import moment from 'moment';
 // import multiselect from 'vue-multiselect';
@@ -28,13 +30,17 @@ const store = useStore();
 const startDate:any = ref('');
 const endDate:any = ref('');
 
+const status:any = ref(true)
+
 let searchText:any = ref('');
 
-let courseInfo:any = ref('Course')
+let alertText:any = ref('Downloading...')
 
 const filterClicked = ref(false)
 
 let isSearching:any = ref(false)
+
+const today:any = moment().add(1, 'days').format('YYYY-MM-DD')
 
 const courses:any = computed(() => {
   return store.getters.getCourses.value.payload;
@@ -45,11 +51,17 @@ const categories:any = computed(() => {
 });
 
 const exportAll:any = async () => {
+  isDisabled.value = true;
   const url:any = `${account_api_url}/api/revenue/download-all-revenue`;
   const title:any = 'Revenue Report';
   const token:any = localStorage.getItem('token')
-  const response = await downloadData(title, url, token);
-  console.log(`response is: ${response}`)
+  const response:any = await downloadData(title, url, token);
+  response?.status == 200 ? '' : 'Error downloading';
+  response?.status == 200 ? status.value = true : status.value = false;
+  setTimeout(() => {
+    isDisabled.value = false;
+  }, 1500);
+  console.log(`response is: ${response.status}`)
 }
 
 const statusoptions:any = [
@@ -66,6 +78,8 @@ const statusoptions:any = [
     value: 2
   }
 ]
+
+let isDisabled = ref(false);
 
 const courseField:any = ref('');
 
@@ -188,22 +202,34 @@ onMounted( async() => {
 
 <template>
     <div class="main w-full grid bg-white">
+        <alert :class="[isDisabled ? '' : 'hidden']"  class="fixed z-60 top-40 bg-white p-2 right-0" name="result">
+            <template #icon>
+                <p v-if="status" class="bg-green-accent rounded-full border p-2">
+                    <SvgIcons class="text-white" name="tick" />
+                </p>
+                <p v-else class="">
+                    <SvgIcons class="text-red" name="exclamation" />
+                </p>
+            </template>
+            <template #info>
+                <p class="text-sm">
+                    {{ alertText }}
+                </p>
+            </template>
+            <template #button></template>
+        </alert>
         <div class="filter py-5 px-8">
           <div class="filter-items text-grey grid grid-cols-2 xl:grid-cols-4 gap-7 xl:gap-3 2xl:gap-10 py-5">
             <div class="startdate">
-                <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="Start Date" :format="format" textInput autoApply/>
+                <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate || today" placeholder="Start Date" :format="format" textInput autoApply/>
             </div>
             <div class="enddate">
-                <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="End Date" autoApply/>
+                <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :maxDate="today" :format="format" placeholder="End Date" autoApply/>
             </div>
             <div class="status">
               <multiselect v-model="categoryField" @clear="deselect" @select="cancan" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Category" :searchable="true" class="multiselect-blue" />
             </div>
             <div class="courses">
-              <!-- <multiselect @clear="deselect" v-model="courseField" valueProp="id" :options="courses" track-by="title" label="title" placeholder="Courses" :searchable="true" class="multiselect-blue" /> -->
-              <!-- <multiselect v-model="courseField" deselect-label="Can't remove this value" track-by="name" label="name" placeholder="Select one" :options="options" :searchable="false" :allow-empty="false">
-                <template #singleLabel slot-scope="{ options }"><strong>{{ options.name }}</strong> is written in<strong>  {{ options.id }}</strong></template>
-              </multiselect> -->
               <div class="search grid justify-self-end">
                 <Search>
                   <template #input>
@@ -228,7 +254,10 @@ onMounted( async() => {
               </button>
             </div>
             <div class="status flex gap-7 items-center">
-              <button @click="exportAll" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
+              <button @click="exportAll" :disabled="isDisabled" :class="[isDisabled ? 'border-grey text-grey' : 'border-primary text-primary']" class="flex gap-2 py-4 px-10 hover:shadow rounded border border-primary bg-transparent">
+                <span class="px-2" :class="[isDisabled ? '' : 'hidden']">
+                    <spinner class="border-grey" />
+                </span>
                 <SvgIcons name="export" class="text-2xl" />
                 Export
               </button>

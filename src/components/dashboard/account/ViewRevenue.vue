@@ -77,7 +77,7 @@ onMounted(async () => {
                     <label for="product" class="font-semibold">
                         Product <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text"  v-model="newRevenue.item" name="product" id="product" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <input type="text"  v-model="newRevenue.item" name="product" id="product" class="px-4 py-[10px] w-full border rounded-md text-sm focus:outline-none" disabled>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-8 mb-10">
@@ -91,13 +91,13 @@ onMounted(async () => {
                     <label for="amount" class="font-semibold">
                         Amount <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" v-model="newRevenue.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <input type="text" v-model="newRevenue.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-sm focus:outline-none" disabled>
                 </div>
                 <div class="grid gap-4">
                     <label for="uniqueIdentifier" class="font-semibold">
                         Unique Identifier Code <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" v-model="newRevenue.uniqueIdentifierCode" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <input type="text" v-model="newRevenue.uniqueIdentifierCode" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-sm focus:outline-none" disabled>
                 </div>
                 <div class="grid gap-4">
                     <label for="doc" class="font-semibold">
@@ -109,13 +109,13 @@ onMounted(async () => {
                     <label for="createdBy" class="font-semibold">
                         Created by <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" v-model="newRevenue.createdBy" name="createdBy" id="createdBy" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <input type="text" v-model="newRevenue.createdBy" name="createdBy" id="createdBy" class="px-4 py-[10px] w-full border rounded-md text-sm focus:outline-none" disabled>
                 </div>
                 <div class="grid gap-4">
                     <label for="modifiedBy" class="font-semibold">
                         Modified by <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" v-model="newRevenue.modifiedBy" name="modifiedBy" id="modifiedBy" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none" disabled>
+                    <input type="text" v-model="newRevenue.modifiedBy" name="modifiedBy" id="modifiedBy" class="px-4 py-[10px] w-full border rounded-md text-sm focus:outline-none" disabled>
                 </div>
             </div>
             <div class="flex justify-end mt-20 gap-10 pb-10">
@@ -131,3 +131,20 @@ onMounted(async () => {
     position: static !important;
 }
 </style>
+
+<style scoped>
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
+}
+.multiselect-blue {
+  /* --ms-option-bg: #DBEAFE; */
+  --ms-option-color: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-dropdown-bg: #FFFFFF;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-py: 10px;
+  --ms-font-size: 14px;
+}
+</style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

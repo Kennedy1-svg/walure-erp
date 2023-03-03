@@ -11,6 +11,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
+import alert from '../../alerts.vue';
+import spinner from '../../spinner.vue';
 import { downloadData } from '../../../helpers/api';
 import Modal from '../../Modal.vue';
 // import AddIncomeStatement from './AddIncomeStatement.vue';
@@ -65,6 +67,11 @@ const filter:any = async () => {
   await store.dispatch(actionTypes.FetchIncomeStatement, request)
 }
 
+const status:any = ref(true);
+let alertText:any = ref('Downloading...');
+const today:any = moment().add(1, 'days').format('YYYY-MM-DD');
+let isDisabled = ref(false);
+
 const filterCourse:any = async () => {
   const search:any = searchText.value.toLowerCase();
   const project:any = document.getElementById('course');
@@ -116,11 +123,17 @@ const filterAllIncomeStatement:any = async () => {
 }
 
 const exportAll:any = async () => {
+  isDisabled.value = true;
   const url:any = `${account_api_url}/api/incomestatement/download-all-incomestatement`;
   const title:any = 'Income Statement Report';
   const token:any = localStorage.getItem('token')
-  const response = await downloadData(title, url, token);
-  console.log(`response is: ${response}`)
+  const response:any = await downloadData(title, url, token);
+  response?.status == 200 ? '' : 'Error downloading';
+  response?.status == 200 ? status.value = true : status.value = false;
+  setTimeout(() => {
+    isDisabled.value = false;
+  }, 1500);
+  console.log(`income response is: ${response}`)
 }
 
 const cancan:any = async () => {
@@ -178,22 +191,38 @@ onMounted( async() => {
 
 <template>
     <div class="main pt-[50px] grid gap-5 pb-[90px]">
+      <alert :class="[isDisabled ? '' : 'hidden']"  class="fixed z-60 top-40 bg-white p-2 right-0" name="result">
+          <template #icon>
+              <p v-if="status" class="bg-green-accent rounded-full border p-2">
+                  <SvgIcons class="text-white" name="tick" />
+              </p>
+              <p v-else class="">
+                  <SvgIcons class="text-red" name="exclamation" />
+              </p>
+          </template>
+          <template #info>
+              <p class="text-sm">
+                  {{ alertText }}
+              </p>
+          </template>
+          <template #button></template>
+      </alert>
       <div class="top flex justify-between items-center">
         <h1 class="font-semibold text-2xl">Income Statement</h1>
       </div>
         <div class="filter py-5 px-8 bg-white">
           <div class="filter-items text-grey grid grid-cols-1 xl:grid-cols-3 gap-7 xl:gap-10 2xl:gap-16 py-5">
             <div class="startdate">
-              <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate" placeholder="From" :format="format" textInput autoApply/>
+              <Datepicker inputClassName="dp-custom-input" v-model="startDate" :maxDate="endDate || today" placeholder="From" :format="format" textInput autoApply/>
             </div>
             <div class="enddate">
-              <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :format="format" placeholder="To" autoApply/>
+              <Datepicker inputClassName="dp-custom-input" v-model="endDate" :minDate="startDate" :maxDate="today" :format="format" placeholder="To" autoApply/>
             </div>
             <div class="courses">
               <div class="search grid justify-self-end">
                 <Search>
                   <template #input>
-                    <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none w-[350px] xl:w-full" type="text" placeholder="Search">
+                    <input @keyup.esc="close" v-model="searchText" class="rounded text-sm p-1 focus:outline-none xl:w-full" type="text" placeholder="Search">
                     <span class="flex justify-end items-center text-grey">
                         <!-- <SvgIcons name="search" @click="filter"  /> -->
                         <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
@@ -214,7 +243,10 @@ onMounted( async() => {
               </button>
             </div>
             <div class="status flex items-center">
-              <button @click="exportAll" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
+              <button @click="exportAll" :disabled="isDisabled" :class="[isDisabled ? 'border-grey text-grey' : 'border-primary text-primary']" class="flex gap-2 py-4 px-10 text-primary hover:shadow rounded border border-primary bg-transparent">
+                <span class="px-2" :class="[isDisabled ? '' : 'hidden']">
+                    <spinner class="border-grey" />
+                </span>
                 <SvgIcons name="export" class="text-2xl" />
                 Export
               </button>

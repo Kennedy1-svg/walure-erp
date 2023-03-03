@@ -316,7 +316,7 @@ onMounted(async () => {
                     <label for="product" class="font-semibold">
                         Product <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newExpenditure.item" name="product" id="product" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError"  v-model="newExpenditure.item" name="product" id="product" class="px-4 py-[10px] w-full border rounded-md text-sm focus:outline-none">
                     <!-- <multiselect @select="checkError" @clear="checkError" v-model="newExpenditure.product" valueProp="id" :options="courses" track-by="product" label="product" placeholder="Select option" :searchable="true" class="multiselect-blue" /> -->
                     <p class="text-[10px] text-red">
                         {{ errors.item ? errors.itemText : '' }}
@@ -331,7 +331,6 @@ onMounted(async () => {
                     <label for="category" class="font-semibold">
                         Category <span class="text-red font-bold">*</span>
                     </label>
-                    <!-- <input type="text" @focus="checkError" @keyup="checkError"  v-model="newExpenditure.category" name="category" id="category" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none"> -->
                     <multiselect @select="checkError" @clear="checkError"  v-model="newExpenditure.categoryId" valueProp="id" :options="categories" track-by="name" label="name" placeholder="Select option" :searchable="true" class="multiselect-blue" />
                     <p class="text-[10px] text-red">
                         {{ errors.categoryId ? errors.categoryIdText : '' }}
@@ -362,7 +361,7 @@ onMounted(async () => {
                     <label for="amount" class="font-semibold">
                         Amount <span class="text-red font-bold">*</span>
                     </label>
-                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newExpenditure.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-xs focus:outline-none">
+                    <input type="text" @focus="checkError" @keyup="checkError" v-model="newExpenditure.amount" name="amount" id="amount" class="px-4 py-[10px] w-full border rounded-md text-sm focus:outline-none">
                     <p class="text-[10px] text-red">
                         {{ errors.amount ? errors.amountText : '' }}
                     </p>
@@ -387,3 +386,20 @@ onMounted(async () => {
     @apply py-[8px] rounded-md;
 }
 </style>
+
+<style scoped>
+.dp-custom-input {
+    @apply py-[8px] rounded-md;
+}
+.multiselect-blue {
+  /* --ms-option-bg: #DBEAFE; */
+  --ms-option-color: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-dropdown-bg: #FFFFFF;
+  --ms-option-bg-selected: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-tag-bg: hsla(var(--color-primary), var(--tw-bg-opacity));
+  --ms-py: 10px;
+  --ms-font-size: 14px;
+}
+</style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>
