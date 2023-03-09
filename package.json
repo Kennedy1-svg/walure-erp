@@ -23,6 +23,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-vue": "^2.0.2",
     "@headlessui/vue": "^1.5.0",
     "@vueform/multiselect": "^2.3.3",
     "@vuepic/vue-datepicker": "^3.6.8",

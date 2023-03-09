@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { account_api_url } from '../../../config/index'
 import { addData, editDataPut, fetchData, removeData } from '../../../helpers/api'
-import router from '../../../router'
+import { createRouter } from '../../../router'
 import * as actionTypes from './constants/action'
 import * as mutationTypes from './constants/mutation'
 
@@ -179,7 +179,7 @@ export default {
       if (expenditure?.data?.payload) {
         await commit(mutationTypes.SetExpenditure, expenditure.data)
       } else if (expenditure?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetExpenditure, expenditure)
       // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
@@ -197,7 +197,7 @@ export default {
       if (incomestatement?.data?.payload) {
         await commit(mutationTypes.SetIncomeStatement, incomestatement.data)
       } else if (incomestatement?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetExpenditure, expenditure)
       // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
@@ -215,7 +215,7 @@ export default {
       if (revenues?.data?.payload) {
         await commit(mutationTypes.SetRevenue, revenues.data)
       } else if (revenues?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetExpenditure, expenditure)
       // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
@@ -233,7 +233,7 @@ export default {
       if (category?.data?.payload) {
         await commit(mutationTypes.SetCategory, category.data)
       } else if (category?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetExpenditure, expenditure)
       // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
@@ -252,7 +252,7 @@ export default {
       if (category?.data?.payload) {
         await commit(mutationTypes.SetCategoryList, category.data)
       } else if (category?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
       // commit(mutationTypes.SetExpenditure, expenditure)
       // commit(mutationTypes.SetTotalExpenditureCount, expenditure.totalCount)
@@ -275,7 +275,7 @@ export default {
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
       } else if (addCategory?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (addCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -311,7 +311,7 @@ export default {
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
       } else if (addCategory?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (addCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -342,7 +342,7 @@ export default {
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
       } else if (editCategory?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (editCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -373,7 +373,7 @@ export default {
         console.log(`the request url is ${requesturl}`)
         await dispatch(actionTypes.FetchCategory, requesturl)
       } else if (editCategory?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (editCategory?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Category exists!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -402,7 +402,7 @@ export default {
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchRevenue)
       } else if (addRevenue?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (addRevenue?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -430,7 +430,7 @@ export default {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
       } else if (newexpenditure?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else {
         await commit(mutationTypes.SetExpenditureAlertText, 'Houston, we have a problem!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -452,7 +452,7 @@ export default {
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchRevenue)
       } else if (revenue?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (revenue?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -477,7 +477,7 @@ export default {
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchExpenditure)
       } else if (expenditure?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (expenditure?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -502,7 +502,7 @@ export default {
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchExpenditure)
       } else if (newexpenditure?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (newexpenditure?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -528,7 +528,7 @@ export default {
         const fetchrequest:any = `${account_api_url}api/expenditurecategory/getall-category`;
         await dispatch(actionTypes.FetchExpenditure, fetchrequest)
       } else if (newcategory?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (newcategory?.message?.includes('401')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -553,7 +553,7 @@ export default {
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
         await dispatch(actionTypes.FetchRevenue)
       } else if (revenue?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       } else if (revenue?.message?.includes('400')) {
         await commit(mutationTypes.SetExpenditureAlertText, 'Invalid Input!')
         await commit(mutationTypes.SetExpenditureAlertStatus, true)
@@ -576,7 +576,7 @@ export default {
       if (expenditure?.data?.payload) {
         commit(mutationTypes.SetEditExpenditure, expenditure.data.payload)
       } else if (expenditure?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchEditRevenue] ({ commit }: any, data: any) {
@@ -588,7 +588,7 @@ export default {
       if (revenue?.data?.payload) {
         commit(mutationTypes.SetEditRevenue, revenue.data.payload)
       } else if (revenue?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
     },
     async [actionTypes.FetchEditCategory] ({ commit }: any, data: any) {
@@ -600,7 +600,7 @@ export default {
       if (category?.data?.payload) {
         commit(mutationTypes.SetNewCategory, category.data.payload)
       } else if (category?.response?.status === 401) {
-        router.push({ name: 'Login' });
+        // router.push({ name: 'Login' });
       }
     },
   },

@@ -9,7 +9,8 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SvgIcons from '../SvgIcons.vue';
 import spinner from '../spinner.vue'
-import { useStore } from 'vuex'
+import { useStore } from 'vuex';
+import { useAuth0 } from '@auth0/auth0-vue';
 import * as actionTypes from '../../store/module/auth/constants/action'
 import * as mutationTypes from '../../store/module/auth/constants/mutation'
 import { grant_type, client_id, scope, api_url } from '../../config'
@@ -17,6 +18,26 @@ import { grant_type, client_id, scope, api_url } from '../../config'
 const store = useStore();
 
 const route = useRouter();
+
+const auth0 = useAuth0();
+
+const isAuthenticated:any = auth0.isAuthenticated;
+
+const iSLoading:any = auth0.isLoading;
+
+const user:any = auth0.user;
+
+const loginAuth0:any = async () => {
+    await auth0.loginWithRedirect();
+}
+
+const logoutAuth0:any = async () => {
+    await auth0.logout({
+        logoutParams: {
+        returnTo: window.location.origin
+        }
+    });
+}
 
 let rememberChecked:any = ref(false);
 let isDisabled = ref(true);
@@ -199,7 +220,7 @@ const submit:any = () => {
             <hr class="bg-primary w-full h-[2px]"/>
         </div>
         <div class="my-5">
-            <button @click="loginWithZoho" class="bg-[#CE2232] flex w-full font-semibold bg-opacity-70 hover:bg-opacity-100 justify-center text-white py-3 px-5 rounded">
+            <button @click="loginAuth0" class="bg-[#CE2232] flex w-full font-semibold bg-opacity-70 hover:bg-opacity-100 justify-center text-white py-3 px-5 rounded">
                 Sign in with Zoho
             </button>
         </div>

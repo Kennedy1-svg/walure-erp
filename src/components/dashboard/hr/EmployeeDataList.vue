@@ -27,7 +27,7 @@ const employeebiodatas:any = computed(() => {
 })
 
 const total_count:any = computed(() => {
-    return store.getters.getEmployeeBiodata.value.totalCount;
+    // return store.getters.getEmployeeBiodata.value.totalCount;
 })
 
 let pageIndex: any = ref(1);
