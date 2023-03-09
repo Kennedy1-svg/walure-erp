@@ -163,7 +163,7 @@ export function createOidcAuth(
   // merge passed oidcConfig with defaults
   const config = {
     response_type: 'id_token',
-    scope: 'openid profile',
+    // scope: 'openid profile',
     automaticSilentRenew: true,
     userStore: new WebStorageStateStore({
       store: sessionStorage
