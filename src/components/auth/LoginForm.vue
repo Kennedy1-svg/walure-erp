@@ -12,8 +12,9 @@ import spinner from '../spinner.vue'
 import { useStore } from 'vuex';
 import { useAuth0 } from '@auth0/auth0-vue';
 import * as actionTypes from '../../store/module/auth/constants/action'
+// import { client_id, scope, base_url, oidc_authority } from './config'
 import * as mutationTypes from '../../store/module/auth/constants/mutation'
-import { grant_type, client_id, scope, api_url } from '../../config'
+import { grant_type, client_id, scope, api_url, base_url, oidc_authority } from '../../config'
 
 const store = useStore();
 
@@ -27,8 +28,29 @@ const iSLoading:any = auth0.isLoading;
 
 const user:any = auth0.user;
 
+
+const authCallbackPath = 'index.html?auth-callback=1';
+const logoutCallbackPath = 'index.html?logout-callback=1';
+const prompt= 'login'
+const redirectUri = `${base_url}${authCallbackPath}`;
+const scopes = 'offline_access';
+
+const options:any = {
+    redirect_uri: `${redirectUri}`,
+    scope: `${scopes}`,
+    issuer: 'zoho',
+    prompt: 'login',
+}
+
 const loginAuth0:any = async () => {
-    await auth0.loginWithRedirect();
+    // await auth0.loginWithPopup();
+    try {
+        await auth0.loginWithPopup(options);
+    } catch(e) {
+    //  if (e instanceof PopupCancelledError) {
+    //    // Popup was closed before login completed
+    //  }
+    }
 }
 
 const logoutAuth0:any = async () => {

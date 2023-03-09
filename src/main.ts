@@ -29,11 +29,11 @@ axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getIte
                 domain: `${oidc_authority}`,
                 clientId: `${client_id}`,
                 authorizationParams: {
-                    // redirect_uri: `${redirectUri}`
+                    redirect_uri: `${redirectUri}`,
                     scope: `${scopes}`,
                     issuer: 'zoho',
                     prompt: 'login',
-                    redirect_uri: window.location.origin,
+                    // redirect_uri: window.location.origin,
                 }
             })
         );
