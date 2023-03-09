@@ -36,7 +36,7 @@ const redirectUri = `${base_url}${authCallbackPath}`;
 const scopes = 'offline_access';
 
 const options:any = {
-    redirect_uri: `${base_url}`,
+    redirect_uri: `${redirectUri}`,
     scope: `${scopes}`,
     issuer: 'zoho',
     prompt: 'login',
@@ -45,7 +45,7 @@ const options:any = {
 const loginAuth0:any = async () => {
     // await auth0.loginWithPopup();
     try {
-        await auth0.loginWithRedirect(options);
+        await auth0.loginWithPopup(options);
     } catch(e) {
     //  if (e instanceof PopupCancelledError) {
     //    // Popup was closed before login completed
