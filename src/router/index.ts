@@ -244,20 +244,20 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/Home.vue'),
     meta: { requiresAuth: false },
   },
-  {
-    path: '/dashboards',
-    name: 'Home',
-    component: () => import('../views/dashboard/Layout.vue'),
-    meta: { authName: idsrvAuth.authName },
-    // beforeEnter: createAuthGuard(app),
-    // meta: { requiresAuth: false },
-  },
+  // {
+  //   path: '/dashboards',
+  //   name: 'Home',
+  //   component: () => import('../views/dashboard/Layout.vue'),
+  //   meta: { authName: idsrvAuth.authName },
+  //   // beforeEnter: createAuthGuard(app),
+  //   // meta: { requiresAuth: false },
+  // },
   {
     path: '/dashboard',
     name: 'Layout',
     component: () => import('../views/dashboard/Layout.vue'),
-    meta: { requiresAuth: true },
-    // meta: { authName: idsrvAuth.authName },
+    // meta: { requiresAuth: true },
+    meta: { authName: idsrvAuth.authName },
     children: [
       {
         path: '',
