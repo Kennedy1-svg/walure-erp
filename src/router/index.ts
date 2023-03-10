@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useStore } from 'vuex';
 // import { createAuthGuard } from "@auth0/auth0-vue";
 import idsrvAuth from '../idSrvAuth';
-import { App } from 'vue'
+// import { App } from 'vue'
 
 // const store = useStore()
 
@@ -240,7 +240,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/home',
-    name: 'Home',
+    name: 'Hme',
     component: () => import('../views/Home.vue'),
     meta: { requiresAuth: false },
   },
