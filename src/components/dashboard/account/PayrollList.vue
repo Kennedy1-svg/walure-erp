@@ -155,148 +155,175 @@ onMounted( async () => {
         </div>
         <div class="table">
             <!-- {{ payroll }} -->
-        <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
-            <table class="overflow-x-scroll border items-center w-full">
-                <thead class="bg-table-head">
-                <tr class="justify-items-center">
-                    <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
-                    S/N
-                    </th>
-                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Category
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Items
-                    </th>
-                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Unique Identifier Code
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Amount
-                    </th>
-                    <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
-                    Date/Time Created
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
-                    Date of transaction
-                    </th>
-                    <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
-                </tr>
-                </thead>
+            <div class="block w-full overflow-x-scroll xl:overflow-hidden overflow-y-hidden rounded-lg">
+                <table class="overflow-x-scroll border items-center w-full">
+                    <thead class="bg-table-head">
+                    <tr class="justify-items-center">
+                        <th class="pl-6 pr-3 align-middle py-3 text-xs border-l-0 border-r-0 whitespace-nowrap font-medium text-gray-500 text-left">
+                        S/N
+                        </th>
+                        <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                        Employee ID
+                        </th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        Employee Name
+                        </th>
+                        <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                        Job Title
+                        </th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        Basic Monthly Salary
+                        </th>
+                        <th class="align-middle px-4 py-3 text-xs flex items-center whitespace-nowrap font-medium text-gray-500 text-left">
+                        Date/Time Created
+                        </th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">
+                        Date/Time Modified
+                        </th>
+                        <th class="px-4 align-middle py-3 text-xs whitespace-nowrap font-medium text-gray-500 text-left">Action</th>
+                    </tr>
+                    </thead>
 
-                <tbody id="students" class="bg-white">
-                  <tr v-for="(revenue) in payroll" :key="revenue.id">
-                      <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
-                          {{ pageIndex == 1 ? (payroll.indexOf(revenue) + 1) : ((pageIndex - 1) * 10) + (payroll.indexOf(revenue) + 1) }}
-                      </td>
-                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ revenue.categoryName }}
-                      </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                          {{ revenue.item }}
-                      </td>
-                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                          {{ revenue.uniqueIdentifierCode }}
-                      </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                          {{ revenue.amount }}
-                      </td>
-                      <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                        {{ moment(revenue.createdOn).format('MM/DD/YYYY') }}
-                      </td>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                        {{ moment(revenue.transactionDate).format('MM/DD/YYYY') }}
-                      </td>
-                      <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                        <div class="relative inline-block dropdown">
-                            <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                                <SvgIcons name="ellipsis" />
-                            </button>
-                            <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
-                                <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-                                    <div class="py-3 gap-3">
-                                        <button
-                                        type="button"
-                                        @click="showDetails = !showDetails"
-                                        @click.prevent="editRevenue(revenue.id)"
-                                        class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                        >
-                                            <SvgIcons name="details" />
-                                            Details
-                                        </button>
-                                        <Modal :show="showDetails" @close="showDetails = !showDetails">
-                                            <ViewRevenueDetails :id="revenue.id" @close="showDetails = !showDetails" />
-                                        </Modal>
+                    <tbody id="students" class="bg-white">
+                        <tr>
+                            <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                                1
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                gjh
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                lskdsd
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                djksdjsk
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                ₦500
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ moment().format('YYYY/MM/DD') }}
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                date
+                            </td>
+                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                <div class="relative inline-block dropdown">
+                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                                        <SvgIcons name="ellipsis" />
+                                    </button>
+                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                                            <div class="py-3 gap-3">
+                                                <button
+                                                type="button"
+                                                @click="showEdit = !showEdit"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="edit" />
+                                                    Edit
+                                                </button>
+                                                <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                    <AddRevenue name="Edit" @close="showEdit = !showEdit"  />
+                                                </Modal>
 
-                                        <button
-                                        type="button"
-                                        @click="showEdit = !showEdit" @click.prevent="editRevenue(revenue.id)"
-                                        class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                        >
-                                            <SvgIcons name="edit" />
-                                            Edit
-                                        </button>
-                                        <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                            <AddRevenue name="Edit" @close="showEdit = !showEdit"  />
-                                        </Modal>
-
-                                        <button
-                                        type="button"
-                                        @click="showDelete = !showDelete" @click.prevent="sendId(revenue.id)"
-                                        class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                                        >
-                                            <SvgIcons name="delete" />
-                                            Delete
-                                        </button>
-                                        <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteRevenue(revenueitemtodelete)">
-                                            <template #title>
-                                                Delete Revenue
-                                            </template>
-                                            <template #info>
-                                                Are you sure you want to remove revenue?
-                                            </template>
-                                            <template #delete>
-                                                Yes, Delete Revenue
-                                            </template>
-                                        </DeleteModal>
+                                                <button
+                                                type="button"
+                                                @click="showDetails = !showDetails"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="eye" />
+                                                    View Details
+                                                </button>
+                                                <Modal :show="showDetails" @close="showDetails = !showDetails">
+                                                    <ViewRevenueDetails @close="showDetails = !showDetails" />
+                                                </Modal>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </td>
+                        </tr>
+                        <!-- <tr v-for="(revenue) in payroll" :key="revenue.id"> -->
+                            <!-- <td class="border-t-0 pl-6 pr-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4">
+                                {{ pageIndex == 1 ? (payroll.indexOf(revenue) + 1) : ((pageIndex - 1) * 10) + (payroll.indexOf(revenue) + 1) }}
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ revenue.employeeId }}
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                {{ revenue.employeeName }}
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ revenue.jobTitle }}
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                ₦{{ revenue.monthlyBasicSalary }}
+                            </td>
+                            <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
+                                {{ moment(revenue.createdOn).format('MM/DD/YYYY') }}
+                            </td>
+                            <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                {{ moment(revenue.transactionDate).format('MM/DD/YYYY') }}
+                            </td>
+                            <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                <div class="relative inline-block dropdown">
+                                    <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                                        <SvgIcons name="ellipsis" />
+                                    </button>
+                                    <div class="absolute z-10 opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 w-40">
+                                        <div class="absolute right-36 w-full mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                                            <div class="py-3 gap-3">
+                                                <button
+                                                type="button"
+                                                @click="showEdit = !showEdit" @click.prevent="editRevenue(revenue.id)"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="edit" />
+                                                    Edit
+                                                </button>
+                                                <Modal :show="showEdit" @close="showEdit = !showEdit">
+                                                    <AddRevenue name="Edit" @close="showEdit = !showEdit"  />
+                                                </Modal>
 
-                        <!-- <div class="flex w-2/5 items-center">
-                            <button
-                            type="button"
-                            @click="showEdit = !showEdit" @click.prevent="editRevenue(revenue.id)"
-                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full py-2 text-sm text-left"
-                            >
-                                <SvgIcons name="edit" />
-                            </button>
-                            <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                <AddRevenue name="Edit" @close="showEdit = !showEdit"  />
-                            </Modal>
+                                                <button
+                                                type="button"
+                                                @click="showDetails = !showDetails"
+                                                @click.prevent="editRevenue(revenue.id)"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="details" />
+                                                    Details
+                                                </button>
+                                                <Modal :show="showDetails" @close="showDetails = !showDetails">
+                                                    <ViewRevenueDetails :id="revenue.id" @close="showDetails = !showDetails" />
+                                                </Modal> -->
 
-                            <button
-                            type="button"
-                            @click="showDelete = !showDelete" @click.prevent="sendId(revenue.id)"
-                            class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
-                            >
-                                <SvgIcons name="delete" />
-                            </button>
-                            <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteRevenue(revenueitemtodelete)">
-                                    <template #title>
-                                        Delete Revenue
-                                    </template>
-                                    <template #info>
-                                        Are you sure you want to remove revenue?
-                                    </template>
-                                    <template #delete>
-                                        Yes, Delete Revenue
-                                    </template>
-                            </DeleteModal>
-                        </div> -->
-                      </td>
-                  </tr>
+                                                <!-- <button
+                                                type="button"
+                                                @click="showDelete = !showDelete" @click.prevent="sendId(revenue.id)"
+                                                class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
+                                                >
+                                                    <SvgIcons name="delete" />
+                                                    Delete
+                                                </button>
+                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteRevenue(revenueitemtodelete)">
+                                                    <template #title>
+                                                        Delete Revenue
+                                                    </template>
+                                                    <template #info>
+                                                        Are you sure you want to remove revenue?
+                                                    </template>
+                                                    <template #delete>
+                                                        Yes, Delete Revenue
+                                                    </template>
+                                                </DeleteModal>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr> -->
                     </tbody>
                 </table>
                 <div class="flex items-center pt-6 px-6 mb-20 text-xs text-gray-700 justify-between">

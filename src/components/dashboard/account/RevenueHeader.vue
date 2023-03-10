@@ -55,7 +55,8 @@ const exportAll:any = async () => {
   const url:any = `${account_api_url}/api/revenue/download-all-revenue`;
   const title:any = 'Revenue Report';
   const token:any = localStorage.getItem('token')
-  const response:any = await downloadData(title, url, token);
+  const format:any = '.xls'
+  const response:any = await downloadData(title, url, format, token);
   response?.status == 200 ? '' : 'Error downloading';
   response?.status == 200 ? status.value = true : status.value = false;
   setTimeout(() => {

@@ -31,8 +31,8 @@ export const fetchData = async (url:any, token:any) => {
   }
 }
 
-// api helper to fetch data from the backend
-export const downloadData = async (title:any, url:any, token:any) => {
+// api helper to download document from the backend
+export const downloadData = async (title:any, url:any, format:any, token:any) => {
   const config:any = { method: 'GET', url, responseType: 'arraybuffer', headers: { Authorization: `Bearer ${token}` }}
 
   try {
@@ -40,7 +40,7 @@ export const downloadData = async (title:any, url:any, token:any) => {
     // console.log('url here', url)
     const response = await axios(config);
 
-    const outputFilename = `${title}.xls`;
+    const outputFilename = `${title}${format}`;
 
     // If you want to download file automatically using link attribute.
     const url = URL.createObjectURL(new Blob([response.data]));

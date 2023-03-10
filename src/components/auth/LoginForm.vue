@@ -10,7 +10,7 @@ import { useRouter } from 'vue-router'
 import SvgIcons from '../SvgIcons.vue';
 import spinner from '../spinner.vue'
 import { useStore } from 'vuex';
-import { useAuth0 } from '@auth0/auth0-vue';
+// import { useAuth0 } from '@auth0/auth0-vue';
 import * as actionTypes from '../../store/module/auth/constants/action'
 // import { client_id, scope, base_url, oidc_authority } from './config'
 import * as mutationTypes from '../../store/module/auth/constants/mutation'
@@ -20,46 +20,46 @@ const store = useStore();
 
 const route = useRouter();
 
-const auth0 = useAuth0();
+// const auth0 = useAuth0();
 
-const isAuthenticated:any = auth0.isAuthenticated;
+// const isAuthenticated:any = auth0.isAuthenticated;
 
-const iSLoading:any = auth0.isLoading;
+// const iSLoading:any = auth0.isLoading;
 
-const user:any = auth0.user;
+// const user:any = auth0.user;
 
 
-const authCallbackPath = 'index.html?auth-callback=1';
-const logoutCallbackPath = 'index.html?logout-callback=1';
-const prompt= 'login'
-const redirectUri = `${base_url}${authCallbackPath}`;
-const scopes = 'offline_access';
+// const authCallbackPath = 'index.html?auth-callback=1';
+// const logoutCallbackPath = 'index.html?logout-callback=1';
+// const prompt= 'login'
+// const redirectUri = `${base_url}${authCallbackPath}`;
+// const scopes = 'offline_access';
 
-const options:any = {
-    redirect_uri: `${redirectUri}`,
-    scope: `${scopes}`,
-    issuer: 'zoho',
-    prompt: 'login',
-}
+// const options:any = {
+//     redirect_uri: `${redirectUri}`,
+//     scope: `${scopes}`,
+//     provider: 'Zoho',
+//     prompt: 'login',
+// }
 
-const loginAuth0:any = async () => {
-    // await auth0.loginWithPopup();
-    try {
-        await auth0.loginWithPopup(options);
-    } catch(e) {
-    //  if (e instanceof PopupCancelledError) {
-    //    // Popup was closed before login completed
-    //  }
-    }
-}
+// const loginAuth0:any = async () => {
+//     // await auth0.loginWithPopup();
+//     try {
+//         await auth0.loginWithPopup(options);
+//     } catch(e) {
+//     //  if (e instanceof PopupCancelledError) {
+//     //    // Popup was closed before login completed
+//     //  }
+//     }
+// }
 
-const logoutAuth0:any = async () => {
-    await auth0.logout({
-        logoutParams: {
-        returnTo: window.location.origin
-        }
-    });
-}
+// const logoutAuth0:any = async () => {
+//     await auth0.logout({
+//         logoutParams: {
+//         returnTo: window.location.origin
+//         }
+//     });
+// }
 
 let rememberChecked:any = ref(false);
 let isDisabled = ref(true);
@@ -242,7 +242,7 @@ const submit:any = () => {
             <hr class="bg-primary w-full h-[2px]"/>
         </div>
         <div class="my-5">
-            <button @click="loginAuth0" class="bg-[#CE2232] flex w-full font-semibold bg-opacity-70 hover:bg-opacity-100 justify-center text-white py-3 px-5 rounded">
+            <button @click="loginWithZoho" class="bg-[#CE2232] flex w-full font-semibold bg-opacity-70 hover:bg-opacity-100 justify-center text-white py-3 px-5 rounded">
                 Sign in with Zoho
             </button>
         </div>
