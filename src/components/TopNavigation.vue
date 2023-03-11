@@ -39,7 +39,7 @@
 			response_type: 'code',
 			filterProtocolClaims: true,
 			loadUserInfo: true,
-			scope: scope,
+			// scope: scope,
 			extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
 			// extraTokenParams: {scope: scopes},
 		},
