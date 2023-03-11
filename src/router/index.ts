@@ -263,7 +263,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '',
         name: 'Dashboard',
         component: () => import('../views/dashboard/Index.vue'),
-        meta: { requiresAuth: true },
+        // meta: { requiresAuth: true },
         // meta: { authName: idsrvAuth.authName },
       },
       {
