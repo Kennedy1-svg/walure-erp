@@ -39,8 +39,8 @@
 			response_type: 'code',
 			filterProtocolClaims: true,
 			loadUserInfo: true,
-			// scope: scope,
-			extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
+			scope: scopes,
+			extraQueryParams: { prompt: prompt, provider: provider }
 			// extraTokenParams: {scope: scopes},
 		},
 		console,
@@ -56,9 +56,9 @@
 	response_type: 'code',
 	// filterProtocolClaims: true,
 	loadUserInfo: true,
-	scope: scope,
+	scope: scopes,
 	// display: 'hidden',
-	extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
+	extraQueryParams: { prompt: prompt, provider: provider }
 	// extraTokenParams: {scope: scopes},
 	};
 

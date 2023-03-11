@@ -29,8 +29,8 @@ const idsrvAuth = createOidcAuth(
     response_type: 'code',
     filterProtocolClaims: true,
     loadUserInfo: true,
-    // scope: scope,
-    extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
+    scope: scope,
+    extraQueryParams: { prompt: prompt, provider: provider }
     // extraTokenParams: {scope: scopes},
   },
   console,
@@ -46,7 +46,7 @@ const clientSettings = {
   filterProtocolClaims: true,
   loadUserInfo: true,
   scope: scope,
-  extraQueryParams: { scope: scope, prompt: prompt, provider: provider }
+  extraQueryParams: { prompt: prompt, provider: provider }
   // extraTokenParams: {scope: scopes},
 };
 

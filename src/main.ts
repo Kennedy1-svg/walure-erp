@@ -8,7 +8,7 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import '@vueup/vue-quill/dist/vue-quill.bubble.css'
 import axios from 'axios'
-import { client_id, scope, base_url, oidc_authority } from './config'
+// import { client_id, scope, base_url, oidc_authority } from './config'
 import idSrvAuth from './idSrvAuth'
 
 // axios.defaults.baseURL = 'http://localhost:3000'
