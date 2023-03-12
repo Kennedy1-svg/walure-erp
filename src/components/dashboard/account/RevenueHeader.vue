@@ -42,10 +42,6 @@ let isSearching:any = ref(false)
 
 const today:any = moment().add(1, 'days').format('YYYY-MM-DD')
 
-const courses:any = computed(() => {
-  return store.getters.getCourses.value.payload;
-});
-
 const categories:any = computed(() => {
     return store.getters.getCategoryList.value.payload;
 });
@@ -180,7 +176,7 @@ const closeModal:any = () => {
 }
 
 let isActive:any = computed(() => {
-    if (courseField.value || categoryField.value || categoryField.value == '0' || (startDate.value && endDate.value)) {
+    if (categoryField.value || categoryField.value == '0' || (startDate.value && endDate.value)) {
         return true
     } else {
         return false

@@ -11,50 +11,50 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import SvgIcons from '../../SvgIcons.vue';
 import Search from '../../Search.vue';
 import Filter from '../../Filter.vue';
+import alert from '../../alerts.vue';
 import Modal from '../../Modal.vue';
-// import AddIncomeStatement from './AddIncomeStatement.vue';
+import AddPayroll from './AddPayroll.vue';
+// import AddPayroll from './ViewPayrollDetails.vue';
 import { useStore } from 'vuex';
+import { account_api_url } from '../../../config/index';
+import spinner from '../../spinner.vue'
+import { downloadData } from '../../../helpers/api';
 import moment from 'moment';
 // import multiselect from 'vue-multiselect';
 import multiselect from '@vueform/multiselect'
+import * as courseActionTypes from '../../../store/module/courses/constants/action';
 import * as accountActionTypes from '../../../store/module/account/constants/action';
-import { downloadData } from '../../../helpers/api';
-import * as projectActionTypes from '../../../store/module/services/constants/action';
-import { account_api_url } from '../../../config/index';
 
 const store = useStore();
 const startDate:any = ref('');
 const endDate:any = ref('');
 
-let searchText:any = ref('');
-
-let courseInfo:any = ref('Course')
-const today:any = moment().add(1, 'days').format('YYYY-MM-DD')
-
-let isSearching:any = ref(false)
-const filterClicked = ref(false)
-
-
-const courses:any = computed(() => {
-  return store.getters.getCourses.value.payload;
-});
-
 const status:any = ref(true)
 
-const statusoptions:any = [
-  {
-    label: 'Pending',
-    value: 0
-  },
-  {
-    label: 'Ongoing',
-    value: 1
-  },
-  {
-    label: 'Ended',
-    value: 2
-  }
-]
+let searchText:any = ref('');
+
+let alertText:any = ref('Downloading...')
+
+const filterClicked = ref(false)
+
+let isSearching:any = ref(false)
+
+const today:any = moment().add(1, 'days').format('YYYY-MM-DD')
+
+const exportAll:any = async () => {
+  isDisabled.value = true;
+  const url:any = `${account_api_url}/api/payroll/download-all-payroll`;
+  const title:any = 'Payroll Report';
+  const token:any = localStorage.getItem('token')
+  const format:any = '.xls'
+  const response:any = await downloadData(title, url, format, token);
+  response?.status == 200 ? '' : 'Error downloading';
+  response?.status == 200 ? status.value = true : status.value = false;
+  setTimeout(() => {
+    isDisabled.value = false;
+  }, 1500);
+  console.log(`response is: ${response.status}`)
+}
 
 const employeeName:any = ref('')
 
@@ -67,7 +67,7 @@ const filter:any = async () => {
   const search:any = searchText.value.toLowerCase();
   console.log('search', search)
   const request:any = `${account_api_url}api/project/search-projects/{pageIndex}/{pageSize}/${search}`;
-  await store.dispatch(projectActionTypes.FetchProject, request)
+  // await store.dispatch(accountActionTypes.FetchPayroll, request)
   // const project:any = document.getElementById('projectlist');
   // const rows:any = project.getElementsByTagName('tr');
 
@@ -110,21 +110,6 @@ const filterCourse:any = async () => {
   }
 }
 
-const exportAll:any = async () => {
-  isDisabled.value = true;
-  const url:any = `${account_api_url}/api/revenue/download-all-revenue`;
-  const title:any = 'Revenue Report';
-  const token:any = localStorage.getItem('token')
-  const format:any = '.xls'
-  const response:any = await downloadData(title, url, format, token);
-  response?.status == 200 ? '' : 'Error downloading';
-  response?.status == 200 ? status.value = true : status.value = false;
-  setTimeout(() => {
-    isDisabled.value = false;
-  }, 1500);
-  console.log(`response is: ${response.status}`)
-}
-
 const filtercourse:any = async () => {
   console.log('i am here')
 }
@@ -135,7 +120,7 @@ const filterAllProject:any = async () => {
   filterClicked.value = true;
   if (statusField.value || statusField.value == '0') {
     const request:any = `${account_api_url}api/project/filter-projects/{pageNumber}/{pageSize}/${statusField.value}`;
-    store.dispatch(projectActionTypes.FetchProject, request)
+    // store.dispatch(accountActionTypes.FetchProject, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
     let start:any = moment(startDate.value).format('MM/DD/YYYY');
@@ -143,7 +128,7 @@ const filterAllProject:any = async () => {
     console.log('date filter formatted', start, end)
     const request:any = `${account_api_url}api/project/filter-projectbydate/{pageNumber}/{pageSize}?startDate=${start}&endDate=${end}`;
     console.log('request', request)
-    store.dispatch(projectActionTypes.FetchProject, request)
+    // store.dispatch(accountActionTypes.FetchProject, request)
   } else {
     return
   }
@@ -156,38 +141,41 @@ const cancan:any = async () => {
 const deselect:any = async () => {
     console.log('on deselect')
     filterClicked.value = false;
-    const projectrequest:any = `${account_api_url}api/project/get-projects`;
-    await store.dispatch(projectActionTypes.FetchProject, projectrequest)
+    employeeName.value = ''
+    startDate.value = ''
+    endDate.value = ''
+    // const batchrequest:any = `${account_api_url}api/batch/get-batches`;
+    // await store.dispatch(accountActionTypes.FetchPayroll)
 }
 
-const filterAllRevenue:any = async () => {
+const filterAllPayroll:any = async () => {
   console.log('let us filter')
   console.log('course id', courseField.value)
   filterClicked.value = true;
   // if (courseField.value) {
   //   const request:any = `${account_api_url}api/batch/filter-batchCourse/{pageNumber}/{pageSize}/${courseField.value}`;
-  //   store.dispatch(accountActionTypes.FetchRevenue, request)
+  //   store.dispatch(accountActionTypes.FetchPayroll, request)
   // } else
 
   if (employeeName.value) {
-    const request:any = `${account_api_url}api/revenue/getall-revenue?categoryId=${employeeName.value}`;
-    store.dispatch(accountActionTypes.FetchRevenue, request)
+    const request:any = `${account_api_url}api/payroll/getall-payroll?employeeName=${employeeName.value}`;
+    // store.dispatch(accountActionTypes.FetchPayroll, request)
   } else if (startDate.value && endDate.value) {
     console.log('date filter', startDate.value, endDate.value)
     let start:any = moment(startDate.value).format('DD-MM-YYYY');
     let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${account_api_url}api/revenue/getall-revenue?startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/payroll/getall-payroll?startDate=${start}&endDate=${end}`;
     console.log('request', request)
-    store.dispatch(accountActionTypes.FetchRevenue, request)
+    // store.dispatch(accountActionTypes.FetchPayroll, request)
   } else if (startDate.value && endDate.value && employeeName.value) {
     console.log('date filter', startDate.value, endDate.value)
     let start:any = moment(startDate.value).format('DD-MM-YYYY');
     let end:any = moment(endDate.value).format('DD-MM-YYYY');
     console.log('date filter formatted', start, end)
-    const request:any = `${account_api_url}api/revenue/getall-revenue?categoryId=${employeeName.value}&startDate=${start}&endDate=${end}`;
+    const request:any = `${account_api_url}api/payroll/getall-payroll?categoryId=${employeeName.value}&startDate=${start}&endDate=${end}`;
     console.log('request', request)
-    store.dispatch(accountActionTypes.FetchRevenue, request)
+    // store.dispatch(accountActionTypes.FetchPayroll, request)
   } else {
     return
   }
@@ -204,18 +192,18 @@ const format:any = (date:any) => {
 const close:any = async () => {
     isSearching.value = false
   searchText.value = ''
-  await store.dispatch(projectActionTypes.FetchProject)
+  // await store.dispatch(accountActionTypes.FetchProject)
 }
 
 const closeModal:any = () => {
   // document.getElementById('addstudent').showModal()
   console.log('close project modal')
-  let doc:any = document.getElementById('addProject')
+  let doc:any = document.getElementById('addpayroll')
   doc.close()
 }
 
 let isActive:any = computed(() => {
-    if (courseField.value || statusField.value || statusField.value == '0' || (startDate.value && endDate.value)) {
+    if (employeeName.value || (startDate.value && endDate.value)) {
         return true
     } else {
         return false
@@ -235,6 +223,22 @@ onMounted( async() => {
 
 <template>
     <div class="main pt-[50px] grid gap-5 pb-[90px]">
+      <alert :class="[isDisabled ? '' : 'hidden']"  class="fixed z-60 top-40 bg-white p-2 right-0" name="result">
+          <template #icon>
+              <p v-if="status" class="bg-green-accent rounded-full border p-2">
+                  <SvgIcons class="text-white" name="tick" />
+              </p>
+              <p v-else class="">
+                  <SvgIcons class="text-red" name="exclamation" />
+              </p>
+          </template>
+          <template #info>
+              <p class="text-sm">
+                  {{ alertText }}
+              </p>
+          </template>
+          <template #button></template>
+      </alert>
       <div class="top flex justify-between items-center">
         <h1 class="font-semibold text-2xl">Payroll</h1>
         <!-- {{ roles }} -->
@@ -253,17 +257,17 @@ onMounted( async() => {
 
             <div class="relative overflow-hdden">
                 <section class="flex h-full justify-ceter items-start">
-                    <div onclick="document.getElementById('adduser').showModal()" id="btn">
+                    <div onclick="document.getElementById('addpayroll').showModal()" id="btn">
                         <span class="bg-blue p-1 flex justify-center text-white rounded-md">
                             <SvgIcons name="plus" /> <!-- plus icon -->
                         </span>
                     </div>
                 </section>
 
-                <dialog id="adduser" class="h-auto w-11/12 md:w-4/5 p-5 bg-white rounded-md ">
+                <dialog id="addpayroll" class="h-auto w-11/12 md:w-1/2 p-5 bg-white rounded-md ">
                     <div class="w-full h-auto">
                         <!-- Modal Content-->
-                            <AddUserTabs @close="closeModal" />
+                            <AddPayroll name="Add" @close="closeModal" />
                         <!-- End of Modal Content-->
                     </div>
                 </dialog>
@@ -299,7 +303,7 @@ onMounted( async() => {
           </div>
           <div class="search-items flex justify-between items-center px11 py-5">
             <div class="status flex gap-4 items-center">
-              <button @click="filterAllRevenue" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
+              <button @click="filterAllPayroll" class="py-4 px-10 hover:shadow rounded border" :class="[isActive ? activeView : disabledView]" :disabled = !isActive>
                 Apply Filter
               </button>
               <button @click="deselect" class="text-3xl" :class="[filterClicked ? 'flex' : 'hidden']">

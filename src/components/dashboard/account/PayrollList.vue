@@ -9,8 +9,8 @@ export default {
 
 <script setup lang="ts">
 import SvgIcons from '../../SvgIcons.vue';
-// import EditRole from './EditRoleForm.vue';
-// import EditRoleHeader from './EditRoleHeader.vue';
+import AddPayroll from './AddPayroll.vue';
+import PayrollDetails from './PayrollDetails.vue';
 import pagination from '../../pagination.vue'
 import Modal from '../../Modals.vue';
 import DeleteModal from '../../DeleteModal.vue';
@@ -91,34 +91,34 @@ const setId:any = (id:any) => {
     console.log('role', id)
     // const request:any = `${account_api_url}api/role-management/get-role-details/${id}`;
     // console.log('request forid', request)
-    // store.dispatch(actionTypes.FetchEditRole, request)
+    // store.dispatch(actionTypes.FetchAddPayroll, request)
     route.push({
-        name: 'EditRole',
+        name: 'AddPayroll',
         params: {
             id: id
         }
     })
 }
 
-const editRevenue:any = async (revenue:any) => {
+const editPayroll:any = async (revenue:any) => {
     console.log('revenue', revenue)
     // const request:any = `${account_api_url}api/revenue/get-revenue/${revenue}`;
     // console.log('request for the', request)
-    // await store.dispatch(actionTypes.FetchEditRevenue, request)
+    // await store.dispatch(actionTypes.FetchEditPayroll, request)
 }
 
-const deleteRevenue:any = async (id:any) => {
+const deletePayroll:any = async (id:any) => {
     console.log('category category', id);
 
     const request:any = `${account_api_url}api/revenue/delete-revenue/${id}`;
 
     console.log('requestData', request)
-    await store.dispatch(actionTypes.RemoveRevenue, request)
-    await store.dispatch(actionTypes.FetchRevenue)
+    // await store.dispatch(actionTypes.RemovePayroll, request)
+    // await store.dispatch(actionTypes.FetchPayroll)
     closeModal()
     // const fetchrequest:any = `${account_api_url}api/coursecategory/get-categories/{pageNumber}/{pageSize}`;
     // console.log('url', fetchrequest)
-    // await store.dispatch(actionTypes.FetchRevenueQuotes)
+    // await store.dispatch(actionTypes.FetchPayrollQuotes)
 }
 
 const toggle:any = (status:any) => {
@@ -202,10 +202,10 @@ onMounted( async () => {
                                 ₦500
                             </td>
                             <td class="border-t-0 px-4 font-normal align-middle border-l-0 border-r-0 text-xs whitespace-nowrap py-4 text-left">
-                                {{ moment().format('YYYY/MM/DD') }}
+                                {{ moment().format('DD/MM/YYYY - h:mm A') }}
                             </td>
                             <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                date
+                                {{ moment().add(1, 'year').format('DD/MM/YYYY - h:mm A') }}
                             </td>
                             <td class="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                 <div class="relative inline-block dropdown">
@@ -224,7 +224,7 @@ onMounted( async () => {
                                                     Edit
                                                 </button>
                                                 <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                                    <AddRevenue name="Edit" @close="showEdit = !showEdit"  />
+                                                    <AddPayroll name="Edit" @close="showEdit = !showEdit"  />
                                                 </Modal>
 
                                                 <button
@@ -236,7 +236,7 @@ onMounted( async () => {
                                                     View Details
                                                 </button>
                                                 <Modal :show="showDetails" @close="showDetails = !showDetails">
-                                                    <ViewRevenueDetails @close="showDetails = !showDetails" />
+                                                    <PayrollDetails @close="showDetails = !showDetails" />
                                                 </Modal>
                                             </div>
                                         </div>
@@ -276,27 +276,27 @@ onMounted( async () => {
                                             <div class="py-3 gap-3">
                                                 <button
                                                 type="button"
-                                                @click="showEdit = !showEdit" @click.prevent="editRevenue(revenue.id)"
+                                                @click="showEdit = !showEdit" @click.prevent="editPayroll(revenue.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="edit" />
                                                     Edit
                                                 </button>
                                                 <Modal :show="showEdit" @close="showEdit = !showEdit">
-                                                    <AddRevenue name="Edit" @close="showEdit = !showEdit"  />
+                                                    <AddPayroll name="Edit" @close="showEdit = !showEdit"  />
                                                 </Modal>
 
                                                 <button
                                                 type="button"
                                                 @click="showDetails = !showDetails"
-                                                @click.prevent="editRevenue(revenue.id)"
+                                                @click.prevent="editPayroll(revenue.id)"
                                                 class="text-gray-600 cursor-pointer hover:text-primary flex items-center gap-2 w-full px-4 py-2 text-sm text-left"
                                                 >
                                                     <SvgIcons name="details" />
                                                     Details
                                                 </button>
                                                 <Modal :show="showDetails" @close="showDetails = !showDetails">
-                                                    <ViewRevenueDetails :id="revenue.id" @close="showDetails = !showDetails" />
+                                                    <ViewPayrollDetails :id="revenue.id" @close="showDetails = !showDetails" />
                                                 </Modal> -->
 
                                                 <!-- <button
@@ -307,15 +307,15 @@ onMounted( async () => {
                                                     <SvgIcons name="delete" />
                                                     Delete
                                                 </button>
-                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deleteRevenue(revenueitemtodelete)">
+                                                <DeleteModal :show="showDelete" @close="showDelete = !showDelete" @delete="deletePayroll(revenueitemtodelete)">
                                                     <template #title>
-                                                        Delete Revenue
+                                                        Delete Payroll
                                                     </template>
                                                     <template #info>
                                                         Are you sure you want to remove revenue?
                                                     </template>
                                                     <template #delete>
-                                                        Yes, Delete Revenue
+                                                        Yes, Delete Payroll
                                                     </template>
                                                 </DeleteModal>
                                             </div>
