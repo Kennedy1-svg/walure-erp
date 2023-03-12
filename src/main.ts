@@ -15,33 +15,61 @@ import idSrvAuth from './idSrvAuth'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
 
-idSrvAuth.startup().then((ok:any) => {
-    if (ok) {
-        // const app:any = createApp(App);
-
-        // app.use(createRouter(app)).use(store).component('QuillEditor', QuillEditor).use(
-        //     createAuth0({
-        //         domain: `${oidc_authority}`,
-        //         clientId: `${client_id}`,
-        //         authorizationParams: {
-        //             redirect_uri: `${redirectUri}`,
-        //             scope: `${scopes}`,
-        //             provider: 'Zoho',
-        //             prompt: 'login',
-        //             // redirect_uri: window.location.origin,
-        //         }
-        //     })
-        // );
-
+try {
+    const start:any = idSrvAuth.startup();
+    if (start) {
         const app:any = createApp(App).use(router).use(store).component('QuillEditor', QuillEditor);
 
         app.config.globalProperties.$oidc = idSrvAuth
 
         app.mount('#app')
-    } else {
-        console.log(`Startup was not okay`)
     }
-});
+}
+catch(err:any) {
+    console.log(`Startup was not okay: ${err}`)
+}
+
+// idSrvAuth.startup().then((ok:any) => {
+//     if (ok) {
+//         const app:any = createApp(App).use(router).use(store).component('QuillEditor', QuillEditor);
+
+//         app.config.globalProperties.$oidc = idSrvAuth
+
+//         app.mount('#app')
+//     } else {
+//         console.log(`Startup was not okay`)
+//     }
+// }).catch((err:any) => {
+//     console.log(`Startup was not okay: ${err}`)
+// });
+
+// idSrvAuth.startup().then((ok:any) => {
+//     if (ok) {
+//         // const app:any = createApp(App);
+
+//         // app.use(createRouter(app)).use(store).component('QuillEditor', QuillEditor).use(
+//         //     createAuth0({
+//         //         domain: `${oidc_authority}`,
+//         //         clientId: `${client_id}`,
+//         //         authorizationParams: {
+//         //             redirect_uri: `${redirectUri}`,
+//         //             scope: `${scopes}`,
+//         //             provider: 'Zoho',
+//         //             prompt: 'login',
+//         //             // redirect_uri: window.location.origin,
+//         //         }
+//         //     })
+//         // );
+
+//         const app:any = createApp(App).use(router).use(store).component('QuillEditor', QuillEditor);
+
+//         app.config.globalProperties.$oidc = idSrvAuth
+
+//         app.mount('#app')
+//     } else {
+//         console.log(`Startup was not okay`)
+//     }
+// });
 
 // createAuth0({
 //     domain: '<AUTH0_DOMAIN>',

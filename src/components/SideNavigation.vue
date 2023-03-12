@@ -140,9 +140,9 @@ import SvgIcons from './SvgIcons.vue'
 									<li class="hover:text-primary">
 										<router-link active-class="active" to="/dashboard/human-resource/performance-management">Performance Management</router-link>
 									</li>
-									<li class="hover:text-primary pb-3">
+									<!-- <li class="hover:text-primary pb-3">
 										<router-link active-class="active" to="/dashboard/human-resource/payroll">Payroll</router-link>
-									</li>
+									</li> -->
 								</ul>
 							</div>
 						</div>
