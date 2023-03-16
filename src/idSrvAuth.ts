@@ -9,8 +9,8 @@ const appRootUrl = `${loco.protocol}//${loco.host}`
 const provider:any = 'Zoho'
 
   console.log(`Creating OIDC client for ${appRootUrl}`)
-  const authCallbackPath = 'index.html?auth-callback=1';
-  const logoutCallbackPath = 'index.html?logout-callback=1';
+  const authCallbackPath = '/index.html?auth-callback=1';
+  const logoutCallbackPath = '/index.html?logout-callback=1';
   const prompt= 'login'
   const redirectUri = `${base_url}${authCallbackPath}`;
   const scopes = 'offline_access';
