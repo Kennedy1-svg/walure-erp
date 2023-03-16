@@ -4,7 +4,7 @@ import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
 import { client_id, scope, base_url, oidc_authority } from './config'
 
 const loco = window.location
-const appRootUrl = `${loco.protocol}${loco.host}`
+const appRootUrl = `${loco.protocol}${loco.host}/`
 // const appRootUrl = 'localhost:5500/'
 const provider:any = 'Zoho'
 
@@ -19,7 +19,7 @@ const provider:any = 'Zoho'
 
 const idsrvAuth = createOidcAuth(
   'main',
-  SignInType.Window,
+  SignInType.Popup,
   appRootUrl,
   {
     authority: oidc_authority,
