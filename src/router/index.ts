@@ -256,8 +256,8 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'Layout',
     component: () => import('../views/dashboard/Layout.vue'),
-    meta: { requiresAuth: true },
-    // meta: { authName: idsrvAuth.authName },
+    // meta: { requiresAuth: true },
+    meta: { authName: idsrvAuth.authName },
     children: [
       {
         path: '',
@@ -400,15 +400,19 @@ router.beforeEach(async (to, from) => {
   if (to.meta.requiresAuth) {
     if (!token) {
       router.push({ name: 'Login' })
-      // return {
-      //   path: '/',
-      //   // save the location we were at to come back later
-      //   query: { redirect: to.fullPath },
-      // }
-    } else if (token) {
-      if (to.path == '/dashboards') {
-        router.push({ path: '/dashboard' })
-      }
+    }
+  }
+})
+
+router.afterEach(async (to, from) => {
+  const token:any = localStorage.getItem('token')
+  // console.log(`to uri is ${to.path}, ${token}`);
+  console.log(`to path is ${from.path}`);
+
+  if (token) {
+    console.log(`to url is ${to.path}`);
+    if (to.path == '/dashboards') {
+      router.push({ name: 'Dashboard' })
     }
   }
 })

@@ -9,7 +9,7 @@ const appRootUrl = `${loco.protocol}//${loco.host}`
 const provider:any = 'Zoho'
 
   console.log(`Creating OIDC client for ${appRootUrl}`)
-  const authCallbackPath = '/index.html?auth-callback=1';
+  const authCallbackPath = 'index.html?auth-callback=1';
   const logoutCallbackPath = '/index.html?logout-callback=1';
   const prompt= 'login'
   const redirectUri = `${base_url}${authCallbackPath}`;
@@ -19,7 +19,7 @@ const provider:any = 'Zoho'
 
 const idsrvAuth = createOidcAuth(
   'main',
-  SignInType.Popup,
+  SignInType.Window,
   appRootUrl,
   {
     authority: oidc_authority,
@@ -77,6 +77,7 @@ idsrvAuth.events.addSilentRenewError(function(err: Error) {
 idsrvAuth.events.addUserLoaded(function(user: User) {
   // eslint-disable-next-line no-console
   console.log('user loaded', user)
+  localStorage.setItem('token', user?.access_token)
 })
 
 idsrvAuth.events.addUserUnloaded(function() {
