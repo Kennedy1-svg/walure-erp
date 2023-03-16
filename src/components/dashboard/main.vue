@@ -31,7 +31,7 @@ onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('dashboard stats mounted');
     // const request:any = `${api_url}api/dashboard`;
-    await store.dispatch(actionTypes.FetchActivity)
+    // await store.dispatch(actionTypes.FetchActivity)
 });
 </script>
 

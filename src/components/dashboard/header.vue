@@ -31,7 +31,7 @@ onMounted( async () => {
     // store.commit('setPageTitle', 'Course List');
     console.log('dashboard stats mounted');
     // const request:any = `${api_url}api/dashboard`;
-    await store.dispatch(actionTypes.FetchStats)
+    // await store.dispatch(actionTypes.FetchStats)
 });
 </script>
 
@@ -42,7 +42,7 @@ onMounted( async () => {
         <div class="grid grid-cols-3 py-7 gap-8">
             <Cards>
                 <template #chart>
-                    <circleprogress 
+                    <circleprogress
                     :percent="courseStat"
                     :show-percent="true"
                     :viewport="true"
@@ -51,7 +51,7 @@ onMounted( async () => {
                     :unit="'%'"
                     :border-bg-width="2"
                     :is-gradient="true"
-                    :gradient="{                        
+                    :gradient="{
                         startColor: '#0779bf',
                         stopColor: '#0779bf'
                     }"></circleprogress>
@@ -64,7 +64,7 @@ onMounted( async () => {
                 <template #chart>
                     <!-- <VueApexCharts width="200" type="radialBar" :options="talentChartOptions" :series="talentSeries"></VueApexCharts> -->
 
-                    <circleprogress 
+                    <circleprogress
                     :percent="outsourcingStat"
                     :show-percent="true"
                     :viewport="true"
@@ -73,7 +73,7 @@ onMounted( async () => {
                     :unit="'%'"
                     :border-bg-width="2"
                     :is-gradient="true"
-                    :gradient="{                        
+                    :gradient="{
                         startColor: '#91278e',
                         stopColor: '#91278e'
                     }"></circleprogress>
@@ -88,7 +88,7 @@ onMounted( async () => {
             <Cards>
                 <template #chart>
                     <!-- <VueApexCharts width="200" type="radialBar" :options="talentpoolChartOptions" :series="talentpoolSeries"></VueApexCharts> -->
-                    <circleprogress 
+                    <circleprogress
                     :percent="talentStat"
                     :show-percent="true"
                     :viewport="true"
@@ -97,7 +97,7 @@ onMounted( async () => {
                     :unit="'%'"
                     :border-bg-width="2"
                     :is-gradient="true"
-                    :gradient="{                        
+                    :gradient="{
                         startColor: '#ffc400',
                         stopColor: '#ffc400'
                     }"></circleprogress>
