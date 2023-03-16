@@ -20,7 +20,7 @@ const provider:any = 'Zoho'
 
 const idsrvAuth = createOidcAuth(
   'main',
-  SignInType.Window,
+  SignInType.Popup,
   appRootUrl,
   {
     authority: oidc_authority,
