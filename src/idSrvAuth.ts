@@ -4,7 +4,7 @@ import { createOidcAuth, SignInType, LogLevel } from 'vue-oidc-client/vue3'
 import { client_id, scope, base_url, oidc_authority } from './config'
 
 const loco = window.location
-const appRootUrl = `${loco.protocol}//${loco.host}`
+const appRootUrl = `${loco.protocol}${loco.host}`
 // const appRootUrl = 'localhost:5500/'
 const provider:any = 'Zoho'
 
@@ -12,7 +12,7 @@ const provider:any = 'Zoho'
   const authCallbackPath = 'index.html?auth-callback=1';
   const logoutCallbackPath = '/index.html?logout-callback=1';
   const prompt= 'login'
-  const redirectUri = `${base_url}/${authCallbackPath}`;
+  const redirectUri = `${base_url}//${authCallbackPath}`;
   const scopes = 'offline_access';
   const logoutRedirectUri = `${oidc_authority}${logoutCallbackPath}`;
   console.log(`Creating OIDC client for ${redirectUri}`)
