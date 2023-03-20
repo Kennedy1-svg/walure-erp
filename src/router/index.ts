@@ -256,8 +256,8 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'Layout',
     component: () => import('../views/dashboard/Layout.vue'),
-    // meta: { requiresAuth: true },
-    meta: { authName: idsrvAuth.authName },
+    meta: { requiresAuth: true },
+    // meta: { authName: idsrvAuth.authName },
     children: [
       {
         path: '',
