@@ -266,30 +266,30 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
         // meta: { authName: idsrvAuth.authName },
       },
-      {
-        path: 'user-management/users',
-        name: 'User',
-        component: () => import('../views/dashboard/users/Index.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'user-management/roles',
-        name: 'Roles',
-        component: () => import('../views/dashboard/users/Role.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'user-management/add-role',
-        name: 'AddRole',
-        component: () => import('../views/dashboard/users/AddRole.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'user-management/edit-role/:id',
-        name: 'EditRole',
-        component: () => import('../views/dashboard/users/EditRole.vue'),
-        meta: { requiresAuth: true },
-      },
+      // {
+      //   path: 'user-management/users',
+      //   name: 'User',
+      //   component: () => import('../views/dashboard/users/Index.vue'),
+      //   meta: { requiresAuth: true },
+      // },
+      // {
+      //   path: 'user-management/roles',
+      //   name: 'Roles',
+      //   component: () => import('../views/dashboard/users/Role.vue'),
+      //   meta: { requiresAuth: true },
+      // },
+      // {
+      //   path: 'user-management/add-role',
+      //   name: 'AddRole',
+      //   component: () => import('../views/dashboard/users/AddRole.vue'),
+      //   meta: { requiresAuth: true },
+      // },
+      // {
+      //   path: 'user-management/edit-role/:id',
+      //   name: 'EditRole',
+      //   component: () => import('../views/dashboard/users/EditRole.vue'),
+      //   meta: { requiresAuth: true },
+      // },
       {
         path: 'account-management/revenue',
         name: 'Revenue',
@@ -380,6 +380,15 @@ const routes: Array<RouteRecordRaw> = [
       //   component: () => import('../components/dashboard/account/ExpenditureDetails.vue'),
       //   meta: { requiresAuth: true },
       // },
+
+      {
+        path: 'department',
+        name: 'Department',
+        component: () => import('../views/dashboard/department/Department.vue'),
+        meta: { requiresAuth: true },
+      }
+
+
     ]
   },
   {

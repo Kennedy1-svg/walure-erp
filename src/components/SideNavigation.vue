@@ -28,19 +28,19 @@ import SvgIcons from './SvgIcons.vue'
 						</div>
 					</router-link>
 				</li>
-				<li>
+				<!-- <li>
 					<div class="dropdown">
 						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2 gap-3">
 							<div class="flex items-center gap-4 py-4">
 								<div>
-									<SvgIcons name="user-management" /> <!-- user icon -->
+									<SvgIcons name="user-management" /> 
 								</div>
 								<p class="text-left text-[15px]">
 									User Management
 								</p>
 							</div>
 							<div class="flex justify-end">
-								<SvgIcons name="chevron-right" /> <!-- right icon -->
+								<SvgIcons name="chevron-right" /> 
 							</div>
 						</button>
 						<div class="hidden dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2">
@@ -56,19 +56,20 @@ import SvgIcons from './SvgIcons.vue'
 							</div>
 						</div>
 					</div>
-				</li>
-				<li>
+				</li> -->
+				<!-- <li>
 					<a class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" href="/dashboard/#enumeration">
 						<div class="flex items-center gap-3 py-4">
 							<div>
-								<SvgIcons name="enumeration" /> <!-- enumeration icon -->
+								<SvgIcons name="enumeration" /> 
 							</div>
 							<p class="text-[15px]">
 								Enumeration
 							</p>
 						</div>
 					</a>
-				</li>
+				</li> -->
+				
 				<li>
 					<div class="dropdown">
 						<button class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2 gap-3">
@@ -150,7 +151,7 @@ import SvgIcons from './SvgIcons.vue'
 				</li>
 			
 					<li>
-					<router-link active-class="active" class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" to="/dashboard">
+					<router-link active-class="active" class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" to="/dashboard/department">
 						<div class="flex items-center gap-3 py-4">
 							<div>
 								<SvgIcons name="department" />  <!-- dashboard icon -->
