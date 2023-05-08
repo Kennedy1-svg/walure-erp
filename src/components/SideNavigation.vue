@@ -148,6 +148,20 @@ import SvgIcons from './SvgIcons.vue'
 						</div>
 					</div>
 				</li>
+			
+					<li>
+					<router-link active-class="active" class="flex items-center justify-between hover:bg-primary-accent hover:text-primary lg:px-6 px-2" to="/dashboard">
+						<div class="flex items-center gap-3 py-4">
+							<div>
+								<SvgIcons name="department" />  <!-- dashboard icon -->
+							</div>
+							<p class="text-[15px]">
+								Department
+							</p>
+						</div>
+					</router-link>
+				</li>
+			
 			</ul>
 		</div>
 	</div>
