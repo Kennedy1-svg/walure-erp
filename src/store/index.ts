@@ -6,6 +6,7 @@ import dashboard from './module/dashboard'
 import users from './module/users'
 import account from './module/account';
 import hr from './module/hr';
+import department from './module/department'
 
 const store = createStore({
     modules: {
@@ -15,7 +16,8 @@ const store = createStore({
         dashboard,
         account,
         users,
-        hr
+        hr,
+        department
     }
 })
 
