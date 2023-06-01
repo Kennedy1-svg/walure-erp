@@ -219,7 +219,7 @@ const submitEdit:any = () => {
             </p>
 
             <label for="department" class="font-bold">
-                About
+                Description
             </label>
             <textarea class="border rounded-md p-2 text-xs focus:outline-none block my-3" v-model="newDepartment.description" @focus="checkError" rows="10" cols="55" maxlength="500" placeholder="About department" required>     
             </textarea>
