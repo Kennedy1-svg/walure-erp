@@ -1,1 +1,6 @@
 export const FetchDepartment = 'FetchDepartment'
+export const FetchDepartmentType = 'FetchDepartmentType'
+export const AddNewDepartment = 'AddNewDepartment'
+export const RemoveDepartment = 'RemoveDepartment'
+export const FetchEditDepartment = 'FetchEditDepartment'
+export const EditDepartment = 'EditDepartment'

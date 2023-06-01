@@ -386,6 +386,12 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Department',
         component: () => import('../views/dashboard/department/Department.vue'),
         meta: { requiresAuth: true },
+      },
+      {
+        path: 'department/departmentdetails/:id',
+        name: 'DepartmentDetails',
+        component: () => import('../views/dashboard/department/DepartmentDetails.vue'),
+        meta: { requiresAuth: true },
       }
 
 

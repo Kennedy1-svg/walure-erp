@@ -1,1 +1,6 @@
 export const SetDepartment = 'SetDepartment'
+export const SetDepartmentType = 'SetDepartmentType'
+export const SetNewDepartment = 'SetNewDepartment'
+export const SetNewDepartmentAlertText = 'SetNewDepartmentAlertText'
+export const SetNewDepartmentAlertStatus = 'SetNewDepartmentAlertStatus'
+export const SetEditDepartment = 'SetEditDepartment'

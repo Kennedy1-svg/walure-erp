@@ -8,6 +8,10 @@ export default {
 import Search from '../../Search.vue'
 import SvgIcons from '../../SvgIcons.vue'
 import CreateDepartment from './CreateDepartment.vue';
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import * as departmentActionTypes from '../../../store/module/department/constants/actions';
+import { api_url } from '../../../config/index'
 
 const closeModal:any = () => {
   // document.getElementById('addstudent').showModal()
@@ -16,6 +20,24 @@ const closeModal:any = () => {
     // localStorage.removeItem('editstudent')
   let doc:any = document.getElementById('createdepartment')
   doc.close()  
+}
+ const store = useStore()
+
+const searchText:any = ref('')
+const isSearching:any = ref(false)
+
+const filter:any = async () => {
+    isSearching.value = true
+  const search:any = searchText.value.toLowerCase();
+  console.log('search', search)
+  const request:any = `${api_url}api/department/getall-department?keyword=${search}`;
+  await store.dispatch(departmentActionTypes.FetchDepartment, request)
+}
+
+const close:any = async () => {
+    isSearching.value = false
+  searchText.value = ''
+  await store.dispatch(departmentActionTypes.FetchDepartment)
 }
 
 
@@ -43,7 +65,7 @@ const closeModal:any = () => {
             <dialog id="createdepartment" class="h-auto w-1/2 md:w-1/2 p-5 bg-white rounded-md">            
                       <div class="w-full h-auto ">
                           <!-- Modal Content-->
-                              <CreateDepartment @close="closeModal" />
+                              <CreateDepartment name="Create" @close="closeModal" />
                           <!-- End of Modal Content-->
                       </div>
             </dialog>
@@ -54,9 +76,10 @@ const closeModal:any = () => {
             <div class="search md:w-4/5">
                 <Search>
                     <template #input>
-                        <input class="rounded text-sm p-1 focus:outline-none w-[700px]"  type="text" placeholder="Search Department">
+                        <input class="rounded text-sm p-1 focus:outline-none w-[700px]" v-model="searchText"  type="text"  placeholder="Search Department">
                         <span class="w-auto flex justify-end items-center text-grey p-2">
-                       <SvgIcons name = "search" />
+                          <SvgIcons v-if="!isSearching" name="search" @click="filter"  />
+                        <SvgIcons v-else name="o-cancel" @click="close" class="transform scale-75" />
                         </span>
                     </template>
 

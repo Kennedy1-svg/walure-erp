@@ -177,7 +177,7 @@ const isEditing:any = computed(() => {
 
 const uniqueIdentifier:any = async () => {
     console.log('uniqueIdentifier')
-    console.log(`${newExpenditure.value.category}`)
+    console.log('new expenditure',`${newExpenditure.value.category}`)
     const request:any = `${account_api_url}api/expenditurecategory/get-category/${newExpenditure.value.category}`;
     console.log('request for the', request)
     await store.dispatch(accountActionTypes.FetchEditCategory, request)
