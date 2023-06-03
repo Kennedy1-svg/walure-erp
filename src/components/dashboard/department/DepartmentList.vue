@@ -100,7 +100,7 @@ onMounted( async () => {
             <div class="border-2 bg-white p-5">
                 <div class="flex justify-between items-center">
                  <router-link :to="{ name: 'DepartmentDetails', params:{ id : departmentitem.id}}">
-                  <h1 class="text-left capitalize font-bold my-2">{{ departmentitem.name }}</h1>
+                  <h1 class="text-left capitalize font-bold my-2 hover:text-primary hover:bg-primary-accent">{{ departmentitem.name }}</h1>
                  </router-link>
                  <div class="relative inline-block dropdown">
                     <button class="flex justify-around gap-8 items-center rounded" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
